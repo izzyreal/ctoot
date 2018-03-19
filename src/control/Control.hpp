@@ -53,9 +53,9 @@ namespace ctoot {
 		public:
 			virtual void setHidden(bool h);
 			virtual int getId();
+			CompoundControl* getParent();
 
 		protected:
-			CompoundControl* getParent();
 			virtual void setParent(CompoundControl* c);
 			virtual void notifyParent(Control* obj);
 			virtual void derive(Control* obj);

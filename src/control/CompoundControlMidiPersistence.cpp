@@ -66,7 +66,7 @@ void CompoundControlMidiPersistence::loadPreset(CompoundControl* c, string* name
             if(dynamic_cast< BypassControl* >(control) != nullptr)
                 continue;
 
-            npc(control)->setIntValue(::automation::ControlSysexMsg::getValue(msg));
+            control->setIntValue(::automation::ControlSysexMsg::getValue(msg));
         }
     } catch (::java::io::IOException* ioe) {
         npc(ioe)->printStackTrace();

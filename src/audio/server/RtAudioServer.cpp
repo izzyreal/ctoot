@@ -33,6 +33,8 @@ void RtAudioServer::close() {
 }
 
 void RtAudioServer::work() {
+	if (buffers.size() < 1) return;
+	client->work(buffers[0]->getSampleCount());
 }
 
 void RtAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {

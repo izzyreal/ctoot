@@ -3,9 +3,12 @@
 #include <audio/delay/DelayIds.hpp>
 #include <audio/delay/DelayFactorControl.hpp>
 #include <audio/delay/NamedFactor.hpp>
+
 #include <control/ControlColumn.hpp>
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
+
+#include <dsp/VolumeUtils.hpp>
 
 #define _USE_MATH_DEFINES
 #include <math.h>  
@@ -60,16 +63,12 @@ TempoDelayControls::TempoDelayControls()
     derive(lowpassControlS.get());
 }
 
-static inline double log2lin(double dLogarithmic) {
-	return pow(10.0, dLogarithmic * (1.0 / 20.0));
-}
-
 void TempoDelayControls::derive(Control* c)
 {
 	float freq;
 	switch (c->getId()) {
 	case DUCKING_ID:
-		ducking = log2lin(-duckingControl.lock()->getValue());
+		ducking = ctoot::dsp::VolumeUtils::log2lin(-duckingControl.lock()->getValue());
 		break;
 	case LOWPASS_ID:
 		freq = lowpassControl.lock()->getValue();
