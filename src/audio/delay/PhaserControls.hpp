@@ -36,7 +36,7 @@ namespace ctoot {
 				float rate{  }, depth{  }, feedback{  };
 				int stages{ 4 };
 
-			public: /* protected */
+			protected:
 				void derive(ctoot::control::Control* c) override;
 				virtual std::shared_ptr<ctoot::control::FloatControl> createRateControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();

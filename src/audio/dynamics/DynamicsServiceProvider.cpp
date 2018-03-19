@@ -66,8 +66,8 @@ shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProc
     if(dynamic_cast< MultiBandControls* >(c) != nullptr) {
         return new MultiBandCompressor(java_cast< MultiBandControls* >(c));
     }
-    if(dynamic_cast< TremoloProcess_Variables* >(c) != nullptr) {
-        return new TremoloProcess(java_cast< TremoloProcess_Variables* >(c));
+    if(dynamic_cast< TremoloProcessVariables* >(c) != nullptr) {
+        return new TremoloProcess(java_cast< TremoloProcessVariables* >(c));
     }
     if(!(dynamic_cast< DynamicsControls* >(c) != nullptr))
         return nullptr;

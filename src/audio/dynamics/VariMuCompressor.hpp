@@ -1,42 +1,26 @@
-// Generated from /toot2/src/uk/org/toot/audio/dynamics/VariMuCompressor.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <audio/dynamics/fwd-toot2.hpp>
 #include <audio/dynamics/ClassicDynamicsProcess.hpp>
 
-struct default_init_tag;
+namespace ctoot {
+	namespace audio {
+		namespace dynamics {
 
-class VariMuCompressor
-    : public ClassicDynamicsProcess
-{
+			class VariMuCompressor
+				: public ClassicDynamicsProcess
+			{
 
-public:
-    typedef ClassicDynamicsProcess super;
-protected:
-    void ctor(DynamicsVariables* vars);
+			protected:
+				float function(float value) override;
 
-public: /* protected */
-    float function(float value) override;
+			private:
+				static std::vector<float> table;
 
-private:
-    static ::floatArray* table_;
+			public:
+				VariMuCompressor(DynamicsVariables* vars);
 
-    // Generated
+			};
 
-public:
-    VariMuCompressor(DynamicsVariables* vars);
-protected:
-    VariMuCompressor(const ::default_init_tag&);
-
-
-public:
-    static ::java::lang::Class *class_();
-    static void clinit();
-
-private:
-    static ::floatArray*& table();
-    virtual ::java::lang::Class* getClass0();
-    friend class VariMuCompressorControls;
-};
+		}
+	}
+}

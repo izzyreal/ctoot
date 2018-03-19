@@ -1,70 +1,28 @@
-// Generated from /toot2/src/uk/org/toot/audio/dynamics/VariMuCompressor.java
 #include <audio/dynamics/VariMuCompressor.hpp>
 
-#include <java/lang/NullPointerException.hpp>
-#include <Array.hpp>
+using namespace ctoot::audio::dynamics;
+using namespace std;
 
-template<typename T>
-static T* npc(T* t)
+VariMuCompressor::VariMuCompressor(DynamicsVariables* vars)
+	: ClassicDynamicsProcess(vars)
 {
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
-}
-
-uk::org::toot::audio::dynamics::VariMuCompressor::VariMuCompressor(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
-uk::org::toot::audio::dynamics::VariMuCompressor::VariMuCompressor(DynamicsVariables* vars) 
-    : VariMuCompressor(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(vars);
-}
-
-void VariMuCompressor::ctor(DynamicsVariables* vars)
-{
-    super::ctor(vars);
 }
 
 float VariMuCompressor::function(float value)
 {
-    if(value < threshold)
-        return 1.0f;
+	if (value < threshold)
+		return 1.0f;
 
-    auto over = value * inverseThreshold;
-    auto i = static_cast< int32_t >(over);
-    if(i > npc(table_)->length - int32_t(2))
-        return (*table_)[npc(table_)->length - int32_t(1)];
+	auto over = value * inverseThreshold;
+	auto i = static_cast<int32_t>(over);
+	if (i > table.size() - int32_t(2))
+		return table[table.size() - 1];
 
-    auto frac = over - i;
-    return (*table_)[i] * (int32_t(1) - frac) + (*table_)[i + int32_t(1)] * frac;
+	auto frac = over - i;
+	return table[i] * (int32_t(1) - frac) + table[i + int32_t(1)] * frac;
 }
 
-floatArray*& uk::org::toot::audio::dynamics::VariMuCompressor::table()
-{
-    clinit();
-    return table_;
-}
-floatArray* uk::org::toot::audio::dynamics::VariMuCompressor::table_;
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* uk::org::toot::audio::dynamics::VariMuCompressor::class_()
-{
-    static ::java::lang::Class* c = ::class_(u"uk.org.toot.audio.dynamics.VariMuCompressor", 43);
-    return c;
-}
-
-void VariMuCompressor::clinit()
-{
-    super::clinit();
-    static bool in_cl_init = false;
-struct clinit_ {
-    clinit_() {
-        in_cl_init = true;
-        table_ = (new ::floatArray({
+vector<float> VariMuCompressor::table = vector<float>{
             1.0f
             , 0.932854f
             , 0.8642038f
@@ -165,17 +123,4 @@ struct clinit_ {
             , 0.108415455f
             , 0.107159816f
             , 0.105925374f
-        }));
-    }
-};
-
-    if(!in_cl_init) {
-        static clinit_ clinit_instance;
-    }
-}
-
-java::lang::Class* uk::org::toot::audio::dynamics::VariMuCompressor::getClass0()
-{
-    return class_();
-}
-
+		};
