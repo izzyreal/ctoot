@@ -1,43 +1,30 @@
-// Generated from /toot2/src/uk/org/toot/audio/basic/tap/TapProcess.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <audio/basic/tap/fwd-toot2.hpp>
-#include <audio/core/fwd-toot2.hpp>
-#include <java/lang/Object.hpp>
 #include <audio/core/AudioProcess.hpp>
 
-struct default_init_tag;
+namespace ctoot {
+	namespace audio {
+		namespace basic {
+			namespace tap {
 
-class uk::org::toot::audio::basic::tap::TapProcess
-    : public virtual ::java::lang::Object
-    , public virtual ::uk::org::toot::audio::core::AudioProcess
-{
+				class TapControls;
 
-public:
-    typedef ::java::lang::Object super;
+				class TapProcess
+					: public virtual ctoot::audio::core::AudioProcess
+				{
 
-private:
-    TapControls* controls {  };
-    ::ctoot::audio::core::AudioBuffer* tap {  };
-protected:
-    void ctor(TapControls* controls);
+				private:
+					TapControls * controls{  };
+					ctoot::audio::core::AudioBuffer* tap{  };
 
-public:
-    void open() /* throws(Exception) */ override;
-    int32_t processAudio(::ctoot::audio::core::AudioBuffer* buffer) override;
-    void close() /* throws(Exception) */ override;
+				public:
+					void open() override;
+					int32_t processAudio(::ctoot::audio::core::AudioBuffer* buffer) override;
+					void close() override;
 
-    // Generated
-    TapProcess(TapControls* controls);
-protected:
-    TapProcess(const ::default_init_tag&);
-
-
-public:
-    static ::java::lang::Class *class_();
-
-private:
-    virtual ::java::lang::Class* getClass0();
-};
+					TapProcess(TapControls* controls);
+				};
+			}
+		}
+	}
+}

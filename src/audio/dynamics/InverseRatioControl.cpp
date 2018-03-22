@@ -19,7 +19,7 @@ string InverseRatioControl::getValueString()
 	return "InverseRatioControl temp value str";
 }
 
-std::vector<std::string> InverseRatioControl::getPresetNames() {
+std::vector<std::string> InverseRatioControl::getPresetNames()
 {
     return DynamicsControls::ratioPresets2;
 }

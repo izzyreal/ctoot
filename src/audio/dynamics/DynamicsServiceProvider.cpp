@@ -33,14 +33,13 @@ DynamicsServiceProvider::DynamicsServiceProvider()
     auto family = ServiceProvider::description;
 	/*
     addControls(VariMuCompressorControls::class_(), DynamicsIds::VARI_MU_COMPRESSOR, ::uk::org::toot::misc::Localisation::getString(u"Vari.Mu.Compressor"_j), family, u"0.1"_j);
-    addControls(BusCompressorControls::class_(), DynamicsIds::BUS_COMPRESSOR, ::uk::org::toot::misc::Localisation::getString(u"Bus.Compressor"_j), family, u"0.1"_j);
     addControls(CompressorControls::class_(), DynamicsIds::COMPRESSOR_ID, ::uk::org::toot::misc::Localisation::getString(u"Compressor"_j), family, u"0.2"_j);
     addControls(LimiterControls::class_(), DynamicsIds::LIMITER_ID, ::uk::org::toot::misc::Localisation::getString(u"Limiter"_j), family, u"0.2"_j);
     addControls(GateControls::class_(), DynamicsIds::GATE_ID, ::uk::org::toot::misc::Localisation::getString(u"Gate"_j), family, u"0.1"_j);
     addControls(DualBandControls::class_(), DynamicsIds::MULTI_BAND_COMPRESSOR_ID, ::uk::org::toot::misc::Localisation::getString(u"Dual.Band.Compressor"_j), family, u"0.2"_j);
     addControls(MidSideCompressorControls::class_(), DynamicsIds::MID_SIDE_COMPRESSOR_ID, ::uk::org::toot::misc::Localisation::getString(u"Mid.Side.Compressor"_j), family, u"0.1"_j);
-    addControls(TremoloControls::class_(), DynamicsIds::TREMOLO_ID, ::uk::org::toot::misc::Localisation::getString(u"Tremolo"_j), family, u"0.1"_j);
-    add(VariMuCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Vari.Mu.Compressor"_j), family, u"0.1"_j);
+    
+	add(VariMuCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Vari.Mu.Compressor"_j), family, u"0.1"_j);
     add(BusCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Bus.Compressor"_j), family, u"0.1"_j);
     add(Compressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Compressor"_j), family, u"0.2"_j);
     add(Limiter::class_(), ::uk::org::toot::misc::Localisation::getString(u"Limiter"_j), family, u"0.2"_j);
@@ -49,25 +48,29 @@ DynamicsServiceProvider::DynamicsServiceProvider()
     add(MidSideCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Mid.Side.Compressor"_j), family, u"0.1"_j);
     add(TremoloProcess::class_(), ::uk::org::toot::misc::Localisation::getString(u"Tremolo"_j), family, u"0.1"_j);
 	*/
+
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::BUS_COMPRESSOR, "class ctoot::audio::dynamics::BusCompressorControls", family, "0.1");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::TREMOLO_ID, "class ctoot::audio::dynamics::TremoloControls", family, "0.1");
 }
 
-shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProcessor(weak_ptr<ctoot::audio::core::AudioControls> c) {
+shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProcessor(weak_ptr<ctoot::audio::core::AudioControls> c)
 {
+	auto name = c.lock()->getName();
+	if (name.compare("Tremolo") == 0) {
+		return make_shared<TremoloProcess>(dynamic_pointer_cast<TremoloProcessVariables>(c.lock()).get());
+	}
+	if (name.compare("Bus.Comp") == 0) {
+		return make_shared<BusCompressor>(dynamic_pointer_cast<BusCompressorControls>(c.lock()).get());
+	}
 	/*
     if(dynamic_cast< VariMuCompressorControls* >(c) != nullptr) {
         return new VariMuCompressor(java_cast< VariMuCompressorControls* >(c));
-    }
-    if(dynamic_cast< BusCompressorControls* >(c) != nullptr) {
-        return new BusCompressor(java_cast< BusCompressorControls* >(c));
     }
     if(dynamic_cast< MidSideCompressorControls* >(c) != nullptr) {
         return new MidSideCompressor(java_cast< MidSideCompressorControls* >(c));
     }
     if(dynamic_cast< MultiBandControls* >(c) != nullptr) {
         return new MultiBandCompressor(java_cast< MultiBandControls* >(c));
-    }
-    if(dynamic_cast< TremoloProcessVariables* >(c) != nullptr) {
-        return new TremoloProcess(java_cast< TremoloProcessVariables* >(c));
     }
     if(!(dynamic_cast< DynamicsControls* >(c) != nullptr))
         return nullptr;

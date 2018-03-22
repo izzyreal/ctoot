@@ -6,6 +6,8 @@ namespace ctoot {
 	namespace audio {
 		namespace dynamics {
 
+			class CrossoverControl;
+
 			class CrossoverSection
 				: public virtual ctoot::audio::filter::FilterSpecification
 			{

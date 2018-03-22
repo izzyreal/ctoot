@@ -9,6 +9,8 @@ namespace ctoot {
 	namespace audio {
 		namespace dynamics {
 
+			class DynamicsControls;
+
 			class InverseRatioControl
 				: public ctoot::control::FloatControl
 			{
@@ -22,7 +24,7 @@ namespace ctoot {
 				InverseRatioControl(DynamicsControls* dynamicsControls);
 
 			public:
-				DynamicsControls * dynamicsControls;
+				DynamicsControls* dynamicsControls;
 
 			};
 		}

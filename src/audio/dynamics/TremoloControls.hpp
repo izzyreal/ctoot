@@ -3,7 +3,15 @@
 #include <audio/core/AudioControls.hpp>
 #include <audio/dynamics/TremoloProcessVariables.hpp>
 
+#include <memory>
+
 namespace ctoot {
+
+	namespace control {
+		class ControlLaw;
+		class FloatControl;
+	}
+
 	namespace audio {
 		namespace dynamics {
 
@@ -12,40 +20,32 @@ namespace ctoot {
 				, public virtual TremoloProcessVariables
 			{
 
-			public:
-				typedef ctoot::audio::core::AudioControls super;
-
 			private:
-				static ctoot::control::ControlLaw* rateLaw_;
+				static std::weak_ptr<ctoot::control::ControlLaw> rateLaw();
 
 			protected:
 				static constexpr int32_t RATE_ID{ int32_t(1) };
 				static constexpr int32_t DEPTH_ID{ int32_t(2) };
 
 			private:
-				ctoot::control::FloatControl* rateControl{  };
-				ctoot::control::FloatControl* depthControl{  };
+				std::weak_ptr<ctoot::control::FloatControl> rateControl{  };
+				std::weak_ptr<ctoot::control::FloatControl> depthControl{  };
 
 			protected:
-				virtual ctoot::control::FloatControl* createRateControl();
-				virtual ctoot::control::FloatControl* createDepthControl();
+				virtual std::shared_ptr<ctoot::control::FloatControl> createRateControl();
+				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();
 
 			public:
 				float getDepth() override;
 				float getRate() override;
 
 				TremoloControls();
-			protected:
-				TremoloControls(const ::default_init_tag&);
-
 
 			public:
 				virtual bool isBypassed();
 
-			protected:
-				static ctoot::control::ControlLaw*& rateLaw();
 			};
-
+			REGISTER_TYPE(ctoot::audio::dynamics::, TremoloControls)
 		}
 	}
 }

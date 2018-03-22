@@ -8,6 +8,7 @@ namespace ctoot {
 	namespace audio {
 		namespace filter {
 
+			class FilterSpecification;
 			class FilterDesign;
 			class FilterState;
 

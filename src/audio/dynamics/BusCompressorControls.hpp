@@ -36,7 +36,7 @@ namespace ctoot {
 				BusCompressorControls(std::string name, int32_t idOffset);
 
 			};
-
+			REGISTER_TYPE(ctoot::audio::dynamics::, BusCompressorControls)
 		}
 	}
 }

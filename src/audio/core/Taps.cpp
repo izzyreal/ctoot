@@ -18,6 +18,9 @@ void Taps::setAudioServer(ctoot::audio::server::AudioServer* s)
 	Taps::server = s;
 }
 
+vector<ctoot::audio::basic::tap::TapControls*> Taps::taps;
+ctoot::audio::server::AudioServer* Taps::server;
+
 ctoot::audio::core::AudioBuffer* Taps::create(ctoot::audio::basic::tap::TapControls* controls)
 {
 	check();

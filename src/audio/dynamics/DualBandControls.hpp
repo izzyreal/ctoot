@@ -14,7 +14,7 @@ namespace ctoot {
 				DualBandControls();
 
 			};
-
+			//REGISTER_TYPE(ctoot::audio::dynamics::, DualBandControls)
 		}
 	}
 }

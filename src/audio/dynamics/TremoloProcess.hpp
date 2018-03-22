@@ -8,6 +8,8 @@ namespace ctoot {
 	namespace audio {
 		namespace dynamics {
 
+			class TremoloProcessVariables;
+
 			class TremoloProcess
 				: public ctoot::audio::core::SimpleAudioProcess
 			{

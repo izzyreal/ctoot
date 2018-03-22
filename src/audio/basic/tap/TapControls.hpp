@@ -36,7 +36,7 @@ namespace ctoot {
 					TapControls();
 
 				};
-
+				REGISTER_TYPE(ctoot::audio::basic::tap, TapControls);
 			}
 		}
 	}

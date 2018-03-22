@@ -160,7 +160,6 @@ namespace ctoot {
 				friend class InverseRatioControl;
 
 			};
-
 		}
 	}
 }

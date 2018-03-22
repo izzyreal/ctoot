@@ -15,6 +15,8 @@ namespace ctoot {
 	namespace audio {
 		namespace dynamics {
 
+			class CompressorControls;
+
 			class MidSideCompressorControls
 				: public ctoot::audio::core::AudioControls
 				, public virtual MidSideDynamicsProcessVariables

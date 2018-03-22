@@ -367,7 +367,7 @@ ctoot::control::ControlLaw* DynamicsControls::getThresholdLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createThresholdControl()
 {
-    auto control = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::THRESHOLD + idOffset, "Threshold", getThresholdLaw(), 0.1f, 0.0f);
+    auto control = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::THRESHOLD + idOffset, "Threshold", THRESH_LAW(), 0.1f, 0.0f);
     return control;
 }
 
@@ -416,8 +416,7 @@ ctoot::control::ControlLaw* DynamicsControls::getAttackLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createAttackControl()
 {
-    auto law = getAttackLaw();
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", law, 0.1f, law->getMinimum());
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", ATTACK_LAW(), 0.1f, ATTACK_LAW().lock()->getMinimum());
 }
 
 bool DynamicsControls::hasHold()
@@ -432,7 +431,7 @@ ctoot::control::ControlLaw* DynamicsControls::getHoldLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createHoldControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HOLD + idOffset, "Hold", getHoldLaw(), 1.0f, 10.0f);
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HOLD + idOffset, "Hold", HOLD_LAW(), 1.0f, 10.0f);
 }
 
 ctoot::control::ControlLaw* DynamicsControls::getReleaseLaw()
@@ -442,8 +441,7 @@ ctoot::control::ControlLaw* DynamicsControls::getReleaseLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createReleaseControl()
 {
-    auto law = getReleaseLaw();
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::RELEASE + idOffset, "Release", law, 1.0f, law->getMinimum());
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::RELEASE + idOffset, "Release", RELEASE_LAW(), 1.0f, RELEASE_LAW().lock()->getMinimum());
 }
 
 bool DynamicsControls::hasDryGain()
@@ -458,7 +456,7 @@ ctoot::control::ControlLaw* DynamicsControls::getDryGainLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDryGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry", getDryGainLaw(), 1.0f, int32_t(0));
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry", DRY_GAIN_LAW(), 1.0f, 0);
 }
 
 bool DynamicsControls::hasGain()
@@ -473,7 +471,7 @@ ctoot::control::ControlLaw* DynamicsControls::getGainLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::GAIN + idOffset, "Gain", getGainLaw(), 1.0f, int32_t(0));
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::GAIN + idOffset, "Gain", GAIN_LAW(), 1.0f, 0);
 }
 
 bool DynamicsControls::hasDepth()
@@ -488,8 +486,7 @@ ctoot::control::ControlLaw* DynamicsControls::getDepthLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDepthControl()
 {
-    auto depthC = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DEPTH + idOffset, "Depth", getDepthLaw(), 1.0f, -int32_t(40));
-    return depthC;
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DEPTH + idOffset, "Depth", DEPTH_LAW(), 1.0f, -40);
 }
 
 bool DynamicsControls::hasHysteresis()
@@ -504,7 +501,7 @@ ctoot::control::ControlLaw* DynamicsControls::getHysteresisLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createHysteresisControl()
 {
-    auto hystC = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HYSTERESIS + idOffset, "Hysteresis", getHysteresisLaw(), 1.0f, 0.0f);
+    auto hystC = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HYSTERESIS + idOffset, "Hysteresis", HYSTERESIS_LAW(), 1.0f, 0.0f);
     return hystC;
 }
 
