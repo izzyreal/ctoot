@@ -9,7 +9,7 @@ namespace ctoot {
 			class FilterSpecification;
 
 			class AbstractFilterDesign
-				: public virtual FilterDesign
+				: public FilterDesign
 			{
 
 			protected:

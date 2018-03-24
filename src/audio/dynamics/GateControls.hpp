@@ -30,7 +30,7 @@ namespace ctoot {
 				GateControls();
 
 			};
-
+			REGISTER_TYPE(ctoot::audio::dynamics::, GateControls)
 		}
 	}
 }

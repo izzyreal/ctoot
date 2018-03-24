@@ -49,7 +49,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 	omega = int32_t(2) * M_PI * freq / srate;
 	sn = sin(omega);
 	cs = cos(omega);
-	alpha = sn * sinh(M_LN2_ / int32_t(2) * bandwidth * omega / sn);
+	alpha = sn * sinh(M_LN2 / 2 * bandwidth * omega / sn);
 	beta = sqrt(A + A);
 	{
 		auto v = type;

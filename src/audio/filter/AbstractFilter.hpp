@@ -16,8 +16,10 @@ namespace ctoot {
 				: public virtual Filter
 			{
 
+			protected:
+				FilterDesign* design{  };
+
 			private:
-				FilterDesign * design{  };
 				moduru::observer::Observer* specObserver{  };
 				bool doUpdate{  };
 				static constexpr int32_t MAX_CHANNELS{ int32_t(6) };

@@ -27,7 +27,7 @@ namespace ctoot {
 			public:
 				ExpanderControls();
 			};
-
+			REGISTER_TYPE(ctoot::audio::dynamics::, ExpanderControls)
 		}
 	}
 }

@@ -6,6 +6,10 @@ namespace ctoot {
 	namespace audio {
 		namespace filter {
 
+			class FilterDesign;
+			class FilterState;
+			class FilterSpecification;
+
 			class BiQuadFilter
 				: public AbstractFilter
 			{

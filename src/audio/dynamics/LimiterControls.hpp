@@ -28,6 +28,7 @@ namespace ctoot {
 				LimiterControls();
 
 			};
+			REGISTER_TYPE(ctoot::audio::dynamics::, LimiterControls)
 		}
 	}
 }

@@ -1,4 +1,3 @@
-// Generated from /toot2/src/uk/org/toot/audio/filter/BiQuadFilter.java
 #include <audio/filter/BiQuadFilter.hpp>
 
 #include <audio/core/FloatDenormals.hpp>
@@ -12,6 +11,7 @@ using namespace ctoot::audio::filter;
 BiQuadFilter::BiQuadFilter(FilterSpecification* spec, bool relative)
 	: AbstractFilter(spec, relative)
 {
+	design = createDesign(spec);
 }
 
 void BiQuadFilter::filter(std::vector<float>* buffer, std::vector<float>* mixBuffer, int32_t length, int32_t chan, bool doMix)

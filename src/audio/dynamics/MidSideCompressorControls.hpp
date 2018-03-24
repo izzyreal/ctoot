@@ -62,6 +62,7 @@ namespace ctoot {
 				virtual bool isBypassed();
 
 			};
+			REGISTER_TYPE(ctoot::audio::dynamics::, MidSideCompressorControls)
 		}
 	}
 }

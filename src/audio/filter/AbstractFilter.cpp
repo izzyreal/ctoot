@@ -8,23 +8,11 @@
 using namespace ctoot::audio::filter;
 using namespace std;
 
-void AbstractFilter::init()
-{
-    design = nullptr;
-    specObserver = nullptr;
-    doUpdate = true;
-    states = vector<FilterState*>(MAX_CHANNELS);
-    amplitudeAdj = 0.0f;
-    sampleRate = -int32_t(1);
-}
-
-constexpr int32_t AbstractFilter::MAX_CHANNELS;
-
 AbstractFilter::AbstractFilter(FilterSpecification* spec, bool relative)
 {
     init();
     levelOffset = relative ? 1.0f : 0.0f;
-    design = createDesign(spec);
+    //design = createDesign(spec);
     specObserver = new AbstractFilterObserver(this);
 }
 
@@ -74,3 +62,15 @@ void AbstractFilter::setSampleRate(int32_t rate)
 	design->design(rate);
 	doUpdate = true;
 }
+
+void AbstractFilter::init()
+{
+	design = nullptr;
+	specObserver = nullptr;
+	doUpdate = true;
+	states = vector<FilterState*>(MAX_CHANNELS);
+	amplitudeAdj = 0.0f;
+	sampleRate = -int32_t(1);
+}
+
+constexpr int32_t AbstractFilter::MAX_CHANNELS;

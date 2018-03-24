@@ -32,13 +32,6 @@ DynamicsServiceProvider::DynamicsServiceProvider()
 {
     auto family = ServiceProvider::description;
 	/*
-    addControls(VariMuCompressorControls::class_(), DynamicsIds::VARI_MU_COMPRESSOR, ::uk::org::toot::misc::Localisation::getString(u"Vari.Mu.Compressor"_j), family, u"0.1"_j);
-    addControls(CompressorControls::class_(), DynamicsIds::COMPRESSOR_ID, ::uk::org::toot::misc::Localisation::getString(u"Compressor"_j), family, u"0.2"_j);
-    addControls(LimiterControls::class_(), DynamicsIds::LIMITER_ID, ::uk::org::toot::misc::Localisation::getString(u"Limiter"_j), family, u"0.2"_j);
-    addControls(GateControls::class_(), DynamicsIds::GATE_ID, ::uk::org::toot::misc::Localisation::getString(u"Gate"_j), family, u"0.1"_j);
-    addControls(DualBandControls::class_(), DynamicsIds::MULTI_BAND_COMPRESSOR_ID, ::uk::org::toot::misc::Localisation::getString(u"Dual.Band.Compressor"_j), family, u"0.2"_j);
-    addControls(MidSideCompressorControls::class_(), DynamicsIds::MID_SIDE_COMPRESSOR_ID, ::uk::org::toot::misc::Localisation::getString(u"Mid.Side.Compressor"_j), family, u"0.1"_j);
-    
 	add(VariMuCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Vari.Mu.Compressor"_j), family, u"0.1"_j);
     add(BusCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Bus.Compressor"_j), family, u"0.1"_j);
     add(Compressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Compressor"_j), family, u"0.2"_j);
@@ -47,8 +40,13 @@ DynamicsServiceProvider::DynamicsServiceProvider()
     add(MultiBandCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Multi.Band.Compressor"_j), family, u"0.2"_j);
     add(MidSideCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Mid.Side.Compressor"_j), family, u"0.1"_j);
     add(TremoloProcess::class_(), ::uk::org::toot::misc::Localisation::getString(u"Tremolo"_j), family, u"0.1"_j);
-	*/
-
+    */
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::VARI_MU_COMPRESSOR, "class ctoot::audio::dynamics::VariMuCompressorControls", family, "0.1");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::COMPRESSOR_ID, "class ctoot::audio::dynamics::CompressorControls", family, "0.2");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::LIMITER_ID, "class ctoot::audio::dynamics::LimiterControls", family, "0.2");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::GATE_ID, "class ctoot::audio::dynamics::GateControls", family, "0.1");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::MultiBandControls", family, "0.2");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MID_SIDE_COMPRESSOR_ID, "class ctoot::audio::dynamics::MidSideCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::BUS_COMPRESSOR, "class ctoot::audio::dynamics::BusCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::TREMOLO_ID, "class ctoot::audio::dynamics::TremoloControls", family, "0.1");
 }
@@ -56,34 +54,30 @@ DynamicsServiceProvider::DynamicsServiceProvider()
 shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProcessor(weak_ptr<ctoot::audio::core::AudioControls> c)
 {
 	auto name = c.lock()->getName();
+	MLOG("DynamicsServiceProvider name: " + name);
 	if (name.compare("Tremolo") == 0) {
 		return make_shared<TremoloProcess>(dynamic_pointer_cast<TremoloProcessVariables>(c.lock()).get());
 	}
 	if (name.compare("Bus.Comp") == 0) {
 		return make_shared<BusCompressor>(dynamic_pointer_cast<BusCompressorControls>(c.lock()).get());
 	}
-	/*
-    if(dynamic_cast< VariMuCompressorControls* >(c) != nullptr) {
-        return new VariMuCompressor(java_cast< VariMuCompressorControls* >(c));
-    }
-    if(dynamic_cast< MidSideCompressorControls* >(c) != nullptr) {
-        return new MidSideCompressor(java_cast< MidSideCompressorControls* >(c));
-    }
-    if(dynamic_cast< MultiBandControls* >(c) != nullptr) {
-        return new MultiBandCompressor(java_cast< MultiBandControls* >(c));
-    }
-    if(!(dynamic_cast< DynamicsControls* >(c) != nullptr))
-        return nullptr;
-
-    if(dynamic_cast< CompressorControls* >(c) != nullptr) {
-        return new Compressor(java_cast< CompressorControls* >(c));
-    } else if(dynamic_cast< LimiterControls* >(c) != nullptr) {
-        return new Limiter(java_cast< LimiterControls* >(c));
-    } else if(dynamic_cast< ExpanderControls* >(c) != nullptr) {
-        return new Expander(java_cast< ExpanderControls* >(c));
-    } else if(dynamic_cast< GateControls* >(c) != nullptr) {
-        return new Gate(java_cast< GateControls* >(c));
-    }
-	*/
-    return nullptr;
+	if (name.compare("Vari.Mu.Compressor") == 0) {
+		return make_shared<VariMuCompressor>(dynamic_pointer_cast<VariMuCompressorControls>(c.lock()).get());
+	}
+	if (name.compare("Compressor") == 0) {
+		return make_shared<Compressor>(dynamic_pointer_cast<CompressorControls>(c.lock()).get());
+	}
+	if (name.compare("Limiter") == 0) {
+		return make_shared<Limiter>(dynamic_pointer_cast<LimiterControls>(c.lock()).get());
+	}
+	if (name.compare("Gate") == 0) {
+		return make_shared<Gate>(dynamic_pointer_cast<GateControls>(c.lock()).get());
+	}
+	if (name.compare("Dual.Band.Compressor") == 0) {
+		return make_shared<MultiBandCompressor>(dynamic_pointer_cast<MultiBandControls>(c.lock()).get());
+	}
+	if (name.compare("Mid.Side.Compressor") == 0) {
+		return make_shared<MidSideCompressor>(dynamic_pointer_cast<MidSideDynamicsProcessVariables>(c.lock()).get());
+	}
+	return nullptr;
 }
