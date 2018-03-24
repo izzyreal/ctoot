@@ -45,7 +45,7 @@ DynamicsServiceProvider::DynamicsServiceProvider()
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::COMPRESSOR_ID, "class ctoot::audio::dynamics::CompressorControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::LIMITER_ID, "class ctoot::audio::dynamics::LimiterControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::GATE_ID, "class ctoot::audio::dynamics::GateControls", family, "0.1");
-	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::MultiBandControls", family, "0.2");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::DualBandControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MID_SIDE_COMPRESSOR_ID, "class ctoot::audio::dynamics::MidSideCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::BUS_COMPRESSOR, "class ctoot::audio::dynamics::BusCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::TREMOLO_ID, "class ctoot::audio::dynamics::TremoloControls", family, "0.1");

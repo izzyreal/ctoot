@@ -16,7 +16,6 @@ namespace ctoot {
 				MultiBandControls(std::string name);
 
 			};
-
 		}
 	}
 }
