@@ -20,9 +20,6 @@ namespace ctoot {
 			private:
 				static std::weak_ptr<ctoot::control::ControlLaw> XO_LAW();
 
-			protected:
-				void ctor(std::string name, float freq);
-
 			public:
 				virtual int32_t getFrequency();
 

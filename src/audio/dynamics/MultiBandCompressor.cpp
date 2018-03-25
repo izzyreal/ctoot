@@ -18,16 +18,8 @@
 using namespace ctoot::audio::dynamics;
 using namespace std;
 
-void MultiBandCompressor::init()
-{
-    nchans = -1;
-    nsamples = -1;
-    sampleRate = -1;
-}
-
 MultiBandCompressor::MultiBandCompressor(MultiBandControls* c)
 {
-	init();
 	multiBandControls = c;
 	wasBypassed = !c->isBypassed();
 	auto controls = c->getControls();
@@ -39,7 +31,8 @@ MultiBandCompressor::MultiBandCompressor(MultiBandControls* c)
 		hiXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[5 + 1].lock().get()));
 	}
 	else {
-		midXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[1 + 1].lock().get()));
+		auto cc = controls[1 + 1].lock().get();
+		midXO = createCrossover(dynamic_cast<CrossoverControl*>(cc));
 		nbands = 2;
 	}
 	compressors = vector<Compressor*>(nbands);
@@ -154,7 +147,9 @@ void MultiBandCompressor::split(ctoot::audio::filter::Crossover* xo, ctoot::audi
 
 ctoot::audio::filter::Crossover* MultiBandCompressor::createCrossover(CrossoverControl* c)
 {
-    return new ctoot::audio::filter::IIRCrossover(new CrossoverSection(c, ctoot::dsp::filter::FilterShape::LPF), new CrossoverSection(c, ctoot::dsp::filter::FilterShape::HPF));
+	auto cs1 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::LPF);
+	auto cs2 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::HPF);
+	return new ctoot::audio::filter::IIRCrossover(cs1, cs2);
 }
 
 void MultiBandCompressor::updateSampleRate(int32_t rate)

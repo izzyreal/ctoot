@@ -1,5 +1,5 @@
 #pragma once
-#include <synth/modules/filter/AbstractFilter.hpp>
+#include <synth/modules/filter/AbstractSynthFilter.hpp>
 
 namespace ctoot {
 	namespace synth {

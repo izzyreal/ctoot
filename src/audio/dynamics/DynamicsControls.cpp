@@ -20,19 +20,6 @@ using namespace ctoot::audio::dynamics;
 using namespace ctoot::control;
 using namespace std;
 
-void ctoot::audio::dynamics::DynamicsControls::init()
-{
-    sampleRate = 44100.0f;
-    kneedB = 10.0f;
-    gain = 1.0f;
-    dryGain = 0.0f;
-    depth = 40.0f;
-    hysteresis = 0.0f;
-    rms = false;
-    hold = 0;
-    idOffset = 0;
-}
-
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::THRESH_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-40.0f, 20.0f, "dB");
@@ -107,97 +94,7 @@ DynamicsControls::DynamicsControls(int32_t id, std::string name)
 DynamicsControls::DynamicsControls(int32_t id, std::string name, int32_t idOffset)
 	: ctoot::audio::core::AudioControls(id, name, 126 - idOffset)
 {
-	init();
 	this->idOffset = idOffset;
-	if (hasGainReductionIndicator()) {
-		auto gri = make_shared<GainReductionIndicator>();
-		gainReductionIndicator = gri;
-		add(std::move(gri));
-	}
-	auto g1 = make_shared<ctoot::control::ControlColumn>();
-	if (hasKey()) {
-		auto kc = createKeyControl();
-		keyControl = kc;
-		derive(kc.get());
-		g1->add(std::move(kc));
-	}
-	if (hasDepth()) {
-		auto dc = createDepthControl();
-		depthControl = dc;
-		derive(dc.get());
-		g1->add(std::move(dc));
-	}
-	if (hasHysteresis()) {
-		auto hc = createHysteresisControl();
-		hysteresisControl = hc;
-		derive(hc.get());
-		g1->add(std::move(hc));
-	}
-	if (hasKnee()) {
-		auto kc = createKneeControl();
-		kneeControl = kc;
-		derive(kc.get());
-		g1->add(std::move(kc));
-	}
-	if (hasRatio()) {
-		auto rc = createRatioControl();
-		ratioControl = rc;
-		derive(rc.get());
-		g1->add(std::move(rc));
-	}
-	else if (hasInverseRatio()) {
-		auto irc = make_shared<InverseRatioControl>(this);
-		ratioControl = irc;
-		derive(irc.get());
-		g1->add(std::move(irc));
-	}
-	auto tc = createThresholdControl();
-	thresholdControl = tc;
-	derive(tc.get());
-	g1->add(std::move(tc));
-	add(std::move(g1));
-	auto g2 = make_shared<ctoot::control::ControlColumn>();
-	if (hasRMS()) {
-		auto rc = createRMSControl();
-		rmsControl = rc;
-		derive(rc.get());
-		g2->add(std::move(rc));
-	}
-	auto ac = createAttackControl();
-	attackControl = ac;
-	derive(ac.get());
-	g2->add(std::move(ac));
-	if (hasHold()) {
-		auto hc = createHoldControl();
-		holdControl = hc;
-		g2->add(std::move(hc));
-		derive(hc.get());
-	}
-	auto rc = createReleaseControl();
-	releaseControl = rc;
-	derive(rc.get());
-	g2->add(std::move(rc));
-	add(std::move(g2));
-
-	auto g3 = make_shared<ctoot::control::ControlColumn>();
-	auto useg3 = false;
-	if (hasDryGain()) {
-		auto dgc = createDryGainControl();
-		dryGainControl = dgc;
-		derive(dgc.get());
-		g3->add(std::move(dgc));
-		useg3 = true;
-	}
-	if (hasGain()) {
-		auto gc = createGainControl();
-		gainControl = gc;
-		derive(gc.get());
-		g3->add(std::move(gc));
-		useg3 = true;
-	}
-	if (useg3) {
-		add(std::move(g3));
-	}
 }
 
 void DynamicsControls::update(float sampleRate)
@@ -603,4 +500,102 @@ vector<string> DynamicsControls::ratioPresets2 { "2", "4", "10", "Infinity", "-1
 bool DynamicsControls::isBypassed()
 {
     return AudioControls::isBypassed();
+}
+
+void DynamicsControls::init() {
+	if (hasRatio()) {
+		MLOG("hasRatio = true");
+	}
+	else {
+		MLOG("hasRatio = false");
+	}
+	if (hasGainReductionIndicator()) {
+		auto gri = make_shared<GainReductionIndicator>();
+		gainReductionIndicator = gri;
+		add(std::move(gri));
+	}
+	auto g1 = make_shared<ctoot::control::ControlColumn>();
+	if (hasKey()) {
+		auto kc = createKeyControl();
+		keyControl = kc;
+		derive(kc.get());
+		g1->add(std::move(kc));
+	}
+	if (hasDepth()) {
+		auto dc = createDepthControl();
+		depthControl = dc;
+		derive(dc.get());
+		g1->add(std::move(dc));
+	}
+	if (hasHysteresis()) {
+		auto hc = createHysteresisControl();
+		hysteresisControl = hc;
+		derive(hc.get());
+		g1->add(std::move(hc));
+	}
+	if (hasKnee()) {
+		auto kc = createKneeControl();
+		kneeControl = kc;
+		derive(kc.get());
+		g1->add(std::move(kc));
+	}
+	if (hasRatio()) {
+		auto rc = createRatioControl();
+		ratioControl = rc;
+		derive(rc.get());
+		g1->add(std::move(rc));
+	}
+	else if (hasInverseRatio()) {
+		auto irc = make_shared<InverseRatioControl>(this);
+		ratioControl = irc;
+		derive(irc.get());
+		g1->add(std::move(irc));
+	}
+	auto tc = createThresholdControl();
+	thresholdControl = tc;
+	derive(tc.get());
+	g1->add(std::move(tc));
+	add(std::move(g1));
+	auto g2 = make_shared<ctoot::control::ControlColumn>();
+	if (hasRMS()) {
+		auto rc = createRMSControl();
+		rmsControl = rc;
+		derive(rc.get());
+		g2->add(std::move(rc));
+	}
+	auto ac = createAttackControl();
+	attackControl = ac;
+	derive(ac.get());
+	g2->add(std::move(ac));
+	if (hasHold()) {
+		auto hc = createHoldControl();
+		holdControl = hc;
+		g2->add(std::move(hc));
+		derive(hc.get());
+	}
+	auto rc = createReleaseControl();
+	releaseControl = rc;
+	derive(rc.get());
+	g2->add(std::move(rc));
+	add(std::move(g2));
+
+	auto g3 = make_shared<ctoot::control::ControlColumn>();
+	auto useg3 = false;
+	if (hasDryGain()) {
+		auto dgc = createDryGainControl();
+		dryGainControl = dgc;
+		derive(dgc.get());
+		g3->add(std::move(dgc));
+		useg3 = true;
+	}
+	if (hasGain()) {
+		auto gc = createGainControl();
+		gainControl = gc;
+		derive(gc.get());
+		g3->add(std::move(gc));
+		useg3 = true;
+	}
+	if (useg3) {
+		add(std::move(g3));
+	}
 }

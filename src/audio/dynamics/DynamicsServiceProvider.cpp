@@ -16,6 +16,7 @@
 #include <audio/dynamics/MidSideCompressorControls.hpp>
 #include <audio/dynamics/MidSideCompressor.hpp>
 #include <audio/dynamics/DualBandControls.hpp>
+#include <audio/dynamics/QuadBandControls.hpp>
 #include <audio/dynamics/MultiBandControls.hpp>
 #include <audio/dynamics/MultiBandCompressor.hpp>
 #include <audio/dynamics/TremoloControls.hpp>
@@ -46,6 +47,7 @@ DynamicsServiceProvider::DynamicsServiceProvider()
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::LIMITER_ID, "class ctoot::audio::dynamics::LimiterControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::GATE_ID, "class ctoot::audio::dynamics::GateControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::DualBandControls", family, "0.2");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::QuadBandControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MID_SIDE_COMPRESSOR_ID, "class ctoot::audio::dynamics::MidSideCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::BUS_COMPRESSOR, "class ctoot::audio::dynamics::BusCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::TREMOLO_ID, "class ctoot::audio::dynamics::TremoloControls", family, "0.1");
@@ -73,7 +75,7 @@ shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProc
 	if (name.compare("Gate") == 0) {
 		return make_shared<Gate>(dynamic_pointer_cast<GateControls>(c.lock()).get());
 	}
-	if (name.compare("Dual.Band.Compressor") == 0) {
+	if (name.compare("Dual.Band.Compressor") == 0 || name.compare("Quad.Band.Compressor") == 0) {
 		return make_shared<MultiBandCompressor>(dynamic_pointer_cast<MultiBandControls>(c.lock()).get());
 	}
 	if (name.compare("Mid.Side.Compressor") == 0) {

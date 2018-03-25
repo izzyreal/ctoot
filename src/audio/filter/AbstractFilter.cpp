@@ -5,6 +5,8 @@
 #include <audio/filter/FilterDesign.hpp>
 #include <audio/filter/FilterSpecification.hpp>
 
+#include <Logger.hpp>
+
 using namespace ctoot::audio::filter;
 using namespace std;
 
@@ -12,12 +14,14 @@ AbstractFilter::AbstractFilter(FilterSpecification* spec, bool relative)
 {
     init();
     levelOffset = relative ? 1.0f : 0.0f;
-    //design = createDesign(spec);
     specObserver = new AbstractFilterObserver(this);
 }
 
 void AbstractFilter::open()
 {
+	auto des = getDesign();
+	auto fspec = des->getFilterSpecification();
+	auto freq = fspec->getFrequency();
 	getDesign()->getFilterSpecification()->addObserver(specObserver);
 }
 

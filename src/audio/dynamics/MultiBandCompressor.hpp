@@ -31,9 +31,9 @@ namespace ctoot {
 				ctoot::audio::filter::Crossover* loXO{  };
 				std::vector<ctoot::audio::core::AudioBuffer*> bandBuffers{  };
 				int32_t nbands{  };
-				int32_t nchans{  };
-				int32_t nsamples{  };
-				int32_t sampleRate{  };
+				int32_t nchans{ -1 };
+				int32_t nsamples{ -1 };
+				int32_t sampleRate{ -1 };
 				bool wasBypassed{  };
 			
 			public:
@@ -51,8 +51,6 @@ namespace ctoot {
 			public:
 				MultiBandCompressor(MultiBandControls* c);
 
-			private:
-				void init();
 			};
 
 		}

@@ -23,11 +23,13 @@ weak_ptr<ControlLaw> BusCompressorControls::RELEASE_LAW()
 BusCompressorControls::BusCompressorControls()
 	: DynamicsControls(DynamicsIds::BUS_COMPRESSOR, "Bus.Comp")
 {
+	init();
 }
 
 BusCompressorControls::BusCompressorControls(string name, int32_t idOffset)
 	: DynamicsControls(DynamicsIds::BUS_COMPRESSOR, name, idOffset)
 {
+	init();
 }
 
 ctoot::control::ControlLaw* BusCompressorControls::getAttackLaw()

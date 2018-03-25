@@ -16,11 +16,13 @@ weak_ptr<ctoot::control::ControlLaw> CompressorControls::ATTACK_LAW()
 CompressorControls::CompressorControls()
 	: DynamicsControls(DynamicsIds::COMPRESSOR_ID, "Compressor")
 {
+	init();
 }
 
 CompressorControls::CompressorControls(std::string name, int32_t idOffset)
 	: DynamicsControls(DynamicsIds::COMPRESSOR_ID, name, idOffset)
 {
+	init();
 }
 
 ctoot::control::ControlLaw* CompressorControls::getAttackLaw()

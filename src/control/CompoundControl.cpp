@@ -18,6 +18,8 @@ std::vector<std::string> CompoundControl::getControlNamesRecursive(int generatio
 	}
 	res.push_back("\n" + indent + getName() + " has these controls:");
 	for (auto& c : controls) {
+		//string className = typeid(c.get()).name();
+		//res.push_back(indent + c->getName() + " (" + className + ")");
 		res.push_back(indent + c->getName());
 	}
 	for (auto& c : controls) {

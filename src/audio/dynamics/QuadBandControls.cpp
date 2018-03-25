@@ -10,10 +10,10 @@ QuadBandControls::QuadBandControls()
 	: MultiBandControls("Quad.Band.Compressor")
 {
    add(make_shared<CompressorControls>("Low", 0));
-   add(make_shared<CrossoverControl>("Low", 250.0f));
+   add(make_shared<CrossoverControl>("Low Freq", 250.0f));
    add(make_shared<CompressorControls>("Lo.Mid", 10));
-   add(make_shared<CrossoverControl>("Mid", 1000.0f));
+   add(make_shared<CrossoverControl>("Mid Freq", 1000.0f));
    add(make_shared<CompressorControls>("Hi.Mid", 20));
-   add(make_shared<CrossoverControl>("High", 4000.0f));
+   add(make_shared<CrossoverControl>("High Freq", 4000.0f));
    add(make_shared<CompressorControls>("High", 30));
 }

@@ -29,9 +29,6 @@ namespace ctoot {
 			{
 
 			private:
-				void init();
-
-			private:
 				static std::weak_ptr<ctoot::control::ControlLaw> THRESH_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> RATIO_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> INVERSE_RATIO_LAW();
@@ -57,20 +54,24 @@ namespace ctoot {
 				std::weak_ptr<ctoot::control::FloatControl> depthControl{};
 				std::weak_ptr<ctoot::control::FloatControl> hysteresisControl{};
 				std::weak_ptr<ctoot::audio::core::TapControl> keyControl{};
-				float sampleRate{};
-				float threshold{}, inverseThreshold{}, thresholddB{}, inverseRatio{}, kneedB{};
-				float attack{}, release{}, gain{}, dryGain{}, depth{}, hysteresis{};
-				bool rms{};
+
+				float sampleRate{ 44100.0f };
+				float threshold{}, inverseThreshold{}, thresholddB{}, inverseRatio{}, kneedB{ 10.0f };
+				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f };
+				bool rms{ false };
 
 			public:
-				int32_t hold{};
+				int32_t hold{ 0 };
 
 			private:
 				ctoot::audio::core::AudioBuffer* key{};
-				int32_t idOffset{};
+				int32_t idOffset{ 0 };
 
 			public:
 				void update(float sampleRate) override;
+			
+			protected:
+				void init();
 
 			protected:
 				void derive(ctoot::control::Control* c) override;
