@@ -78,7 +78,7 @@ shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProc
 	if (name.compare("Dual.Band.Compressor") == 0 || name.compare("Quad.Band.Compressor") == 0) {
 		return make_shared<MultiBandCompressor>(dynamic_pointer_cast<MultiBandControls>(c.lock()).get());
 	}
-	if (name.compare("Mid.Side.Compressor") == 0) {
+	if (name.compare("Mid-Side Compressor") == 0) {
 		return make_shared<MidSideCompressor>(dynamic_pointer_cast<MidSideDynamicsProcessVariables>(c.lock()).get());
 	}
 	return nullptr;

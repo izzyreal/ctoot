@@ -16,11 +16,13 @@ weak_ptr<ctoot::control::ControlLaw> VariMuCompressorControls::RELEASE_LAW()
 VariMuCompressorControls::VariMuCompressorControls()
 	: DynamicsControls(DynamicsIds::VARI_MU_COMPRESSOR, "Vari.Mu.Comp")
 {
+	init();
 }
 
 VariMuCompressorControls::VariMuCompressorControls(std::string name, int32_t idOffset)
 	: DynamicsControls(DynamicsIds::VARI_MU_COMPRESSOR, name, idOffset)
 {
+	init();
 }
 
 ctoot::control::ControlLaw* VariMuCompressorControls::getReleaseLaw()

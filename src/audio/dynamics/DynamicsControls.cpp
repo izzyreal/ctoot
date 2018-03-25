@@ -503,11 +503,10 @@ bool DynamicsControls::isBypassed()
 }
 
 void DynamicsControls::init() {
-	if (hasRatio()) {
-		MLOG("hasRatio = true");
-	}
-	else {
-		MLOG("hasRatio = false");
+	if (initialized) {
+		MLOG("Error: DynamicsControls is already initialized!");
+		MLOG("I'll try to clear and re-init...");
+		controls.clear();
 	}
 	if (hasGainReductionIndicator()) {
 		auto gri = make_shared<GainReductionIndicator>();
@@ -598,4 +597,5 @@ void DynamicsControls::init() {
 	if (useg3) {
 		add(std::move(g3));
 	}
+	initialized = true;
 }

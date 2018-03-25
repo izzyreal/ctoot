@@ -16,6 +16,7 @@ weak_ptr<ctoot::control::ControlLaw> ExpanderControls::THRESH_LAW()
 ExpanderControls::ExpanderControls()
 	: DynamicsControls(DynamicsIds::EXPANDER_ID, "Expander")
 {
+	init();
 }
 
 ctoot::control::ControlLaw* ExpanderControls::getThresholdLaw()

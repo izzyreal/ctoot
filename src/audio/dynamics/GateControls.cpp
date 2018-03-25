@@ -16,6 +16,7 @@ weak_ptr<ctoot::control::ControlLaw> GateControls::THRESH_LAW()
 GateControls::GateControls()
 	: DynamicsControls(DynamicsIds::GATE_ID, "Gate")
 {
+	init();
 }
 
 ctoot::control::ControlLaw* GateControls::getThresholdLaw()

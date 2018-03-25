@@ -15,9 +15,10 @@ weak_ptr<ctoot::control::ControlLaw> LimiterControls::RELEASE_LAW()
 LimiterControls::LimiterControls()
 	: DynamicsControls(DynamicsIds::LIMITER_ID, "Limiter")
 {
+	init();
 }
 
-ctoot::control::ControlLaw* LimiterControls::getRelaseLaw()
+ctoot::control::ControlLaw* LimiterControls::getReleaseLaw()
 {
 	return RELEASE_LAW().lock().get();
 }

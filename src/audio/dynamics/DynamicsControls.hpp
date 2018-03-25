@@ -73,6 +73,9 @@ namespace ctoot {
 			protected:
 				void init();
 
+			private:
+				bool initialized = false;
+
 			protected:
 				void derive(ctoot::control::Control* c) override;
 				virtual void deriveThreshold();
