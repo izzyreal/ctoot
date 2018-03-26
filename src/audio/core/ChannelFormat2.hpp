@@ -11,8 +11,8 @@ namespace ctoot {
 			{
 
 			private:
-				int8_t left[1];
-				int8_t right[1];
+				std::vector<int8_t> left{ 0 };
+				std::vector<int8_t> right{ 1 };
 
 			public:
 				int getCount() override;
@@ -24,8 +24,8 @@ namespace ctoot {
 				bool isLFE(int chan) override;
 				int getCenter() override;
 				int getLFE() override;
-				int8_t* getLeft() override;
-				int8_t* getRight() override;
+				std::vector<int8_t> getLeft() override;
+				std::vector<int8_t> getRight() override;
 				std::string getName() override;
 				std::string getName(int chan) override;
 				ChannelFormat2();

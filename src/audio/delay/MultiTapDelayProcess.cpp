@@ -58,9 +58,9 @@ int MultiTapDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	for (auto c = int(0); c < nc; c++) {
 		int c2;
 		if (format.lock()->isLeft(c))
-			c2 = ctoot::audio::core::ChannelFormat::STEREO().lock()->getLeft()[int(0)];
+			c2 = ctoot::audio::core::ChannelFormat::STEREO().lock()->getLeft()[0];
 		else if (format.lock()->isRight(c))
-			c2 = ctoot::audio::core::ChannelFormat::STEREO().lock()->getRight()[int(0)];
+			c2 = ctoot::audio::core::ChannelFormat::STEREO().lock()->getRight()[0];
 		else
 			continue;
 		for (auto& tap : vars->getTaps(c2)) {

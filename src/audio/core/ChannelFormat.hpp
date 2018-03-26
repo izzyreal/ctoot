@@ -18,8 +18,8 @@ namespace ctoot {
 				virtual int getCount() = 0;
 				virtual int getCenter() = 0;
 				virtual int getLFE() = 0;
-				virtual int8_t* getLeft() = 0;
-				virtual int8_t* getRight() = 0;
+				virtual std::vector<int8_t> getLeft() = 0;
+				virtual std::vector<int8_t> getRight() = 0;
 				virtual std::string getName() = 0;
 				virtual bool isCenter(int chan) = 0;
 				virtual bool isLeft(int chan) = 0;

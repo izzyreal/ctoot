@@ -57,6 +57,7 @@ namespace ctoot {
 
 			public:
 				MidSideCompressorControls();
+				MidSideCompressorControls(std::string band);
 
 			public:
 				virtual bool isBypassed();

@@ -36,6 +36,20 @@ MidSideCompressorControls::MidSideCompressorControls()
     deriveDependentVariables();
 }
 
+MidSideCompressorControls::MidSideCompressorControls(std::string band)
+	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "Mid-Side Compressor")
+{
+	init();
+	auto m = make_shared<MidSideCompressorControls1>(band + " " + "Mid", 0);
+	mid = m;
+	add(std::move(m));
+	auto s = make_shared<MidSideCompressorControls1>(band + " " + "Side", 16);
+	side = s;
+	add(std::move(s));
+	deriveIndependentVariables();
+	deriveDependentVariables();
+}
+
 void MidSideCompressorControls::deriveIndependentVariables()
 {
     threshold[0] = mid.lock()->getThreshold();

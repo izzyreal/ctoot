@@ -53,12 +53,12 @@ int ChannelFormat1::getLFE()
     return -1;
 }
 
-int8_t* ChannelFormat1::getLeft()
+std::vector<int8_t> ChannelFormat1::getLeft()
 {
     return empty;
 }
 
-int8_t* ChannelFormat1::getRight()
+std::vector<int8_t> ChannelFormat1::getRight()
 {
     return empty;
 }

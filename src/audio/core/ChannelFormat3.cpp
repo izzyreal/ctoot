@@ -5,10 +5,6 @@ using namespace ctoot::audio::core;
 
 ChannelFormat3::ChannelFormat3()
 {
-	left[0] = 0;
-	left[1] = 2;
-	right[0] = 1;
-	right[1] = 3;
 }
 
 int ChannelFormat3::getCount()
@@ -56,12 +52,12 @@ int ChannelFormat3::getLFE()
     return -1;
 }
 
-int8_t* ChannelFormat3::getLeft()
+std::vector<int8_t> ChannelFormat3::getLeft()
 {
     return left;
 }
 
-int8_t* ChannelFormat3::getRight()
+std::vector<int8_t> ChannelFormat3::getRight()
 {
     return right;
 }

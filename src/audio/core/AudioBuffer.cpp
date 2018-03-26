@@ -154,10 +154,10 @@ bool AudioBuffer::encodeMidSide()
 	auto lefts = channelFormat.lock()->getLeft();
     auto rights = channelFormat.lock()->getRight();
 
-	if(sizeof lefts == 0)
+	if (lefts.size() == 0)
         return false;
 
-	auto np = sizeof lefts;
+	auto np = lefts.size();
     auto ns = getSampleCount();
     for (auto p = 0; p < np; p++) {
         auto left = getChannel(lefts[p]);
@@ -177,10 +177,10 @@ bool AudioBuffer::decodeMidSide()
 {
 	auto mids = channelFormat.lock()->getLeft();
     auto sides = channelFormat.lock()->getRight();
-    if(sizeof mids == 0)
+    if (mids.size() == 0)
         return false;
 
-    auto np = sizeof mids;
+	auto np = mids.size();
     auto ns = getSampleCount();
     for (auto p = 0; p < np; p++) {
         auto mid = getChannel(mids[p]);

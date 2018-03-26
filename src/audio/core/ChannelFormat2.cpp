@@ -5,8 +5,6 @@ using namespace std;
 
 ChannelFormat2::ChannelFormat2()
 {
-	left[0] = 0;
-	right[0] = 1;
 }
 
 int ChannelFormat2::getCount()
@@ -54,12 +52,12 @@ int ChannelFormat2::getLFE()
     return -1;
 }
 
-int8_t* ChannelFormat2::getLeft()
+std::vector<int8_t> ChannelFormat2::getLeft()
 {
     return left;
 }
 
-int8_t* ChannelFormat2::getRight()
+std::vector<int8_t> ChannelFormat2::getRight()
 {
     return right;
 }

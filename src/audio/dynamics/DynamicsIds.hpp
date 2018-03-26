@@ -19,6 +19,7 @@ namespace ctoot {
 				static constexpr int32_t VARI_MU_COMPRESSOR{ int32_t(41) };
 				static constexpr int32_t OPTO_COMPRESSOR{ int32_t(42) };
 				static constexpr int32_t BUS_COMPRESSOR{ int32_t(43) };
+				static constexpr int32_t MID_SIDE_MULTI_BAND_COMPRESSOR_ID{ int32_t(44) };
 			};
 		}
 	}

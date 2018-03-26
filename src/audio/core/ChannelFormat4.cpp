@@ -5,10 +5,6 @@ using namespace ctoot::audio::core;
 
 ChannelFormat4::ChannelFormat4()
 {
-	left[0] = 0;
-	left[1] = 2;
-	right[0] = 1;
-	right[1] = 3;
 }
 
 int ChannelFormat4::getCount()
@@ -56,12 +52,12 @@ int ChannelFormat4::getLFE()
     return 5;
 }
 
-int8_t* ChannelFormat4::getLeft()
+std::vector<int8_t> ChannelFormat4::getLeft()
 {
     return left;
 }
 
-int8_t* ChannelFormat4::getRight()
+std::vector<int8_t> ChannelFormat4::getRight()
 {
     return right;
 }
