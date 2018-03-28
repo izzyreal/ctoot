@@ -1,21 +1,9 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/SingleWave.java
 #include <synth/modules/oscillator/SingleWave.hpp>
 
-#include <Array.hpp>
+using namespace ctoot::synth::modules::oscillator;
+using namespace std;
 
- ctoot::synth::modules::oscillator::SingleWave::SingleWave(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::SingleWave::SingleWave(::floatArray* data, float period) 
-    : SingleWave(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(data,period);
-}
-
-void modules::oscillator::SingleWave::ctor(::floatArray* data, float period)
+SingleWave::SingleWave(vector<float> data, float period)
 {
     super::ctor();
     this->data = data;

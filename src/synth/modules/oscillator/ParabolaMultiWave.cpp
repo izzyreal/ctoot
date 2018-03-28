@@ -1,29 +1,8 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/ParabolaMultiWave.java
 #include <synth/modules/oscillator/ParabolaMultiWave.hpp>
 
-#include <java/lang/NullPointerException.hpp>
-#include <Array.hpp>
+using namespace ctoot::synth::modules::oscillator;
 
-template<typename T>
-static T* npc(T* t)
-{
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
-}
-
- ctoot::synth::modules::oscillator::ParabolaMultiWave::ParabolaMultiWave(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::ParabolaMultiWave::ParabolaMultiWave(int32_t size, float fNyquist) 
-    : ParabolaMultiWave(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(size,fNyquist);
-}
-
-void modules::oscillator::ParabolaMultiWave::ctor(int32_t size, float fNyquist)
+ParabolaMultiWave::ParabolaMultiWave(int32_t size, float fNyquist)
 {
     super::ctor(size, fNyquist);
 }
@@ -55,17 +34,3 @@ void modules::oscillator::ParabolaMultiWave::normalise(::floatArray* data, float
         (*data)[i] -= 1;
     }
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::modules::oscillator::ParabolaMultiWave::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.modules.oscillator.ParabolaMultiWave", 54);
-    return c;
-}
-
-java::lang::Class* ctoot::synth::modules::oscillator::ParabolaMultiWave::getClass0()
-{
-    return class_();
-}
-

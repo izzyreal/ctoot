@@ -3,7 +3,6 @@
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
-//
 #include <synth/modules/filter/FilterControlIds.hpp>
 #include <synth/modules/filter/FilterIds.hpp>
 
@@ -30,7 +29,6 @@ void StateVariableFilterControls::derive(ctoot::control::Control* c)
 		FilterControls::derive(c);
 		break;
 	}
-
 }
 
 void StateVariableFilterControls::createControls()

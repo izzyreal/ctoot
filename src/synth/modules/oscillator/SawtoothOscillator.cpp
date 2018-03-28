@@ -1,32 +1,11 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/SawtoothOscillator.java
 #include <synth/modules/oscillator/SawtoothOscillator.hpp>
 
-#include <java/lang/NullPointerException.hpp>
-#include <java/lang/String.hpp>
 #include <synth/SynthChannel.hpp>
 #include <synth/modules/oscillator/MultiWave.hpp>
 #include <synth/modules/oscillator/MultiWaves.hpp>
 #include <synth/modules/oscillator/Wave.hpp>
-#include <Array.hpp>
 
-template<typename T>
-static T* npc(T* t)
-{
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
-}
-
- ctoot::synth::modules::oscillator::SawtoothOscillator::SawtoothOscillator(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::SawtoothOscillator::SawtoothOscillator(ctoot::synth::SynthChannel* channel, float frequency) 
-    : SawtoothOscillator(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(channel,frequency);
-}
+using namespace ctoot::synth::modules::oscillator;
 
 void modules::oscillator::SawtoothOscillator::init()
 {

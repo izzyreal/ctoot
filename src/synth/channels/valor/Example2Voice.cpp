@@ -19,8 +19,8 @@ Example2Voice::Example2Voice(int32_t pitch, int32_t velocity, int32_t sampleRate
 {
     super::ctor(pitch, velocity);
     init();
-    lfo1 = new ctoot::synth::modules::oscillator::LFO(ValorSynthChannel_this->lfo1Vars, static_cast< float >((-::java::lang::Math::PI / int32_t(2))));
-    lfo2 = new ctoot::synth::modules::oscillator::LFO(ValorSynthChannel_this->lfo2Vars, static_cast< float >((-::java::lang::Math::PI / int32_t(2))));
+    lfo1 = new ctoot::synth::modules::oscillator::LFO(ValorSynthChannel_this->lfo1Vars, static_cast< float >((-M_PI / int32_t(2))));
+    lfo2 = new ctoot::synth::modules::oscillator::LFO(ValorSynthChannel_this->lfo2Vars, static_cast< float >((-M_PI / int32_t(2))));
     oscillator1 = new ctoot::synth::modules::oscillator::MultiWaveOscillator(ValorSynthChannel_this, ValorSynthChannel_this->oscillator1Vars, frequency);
     oscillator2 = new ctoot::synth::modules::oscillator::MultiWaveOscillator(ValorSynthChannel_this, ValorSynthChannel_this->oscillator2Vars, frequency);
     oscillator3 = new ctoot::synth::modules::oscillator::MultiWaveOscillator(ValorSynthChannel_this, ValorSynthChannel_this->oscillator3Vars, frequency);

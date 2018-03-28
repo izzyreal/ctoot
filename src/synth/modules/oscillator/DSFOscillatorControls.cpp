@@ -1,130 +1,102 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/DSFOscillatorControls.java
 #include <synth/modules/oscillator/DSFOscillatorControls.hpp>
 
-#include <java/awt/Color.hpp>
-#include <java/lang/NullPointerException.hpp>
-#include <java/lang/String.hpp>
 #include <control/BooleanControl.hpp>
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
 #include <control/IntegerControl.hpp>
 #include <control/IntegerLaw.hpp>
 #include <control/LinearLaw.hpp>
-#include <misc/Localisation.hpp>
 #include <synth/modules/oscillator/OscillatorIds.hpp>
 
-template<typename T>
-static T* npc(T* t)
+using namespace ctoot::synth::modules::oscillator;
+using namespace std;
+
+weak_ptr<ctoot::control::IntegerLaw> DSFOscillatorControls::RATIO_LAW()
 {
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
+	static auto res = make_shared<ctoot::control::IntegerLaw>(1, 9, "");
+	return res;
 }
 
- ctoot::synth::modules::oscillator::DSFOscillatorControls::DSFOscillatorControls(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
+weak_ptr<ctoot::control::IntegerLaw> DSFOscillatorControls::PARTIAL_LAW()
 {
-    clinit();
+	static auto res = make_shared<ctoot::control::IntegerLaw>(1, 200, "");
+	return res;
 }
 
- ctoot::synth::modules::oscillator::DSFOscillatorControls::DSFOscillatorControls(int32_t instanceIndex, std::string name, int32_t idOffset) 
-    : DSFOscillatorControls(*static_cast< ::default_init_tag* >(0))
+DSFOscillatorControls::DSFOscillatorControls(int32_t instanceIndex, std::string name, int32_t idOffset)
+	: ctoot::control::CompoundControl(OscillatorIds::DSF_OSCILLATOR_ID, instanceIndex, name)
 {
-    ctor(instanceIndex,name,idOffset);
-}
-
-constexpr int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::RATIO_N;
-
-constexpr int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::RATIO_D;
-
-constexpr int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::PARTIALS;
-
-constexpr int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::ROLLOFF;
-
-constexpr int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::WOLFRAM;
-
-uk::org::toot::control::IntegerLaw*& ctoot::synth::modules::oscillator::DSFOscillatorControls::RATIO_LAW()
-{
-    clinit();
-    return RATIO_LAW_;
-}
-uk::org::toot::control::IntegerLaw* ctoot::synth::modules::oscillator::DSFOscillatorControls::RATIO_LAW_;
-
-uk::org::toot::control::IntegerLaw*& ctoot::synth::modules::oscillator::DSFOscillatorControls::PARTIAL_LAW()
-{
-    clinit();
-    return PARTIAL_LAW_;
-}
-uk::org::toot::control::IntegerLaw* ctoot::synth::modules::oscillator::DSFOscillatorControls::PARTIAL_LAW_;
-
-void modules::oscillator::DSFOscillatorControls::ctor(int32_t instanceIndex, std::string name, int32_t idOffset)
-{
-    super::ctor(OscillatorIds::DSF_OSCILLATOR_ID, instanceIndex, name);
     this->idOffset = idOffset;
     createControls();
     deriveSampleRateIndependentVariables();
 }
 
-void modules::oscillator::DSFOscillatorControls::derive(ctoot::control::Control* c)
+void DSFOscillatorControls::derive(ctoot::control::Control* c)
 {
-    switch (c->getId() - idOffset) {
-    case RATIO_N:
-        ratioNumerator = deriveRatioNumerator();
-        break;
-    case RATIO_D:
-        ratioDenominator = deriveRatioDenominator();
-        break;
-    case PARTIALS:
-        partialCount = derivePartialCount();
-        break;
-    case ROLLOFF:
-        rolloffFactor = deriveRolloffFactor();
-        rolloffInt = deriveRolloffInt();
-        break;
-    case WOLFRAM:
-        canUseWolfram_ = deriveWolfram();
-        break;
-    }
-
+	switch (c->getId() - idOffset) {
+	case RATIO_N:
+		ratioNumerator = deriveRatioNumerator();
+		break;
+	case RATIO_D:
+		ratioDenominator = deriveRatioDenominator();
+		break;
+	case PARTIALS:
+		partialCount = derivePartialCount();
+		break;
+	case ROLLOFF:
+		rolloffFactor = deriveRolloffFactor();
+		rolloffInt = deriveRolloffInt();
+		break;
+	case WOLFRAM:
+		canUseWolfram_ = deriveWolfram();
+		break;
+	}
 }
 
-void modules::oscillator::DSFOscillatorControls::createControls()
+void DSFOscillatorControls::createControls()
 {
-    add(ratioNumeratorControl = createRatioControl(RATIO_N, u"N"));
-    add(ratioDenominatorControl = createRatioControl(RATIO_D, u"D"));
-    add(partialsControl = createPartialsControl(PARTIALS));
-    add(rolloffControl = createRolloffControl(ROLLOFF));
+	auto rnc = createRatioControl(RATIO_N, "N");
+	ratioNumeratorControl = rnc;
+    add(std::move(rnc));
+
+	auto rdc = createRatioControl(RATIO_D, "D");
+	ratioDenominatorControl = rdc;
+    add(std::move(rdc));
+    
+	auto pc = createPartialsControl(PARTIALS);
+	partialsControl = pc;
+	add(std::move(pc));
+
+	auto roc = createRolloffControl(ROLLOFF);
+	rolloffControl = roc;
+    add(std::move(roc));
 }
 
-uk::org::toot::control::IntegerControl* ctoot::synth::modules::oscillator::DSFOscillatorControls::createRatioControl(int32_t id, std::string name)
+shared_ptr<ctoot::control::IntegerControl> DSFOscillatorControls::createRatioControl(int32_t id, std::string name)
 {
-    auto control = new ctoot::control::IntegerControl(id + idOffset, name, RATIO_LAW_, 1.0f, int32_t(1));
-    control->setInsertColor(::java::awt::Color::GREEN());
+    auto control = make_shared<ctoot::control::IntegerControl>(id + idOffset, name, RATIO_LAW(), 1.0f, 1);
     return control;
 }
 
-uk::org::toot::control::IntegerControl* ctoot::synth::modules::oscillator::DSFOscillatorControls::createPartialsControl(int32_t id)
+shared_ptr<ctoot::control::IntegerControl> DSFOscillatorControls::createPartialsControl(int32_t id)
 {
-    auto control = new ctoot::control::IntegerControl(id + idOffset, ctoot::misc::Localisation::getString("Partials"), PARTIAL_LAW_, 1.0f, int32_t(10));
-    control->setInsertColor(::java::awt::Color::LIGHT_GRAY());
+    auto control = make_shared<ctoot::control::IntegerControl>(id + idOffset, "Partials", PARTIAL_LAW(), 1.0f, 10);
     return control;
 }
 
-uk::org::toot::control::FloatControl* ctoot::synth::modules::oscillator::DSFOscillatorControls::createRolloffControl(int32_t id)
+shared_ptr<ctoot::control::FloatControl> DSFOscillatorControls::createRolloffControl(int32_t id)
 {
-    auto control = new ctoot::control::FloatControl(id + idOffset, ctoot::misc::Localisation::getString("Tone"), ctoot::control::LinearLaw::UNITY(), 1.0f, 0.5f);
-    control->setInsertColor(::java::awt::Color::WHITE());
+    auto control = make_shared<ctoot::control::FloatControl>(id + idOffset, "Tone", ctoot::control::LinearLaw::UNITY(), 1.0f, 0.5f);
     return control;
 }
 
-uk::org::toot::control::BooleanControl* ctoot::synth::modules::oscillator::DSFOscillatorControls::createWolframControl(int32_t id)
+shared_ptr<ctoot::control::BooleanControl> DSFOscillatorControls::createWolframControl(int32_t id)
 {
-    auto control = new ctoot::control::BooleanControl(id, u"W", false);
-    control->setStateColor(false, ::java::awt::Color::GREEN());
-    control->setStateColor(true, ::java::awt::Color::YELLOW());
+    auto control = make_shared<ctoot::control::BooleanControl>(id, "W", false);
     return control;
 }
 
-void modules::oscillator::DSFOscillatorControls::deriveSampleRateIndependentVariables()
+void DSFOscillatorControls::deriveSampleRateIndependentVariables()
 {
     ratioDenominator = deriveRatioDenominator();
     ratioNumerator = deriveRatioNumerator();
@@ -133,96 +105,65 @@ void modules::oscillator::DSFOscillatorControls::deriveSampleRateIndependentVari
     canUseWolfram_ = deriveWolfram();
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::deriveRatioDenominator()
+int32_t DSFOscillatorControls::deriveRatioDenominator()
 {
-    return npc(ratioDenominatorControl)->getUserValue();
+    return ratioDenominatorControl.lock()->getUserValue();
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::deriveRatioNumerator()
+int32_t DSFOscillatorControls::deriveRatioNumerator()
 {
-    return npc(ratioNumeratorControl)->getUserValue();
+    return ratioNumeratorControl.lock()->getUserValue();
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::derivePartialCount()
+int32_t DSFOscillatorControls::derivePartialCount()
 {
-    return npc(partialsControl)->getUserValue();
+    return partialsControl.lock()->getUserValue();
 }
 
-float ctoot::synth::modules::oscillator::DSFOscillatorControls::deriveRolloffFactor()
+float DSFOscillatorControls::deriveRolloffFactor()
 {
-    return npc(rolloffControl)->getValue() * 0.98f;
+    return rolloffControl.lock()->getValue() * 0.98f;
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::deriveRolloffInt()
+int32_t DSFOscillatorControls::deriveRolloffInt()
 {
-    return npc(rolloffControl)->getIntValue();
+    return rolloffControl.lock()->getIntValue();
 }
 
-bool ctoot::synth::modules::oscillator::DSFOscillatorControls::deriveWolfram()
+bool DSFOscillatorControls::deriveWolfram()
 {
-    if(wolframControl == nullptr)
+    if (!wolframControl.lock())
         return false;
 
-    return npc(wolframControl)->getValue();
+    return wolframControl.lock()->getValue();
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::getPartialCount()
+int32_t DSFOscillatorControls::getPartialCount()
 {
     return partialCount;
 }
 
-float ctoot::synth::modules::oscillator::DSFOscillatorControls::getPartialRolloffFactor()
+float DSFOscillatorControls::getPartialRolloffFactor()
 {
     return rolloffFactor;
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::getPartialRolloffInt()
+int32_t DSFOscillatorControls::getPartialRolloffInt()
 {
     return rolloffInt;
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::getRatioDenominator()
+int32_t DSFOscillatorControls::getRatioDenominator()
 {
     return ratioDenominator;
 }
 
-int32_t ctoot::synth::modules::oscillator::DSFOscillatorControls::getRatioNumerator()
+int32_t DSFOscillatorControls::getRatioNumerator()
 {
     return ratioNumerator;
 }
 
-bool ctoot::synth::modules::oscillator::DSFOscillatorControls::canUseWolfram()
+bool DSFOscillatorControls::canUseWolfram()
 {
     return canUseWolfram_;
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::modules::oscillator::DSFOscillatorControls::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.modules.oscillator.DSFOscillatorControls", 58);
-    return c;
-}
-
-void modules::oscillator::DSFOscillatorControls::clinit()
-{
-    super::clinit();
-    static bool in_cl_init = false;
-struct clinit_ {
-    clinit_() {
-        in_cl_init = true;
-        RATIO_LAW_ = new ctoot::control::IntegerLaw(int32_t(1), int32_t(9), u"");
-        PARTIAL_LAW_ = new ctoot::control::IntegerLaw(int32_t(1), int32_t(200), u"");
-    }
-};
-
-    if(!in_cl_init) {
-        static clinit_ clinit_instance;
-    }
-}
-
-java::lang::Class* ctoot::synth::modules::oscillator::DSFOscillatorControls::getClass0()
-{
-    return class_();
-}
-

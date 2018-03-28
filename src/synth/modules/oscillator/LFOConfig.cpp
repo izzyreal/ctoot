@@ -1,17 +1,6 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/LFOConfig.java
 #include <synth/modules/oscillator/LFOConfig.hpp>
 
- ctoot::synth::modules::oscillator::LFOConfig::LFOConfig(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::LFOConfig::LFOConfig()
-    : LFOConfig(*static_cast< ::default_init_tag* >(0))
-{
-    ctor();
-}
+using namespace ctoot::synth::modules::oscillator;
 
 void modules::oscillator::LFOConfig::ctor()
 {

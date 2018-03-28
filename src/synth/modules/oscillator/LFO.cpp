@@ -1,35 +1,9 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/LFO.java
 #include <synth/modules/oscillator/LFO.hpp>
 
-#include <java/lang/Math.hpp>
-#include <java/lang/NullPointerException.hpp>
 #include <dsp/FastMath.hpp>
 #include <synth/modules/oscillator/LFOVariables.hpp>
 
-template<typename T>
-static T* npc(T* t)
-{
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
-}
-
- ctoot::synth::modules::oscillator::LFO::LFO(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::LFO::LFO(LFOVariables* vars, float initPhase) 
-    : LFO(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(vars,initPhase);
-}
-
- ctoot::synth::modules::oscillator::LFO::LFO(LFOVariables* vars) 
-    : LFO(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(vars);
-}
+using namespace ctoot::synth::modules::oscillator;
 
 void modules::oscillator::LFO::init()
 {
@@ -55,7 +29,7 @@ void modules::oscillator::LFO::ctor(LFOVariables* vars)
 
 void modules::oscillator::LFO::setSampleRate(int32_t sampleRate)
 {
-    xDelta = static_cast< float >((int32_t(2) * ::java::lang::Math::PI / sampleRate));
+    xDelta = static_cast< float >((int32_t(2) * M_PI / sampleRate));
 }
 
 void modules::oscillator::LFO::update()
@@ -67,8 +41,8 @@ void modules::oscillator::LFO::update()
 float ctoot::synth::modules::oscillator::LFO::getSample()
 {
     modulatorPhase += phaseDelta;
-    if(modulatorPhase > ::java::lang::Math::PI) {
-        modulatorPhase -= int32_t(2) * ::java::lang::Math::PI;
+    if(modulatorPhase > M_PI) {
+        modulatorPhase -= int32_t(2) * M_PI;
     }
     return (shape == 0) ? ctoot::dsp::FastMath::sin(modulatorPhase) : ctoot::dsp::FastMath::triangle(modulatorPhase);
 }

@@ -6,137 +6,69 @@
 #include <control/LinearLaw.hpp>
 #include <synth/modules/mixer/MixerIds.hpp>
 
-template<typename ComponentType, typename... Bases> struct SubArray;
-namespace java
-{
-    namespace util
-    {
-typedef ::SubArray< ::java::util::Observable, ::java::lang::ObjectArray > ObservableArray;
-    } // util
-} // java
+using namespace ctoot::synth::modules::mixer;
+using namespace std;
 
-namespace uk
+MixerControls::MixerControls(int32_t instanceIndex, std::string name, int32_t idOffset, int32_t count)
+	: MixerControls(MixerIds::SIMPLE_MIXER_ID, instanceIndex, name, idOffset, count)
 {
-    namespace org
-    {
-        namespace toot
-        {
-            namespace control
-            {
-typedef ::SubArray< ctoot::control::Control, ::java::util::ObservableArray > ControlArray;
-typedef ::SubArray< ctoot::control::LawControl, ControlArray > LawControlArray;
-typedef ::SubArray< ctoot::control::FloatControl, LawControlArray > FloatControlArray;
-            } // control
-        } // toot
-    } // org
-} // uk
-
-template<typename T>
-static T* npc(T* t)
-{
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
 }
 
- ctoot::synth::modules::mixer::MixerControls::MixerControls(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
+MixerControls::MixerControls(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, int32_t count)
+	: ctoot::control::CompoundControl(id, instanceIndex, name)
 {
-    clinit();
-}
-
- ctoot::synth::modules::mixer::MixerControls::MixerControls(int32_t instanceIndex, std::string name, int32_t idOffset, int32_t count) 
-    : MixerControls(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(instanceIndex,name,idOffset,count);
-}
-
- ctoot::synth::modules::mixer::MixerControls::MixerControls(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, int32_t count) 
-    : MixerControls(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(id,instanceIndex,name,idOffset,count);
-}
-
-void modules::mixer::MixerControls::init()
-{
-    idOffset = int32_t(0);
-}
-
-constexpr int32_t ctoot::synth::modules::mixer::MixerControls::LEVEL;
-
-void modules::mixer::MixerControls::ctor(int32_t instanceIndex, std::string name, int32_t idOffset, int32_t count)
-{
-    ctor(MixerIds::SIMPLE_MIXER_ID, instanceIndex, name, idOffset, count);
-}
-
-void modules::mixer::MixerControls::ctor(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, int32_t count)
-{
-    super::ctor(id, instanceIndex, name);
-    init();
-    this->idOffset = idOffset;
+	this->idOffset = idOffset;
     this->count = count;
-    level = new ::floatArray(count);
+    level = vector<float>(count);
     createControls();
     deriveSampleRateIndependentVariables();
     deriveSampleRateDependentVariables();
 }
 
-void modules::mixer::MixerControls::derive(ctoot::control::Control* c)
+void MixerControls::derive(ctoot::control::Control* c)
 {
-    auto n = c->getId() - idOffset - LEVEL;
-    (*level)[n] = deriveLevel(n);
+	auto n = c->getId() - idOffset - LEVEL;
+	level[n] = deriveLevel(n);
 }
 
-void modules::mixer::MixerControls::createControls()
+void MixerControls::createControls()
 {
-    levelControl = new ctoot::control::FloatControlArray(count);
-    for (auto i = int32_t(0); i < count; i++) {
-        add(levelControl->set(i, createLevelControl(i)));
+    levelControl = vector<weak_ptr<ctoot::control::FloatControl>>(count);
+    for (int i = 0; i < count; i++) {
+		auto lc = createLevelControl(i);
+		levelControl[i] = lc;
+		add(std::move(lc));
     }
 }
 
-void modules::mixer::MixerControls::deriveSampleRateIndependentVariables()
+void MixerControls::deriveSampleRateIndependentVariables()
 {
     for (auto i = int32_t(0); i < count; i++) {
-        (*level)[i] = deriveLevel(i);
+        level[i] = deriveLevel(i);
     }
 }
 
-float ctoot::synth::modules::mixer::MixerControls::deriveLevel(int32_t i)
+float MixerControls::deriveLevel(int32_t i)
 {
-    return npc((*levelControl)[i])->getValue();
+    return levelControl[i].lock()->getValue();
 }
 
-void modules::mixer::MixerControls::deriveSampleRateDependentVariables()
+void MixerControls::deriveSampleRateDependentVariables()
 {
 }
 
-uk::org::toot::control::FloatControl* ctoot::synth::modules::mixer::MixerControls::createLevelControl(int32_t i)
+shared_ptr<ctoot::control::FloatControl> MixerControls::createLevelControl(int32_t i)
 {
-    auto control = new ctoot::control::FloatControl(i + LEVEL + idOffset, ::java::lang::String::valueOf(i + int32_t(1)), ctoot::control::LinearLaw::UNITY(), 0.01f, i > 0 ? 0.0f : 1.0f);
-    control->setInsertColor(::java::awt::Color::BLACK());
-    return control;
+	auto control = make_shared<ctoot::control::FloatControl>(i + LEVEL + idOffset, to_string(i + 1), ctoot::control::LinearLaw::UNITY(), 0.01f, i > 0 ? 0.0f : 1.0f);
+	return control;
 }
 
-int32_t ctoot::synth::modules::mixer::MixerControls::getCount()
+int32_t MixerControls::getCount()
 {
     return count;
 }
 
-float ctoot::synth::modules::mixer::MixerControls::getLevel(int32_t n)
+float MixerControls::getLevel(int32_t n)
 {
-    return (*level)[n];
+    return level[n];
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::modules::mixer::MixerControls::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.modules.mixer.MixerControls", 45);
-    return c;
-}
-
-java::lang::Class* ctoot::synth::modules::mixer::MixerControls::getClass0()
-{
-    return class_();
-}
-

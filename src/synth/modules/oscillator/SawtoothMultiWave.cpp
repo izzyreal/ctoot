@@ -1,21 +1,8 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/SawtoothMultiWave.java
 #include <synth/modules/oscillator/SawtoothMultiWave.hpp>
 
-#include <Array.hpp>
+using namespace ctoot::synth::modules::oscillator;
 
- ctoot::synth::modules::oscillator::SawtoothMultiWave::SawtoothMultiWave(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::SawtoothMultiWave::SawtoothMultiWave(int32_t size, float fNyquist) 
-    : SawtoothMultiWave(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(size,fNyquist);
-}
-
-void modules::oscillator::SawtoothMultiWave::ctor(int32_t size, float fNyquist)
+SawtoothMultiWave::SawtoothMultiWave(int32_t size, float fNyquist)
 {
     super::ctor(size, fNyquist);
 }
@@ -33,17 +20,3 @@ int32_t ctoot::synth::modules::oscillator::SawtoothMultiWave::partial(::floatArr
     }
     return sign;
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::modules::oscillator::SawtoothMultiWave::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.modules.oscillator.SawtoothMultiWave", 54);
-    return c;
-}
-
-java::lang::Class* ctoot::synth::modules::oscillator::SawtoothMultiWave::getClass0()
-{
-    return class_();
-}
-

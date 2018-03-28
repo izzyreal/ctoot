@@ -1,18 +1,19 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/LFOVariables.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <synth/modules/oscillator/fwd-toot2.hpp>
-#include <java/lang/Object.hpp>
+namespace ctoot {
+	namespace synth {
+		namespace modules {
+			namespace oscillator {
 
-struct ctoot::synth::modules::oscillator::LFOVariables
-    : public virtual ::java::lang::Object
-{
-    virtual float getFrequency() = 0;
-    virtual float getDeviation() = 0;
-    virtual bool isSine() = 0;
+				class LFOVariables
+				{
+				public:
+					virtual float getFrequency() = 0;
+					virtual float getDeviation() = 0;
+					virtual bool isSine() = 0;
 
-    // Generated
-    static ::java::lang::Class *class_();
-};
+				};
+			}
+		}
+	}
+}

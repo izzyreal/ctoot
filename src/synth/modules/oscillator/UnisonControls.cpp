@@ -1,43 +1,15 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/UnisonControls.java
 #include <synth/modules/oscillator/UnisonControls.hpp>
 
-#include <java/awt/Color.hpp>
-#include <java/lang/NullPointerException.hpp>
-#include <java/lang/String.hpp>
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
 #include <control/IntegerControl.hpp>
 #include <control/IntegerLaw.hpp>
 #include <control/LinearLaw.hpp>
-#include <misc/Localisation.hpp>
 #include <synth/modules/oscillator/OscillatorIds.hpp>
 
-template<typename T>
-static T* npc(T* t)
-{
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
-}
+using namespace ctoot::synth::modules::oscillator;
 
- ctoot::synth::modules::oscillator::UnisonControls::UnisonControls(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::UnisonControls::UnisonControls(int32_t idOffset) 
-    : UnisonControls(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(idOffset);
-}
-
-constexpr int32_t ctoot::synth::modules::oscillator::UnisonControls::OSC_COUNT;
-
-constexpr int32_t ctoot::synth::modules::oscillator::UnisonControls::PITCH_SPREAD;
-
-constexpr int32_t ctoot::synth::modules::oscillator::UnisonControls::PHASE_SPREAD;
-
-uk::org::toot::control::IntegerLaw*& ctoot::synth::modules::oscillator::UnisonControls::OSC_COUNT_LAW()
+ctoot::control::IntegerLaw*& ctoot::synth::modules::oscillator::UnisonControls::OSC_COUNT_LAW()
 {
     clinit();
     return OSC_COUNT_LAW_;

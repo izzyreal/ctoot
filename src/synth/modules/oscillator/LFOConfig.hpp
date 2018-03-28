@@ -1,36 +1,27 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/LFOConfig.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <synth/modules/oscillator/fwd-toot2.hpp>
-#include <java/lang/Object.hpp>
+namespace ctoot {
+	namespace synth {
+		namespace modules {
+			namespace oscillator {
 
-struct default_init_tag;
+				class LFOConfig
+				{
 
-namespace ctoot { namespace synth {modules::oscillator::LFOConfig
-    : public virtual ::java::lang::Object
-{
+				public:
+					float rateMin{  };
+					float rateMax{  };
+					float rate{  };
+					float deviationMax{  };
+					float deviation{  };
 
-public:
-    typedef ::java::lang::Object super;
-    float rateMin {  };
-    float rateMax {  };
-    float rate {  };
-    float deviationMax {  };
-    float deviation {  };
+					LFOConfig();
 
-    // Generated
-    LFOConfig();
-protected:
-    void ctor();
-    LFOConfig(const ::default_init_tag&);
+				private:
+					void init();
+				};
 
-
-public:
-    static ::java::lang::Class *class_();
-
-private:
-    void init();
-    virtual ::java::lang::Class* getClass0();
-};
+			}
+		}
+	}
+}

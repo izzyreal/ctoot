@@ -1,90 +1,87 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/DSFOscillatorControls.java
-
 #pragma once
-
-#include <fwd-toot2.hpp>
-#include <java/lang/fwd-toot2.hpp>
-#include <control/fwd-toot2.hpp>
-#include <synth/modules/oscillator/fwd-toot2.hpp>
 #include <control/CompoundControl.hpp>
 #include <synth/modules/oscillator/DSFOscillatorVariables.hpp>
 
-struct default_init_tag;
+#include <memory>
 
-namespace ctoot { namespace synth {modules::oscillator::DSFOscillatorControls
-    : public ctoot::control::CompoundControl
-    , public virtual DSFOscillatorVariables
-{
+namespace ctoot {
 
-public:
-    typedef ctoot::control::CompoundControl super;
-    static constexpr int32_t RATIO_N { int32_t(0) };
-    static constexpr int32_t RATIO_D { int32_t(1) };
-    static constexpr int32_t PARTIALS { int32_t(2) };
-    static constexpr int32_t ROLLOFF { int32_t(3) };
-    static constexpr int32_t WOLFRAM { int32_t(4) };
+	namespace control {
+		class IntegerLaw;
+		class IntegerControl;
+		class FloatControl;
+		class BooleanControl;
+	}
 
-private:
-    static ctoot::control::IntegerLaw* RATIO_LAW_;
-    static ctoot::control::IntegerLaw* PARTIAL_LAW_;
-    ctoot::control::IntegerControl* ratioNumeratorControl {  };
-    ctoot::control::IntegerControl* ratioDenominatorControl {  };
-    ctoot::control::IntegerControl* partialsControl {  };
-    ctoot::control::FloatControl* rolloffControl {  };
-    ctoot::control::BooleanControl* wolframControl {  };
-    int32_t idOffset {  };
-    int32_t ratioNumerator {  };
-    int32_t ratioDenominator {  };
-    int32_t partialCount {  };
-    float rolloffFactor {  };
-    int32_t rolloffInt {  };
-    bool canUseWolfram_ {  };
-protected:
-    void ctor(int32_t instanceIndex, std::string name, int32_t idOffset);
+	namespace synth {
+		namespace modules {
+			namespace oscillator {
 
-protected:
-    void derive(ctoot::control::Control* c) override;
+				class DSFOscillatorControls
+					: public ctoot::control::CompoundControl
+					, public virtual DSFOscillatorVariables
+				{
 
-private:
-    void createControls();
+				public:
+					static constexpr int32_t RATIO_N{ int32_t(0) };
+					static constexpr int32_t RATIO_D{ int32_t(1) };
+					static constexpr int32_t PARTIALS{ int32_t(2) };
+					static constexpr int32_t ROLLOFF{ int32_t(3) };
+					static constexpr int32_t WOLFRAM{ int32_t(4) };
 
-protected:
-    virtual ctoot::control::IntegerControl* createRatioControl(int32_t id, std::string name);
-    virtual ctoot::control::IntegerControl* createPartialsControl(int32_t id);
-    virtual ctoot::control::FloatControl* createRolloffControl(int32_t id);
-    virtual ctoot::control::BooleanControl* createWolframControl(int32_t id);
+				private:
+					std::weak_ptr<ctoot::control::IntegerControl> ratioNumeratorControl{  };
+					std::weak_ptr<ctoot::control::IntegerControl> ratioDenominatorControl{  };
+					std::weak_ptr<ctoot::control::IntegerControl> partialsControl{  };
+					std::weak_ptr<ctoot::control::FloatControl> rolloffControl{  };
+					std::weak_ptr<ctoot::control::BooleanControl> wolframControl{  };
+					int32_t idOffset{  };
+					int32_t ratioNumerator{  };
+					int32_t ratioDenominator{  };
+					int32_t partialCount{  };
+					float rolloffFactor{  };
+					int32_t rolloffInt{  };
+					bool canUseWolfram_{  };
 
-private:
-    void deriveSampleRateIndependentVariables();
+				protected:
+					void derive(ctoot::control::Control* c) override;
 
-protected:
-    virtual int32_t deriveRatioDenominator();
-    virtual int32_t deriveRatioNumerator();
-    virtual int32_t derivePartialCount();
-    virtual float deriveRolloffFactor();
-    virtual int32_t deriveRolloffInt();
-    virtual bool deriveWolfram();
+				private:
+					void createControls();
 
-public:
-    int32_t getPartialCount() override;
-    float getPartialRolloffFactor() override;
-    int32_t getPartialRolloffInt() override;
-    int32_t getRatioDenominator() override;
-    int32_t getRatioNumerator() override;
-    bool canUseWolfram() override;
+				protected:
+					virtual std::shared_ptr<ctoot::control::IntegerControl> createRatioControl(int32_t id, std::string name);
+					virtual std::shared_ptr<ctoot::control::IntegerControl> createPartialsControl(int32_t id);
+					virtual std::shared_ptr<ctoot::control::FloatControl> createRolloffControl(int32_t id);
+					virtual std::shared_ptr<ctoot::control::BooleanControl> createWolframControl(int32_t id);
 
-    // Generated
-    DSFOscillatorControls(int32_t instanceIndex, std::string name, int32_t idOffset);
-protected:
-    DSFOscillatorControls(const ::default_init_tag&);
+				private:
+					void deriveSampleRateIndependentVariables();
 
+				protected:
+					virtual int32_t deriveRatioDenominator();
+					virtual int32_t deriveRatioNumerator();
+					virtual int32_t derivePartialCount();
+					virtual float deriveRolloffFactor();
+					virtual int32_t deriveRolloffInt();
+					virtual bool deriveWolfram();
 
-public:
-    static ::java::lang::Class *class_();
-    static void clinit();
+				public:
+					int32_t getPartialCount() override;
+					float getPartialRolloffFactor() override;
+					int32_t getPartialRolloffInt() override;
+					int32_t getRatioDenominator() override;
+					int32_t getRatioNumerator() override;
+					bool canUseWolfram() override;
 
-private:
-    static ctoot::control::IntegerLaw*& RATIO_LAW();
-    static ctoot::control::IntegerLaw*& PARTIAL_LAW();
-    virtual ::java::lang::Class* getClass0();
-};
+					DSFOscillatorControls(int32_t instanceIndex, std::string name, int32_t idOffset);
+
+				private:
+					static std::weak_ptr<ctoot::control::IntegerLaw> RATIO_LAW();
+					static std::weak_ptr<ctoot::control::IntegerLaw> PARTIAL_LAW();
+				};
+
+			}
+		}
+	}
+}

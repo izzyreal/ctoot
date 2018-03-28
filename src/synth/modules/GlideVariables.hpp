@@ -1,17 +1,18 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/GlideVariables.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <synth/modules/fwd-toot2.hpp>
-#include <java/lang/Object.hpp>
+namespace ctoot {
+	namespace synth {
+		namespace modules {
 
-struct ctoot::synth::modules::GlideVariables
-    : public virtual ::java::lang::Object
-{
-    virtual bool isGlideEnabled() = 0;
-    virtual int32_t getGlideMilliseconds() = 0;
+			class GlideVariables
+			{
 
-    // Generated
-    static ::java::lang::Class *class_();
-};
+			public:
+				virtual bool isGlideEnabled() = 0;
+				virtual int32_t getGlideMilliseconds() = 0;
+
+			};
+
+		}
+	}
+}

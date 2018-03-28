@@ -1,53 +1,17 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/LFOControls.java
 #include <synth/modules/oscillator/LFOControls.hpp>
 
-#include <java/lang/NullPointerException.hpp>
-#include <java/lang/Object.hpp>
-#include <java/lang/String.hpp>
-#include <java/util/ArrayList.hpp>
-#include <java/util/List.hpp>
 #include <control/Control.hpp>
 #include <control/EnumControl.hpp>
 #include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
-#include <misc/Localisation.hpp>
 #include <synth/modules/oscillator/LFOConfig.hpp>
-#include <synth/modules/oscillator/LFOControls_createShapeControl_1.hpp>
+#include <synth/modules/oscillator/ShapeControl.hpp>
 #include <synth/modules/oscillator/OscillatorIds.hpp>
 
-template<typename T>
-static T* npc(T* t)
-{
-    if(!t) throw new ::java::lang::NullPointerException();
-    return t;
-}
+using namespace ctoot::synth::modules::oscillator;
 
- ctoot::synth::modules::oscillator::LFOControls::LFOControls(const ::default_init_tag&)
-    : super(*static_cast< ::default_init_tag* >(0))
-{
-    clinit();
-}
-
- ctoot::synth::modules::oscillator::LFOControls::LFOControls(int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg) 
-    : LFOControls(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(instanceIndex,name,idOffset,cfg);
-}
-
- ctoot::synth::modules::oscillator::LFOControls::LFOControls(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg) 
-    : LFOControls(*static_cast< ::default_init_tag* >(0))
-{
-    ctor(id,instanceIndex,name,idOffset,cfg);
-}
-
-constexpr int32_t ctoot::synth::modules::oscillator::LFOControls::FREQUENCY;
-
-constexpr int32_t ctoot::synth::modules::oscillator::LFOControls::DEVIATION;
-
-constexpr int32_t ctoot::synth::modules::oscillator::LFOControls::SHAPE;
-
-void modules::oscillator::LFOControls::ctor(int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
+LFOControls::ctor(int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
 {
     ctor(OscillatorIds::LFO_ID, instanceIndex, name, idOffset, cfg);
 }

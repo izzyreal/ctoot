@@ -1,39 +1,28 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/SawtoothMultiWave.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <synth/modules/oscillator/fwd-toot2.hpp>
-#include <synth/modules/oscillator/MultiWave.hpp>
+namespace ctoot {
+	namespace synth {
+		namespace modules {
+			namespace oscillator {
 
-struct default_init_tag;
+				class SawtoothMultiWave
+					: public MultiWave
+				{
 
-namespace ctoot { namespace synth {modules::oscillator::SawtoothMultiWave
-    : public MultiWave
-{
+				public:
+					float getWidthOffset(float width) override;
 
-public:
-    typedef MultiWave super;
-protected:
-    void ctor(int32_t size, float fNyquist);
+				protected:
+					int32_t partial(::floatArray* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
 
-public:
-    float getWidthOffset(float width) override;
+					// Generated
 
-protected:
-    int32_t partial(::floatArray* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
+				public:
+					SawtoothMultiWave(int32_t size, float fNyquist);
 
-    // Generated
+				};
 
-public:
-    SawtoothMultiWave(int32_t size, float fNyquist);
-protected:
-    SawtoothMultiWave(const ::default_init_tag&);
-
-
-public:
-    static ::java::lang::Class *class_();
-
-private:
-    virtual ::java::lang::Class* getClass0();
-};
+			}
+		}
+	}
+}

@@ -1,18 +1,22 @@
-// Generated from /toot2/src/uk/org/toot/synth/modules/oscillator/Wave.java
-
 #pragma once
 
-#include <fwd-toot2.hpp>
-#include <synth/modules/oscillator/fwd-toot2.hpp>
-#include <java/lang/Object.hpp>
+#include <vector>
 
-struct ctoot::synth::modules::oscillator::Wave
-    : public virtual ::java::lang::Object
-{
-    virtual ::floatArray* getData() = 0;
-    virtual float getPeriod() = 0;
-    virtual float get(float index) = 0;
+namespace ctoot {
+	namespace synth {
+		namespace modules {
+			namespace oscillator {
 
-    // Generated
-    static ::java::lang::Class *class_();
-};
+				class Wave
+				{
+				public:
+					virtual std::vector<float> getData() = 0;
+					virtual float getPeriod() = 0;
+					virtual float get(float index) = 0;
+
+				};
+
+			}
+		}
+	}
+}
