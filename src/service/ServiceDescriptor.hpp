@@ -22,7 +22,7 @@ namespace ctoot {
 			std::string toString();
 
 		public:
-			ServiceDescriptor(std::string typeIdName, std::string name, std::string description, std::string version);
+			ServiceDescriptor(std::string parentClass, std::string childClass, std::string description, std::string version);
 
 		};
 	}

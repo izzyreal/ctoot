@@ -58,7 +58,7 @@ void LegacyDevices::installPlatformComponents(MidiSystem* system)
 
             addDevice(device, system);
         } catch (::javax::sound::midi::MidiUnavailableException* e) {
-//            npc(::java::lang::System::out())->println(stringBuilder().append(npc((*infos)[i])->getName())->append(u" Unavailable!"->toString());
+//            npc(::java::lang::System::out())->println(stringBuilder().append(npc((*infos)[i])->getName())->append(" Unavailable!"->toString());
         }
     }
 }

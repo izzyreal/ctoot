@@ -23,7 +23,7 @@ TempoDelayProcess::TempoDelayProcess(TempoDelayProcessVariables* vars)
 
 void TempoDelayProcess::open()
 {
-	//::uk::org::toot::misc::Tempo::addTempoListener(tempoListener);
+	//ctoot::misc::Tempo::addTempoListener(tempoListener);
 }
 
 int TempoDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
@@ -104,7 +104,7 @@ void TempoDelayProcess::close()
 		delete delayBuffer;
 	if (tappedBuffer != nullptr)
 		delete tappedBuffer;
-	//::uk::org::toot::misc::Tempo::removeTempoListener(tempoListener);
+	//ctoot::misc::Tempo::removeTempoListener(tempoListener);
 }
 
 int TempoDelayProcess::msToSamples(float ms, float sr)

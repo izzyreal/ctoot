@@ -15,8 +15,6 @@ namespace ctoot {
 					static const int FORMANT_FILTER_ID{ 35 };
 					static const int DUAL_STATE_VARIABLE_FILTER_ID{ 36 };
 
-				public:
-					FilterIds();
 				};
 
 			}

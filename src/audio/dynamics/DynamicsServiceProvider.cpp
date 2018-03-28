@@ -35,14 +35,14 @@ DynamicsServiceProvider::DynamicsServiceProvider()
 {
     auto family = ServiceProvider::description;
 	/*
-	add(VariMuCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Vari.Mu.Compressor"_j), family, u"0.1"_j);
-    add(BusCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Bus.Compressor"_j), family, u"0.1"_j);
-    add(Compressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Compressor"_j), family, u"0.2"_j);
-    add(Limiter::class_(), ::uk::org::toot::misc::Localisation::getString(u"Limiter"_j), family, u"0.2"_j);
-    add(Gate::class_(), ::uk::org::toot::misc::Localisation::getString(u"Gate"_j), family, u"0.1"_j);
-    add(MultiBandCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Multi.Band.Compressor"_j), family, u"0.2"_j);
-    add(MidSideCompressor::class_(), ::uk::org::toot::misc::Localisation::getString(u"Mid.Side.Compressor"_j), family, u"0.1"_j);
-    add(TremoloProcess::class_(), ::uk::org::toot::misc::Localisation::getString(u"Tremolo"_j), family, u"0.1"_j);
+	add(VariMuCompressor::class_(), ctoot::misc::Localisation::getString("Vari.Mu.Compressor"), family, u"0.1");
+    add(BusCompressor::class_(), ctoot::misc::Localisation::getString("Bus.Compressor"), family, u"0.1");
+    add(Compressor::class_(), ctoot::misc::Localisation::getString("Compressor"), family, u"0.2");
+    add(Limiter::class_(), ctoot::misc::Localisation::getString("Limiter"), family, u"0.2");
+    add(Gate::class_(), ctoot::misc::Localisation::getString("Gate"), family, u"0.1");
+    add(MultiBandCompressor::class_(), ctoot::misc::Localisation::getString("Multi.Band.Compressor"), family, u"0.2");
+    add(MidSideCompressor::class_(), ctoot::misc::Localisation::getString("Mid.Side.Compressor"), family, u"0.1");
+    add(TremoloProcess::class_(), ctoot::misc::Localisation::getString("Tremolo"), family, u"0.1");
     */
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::VARI_MU_COMPRESSOR, "class ctoot::audio::dynamics::VariMuCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::COMPRESSOR_ID, "class ctoot::audio::dynamics::CompressorControls", family, "0.2");

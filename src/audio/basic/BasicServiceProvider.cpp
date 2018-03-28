@@ -20,12 +20,12 @@ BasicServiceProvider::BasicServiceProvider()
 {
     auto family = "Basic";
     /*
-	addControls(::tap::TapControls::class_(), BasicIds::TAP, ::uk::org::toot::misc::Localisation::getString(u"Tap"_j), family, u"0.1"_j);
-    addControls(::trim::TrimControls::class_(), BasicIds::TRIM, ::uk::org::toot::misc::Localisation::getString(u"Trim"_j), family, u"0.1"_j);
-    addControls(::stereoImage::StereoImageControls::class_(), BasicIds::STEREO_IMAGE, ::uk::org::toot::misc::Localisation::getString(u"Stereo.Image"_j), family, u"0.1"_j, ::uk::org::toot::audio::core::ChannelFormat::STEREO(), nullptr);
-    add(::tap::TapProcess::class_(), ::uk::org::toot::misc::Localisation::getString(u"Tap"_j), family, u"0.1"_j);
-    add(::trim::TrimProcess::class_(), ::uk::org::toot::misc::Localisation::getString(u"Trim"_j), family, u"0.1"_j);
-    add(::stereoImage::StereoImageProcess::class_(), ::uk::org::toot::misc::Localisation::getString(u"Stereo.Image"_j), family, u"0.1"_j);
+	addControls(::tap::TapControls::class_(), BasicIds::TAP, ctoot::misc::Localisation::getString("Tap"), family, u"0.1");
+    addControls(::trim::TrimControls::class_(), BasicIds::TRIM, ctoot::misc::Localisation::getString("Trim"), family, u"0.1");
+    addControls(::stereoImage::StereoImageControls::class_(), BasicIds::STEREO_IMAGE, ctoot::misc::Localisation::getString("Stereo.Image"), family, u"0.1", ctoot::audio::core::ChannelFormat::STEREO(), nullptr);
+    add(::tap::TapProcess::class_(), ctoot::misc::Localisation::getString("Tap"), family, u"0.1");
+    add(::trim::TrimProcess::class_(), ctoot::misc::Localisation::getString("Trim"), family, u"0.1");
+    add(::stereoImage::StereoImageProcess::class_(), ctoot::misc::Localisation::getString("Stereo.Image"), family, u"0.1");
 	*/
 	addControls("class ctoot::audio::core::AudioControls", BasicIds::TAP, "class ctoot::audio::basic::tap::TapControls", family, "0.1");
 

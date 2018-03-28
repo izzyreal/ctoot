@@ -71,7 +71,7 @@ void ShortMsg::createFastPrototypes()
         auto track = sequence->createTrack();
         track.add(new ctoot::midi::core::MidiEvent(new ctoot::midi::core::ShortMessage(), 0));
         try {
-//            auto file = ::java::io::File::createTempFile(u"FSMhack", u"mid";
+//            auto file = ::java::io::File::createTempFile("FSMhack", u"mid";
 //            ::javax::sound::midi::MidiSystem::write(sequence, 0, file);
 //            sequence = ::javax::sound::midi::MidiSystem::getSequence(file);
 //            track = (*npc(sequence)->getTracks())[0];
@@ -79,7 +79,7 @@ void ShortMsg::createFastPrototypes()
 //            for (auto i = 0; i < npc(track)->size(); i++) {
 //                msg = npc(npc(track)->get(i))->getMessage();
 //                auto clazz = msg->getClass();
-//                if(fastShortPrototype_ == nullptr && npc(npc(clazz)->getCanonicalName())->equals(static_cast< ::java::lang::Object* >(u"com.sun.media.sound.FastShortMessage")) {
+//                if(fastShortPrototype_ == nullptr && npc(npc(clazz)->getCanonicalName())->equals(static_cast< ::java::lang::Object* >("com.sun.media.sound.FastShortMessage")) {
 //                    fastShortPrototype_ = msg;
 //                }
 //            }
@@ -102,7 +102,7 @@ ctoot::midi::core::MidiMessage* ShortMsg::setData1(ctoot::midi::core::MidiMessag
 {
 
 	if(msg->getLength() == 1) {
-	 //     throw new ::javax::sound::midi::InvalidMidiDataException(u"Can't setData1 on 1 byte message";
+	 //     throw new ::javax::sound::midi::InvalidMidiDataException("Can't setData1 on 1 byte message";
 		return nullptr;
 	}
 
@@ -120,8 +120,8 @@ ctoot::midi::core::MidiMessage* ShortMsg::setData2(ctoot::midi::core::MidiMessag
 {
     
 //    if(msg->getLength() != 3)
-//        throw new ::javax::sound::midi::InvalidMidiDataException(stringBuilder().append(u"Can't setData2 on "->append(msg->getLength())
-//            ->append(u" byte message"->toString());
+//        throw new ::javax::sound::midi::InvalidMidiDataException(stringBuilder().append("Can't setData2 on "->append(msg->getLength())
+//            ->append(" byte message"->toString());
 
     dynamic_cast< ctoot::midi::core::ShortMessage* >(msg)->setMessage(getStatus(msg), getData1(msg), data2);
     return msg;

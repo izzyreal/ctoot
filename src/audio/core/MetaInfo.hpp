@@ -13,6 +13,9 @@ namespace ctoot {
 				std::string sourceLocation = { "" };
 
 			public:
+				void setSourceLocation(std::string sourceLocation);
+
+			public:
 				std::string getSourceLabel();
 				std::string getSourceLocation();
 

@@ -17,5 +17,5 @@ namespace ctoot {
 
 			ControlChange(int controller, int value);
 		};
-	};
-};
+	}
+}

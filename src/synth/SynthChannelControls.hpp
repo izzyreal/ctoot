@@ -14,9 +14,6 @@ namespace ctoot {
 			, public moduru::observer::Observer
 		{
 
-		public:
-			typedef ctoot::control::CompoundControl super;
-
 		private:
 			bool learn{ false };
 			ctoot::control::Control* learnControl{ nullptr };

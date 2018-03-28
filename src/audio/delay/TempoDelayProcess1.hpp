@@ -9,7 +9,7 @@ namespace ctoot {
 			class TempoDelayProcess;
 
 			class TempoDelayProcess1
-				//: public virtual ::uk::org::toot::misc::Tempo_Listener
+				//: public virtual ctoot::misc::Tempo_Listener
 			{
 
 			public:

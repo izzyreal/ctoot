@@ -17,7 +17,7 @@ namespace ctoot {
 			private:
 				DelayBuffer * delayBuffer{  };
 				DelayBuffer* tappedBuffer{  };
-				//::uk::org::toot::misc::Tempo_Listener* tempoListener{  };
+				//ctoot::misc::Tempo_Listener* tempoListener{  };
 				TempoDelayProcessVariables* vars{  };
 				bool wasBypassed{  };
 				float bpm{  };

@@ -32,7 +32,7 @@ bool MultiTapDelayControls::isNeverBordered()
 }
 
 /*
-java::lang::String* MultiTapDelayControls::getAlternate()
+std::string MultiTapDelayControls::getAlternate()
 {
     return u"Channel";
 }

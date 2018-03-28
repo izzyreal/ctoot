@@ -10,7 +10,7 @@
 #include <synth/SynthControls.hpp>
 #include <synth/SynthRack.hpp>
 #include <synth/SynthRackControls.hpp>
-//#include <synth/SynthServices.hpp>
+#include <synth/SynthServices.hpp>
 
 #include <ctootextensions/MpcMultiMidiSynth.hpp>
 #include <ctootextensions/MpcMultiSynthControls.hpp>
@@ -53,7 +53,7 @@ void SynthRackObserver::update(moduru::observer::Observable* obs, boost::any obj
 			sr->setMidiSynth(nsynth, nullptr);
 		}
 	}
-	catch (boost::bad_any_cast e) {
+	catch (const boost::bad_any_cast& e) {
 	}
 }
 

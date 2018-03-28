@@ -9,7 +9,7 @@ MidiConnection::MidiConnection(MidiOutput* from, MidiInput* to, int flags)
 {
 	flags = 0;
 	if (from == nullptr || to == nullptr) {
-		//        throw new ::java::lang::IllegalArgumentException(u"MidiConnection constructor null argument";
+		//        throw new ::java::lang::IllegalArgumentException("MidiConnection constructor null argument";
 	}
 	this->from = from;
 	this->to = to;
@@ -25,11 +25,11 @@ const int MidiConnection::INPUT_LOCKED;
 void MidiConnection::connectTo(MidiInput* to)
 {
     if((flags & INPUT_LOCKED) != 0) {
-//        throw new ::java::lang::IllegalStateException(u"MidiConnection input is locked";
+//        throw new ::java::lang::IllegalStateException("MidiConnection input is locked";
 		return;
     }
     if(to == nullptr) {
-//        throw new ::java::lang::IllegalArgumentException(u"MidiConnection can't connectTo(null)";
+//        throw new ::java::lang::IllegalArgumentException("MidiConnection can't connectTo(null)";
 		return;
     }
     from->removeConnectionTo(this->to);
@@ -40,11 +40,11 @@ void MidiConnection::connectTo(MidiInput* to)
 void MidiConnection::connectFrom(MidiOutput* from)
 {
     if((flags & OUTPUT_LOCKED) != 0) {
-//        throw new ::java::lang::IllegalStateException(u"MidiConnection output is locked";
+//        throw new ::java::lang::IllegalStateException("MidiConnection output is locked";
 		return;
     }
     if(from == nullptr) {
-//        throw new ::java::lang::IllegalArgumentException(u"MidiConnection can't connectFrom(null)";
+//        throw new ::java::lang::IllegalArgumentException("MidiConnection can't connectFrom(null)";
 		return;
     }
     this->from->removeConnectionTo(to);

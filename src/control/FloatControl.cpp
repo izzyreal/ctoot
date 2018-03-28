@@ -44,15 +44,15 @@ string FloatControl::getMaxLabel()
 
 string FloatControl::toString()
 {
-//    return stringBuilder().append(getName())->append(u" with current value: "
+//    return stringBuilder().append(getName())->append(" with current value: "
 //        ->append(getValue())
-//        ->append(u" "
+//        ->append(" "
 //        ->append(getLaw()->getUnits())
-//        ->append(u" (range: "
+//        ->append(" (range: "
 //        ->append(getMinimum())
-//        ->append(u" - "
+//        ->append(" - "
 //        ->append(getMaximum())
-//        ->append(u")"->toString();
+//        ->append(")"->toString();
 	return "fix the method izzy!";
 }
 

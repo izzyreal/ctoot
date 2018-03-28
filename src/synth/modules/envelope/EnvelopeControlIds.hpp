@@ -5,8 +5,9 @@ namespace ctoot {
 		namespace modules {
 			namespace envelope {
 
-				struct EnvelopeControlIds
+				class EnvelopeControlIds
 				{
+				public:
 					static const int DELAY{ 0 };
 					static const int ATTACK{ 1 };
 					static const int HOLD{ 2 };

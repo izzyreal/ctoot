@@ -7,6 +7,7 @@ namespace ctoot {
 
 				class FilterType
 				{
+				public:
 					static const int  OFF{ 0 };
 					static const int  LOW{ 1 };
 					static const int  HIGH{ 2 };

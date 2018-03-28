@@ -68,10 +68,10 @@ void DefaultConnectedMidiSystem::createMidiConnection(string* fromPortName, stri
 	auto from = dynamic_cast<MidiOutput*>(getPort(fromPortName, true));
 	auto to = dynamic_cast<MidiInput*>(getPort(toPortName, false));
 	if (from == nullptr) return;
-	//        npc(::java::lang::System::err())->println(stringBuilder().append(fromPortName)->append(u" not found"->toString());
+	//        npc(::java::lang::System::err())->println(stringBuilder().append(fromPortName)->append(" not found"->toString());
 
 	if (to == nullptr) return;
-	//        npc(::java::lang::System::err())->println(stringBuilder().append(toPortName)->append(u" not found"->toString());
+	//        npc(::java::lang::System::err())->println(stringBuilder().append(toPortName)->append(" not found"->toString());
 	createMidiConnection(from, to, flags);
 }
 
@@ -90,8 +90,8 @@ MidiConnection* DefaultConnectedMidiSystem::getConnection(MidiOutput* from, Midi
 		}
 	}
 	return nullptr;
-	//    throw new ::java::lang::IllegalArgumentException(stringBuilder().append(u"MidiConnection from "->append(npc(from)->getName())
-	//        ->append(u" to "
+	//    throw new ::java::lang::IllegalArgumentException(stringBuilder().append("MidiConnection from "->append(npc(from)->getName())
+	//        ->append(" to "
 	//        ->append(npc(to)->getName())->toString());
 }
 

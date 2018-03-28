@@ -9,12 +9,16 @@ MetaInfo::MetaInfo(string sourceLabel, string sourceLocation)
 	this->sourceLocation = sourceLocation;
 }
 
-string ctoot::audio::core::MetaInfo::getSourceLabel()
+string MetaInfo::getSourceLabel()
 {
     return sourceLabel;
 }
 
-string ctoot::audio::core::MetaInfo::getSourceLocation()
+string MetaInfo::getSourceLocation()
 {
     return sourceLocation;
+}
+
+void MetaInfo::setSourceLocation(string sourceLocation) {
+	this->sourceLabel = sourceLocation;
 }

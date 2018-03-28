@@ -3,7 +3,6 @@
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
-//
 #include <synth/modules/filter/FilterControlIds.hpp>
 
 using namespace ctoot::synth::modules::filter;

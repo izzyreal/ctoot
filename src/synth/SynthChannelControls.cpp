@@ -9,7 +9,6 @@
 //#include <observer/Observable.hpp>
 //#include <concurrentqueue.h>
 
-
 using namespace ctoot::synth;
 using namespace ctoot::control;
 using namespace std;
@@ -40,7 +39,7 @@ void SynthChannelControls::notifyParent(Control* obj)
     if(learn) {
         learnControl = obj;
     }
-    super::notifyParent(obj);
+    CompoundControl::notifyParent(obj);
 }
 
 void SynthChannelControls::ensureMapExists()

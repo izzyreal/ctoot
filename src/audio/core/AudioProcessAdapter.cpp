@@ -4,7 +4,7 @@
 ctoot::audio::core::AudioProcessAdapter::AudioProcessAdapter(AudioProcess* process)
 {
 	if (process == nullptr) {
-		//        throw new ::java::lang::IllegalArgumentException(u"null AudioProcess";
+		//        throw new ::java::lang::IllegalArgumentException("null AudioProcess";
 		return;
 	}
 	this->process = process;

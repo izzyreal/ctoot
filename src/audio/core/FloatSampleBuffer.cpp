@@ -303,15 +303,15 @@ void FloatSampleBuffer::mixDownChannels()
 void ctoot::audio::core::FloatSampleBuffer::setSamplesFromBytes(vector<char> input, int inByteOffset, AudioFormat* format, int floatOffset, int frameCount)
 {
 	if (floatOffset < 0 || frameCount < 0 || inByteOffset < 0) {
-		//        throw new ::java::lang::IllegalArgumentException(u"FloatSampleBuffer.setSamplesFromBytes: negative inByteOffset, floatOffset, or frameCount";
+		//        throw new ::java::lang::IllegalArgumentException("FloatSampleBuffer.setSamplesFromBytes: negative inByteOffset, floatOffset, or frameCount";
 		return;
 	}
 	if (inByteOffset + (frameCount * format->getFrameSize()) > sizeof(input)) {
-		//      throw new ::java::lang::IllegalArgumentException(u"FloatSampleBuffer.setSamplesFromBytes: input buffer too small.";
+		//      throw new ::java::lang::IllegalArgumentException("FloatSampleBuffer.setSamplesFromBytes: input buffer too small.";
 		return;
 	}
 	if (floatOffset + frameCount > getSampleCount()) {
-		//    throw new ::java::lang::IllegalArgumentException(u"FloatSampleBuffer.setSamplesFromBytes: frameCount too large";
+		//    throw new ::java::lang::IllegalArgumentException("FloatSampleBuffer.setSamplesFromBytes: frameCount too large";
 		return;
 	}
 	FloatSampleTools::byte2float(input, inByteOffset, &channels, floatOffset, frameCount, format);
