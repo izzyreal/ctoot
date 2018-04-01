@@ -1,4 +1,4 @@
-#include <synth/modules/oscillator/ShapeControl.hpp>
+#include <synth/modules/oscillator/OscShapeControl.hpp>
 
 #include <synth/modules/oscillator/LFOControls.hpp>
 

@@ -6,7 +6,7 @@
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
 #include <synth/modules/oscillator/LFOConfig.hpp>
-#include <synth/modules/oscillator/ShapeControl.hpp>
+#include <synth/modules/oscillator/OscShapeControl.hpp>
 #include <synth/modules/oscillator/OscillatorIds.hpp>
 
 using namespace ctoot::synth::modules::oscillator;
