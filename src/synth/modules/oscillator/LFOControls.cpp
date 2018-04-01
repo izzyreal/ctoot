@@ -10,15 +10,16 @@
 #include <synth/modules/oscillator/OscillatorIds.hpp>
 
 using namespace ctoot::synth::modules::oscillator;
+using namespace std;
 
-LFOControls::ctor(int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
+LFOControls::LFOControls(int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
+	: LFOControls(OscillatorIds::LFO_ID, instanceIndex, name, idOffset, cfg)
 {
-    ctor(OscillatorIds::LFO_ID, instanceIndex, name, idOffset, cfg);
 }
 
-void modules::oscillator::LFOControls::ctor(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
+LFOControls::LFOControls(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
+	: ctoot::control::CompoundControl(id, instanceIndex, name)
 {
-    super::ctor(id, instanceIndex, name);
     this->idOffset = idOffset;
     config = cfg;
     createControls();
@@ -26,83 +27,89 @@ void modules::oscillator::LFOControls::ctor(int32_t id, int32_t instanceIndex, s
     deriveSampleRateDependentVariables();
 }
 
-void modules::oscillator::LFOControls::derive(ctoot::control::Control* c)
+void LFOControls::derive(ctoot::control::Control* c)
 {
-    switch (c->getId() - idOffset) {
-    case FREQUENCY:
-        frequency = deriveFrequency();
-        break;
-    case DEVIATION:
-        deviation = deriveDeviation();
-        break;
-    case SHAPE:
-        sine = deriveShape();
-        break;
-    }
-
+	switch (c->getId() - idOffset) {
+	case FREQUENCY:
+		frequency = deriveFrequency();
+		break;
+	case DEVIATION:
+		deviation = deriveDeviation();
+		break;
+	case SHAPE:
+		sine = deriveShape();
+		break;
+	}
 }
 
-void modules::oscillator::LFOControls::createControls()
+void LFOControls::createControls()
 {
-    add(shapeControl = createShapeControl());
-    derive(static_cast< ctoot::control::Control* >(shapeControl));
-    add(frequencyControl = createFrequencyControl());
-    derive(static_cast< ctoot::control::Control* >(frequencyControl));
-    if(config->deviation > 0) {
-        add(deviationControl = createDeviationControl());
-        derive(static_cast< ctoot::control::Control* >(deviationControl));
-    }
+	auto sc = createShapeControl();
+	shapeControl = sc;
+	derive(sc.get());
+	add(std::move(sc));
+
+	auto fc = createFrequencyControl();
+	frequencyControl = fc;
+	derive(fc.get());
+	add(std::move(fc));
+
+	if (config->deviation > 0) {
+		auto dc = createDeviationControl();
+		deviationControl = dc;
+		derive(dc.get());
+		add(std::move(dc));
+	}
 }
 
-uk::org::toot::control::EnumControl* ctoot::synth::modules::oscillator::LFOControls::createShapeControl()
+shared_ptr<ctoot::control::EnumControl> LFOControls::createShapeControl()
 {
-    ::java::util::List* const shapeNames = new ::java::util::ArrayList();
-    npc(shapeNames)->add(static_cast< ::java::lang::Object* >("Sine"));
-    npc(shapeNames)->add(static_cast< ::java::lang::Object* >("Triangle"));
-    return new LFOControls_createShapeControl_1(this, shapeNames, SHAPE + idOffset, u"Shape", u"Sine");
+	return make_shared<ShapeControl>(SHAPE + idOffset, "Shape", "Sine");
 }
 
-uk::org::toot::control::FloatControl* ctoot::synth::modules::oscillator::LFOControls::createFrequencyControl()
+shared_ptr<ctoot::control::FloatControl> LFOControls::createFrequencyControl()
 {
-    ctoot::control::ControlLaw* law = new ctoot::control::LogLaw(config->rateMin, config->rateMax, u"Hz");
-    auto control = new ctoot::control::FloatControl(FREQUENCY + idOffset, ctoot::misc::Localisation::getString("Frequency"), law, 0.1f, config->rate);
+    auto law = make_shared<ctoot::control::LogLaw>(config->rateMin, config->rateMax, "Hz");
+    auto control = make_shared<ctoot::control::FloatControl>(FREQUENCY + idOffset, "Frequency", law, 0.1f, config->rate);
+	laws.push_back(std::move(law));
     return control;
 }
 
-uk::org::toot::control::FloatControl* ctoot::synth::modules::oscillator::LFOControls::createDeviationControl()
+shared_ptr<ctoot::control::FloatControl> LFOControls::createDeviationControl()
 {
-    ctoot::control::ControlLaw* law = new ctoot::control::LinearLaw(0.0f, config->deviationMax, u"Hz");
-    auto control = new ctoot::control::FloatControl(FREQUENCY + idOffset, ctoot::misc::Localisation::getString("Deviation"), law, 0.1f, config->deviation);
+    auto law = make_shared<ctoot::control::LinearLaw>(0.0f, config->deviationMax, "Hz");
+    auto control = make_shared<ctoot::control::FloatControl>(FREQUENCY + idOffset, "Deviation", law, 0.1f, config->deviation);
+	laws.push_back(std::move(law));
     return control;
 }
 
-void modules::oscillator::LFOControls::deriveSampleRateIndependentVariables()
+void LFOControls::deriveSampleRateIndependentVariables()
 {
-    frequency = deriveFrequency();
-    deviation = deriveDeviation();
-    sine = deriveShape();
+	frequency = deriveFrequency();
+	deviation = deriveDeviation();
+	sine = deriveShape();
 }
 
-void modules::oscillator::LFOControls::deriveSampleRateDependentVariables()
+void LFOControls::deriveSampleRateDependentVariables()
 {
 }
 
-float ctoot::synth::modules::oscillator::LFOControls::deriveFrequency()
+float LFOControls::deriveFrequency()
 {
-    return npc(frequencyControl)->getValue();
+    return frequencyControl.lock()->getValue();
 }
 
-float ctoot::synth::modules::oscillator::LFOControls::deriveDeviation()
+float LFOControls::deriveDeviation()
 {
-    if(deviationControl == nullptr)
-        return 0.0f;
+	if (!deviationControl.lock())
+		return 0.0f;
 
-    return npc(deviationControl)->getValue();
+	return deviationControl.lock()->getValue();
 }
 
 bool ctoot::synth::modules::oscillator::LFOControls::deriveShape()
 {
-    return npc(npc(shapeControl)->getValue())->equals("Sine");
+	return boost::any_cast<string>(shapeControl.lock()->getValue()).compare("Sine") == 0;
 }
 
 float ctoot::synth::modules::oscillator::LFOControls::getFrequency()
@@ -119,17 +126,3 @@ bool ctoot::synth::modules::oscillator::LFOControls::isSine()
 {
     return sine;
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::modules::oscillator::LFOControls::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.modules.oscillator.LFOControls", 48);
-    return c;
-}
-
-java::lang::Class* ctoot::synth::modules::oscillator::LFOControls::getClass0()
-{
-    return class_();
-}
-

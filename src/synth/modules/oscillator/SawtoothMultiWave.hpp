@@ -1,5 +1,7 @@
 #pragma once
 
+#include <synth/modules/oscillator/MultiWave.hpp>
+
 namespace ctoot {
 	namespace synth {
 		namespace modules {
@@ -13,9 +15,7 @@ namespace ctoot {
 					float getWidthOffset(float width) override;
 
 				protected:
-					int32_t partial(::floatArray* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
-
-					// Generated
+					int32_t partial(std::vector<float>* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
 
 				public:
 					SawtoothMultiWave(int32_t size, float fNyquist);

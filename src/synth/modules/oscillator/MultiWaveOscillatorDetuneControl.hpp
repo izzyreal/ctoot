@@ -2,16 +2,15 @@
 
 #include <control/FloatControl.hpp>
 
+#include <string>
+#include <vector>
+
 namespace ctoot {
-
-	namespace control {
-		class ControlLaw;
-	}
-
 	namespace synth {
 		namespace modules {
-			namespace mixer {
-				class DepthControl
+			namespace oscillator {
+
+				class MultiWaveOscillatorDetuneControl
 					: public ctoot::control::FloatControl
 				{
 
@@ -23,10 +22,9 @@ namespace ctoot {
 					void applyPreset(std::string presetName) override;
 
 				public:
-					DepthControl(int id, std::string name, std::weak_ptr<ctoot::control::ControlLaw> law, float precision, float initialValue);
+					MultiWaveOscillatorDetuneControl(int id, std::string name, std::weak_ptr<ctoot::control::ControlLaw> law, float precision, float initialValue);
 
 				};
-
 			}
 		}
 	}

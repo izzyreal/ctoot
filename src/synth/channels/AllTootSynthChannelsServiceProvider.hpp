@@ -14,7 +14,7 @@ namespace ctoot {
 			{
 
 			public:
-				std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(ctoot::synth::SynthChannelControls* c) override;
+				std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(std::weak_ptr<ctoot::synth::SynthChannelControls> c) override;
 
 				AllTootSynthChannelsServiceProvider();
 

@@ -3,7 +3,17 @@
 #include <control/CompoundControl.hpp>
 #include <synth/modules/oscillator/UnisonVariables.hpp>
 
+#include <memory>
+
 namespace ctoot {
+
+	namespace control {
+		class FloatControl;
+		class IntegerControl;
+		class LinearLaw;
+		class IntegerLaw;
+	}
+
 	namespace synth {
 		namespace modules {
 			namespace oscillator {
@@ -14,16 +24,16 @@ namespace ctoot {
 				{
 
 				public:
-					static constexpr int32_t OSC_COUNT{ int32_t(0) };
-					static constexpr int32_t PITCH_SPREAD{ int32_t(1) };
-					static constexpr int32_t PHASE_SPREAD{ int32_t(2) };
+					static constexpr int32_t OSC_COUNT{ 0 };
+					static constexpr int32_t PITCH_SPREAD{ 1 };
+					static constexpr int32_t PHASE_SPREAD{ 2 };
 
 				private:
-					static ctoot::control::IntegerLaw* OSC_COUNT_LAW_;
-					static ctoot::control::LinearLaw* SPREAD_LAW_;
-					ctoot::control::IntegerControl* oscillatorCountControl{  };
-					ctoot::control::FloatControl* pitchSpreadControl{  };
-					ctoot::control::FloatControl* phaseSpreadControl{  };
+					static std::weak_ptr<ctoot::control::IntegerLaw> OSC_COUNT_LAW();
+					static std::weak_ptr<ctoot::control::LinearLaw> SPREAD_LAW();
+					std::weak_ptr<ctoot::control::IntegerControl> oscillatorCountControl{  };
+					std::weak_ptr<ctoot::control::FloatControl> pitchSpreadControl{  };
+					std::weak_ptr<ctoot::control::FloatControl> phaseSpreadControl{  };
 					int32_t idOffset{  };
 					int32_t oscillatorCount{  };
 					float pitchSpread{  };
@@ -36,9 +46,9 @@ namespace ctoot {
 					void createControls();
 
 				protected:
-					virtual ctoot::control::IntegerControl* createOscillatorCountControl();
-					virtual ctoot::control::FloatControl* createPitchSpreadControl();
-					virtual ctoot::control::FloatControl* createPhaseSpreadControl();
+					virtual std::shared_ptr<ctoot::control::IntegerControl> createOscillatorCountControl();
+					virtual std::shared_ptr<ctoot::control::FloatControl> createPitchSpreadControl();
+					virtual std::shared_ptr<ctoot::control::FloatControl> createPhaseSpreadControl();
 
 				private:
 					void deriveSampleRateIndependentVariables();
@@ -54,10 +64,6 @@ namespace ctoot {
 					float getPhaseSpread() override;
 
 					UnisonControls(int32_t idOffset);
-
-				private:
-					static ctoot::control::IntegerLaw*& OSC_COUNT_LAW();
-					static ctoot::control::LinearLaw*& SPREAD_LAW();
 
 				};
 

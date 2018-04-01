@@ -1,10 +1,12 @@
 #include <control/IntegerControl.hpp>
 
+#include <control/IntegerLaw.hpp>
+
 using namespace ctoot::control;
 using namespace std;
 
 IntegerControl::IntegerControl(int32_t id, string name, weak_ptr<IntegerLaw> law, float precision, int32_t initialValue)
-	: FloatControl(id, name, law, precision, initialValue)
+	: FloatControl(id, name, dynamic_pointer_cast<ControlLaw>(law.lock()), precision, initialValue)
 {
 }
 

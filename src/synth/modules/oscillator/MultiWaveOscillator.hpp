@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstdint>
 #include <memory>
 
 namespace ctoot {
@@ -10,15 +11,19 @@ namespace ctoot {
 		namespace modules {
 			namespace oscillator {
 
+				class MultiWaveOscillatorVariables;
 				class MultiWave;
 				class Wave;
+				class OscillatorControl;
 
-				class SawtoothOscillator
+				class MultiWaveOscillator
 				{
 
 				private:
-					static std::weak_ptr<MultiWave> multiWave;
 					ctoot::synth::SynthChannel* channel{  };
+					MultiWaveOscillatorVariables* vars{  };
+					bool master{  };
+					std::weak_ptr<MultiWave> multiWave{  };
 					std::weak_ptr<Wave> wave{  };
 					int32_t waveSize{  };
 					int32_t waveIndex{  };
@@ -26,15 +31,19 @@ namespace ctoot {
 					float k2{  };
 					float increment{ 1.0f };
 					float currentIncrement{  };
+					bool sync{  };
 					float index{ 0.0f };
+					float scalar{ 1.0f };
+					float offset{ 0.0f };
 					float frequency{  };
+					float width{  };
 
 				public:
 					virtual void setSampleRate(int32_t sampleRate);
 					virtual void update();
-					virtual float getSample(float mod);
+					virtual float getSample(float mod, float wmod, OscillatorControl* control);
 
-					SawtoothOscillator(ctoot::synth::SynthChannel* channel, float frequency);
+					MultiWaveOscillator(ctoot::synth::SynthChannel* channel, MultiWaveOscillatorVariables* oscillatorVariables, float frequency);
 
 				};
 

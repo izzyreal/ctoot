@@ -5,9 +5,12 @@
 namespace ctoot {
 	namespace synth {
 
+		class PolyphonicSynthChannelVoice;
+
 		namespace modules {
 			namespace oscillator {
 				class MultiWaveOscillator;
+				class MultiWaveOscillatorVariables;
 				class LFOVariables;
 			}
 			namespace filter {
@@ -64,6 +67,10 @@ namespace ctoot {
 
 				public:
 					ValorSynthChannel(ValorSynthControls* controls);
+
+				private:
+					friend class Example2Voice;
+
 				};
 
 			}

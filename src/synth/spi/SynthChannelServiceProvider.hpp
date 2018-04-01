@@ -28,7 +28,7 @@ namespace ctoot {
 
 			public:
 				virtual std::shared_ptr<ctoot::synth::SynthChannelControls> createControls(std::string name);
-				virtual std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(ctoot::synth::SynthChannelControls* controls2) {
+				virtual std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(std::weak_ptr<ctoot::synth::SynthChannelControls> controls2) {
 					return {};
 				}
 

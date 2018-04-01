@@ -7,6 +7,11 @@
 #include <cstdint>
 
 namespace ctoot {
+
+	namespace control {
+		class FloatControl;
+	}
+
 	namespace synth {
 		namespace modules {
 			namespace mixer {

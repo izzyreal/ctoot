@@ -4,7 +4,13 @@
 
 using namespace ctoot::synth::modules::oscillator;
 
-java::util::List* ShapeControl::getValues()
+ShapeControl::ShapeControl(int32_t id, std::string name, boost::any value)
+	: ctoot::control::EnumControl(id, name, value)
 {
-    return shapeNames;
+}
+
+std::vector<boost::any> ShapeControl::getValues()
+{
+	std::vector<boost::any> res{ std::string("Sine"), std::string("Triangle") };
+    return res;
 }

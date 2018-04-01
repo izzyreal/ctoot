@@ -6,6 +6,12 @@
 #include <memory>
 
 namespace ctoot {
+
+	namespace control {
+		class ControlLaw;
+		class FloatControl;
+	}
+
 	namespace synth {
 		namespace modules {
 			namespace filter {

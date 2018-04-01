@@ -7,14 +7,15 @@ namespace ctoot {
 		namespace modules {
 			namespace oscillator {
 
-				class ShapeControl
+				class MultiWaveOscillatorOctaveControl
 					: public ctoot::control::EnumControl
 				{
 
 				public:
 					std::vector<boost::any> getValues() override;
 
-					ShapeControl(int32_t id, std::string name, boost::any value);
+				public:
+					MultiWaveOscillatorOctaveControl(int id, std::string name, boost::any value);
 
 				};
 

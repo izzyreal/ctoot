@@ -10,6 +10,7 @@ namespace ctoot {
 
 	namespace dsp {
 		class Sine;
+		class Cosine;
 	}
 
 	namespace synth {

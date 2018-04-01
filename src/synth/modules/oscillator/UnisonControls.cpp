@@ -8,140 +8,111 @@
 #include <synth/modules/oscillator/OscillatorIds.hpp>
 
 using namespace ctoot::synth::modules::oscillator;
+using namespace std;
 
-ctoot::control::IntegerLaw*& ctoot::synth::modules::oscillator::UnisonControls::OSC_COUNT_LAW()
+weak_ptr<ctoot::control::IntegerLaw> UnisonControls::OSC_COUNT_LAW()
 {
-    clinit();
-    return OSC_COUNT_LAW_;
-}
-uk::org::toot::control::IntegerLaw* ctoot::synth::modules::oscillator::UnisonControls::OSC_COUNT_LAW_;
-
-uk::org::toot::control::LinearLaw*& ctoot::synth::modules::oscillator::UnisonControls::SPREAD_LAW()
-{
-    clinit();
-    return SPREAD_LAW_;
-}
-uk::org::toot::control::LinearLaw* ctoot::synth::modules::oscillator::UnisonControls::SPREAD_LAW_;
-
-void modules::oscillator::UnisonControls::ctor(int32_t idOffset)
-{
-    super::ctor(OscillatorIds::UNISON_ID, int32_t(0), ctoot::misc::Localisation::getString("Unison"));
-    this->idOffset = idOffset;
-    createControls();
-    deriveSampleRateIndependentVariables();
+	static auto res = make_shared<ctoot::control::IntegerLaw>(1, 32, "");
+	return res;
 }
 
-void modules::oscillator::UnisonControls::derive(ctoot::control::Control* c)
+weak_ptr<ctoot::control::LinearLaw> UnisonControls::SPREAD_LAW()
 {
-    switch (c->getId() - idOffset) {
-    case OSC_COUNT:
-        oscillatorCount = deriveOscillatorCount();
-        break;
-    case PITCH_SPREAD:
-        pitchSpread = derivePitchSpread();
-        break;
-    case PHASE_SPREAD:
-        phaseSpread = derivePhaseSpread();
-        break;
-    }
-
+	return ctoot::control::LinearLaw::UNITY();
 }
 
-void modules::oscillator::UnisonControls::createControls()
+UnisonControls::UnisonControls(int32_t idOffset)
+	: ctoot::control::CompoundControl(OscillatorIds::UNISON_ID, 0, "Unison")
 {
-    add(oscillatorCountControl = createOscillatorCountControl());
-    add(pitchSpreadControl = createPitchSpreadControl());
-    add(phaseSpreadControl = createPhaseSpreadControl());
-    derive(static_cast< ctoot::control::Control* >(oscillatorCountControl));
-    derive(static_cast< ctoot::control::Control* >(pitchSpreadControl));
-    derive(static_cast< ctoot::control::Control* >(phaseSpreadControl));
+	this->idOffset = idOffset;
+	createControls();
+	deriveSampleRateIndependentVariables();
 }
 
-uk::org::toot::control::IntegerControl* ctoot::synth::modules::oscillator::UnisonControls::createOscillatorCountControl()
+void UnisonControls::derive(ctoot::control::Control* c)
 {
-    auto control = new ctoot::control::IntegerControl(OSC_COUNT + idOffset, ctoot::misc::Localisation::getString("Oscs"), OSC_COUNT_LAW_, 1.0f, int32_t(1));
-    control->setInsertColor(npc(::java::awt::Color::CYAN())->darker());
+	switch (c->getId() - idOffset) {
+	case OSC_COUNT:
+		oscillatorCount = deriveOscillatorCount();
+		break;
+	case PITCH_SPREAD:
+		pitchSpread = derivePitchSpread();
+		break;
+	case PHASE_SPREAD:
+		phaseSpread = derivePhaseSpread();
+		break;
+	}
+}
+
+void UnisonControls::createControls()
+{
+	auto occ = createOscillatorCountControl();
+	oscillatorCountControl = occ;
+	derive(occ.get());
+	add(std::move(occ));
+
+	auto pc = createPitchSpreadControl();
+	pitchSpreadControl = pc;
+	derive(pc.get());
+	add(std::move(pc));
+
+	auto psc = createPhaseSpreadControl();
+	phaseSpreadControl = psc;
+	derive(psc.get());
+	add(std::move(psc));
+}
+
+shared_ptr<ctoot::control::IntegerControl> UnisonControls::createOscillatorCountControl()
+{
+    auto control = make_shared<ctoot::control::IntegerControl>(OSC_COUNT + idOffset, "Oscs", OSC_COUNT_LAW(), 1.0f, 1);
     return control;
 }
 
-uk::org::toot::control::FloatControl* ctoot::synth::modules::oscillator::UnisonControls::createPitchSpreadControl()
+shared_ptr<ctoot::control::FloatControl> UnisonControls::createPitchSpreadControl()
 {
-    auto control = new ctoot::control::FloatControl(PITCH_SPREAD + idOffset, ctoot::misc::Localisation::getString("Detune"), SPREAD_LAW_, 0.01f, 0.0f);
-    control->setInsertColor(npc(::java::awt::Color::MAGENTA())->darker());
+    auto control = make_shared<ctoot::control::FloatControl>(PITCH_SPREAD + idOffset, "Detune", SPREAD_LAW(), 0.01f, 0.0f);
     return control;
 }
 
-uk::org::toot::control::FloatControl* ctoot::synth::modules::oscillator::UnisonControls::createPhaseSpreadControl()
+shared_ptr<ctoot::control::FloatControl> UnisonControls::createPhaseSpreadControl()
 {
-    auto control = new ctoot::control::FloatControl(PHASE_SPREAD + idOffset, ctoot::misc::Localisation::getString("Phase"), SPREAD_LAW_, 0.01f, 1.0f);
-    control->setInsertColor(::java::awt::Color::BLUE());
+    auto control = make_shared<ctoot::control::FloatControl>(PHASE_SPREAD + idOffset, "Phase", SPREAD_LAW(), 0.01f, 1.0f);
     return control;
 }
 
-void modules::oscillator::UnisonControls::deriveSampleRateIndependentVariables()
+void UnisonControls::deriveSampleRateIndependentVariables()
 {
-    oscillatorCount = deriveOscillatorCount();
-    pitchSpread = derivePitchSpread();
-    phaseSpread = derivePhaseSpread();
+	oscillatorCount = deriveOscillatorCount();
+	pitchSpread = derivePitchSpread();
+	phaseSpread = derivePhaseSpread();
 }
 
-int32_t ctoot::synth::modules::oscillator::UnisonControls::deriveOscillatorCount()
+int32_t UnisonControls::deriveOscillatorCount()
 {
-    return npc(oscillatorCountControl)->getUserValue();
+    return oscillatorCountControl.lock()->getUserValue();
 }
 
-float ctoot::synth::modules::oscillator::UnisonControls::derivePitchSpread()
+float UnisonControls::derivePitchSpread()
 {
-    return npc(pitchSpreadControl)->getValue();
+    return pitchSpreadControl.lock()->getValue();
 }
 
-float ctoot::synth::modules::oscillator::UnisonControls::derivePhaseSpread()
+float UnisonControls::derivePhaseSpread()
 {
-    return npc(phaseSpreadControl)->getValue();
+    return phaseSpreadControl.lock()->getValue();
 }
 
-int32_t ctoot::synth::modules::oscillator::UnisonControls::getOscillatorCount()
+int32_t UnisonControls::getOscillatorCount()
 {
     return oscillatorCount;
 }
 
-float ctoot::synth::modules::oscillator::UnisonControls::getPitchSpread()
+float UnisonControls::getPitchSpread()
 {
     return pitchSpread;
 }
 
-float ctoot::synth::modules::oscillator::UnisonControls::getPhaseSpread()
+float UnisonControls::getPhaseSpread()
 {
     return phaseSpread;
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::modules::oscillator::UnisonControls::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.modules.oscillator.UnisonControls", 51);
-    return c;
-}
-
-void modules::oscillator::UnisonControls::clinit()
-{
-    super::clinit();
-    static bool in_cl_init = false;
-struct clinit_ {
-    clinit_() {
-        in_cl_init = true;
-        OSC_COUNT_LAW_ = new ctoot::control::IntegerLaw(int32_t(1), int32_t(32), u"");
-        SPREAD_LAW_ = ctoot::control::LinearLaw::UNITY();
-    }
-};
-
-    if(!in_cl_init) {
-        static clinit_ clinit_instance;
-    }
-}
-
-java::lang::Class* ctoot::synth::modules::oscillator::UnisonControls::getClass0()
-{
-    return class_();
-}
-

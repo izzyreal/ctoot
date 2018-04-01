@@ -8,6 +8,8 @@
 namespace ctoot {
 	namespace synth {
 
+		class PolyphonicSynthChannelVoice;
+
 		class PolyphonicSynthChannel
 			: public SynthChannel
 			, public virtual ctoot::audio::system::AudioOutput
@@ -44,9 +46,6 @@ namespace ctoot {
 		public:
 			void noteOff(int32_t pitch, int32_t velocity);
 
-		private:
-			friend class PolyphonicSynthChannelVoice;
-			friend class PolyphonicSynthChannelAbstractVoice;
 		};
 
 	}

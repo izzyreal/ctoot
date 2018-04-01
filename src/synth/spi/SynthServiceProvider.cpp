@@ -44,7 +44,7 @@ std::string SynthServiceProvider::lookupName(int32_t moduleId)
 	 return {};
 }
 
-void spi::SynthServiceProvider::addControls(std::string typeIdName, int32_t moduleId, std::string name, std::string description, std::string version)
+void SynthServiceProvider::addControls(std::string typeIdName, int32_t moduleId, std::string name, std::string description, std::string version)
 {
     add(new SynthControlServiceDescriptor(typeIdName, moduleId, name, description, version));
 }

@@ -4,6 +4,12 @@
 #include <synth/modules/envelope/ASREnvelopeVariables.hpp>
 
 namespace ctoot {
+
+	namespace control {
+		class FloatControl;
+		class BooleanControl;
+	}
+
 	namespace synth {
 		namespace modules {
 			namespace envelope {

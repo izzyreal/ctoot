@@ -53,7 +53,7 @@ float DualStateVariableFilterControls::deriveResonance()
 
 shared_ptr<ctoot::control::EnumControl> ctoot::synth::modules::filter::DualStateVariableFilterControls::createTypeControl()
 {
-    return make_shared<DualStateVariableFilterControlsTypeControl>(this, FilterControlIds::TYPE + idOffset, "Type");
+    return make_shared<DualStateVariableFilterControlsTypeControl>(FilterControlIds::TYPE + idOffset, string("Type"));
 }
 
  ctoot::synth::modules::filter::DualStateVariableFilterConfig* ctoot::synth::modules::filter::DualStateVariableFilterControls::getType()

@@ -1,4 +1,7 @@
 #pragma once
+
+#include <synth/modules/oscillator/MultiWave.hpp>
+
 namespace ctoot {
 	namespace synth {
 		namespace modules {
@@ -13,10 +16,8 @@ namespace ctoot {
 					float getWidthScalar(float width) override;
 
 				protected:
-					int32_t partial(::floatArray* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
-					void normalise(::floatArray* data, float max) override;
-
-					// Generated
+					int32_t partial(std::vector<float>* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
+					void normalise(std::vector<float>* data, float max) override;
 
 				public:
 					ParabolaMultiWave(int32_t size, float fNyquist);

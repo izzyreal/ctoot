@@ -1,5 +1,7 @@
 #include <synth/modules/oscillator/Wave.hpp>
 
+#include <vector>
+
 #pragma once
 namespace ctoot {
 	namespace synth {
@@ -11,15 +13,15 @@ namespace ctoot {
 				{
 
 				private:
-					::floatArray* data{  };
+					std::vector<float> data{  };
 					float period{  };
 
 				public:
-					::floatArray* getData() override;
+					std::vector<float>* getData() override;
 					float getPeriod() override;
 					float get(float index) override;
 
-					SingleWave(::floatArray* data, float period);
+					SingleWave(std::vector<float> data, float period);
 
 				};
 

@@ -9,16 +9,12 @@ namespace ctoot {
 				{
 
 				public:
-					float rateMin{  };
-					float rateMax{  };
-					float rate{  };
-					float deviationMax{  };
-					float deviation{  };
+					float rateMin{ 0.01f };
+					float rateMax{ 1.0f };
+					float rate{ 0.1f };
+					float deviationMax{ 0.0f };
+					float deviation{ 0.0f };
 
-					LFOConfig();
-
-				private:
-					void init();
 				};
 
 			}

@@ -56,7 +56,7 @@ float ModulationMixerControls::deriveDepth(int32_t i)
 
 shared_ptr<ctoot::control::FloatControl> ModulationMixerControls::createDepthControl(int32_t i, std::string label)
 {
-    auto control = make_shared<DepthControl>(this, i + DEPTH + idOffset, label, law, 0.01f, 0.0f);
+    auto control = make_shared<DepthControl>(i + DEPTH + idOffset, label, law, 0.01f, 0.0f);
     return control;
 }
 

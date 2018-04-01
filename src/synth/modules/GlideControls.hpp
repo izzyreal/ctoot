@@ -9,6 +9,8 @@ namespace ctoot {
 
 	namespace control {
 		class ControlLaw;
+		class FloatControl;
+		class BooleanControl;
 	}
 
 	namespace synth {

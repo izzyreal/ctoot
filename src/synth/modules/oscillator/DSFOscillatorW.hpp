@@ -5,6 +5,12 @@
 #include <memory>
 
 namespace ctoot {
+
+	namespace dsp {
+		class Sine;
+		class Cosine;
+	}
+
 	namespace synth {
 		namespace modules {
 			namespace oscillator {

@@ -9,36 +9,37 @@
 #include <synth/modules/mixer/MixerVariables.hpp>
 #include <synth/modules/mixer/ModulationMixerVariables.hpp>
 #include <synth/modules/oscillator/LFOControls.hpp>
-//#include <synth/modules/oscillator/MultiWaveOscillatorVariables.hpp>
-//#include <synth/modules/oscillator/MultiWaves.hpp>
+#include <synth/modules/oscillator/MultiWaveOscillatorVariables.hpp>
+#include <synth/modules/oscillator/MultiWaves.hpp>
 
 using namespace ctoot::synth::channels::valor;
+using namespace std;
 
 ValorSynthChannel::ValorSynthChannel(ValorSynthControls* controls)
 	: ctoot::synth::PolyphonicSynthChannel(controls->getName())
 {
-    oscillator1Vars = controls->getOscillatorVariables(1 - 1);
-    oscillator2Vars = controls->getOscillatorVariables(2 - 1);
-    oscillator3Vars = controls->getOscillatorVariables(3 - 1);
-    envelopeAVars = controls->getEnvelopeVariables(0);
-    envelope1Vars = controls->getEnvelopeVariables(1);
-    envelope2Vars = controls->getEnvelopeVariables(2);
-    envelopeVVars = controls->getEnvelopeVariables(3);
-    lpFilterVars = controls->getFilterVariables(0);
-    svFilterVars = controls->getFilterVariables(1);
-    amplifierVars = controls->getAmplifierVariables();
-    vibratoVars = controls->getLFOVariables(0);
-    lfo1Vars = controls->getLFOVariables(1);
-    lfo2Vars = controls->getLFOVariables(2);
-    lpFilterMixerVars = controls->getMixerVariables(0);
-    svFilterMixerVars = controls->getMixerVariables(1);
-    osc1WidthModMixer = controls->getModulationMixerVariables(0);
-    osc2WidthModMixer = controls->getModulationMixerVariables(1);
-    osc3WidthModMixer = controls->getModulationMixerVariables(2);
-    lpfCutoffModMixer = controls->getModulationMixerVariables(3);
-    svfCutoffModMixer = controls->getModulationMixerVariables(4);
-    vibModMixer = controls->getModulationMixerVariables(5);
-    createVoice(42, 0, 44100);
+	oscillator1Vars = controls->getOscillatorVariables(1 - 1).lock().get();
+	oscillator2Vars = controls->getOscillatorVariables(2 - 1).lock().get();
+	oscillator3Vars = controls->getOscillatorVariables(3 - 1).lock().get();
+	envelopeAVars = controls->getEnvelopeVariables(0).lock().get();
+	envelope1Vars = controls->getEnvelopeVariables(1).lock().get();
+	envelope2Vars = controls->getEnvelopeVariables(2).lock().get();
+	envelopeVVars = controls->getEnvelopeVariables(3).lock().get();
+	lpFilterVars = controls->getFilterVariables(0).lock().get();
+	svFilterVars = dynamic_pointer_cast<ctoot::synth::modules::filter::StateVariableFilterVariables>(controls->getFilterVariables(1).lock()).get();
+	amplifierVars = controls->getAmplifierVariables().lock().get();
+	vibratoVars = controls->getLFOVariables(0).lock().get();
+	lfo1Vars = controls->getLFOVariables(1).lock().get();
+	lfo2Vars = controls->getLFOVariables(2).lock().get();
+	lpFilterMixerVars = controls->getMixerVariables(0).lock().get();
+	svFilterMixerVars = controls->getMixerVariables(1).lock().get();
+	osc1WidthModMixer = controls->getModulationMixerVariables(0).lock().get();
+	osc2WidthModMixer = controls->getModulationMixerVariables(1).lock().get();
+	osc3WidthModMixer = controls->getModulationMixerVariables(2).lock().get();
+	lpfCutoffModMixer = controls->getModulationMixerVariables(3).lock().get();
+	svfCutoffModMixer = controls->getModulationMixerVariables(4).lock().get();
+	vibModMixer = controls->getModulationMixerVariables(5).lock().get();
+	createVoice(42, 0, 44100);
 }
 
 void ValorSynthChannel::setSampleRate(int32_t rate)

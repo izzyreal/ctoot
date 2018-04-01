@@ -1,23 +1,24 @@
 #pragma once
-
 #include <control/EnumControl.hpp>
+
+#include <boost/any.hpp>
 
 namespace ctoot {
 	namespace synth {
 		namespace modules {
 			namespace oscillator {
 
-				class ShapeControl
+				class MultiWaveOscillatorWaveControl
 					: public ctoot::control::EnumControl
 				{
 
 				public:
 					std::vector<boost::any> getValues() override;
 
-					ShapeControl(int32_t id, std::string name, boost::any value);
+				public:
+					MultiWaveOscillatorWaveControl(int id, std::string name, boost::any value);
 
 				};
-
 			}
 		}
 	}

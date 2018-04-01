@@ -35,7 +35,7 @@ std::shared_ptr<ctoot::synth::SynthChannelControls> ctoot::synth::SynthChannelSe
 	return {};
 }
 
-shared_ptr<ctoot::synth::SynthChannel> SynthChannelServices::createSynthChannel(SynthChannelControls* controls)
+shared_ptr<ctoot::synth::SynthChannel> SynthChannelServices::createSynthChannel(weak_ptr<SynthChannelControls> controls)
 {
 	shared_ptr<SynthChannel> process;
 	for (auto& p : providers) {

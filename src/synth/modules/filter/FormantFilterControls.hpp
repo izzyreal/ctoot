@@ -7,6 +7,13 @@
 #include <memory>
 
 namespace ctoot {
+
+	namespace control {
+		class ControlLaw;
+		class BooleanControl;
+		class FloatControl;
+	}
+
 	namespace synth {
 		namespace modules {
 			namespace filter {

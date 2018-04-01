@@ -16,15 +16,20 @@
 #include <synth/id/TootSynthControlsId.hpp>
 
 using namespace ctoot::synth::channels;
+using namespace std;
 
 AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
 	: ctoot::synth::spi::TootSynthChannelServiceProvider("Toot Synth Channels", "0.2")
 {
 	std::string name;
-    name = ctoot::synth::channels::valor::ValorSynthControls::NAME();
-    addControls(ctoot::synth::channels::valor::ValorSynthControls::class_(), ctoot::synth::id::TootSynthControlsId::VALOR_CHANNEL_ID, name, u"Virtual Analog Polyphonic", u"0.2");
-    add(ctoot::synth::channels::valor::ValorSynthChannel::class_(), name, u"Valor", u"0.2");
-    name = ctoot::synth::channels::pluck::PluckSynthControls::NAME();
+    name = ctoot::synth::channels::valor::ValorSynthControls::NAME;
+    addControls("class ctoot::synth::channel::SynthChannelControls", ctoot::synth::id::TootSynthControlsId::VALOR_CHANNEL_ID, "class ctoot::synth::channels::valor::ValorSynthControls", "Virtual Analog Polyphonic", "0.2");
+    //add(ctoot::synth::channels::valor::ValorSynthChannel::class_(), name, u"Valor", u"0.2");
+
+	//addControls("class ctoot::audio::core::AudioControls", DelayIds::MODULATED_DELAY_ID, "class ctoot::audio::delay::ModulatedDelayControls", family, "0.2");
+
+    /*
+	name = ctoot::synth::channels::pluck::PluckSynthControls::NAME();
     addControls(ctoot::synth::channels::pluck::PluckSynthControls::class_(), ctoot::synth::id::TootSynthControlsId::PLUCK_CHANNEL_ID, name, u"Physically Modelled Plucked String", u"0.1");
     add(ctoot::synth::channels::pluck::PluckSynthChannel::class_(), name, u"Pluck", u"0.1");
     name = ctoot::synth::channels::copal::CopalSynthControls::NAME();
@@ -39,11 +44,18 @@ AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
     name = ctoot::synth::channels::nine::NineSynthControls::NAME();
     addControls(ctoot::synth::channels::nine::NineSynthControls::class_(), ctoot::synth::id::TootSynthControlsId::NINE_CHANNEL_ID, name, u"Hammond Drawbar Organ", u"0.1");
     add(ctoot::synth::channels::nine::NineSynthChannel::class_(), name, u"Nine", u"0.1");
+	*/
 }
 
- ctoot::synth::SynthChannel* ctoot::synth::channels::AllTootSynthChannelsServiceProvider::createSynthChannel(ctoot::synth::SynthChannelControls* c)
+ shared_ptr<ctoot::synth::SynthChannel> AllTootSynthChannelsServiceProvider::createSynthChannel(weak_ptr<ctoot::synth::SynthChannelControls> c)
 {
-    if(dynamic_cast< ctoot::synth::channels::valor::ValorSynthControls* >(c) != nullptr) {
+	 auto name = c.lock()->getName();
+	 MLOG("AllTootSynthChannelServiceProvider::createSynthChannel c name: " + name);
+	 if (name.compare("Valor") == 0) {
+		 return make_shared<ctoot::synth::channels::valor::ValorSynthChannel>(dynamic_pointer_cast<ctoot::synth::channels::valor::ValorSynthControls>(c.lock()).get());
+	 }
+	/*
+	 if(dynamic_cast< ctoot::synth::channels::valor::ValorSynthControls* >(c) != nullptr) {
         return new ctoot::synth::channels::valor::ValorSynthChannel(java_cast< ctoot::synth::channels::valor::ValorSynthControls* >(c));
     } else if(dynamic_cast< ctoot::synth::channels::pluck::PluckSynthControls* >(c) != nullptr) {
         return new ctoot::synth::channels::pluck::PluckSynthChannel(java_cast< ctoot::synth::channels::pluck::PluckSynthControls* >(c));
@@ -56,19 +68,6 @@ AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
     } else if(dynamic_cast< ctoot::synth::channels::nine::NineSynthControls* >(c) != nullptr) {
         return new ctoot::synth::channels::nine::NineSynthChannel(java_cast< ctoot::synth::channels::nine::NineSynthControls* >(c));
     }
+	*/
     return nullptr;
 }
-
-extern java::lang::Class *class_(const char16_t *c, int n);
-
-java::lang::Class* ctoot::synth::channels::AllTootSynthChannelsServiceProvider::class_()
-{
-    static ::java::lang::Class* c = ::class_("uk.org.toot.synth.channels.AllTootSynthChannelsServiceProvider", 62);
-    return c;
-}
-
-java::lang::Class* ctoot::synth::channels::AllTootSynthChannelsServiceProvider::getClass0()
-{
-    return class_();
-}
-

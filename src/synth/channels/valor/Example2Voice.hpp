@@ -3,6 +3,7 @@
 #include <synth/PolyphonicSynthChannelAbstractVoice.hpp>
 
 #include <vector>
+#include <cstdint>
 
 namespace ctoot {
 
@@ -18,21 +19,30 @@ namespace ctoot {
 
 		namespace modules {
 			namespace oscillator {
+				class OscillatorControl;
 				class MultiWaveOscillator;
+				class LFO;
 			}
 			namespace filter {
-				class MoogFilter;
+				class MoogFilter2;
+				class StateVariableFilter;
+			}
+			namespace envelope {
+				class EnvelopeGenerator;
 			}
 		}
 
 		namespace channels {
 			namespace valor {
 
-				class ValorSynthChannelExample2Voice
+				class ValorSynthChannel;
+
+				class Example2Voice
 					: public ctoot::synth::PolyphonicSynthChannelAbstractVoice
 				{
 
 				private:
+					ValorSynthChannel * vsc;
 					ctoot::synth::modules::oscillator::MultiWaveOscillator* oscillator1{  };
 					ctoot::synth::modules::oscillator::MultiWaveOscillator* oscillator2{  };
 					ctoot::synth::modules::oscillator::MultiWaveOscillator* oscillator3{  };
@@ -79,7 +89,7 @@ namespace ctoot {
 					bool isComplete() override;
 
 				public:
-					Example2Voice(int32_t pitch, int32_t velocity, int32_t sampleRate);
+					Example2Voice(ValorSynthChannel* vsc, int32_t pitch, int32_t velocity, int32_t sampleRate);
 
 				};
 

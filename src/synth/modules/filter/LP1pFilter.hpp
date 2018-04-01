@@ -1,5 +1,7 @@
 #pragma once
 
+#include <cstdint>
+
 namespace ctoot {
 	namespace synth {
 		namespace modules {
