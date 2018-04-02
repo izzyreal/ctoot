@@ -12,8 +12,8 @@
 #include <synth/SynthRackControls.hpp>
 #include <synth/SynthServices.hpp>
 
-#include <ctootextensions/MpcMultiMidiSynth.hpp>
-#include <ctootextensions/MpcMultiSynthControls.hpp>
+//#include <ctootextensions/MpcMultiMidiSynth.hpp>
+//#include <ctootextensions/MpcMultiSynthControls.hpp>
 
 using namespace ctoot::synth;
 using namespace ctoot::synth::synths::multi;

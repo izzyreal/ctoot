@@ -6,10 +6,10 @@
 #include <synth/synths/multi/MultiSynthControls.hpp>
 
 
-#include <ctootextensions/MpcSoundPlayerChannel.hpp>
-#include <ctootextensions/MpcBasicSoundPlayerChannel.hpp>
-#include <ctootextensions/MpcSoundPlayerControls.hpp>
-#include <ctootextensions/MpcBasicSoundPlayerControls.hpp>
+//#include <ctootextensions/MpcSoundPlayerChannel.hpp>
+//#include <ctootextensions/MpcBasicSoundPlayerChannel.hpp>
+//#include <ctootextensions/MpcSoundPlayerControls.hpp>
+//#include <ctootextensions/MpcBasicSoundPlayerControls.hpp>
 
 using namespace ctoot::synth::synths::multi;
 using namespace std;
