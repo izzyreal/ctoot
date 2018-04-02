@@ -12,6 +12,8 @@
 using namespace ctoot::synth::modules::oscillator;
 using namespace std;
 
+std::vector<std::shared_ptr<ctoot::control::ControlLaw>> LFOControls::laws;
+
 LFOControls::LFOControls(int32_t instanceIndex, std::string name, int32_t idOffset, LFOConfig* cfg)
 	: LFOControls(OscillatorIds::LFO_ID, instanceIndex, name, idOffset, cfg)
 {
@@ -64,7 +66,7 @@ void LFOControls::createControls()
 
 shared_ptr<ctoot::control::EnumControl> LFOControls::createShapeControl()
 {
-	return make_shared<ShapeControl>(SHAPE + idOffset, "Shape", "Sine");
+	return make_shared<ShapeControl>(SHAPE + idOffset, "Shape", string("Sine"));
 }
 
 shared_ptr<ctoot::control::FloatControl> LFOControls::createFrequencyControl()

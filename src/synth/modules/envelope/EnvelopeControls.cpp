@@ -10,6 +10,8 @@
 using namespace ctoot::synth::modules::envelope;
 using namespace std;
 
+std::vector<std::shared_ptr<ctoot::control::ControlLaw>> EnvelopeControls::laws;
+
 EnvelopeControls::EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset)
 	: EnvelopeControls(instanceIndex, name, idOffset, "S", 1.0f)
 {
@@ -113,8 +115,8 @@ float EnvelopeControls::LOG_0_01 = log(0.01);
 float EnvelopeControls::deriveTimeFactor(float milliseconds)
 {
     auto ns = milliseconds * sampleRate / int32_t(1000);
-    auto k = LOG_0_01_ / ns;
-    return static_cast< float >((1.0f - exp(k)));
+    auto k = LOG_0_01 / ns;
+    return static_cast< float >(1.0f - exp(k));
 }
 
 int32_t EnvelopeControls::deriveDelay()

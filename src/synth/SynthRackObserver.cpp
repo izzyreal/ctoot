@@ -29,19 +29,21 @@ SynthRackObserver::SynthRackObserver(SynthRack* sr, weak_ptr<SynthRackControls> 
 
 void SynthRackObserver::update(moduru::observer::Observable* obs, boost::any obj)
 {
+	MLOG("SynthRackObserver::update()");
 	try {
 		int nsynth = boost::any_cast<int>(obj);
 		if (nsynth < 0 || nsynth >= sr->synths.size()) return;
-		auto synthControls = controls.lock()->getSynthControls(nsynth);
-		if (synthControls != nullptr) {
-			//auto synth = make_shared<MultiMidiSynth>(nullptr);
-			//auto synth = SynthServices::createSynth(synthControls);
-			auto synth = make_shared<mpc::ctootextensions::MpcMultiMidiSynth>(dynamic_pointer_cast<MultiSynthControls>(synthControls));
-			if (synth == nullptr) {
+		auto synthControls = controls.lock()->getSynthControls(nsynth).lock();
+		if (synthControls) {
+			auto synth = SynthServices::createSynth(synthControls);
+			//auto synth = make_shared<mpc::ctootextensions::MpcMultiMidiSynth>(dynamic_pointer_cast<MultiSynthControls>(synthControls));
+			if (!synth) {
+				MLOG("Synth creation failed!");
 				std::cout << "synth == nullptr!" << endl;
 				return;
 			}
 			else {
+				MLOG("Synth creation succeeded: " + synth->getName());
 				char c = 'A' + nsynth;
 				string letterStr = "  ";
 				letterStr[0] = c;
@@ -50,7 +52,7 @@ void SynthRackObserver::update(moduru::observer::Observable* obs, boost::any obj
 			sr->setMidiSynth(nsynth, synth);
 		}
 		else {
-			sr->setMidiSynth(nsynth, nullptr);
+			sr->setMidiSynth(nsynth, shared_ptr<ctoot::synth::MidiSynth>());
 		}
 	}
 	catch (const boost::bad_any_cast& e) {

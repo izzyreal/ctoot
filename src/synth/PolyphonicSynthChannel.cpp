@@ -5,6 +5,8 @@
 #include <audio/core/AudioProcess.hpp>
 #include <synth/PolyphonicSynthChannelVoice.hpp>
 
+#include <Logger.hpp>
+
 using namespace ctoot::synth;
 
 PolyphonicSynthChannel::PolyphonicSynthChannel(std::string name)
@@ -82,6 +84,7 @@ int32_t ctoot::synth::PolyphonicSynthChannel::getPolyphony()
 
 void PolyphonicSynthChannel::noteOn(int32_t pitch, int32_t velocity)
 {
+	MLOG("\n\nReceived note on\n\n");
 	auto v = createVoice(pitch, velocity, sampleRate);
 	//synchronized synchronized_1(voices);
 	if (voices.size() >= polyphony) {

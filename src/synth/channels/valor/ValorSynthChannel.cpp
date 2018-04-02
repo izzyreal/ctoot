@@ -18,6 +18,7 @@ using namespace std;
 ValorSynthChannel::ValorSynthChannel(ValorSynthControls* controls)
 	: ctoot::synth::PolyphonicSynthChannel(controls->getName())
 {
+	MLOG("ValorSynthChannel constructor");
 	oscillator1Vars = controls->getOscillatorVariables(1 - 1).lock().get();
 	oscillator2Vars = controls->getOscillatorVariables(2 - 1).lock().get();
 	oscillator3Vars = controls->getOscillatorVariables(3 - 1).lock().get();

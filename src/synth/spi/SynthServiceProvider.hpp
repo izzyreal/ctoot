@@ -31,7 +31,7 @@ namespace ctoot {
 				virtual std::shared_ptr<ctoot::synth::SynthControls> createControls(ctoot::service::ServiceDescriptor* d);
 
 			public:
-				virtual std::shared_ptr<ctoot::synth::MidiSynth> createSynth(ctoot::synth::SynthControls* controls) {
+				virtual std::shared_ptr<ctoot::synth::MidiSynth> createSynth(std::weak_ptr<ctoot::synth::SynthControls> controls) {
 					return {};
 				}
 

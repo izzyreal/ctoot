@@ -6,9 +6,10 @@ namespace ctoot {
 	namespace audio {
 		namespace system {
 
-			struct AudioOutput
+			class AudioOutput
 				: public virtual AudioPort
 			{
+			public:
 				virtual std::string getLocation() = 0;
 
 			};

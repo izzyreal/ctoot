@@ -1,9 +1,10 @@
 #include <synth/synths/multi/MultiMidiSynthObserver.hpp>
 #include <synth/SynthChannel.hpp>
 #include <synth/SynthChannelControls.hpp>
-//#include <synth/SynthChannelServices.hpp>
+#include <synth/SynthChannelServices.hpp>
 #include <synth/synths/multi/MultiMidiSynth.hpp>
 #include <synth/synths/multi/MultiSynthControls.hpp>
+
 
 #include <ctootextensions/MpcSoundPlayerChannel.hpp>
 #include <ctootextensions/MpcBasicSoundPlayerChannel.hpp>
@@ -27,21 +28,24 @@ void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, boost::an
 		if (chan < 0 || chan > 15) return;
 
 		//temp limitation! remove once things are better.
-		if (chan > 4) return;
+		//if (chan > 4) return;
 
 		auto channelControls = controls.lock()->getChannelControls(chan).lock();
 
 		if (channelControls) {
-			//auto synthChannel = ctoot::synth::SynthChannelServices::createSynthChannel(channelControls);
-			shared_ptr<SynthChannel> synthChannel = nullptr;
+			auto synthChannel = ctoot::synth::SynthChannelServices::createSynthChannel(channelControls);
+			/*
+			shared_ptr<SynthChannel> synthChannel;
 			if (chan < 4) {
 				synthChannel = make_shared<mpc::ctootextensions::MpcSoundPlayerChannel>(dynamic_pointer_cast<mpc::ctootextensions::MpcSoundPlayerControls>(channelControls));
 			}
 			else {
 				synthChannel = make_shared<mpc::ctootextensions::MpcBasicSoundPlayerChannel>(dynamic_pointer_cast<mpc::ctootextensions::MpcBasicSoundPlayerControls>(channelControls));
 			}
+			*/
 			if (!synthChannel) {
-				// "No SynthChannel for SynthControls " + channelControls->getName();
+				string msg = "No SynthChannel for SynthControls " + channelControls->getName();
+				MLOG(msg);
 			}
 			else {
 				synthChannel->setLocation(mms->getLocation() + " Channel " + to_string(1 + chan));
@@ -53,7 +57,7 @@ void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, boost::an
 			mms->setChannel(chan, shared_ptr<SynthChannel>());
 		}
 	}
-	catch (boost::bad_any_cast e) {
+	catch (const boost::bad_any_cast& e) {
 		e.what();
 	}
 }

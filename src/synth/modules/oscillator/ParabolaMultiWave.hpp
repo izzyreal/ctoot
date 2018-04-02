@@ -20,7 +20,7 @@ namespace ctoot {
 					void normalise(std::vector<float>* data, float max) override;
 
 				public:
-					ParabolaMultiWave(int32_t size, float fNyquist);
+					ParabolaMultiWave();
 
 				};
 

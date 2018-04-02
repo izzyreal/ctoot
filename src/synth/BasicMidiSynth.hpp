@@ -22,7 +22,7 @@ namespace ctoot {
 		{
 
 		private:
-			std::vector<std::shared_ptr<ctoot::audio::system::AudioOutput>> audioOutputs{};
+			std::vector<std::weak_ptr<ctoot::audio::system::AudioOutput>> audioOutputs{};
 			std::vector<std::shared_ptr<SynthChannel>> synthChannels{};
 			std::string location{ "" };
 
@@ -47,7 +47,7 @@ namespace ctoot {
 			void closeMidi() override;
 
 		public:
-			virtual void addAudioOutput(std::shared_ptr<ctoot::audio::system::AudioOutput> output);
+			virtual void addAudioOutput(std::weak_ptr<ctoot::audio::system::AudioOutput> output);
 			virtual void removeAudioOutput(std::weak_ptr<ctoot::audio::system::AudioOutput> output);
 
 		public:

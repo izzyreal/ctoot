@@ -21,13 +21,14 @@ string MultiSynthControls::NAME_ = "MultiSynth";
 
 void MultiSynthControls::setChannelControls(int chan, shared_ptr<SynthChannelControls> c)
 {
+	MLOG("Setting channel controls to " + c->getName());
 	auto old = getChannelControls(chan).lock();
-	
-	if (old != nullptr) {
+
+	if (old) {
 		remove(old);
 		old->close();
 	}
-	if (c != nullptr) {
+	if (c) {
 		auto name = c->getName();
 		if (find(name).lock()) {
 			disambiguate(c);

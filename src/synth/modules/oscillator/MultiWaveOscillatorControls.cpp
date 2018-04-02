@@ -127,6 +127,7 @@ void MultiWaveOscillatorControls::deriveSampleRateDependentVariables()
 
 weak_ptr<MultiWave> MultiWaveOscillatorControls::deriveMultiWave()
 {
+	MLOG("deriveMultiWave");
 	auto name = boost::any_cast<string>(waveControl.lock()->getValue());
 	return MultiWaves::get(name);
 }

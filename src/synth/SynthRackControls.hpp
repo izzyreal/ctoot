@@ -14,12 +14,12 @@ namespace ctoot {
 		{
 
 		private:
-			std::vector<std::shared_ptr<SynthControls>> synthControls{};
+			std::vector<std::weak_ptr<SynthControls>> synthControls{};
 			int nsynths{ 0 };
 
 		public:
 			virtual int size();
-			virtual std::shared_ptr<SynthControls> getSynthControls(int synth);
+			virtual std::weak_ptr<SynthControls> getSynthControls(int synth);
 			virtual void setSynthControls(int synth, std::shared_ptr<SynthControls> controls);
 			virtual void removeAll();
 			int getProviderId() override;

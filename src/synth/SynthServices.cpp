@@ -36,10 +36,13 @@ shared_ptr<ctoot::synth::SynthControls> SynthServices::createControls(std::strin
 	return {};
 }
 
-shared_ptr<ctoot::synth::MidiSynth> SynthServices::createSynth(SynthControls* controls)
+shared_ptr<ctoot::synth::MidiSynth> SynthServices::createSynth(weak_ptr<SynthControls> controls)
 {
+	MLOG("SynthServices trying to create synth from controls " + controls.lock()->getName());
+	MLOG("Number of SynthServices providers: " + to_string(providers.size()));
 	shared_ptr<MidiSynth> synth;
 	for (auto& p : providers) {
+		MLOG("Trying with provider " + p.lock()->getDescription() + " / " + p.lock()->getProviderName());
 		synth = p.lock()->createSynth(controls);
 		if (synth)
 			return synth;
@@ -49,11 +52,13 @@ shared_ptr<ctoot::synth::MidiSynth> SynthServices::createSynth(SynthControls* co
 
 void SynthServices::scan()
 {
+	MLOG("Scanning for SynthServices...");
 	auto prov = lookup(ctoot::synth::spi::SynthServiceProvider());
 	providers.clear();
 	for (auto& p : prov) {
 		auto candidate = dynamic_pointer_cast<ctoot::synth::spi::SynthServiceProvider>(p.lock());
 		if (candidate) {
+			MLOG("Pushing back candidate " + candidate->getDescription() + " / " + candidate->getProviderName());
 			providers.push_back(candidate);
 		}
 	}

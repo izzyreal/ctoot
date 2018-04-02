@@ -16,7 +16,7 @@ namespace ctoot {
 		public:
 			static std::string lookupModuleName(int32_t providerId, int32_t moduleId);
 			static std::shared_ptr<SynthControls> createControls(std::string name);
-			static std::shared_ptr<MidiSynth> createSynth(SynthControls* controls);
+			static std::shared_ptr<MidiSynth> createSynth(std::weak_ptr<SynthControls> controls);
 			static void scan();
 			static void accept(service::ServiceVisitor* v, std::string typeIdName);
 			static void printServiceDescriptors(std::string typeIdName);

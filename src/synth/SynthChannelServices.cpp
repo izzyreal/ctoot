@@ -37,9 +37,10 @@ std::shared_ptr<ctoot::synth::SynthChannelControls> ctoot::synth::SynthChannelSe
 
 shared_ptr<ctoot::synth::SynthChannel> SynthChannelServices::createSynthChannel(weak_ptr<SynthChannelControls> controls)
 {
-	shared_ptr<SynthChannel> process;
+	MLOG("Trying to create synth channel");
 	for (auto& p : providers) {
-		process = p.lock()->createSynthChannel(controls);
+		MLOG("SynthChannelProvider " + p.lock()->getProviderName() + " / " + p.lock()->getDescription());
+		auto process = p.lock()->createSynthChannel(controls);
 		if (process) {
 			return process;
 		}

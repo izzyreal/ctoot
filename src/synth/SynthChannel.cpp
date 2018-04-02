@@ -5,56 +5,47 @@
 #include <synth/ControlChange.hpp>
 #include <cmath>
 
+#include <Logger.hpp>
+
 using namespace ctoot::synth;
 using namespace std;
 
-SynthChannel::SynthChannel() 
+SynthChannel::SynthChannel()
 {
-	
-	if (freqTable_.size() == 0) createFreqTable();
-	sampleRate = 44100;
-	inverseNyquist = 2.0f / sampleRate;
-	rawBend = 8192;
-	bendRange = 2;
-	bendFactor = 1;
-	pressure = 0;
-	polyPressure = vector<char>(128);
-	controller = vector<char>(128);
 }
 
 const double ctoot::synth::SynthChannel::ONE_SEMITONE { 1.0594630943592953 };
 
-vector<float>* SynthChannel::freqTable()
-{
-    return &freqTable_;
-}
-vector<float> SynthChannel::freqTable_ = vector<float>(0);
+//vector<float> SynthChannel::freqTable = createFreqTable();
+vector<float> SynthChannel::freqTable;
 
-void SynthChannel::createFreqTable()
+vector<float> SynthChannel::createFreqTable()
 {
-	freqTable_ = vector<float>(140);
-    for (auto i = 0; i < freqTable_.size(); i++) {
-        freqTable_[i] = midiFreqImpl(i);
-    }
+	static auto res = vector<float>(140);
+	for (auto i = 0; i < res.size(); i++) {
+		res[i] = midiFreqImpl(i);
+	}
+	return res;
 }
 
 float SynthChannel::midiFreq(float pitch)
 {
+	if (freqTable.size() == 0) freqTable = createFreqTable();
 	if (pitch < 0)
-		return freqTable_[0];
+		return freqTable[0];
 
-	if (pitch >= (int)(freqTable_.size()) - 1)
-		return freqTable_[(int)(freqTable_.size()) - 2];
+	if (pitch >= (int)(freqTable.size()) - 1)
+		return freqTable[(int)(freqTable.size()) - 2];
 
-	auto idx = static_cast<int>(pitch);
+	auto idx = (int)(pitch);
 	auto frac = pitch - idx;
-	return freqTable_[idx] * (1 - frac) + freqTable_[idx + 1] * frac;
+	return freqTable[idx] * (1 - frac) + freqTable[idx + 1] * frac;
 }
 
 float SynthChannel::midiFreqImpl(int pitch)
 {
-    
-    return static_cast< float >((440.0 * pow(2.0, (static_cast< double >(pitch) - 69.0) / 12.0)));
+	auto res = (float)(440.0 * pow(2.0, ((double)(pitch) - 69.0) / 12.0));
+    return res;
 }
 
 void SynthChannel::setSampleRate(int rate)

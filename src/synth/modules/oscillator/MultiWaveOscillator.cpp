@@ -6,6 +6,8 @@
 #include <synth/modules/oscillator/OscillatorControl.hpp>
 #include <synth/modules/oscillator/Wave.hpp>
 
+#include <Logger.hpp>
+
 using namespace ctoot::synth::modules::oscillator;
 
 MultiWaveOscillator::MultiWaveOscillator(ctoot::synth::SynthChannel* channel, MultiWaveOscillatorVariables* oscillatorVariables, float frequency)

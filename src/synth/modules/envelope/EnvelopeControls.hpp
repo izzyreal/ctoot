@@ -46,9 +46,6 @@ namespace ctoot {
 					virtual void deriveSampleRateIndependentVariables();
 					virtual void deriveSampleRateDependentVariables();
 
-				private:
-					static float LOG_0_01_;
-
 				protected:
 					virtual float deriveTimeFactor(float milliseconds);
 					virtual int32_t deriveDelay();

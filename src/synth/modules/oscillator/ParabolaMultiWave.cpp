@@ -3,8 +3,8 @@
 using namespace ctoot::synth::modules::oscillator;
 using namespace std;
 
-ParabolaMultiWave::ParabolaMultiWave(int32_t size, float fNyquist)
-	: MultiWave(size, fNyquist)
+ParabolaMultiWave::ParabolaMultiWave()
+	: MultiWave()
 {
 }
 

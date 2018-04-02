@@ -12,25 +12,25 @@ namespace ctoot {
 		{
 
 		public:
-			int sampleRate{ 0 };
-			float inverseNyquist{ 0.f };
+			int sampleRate{ 44100 };
+			float inverseNyquist{ 2.0f / sampleRate };
 
 		private:
-			int rawBend{ 0 };
-			int bendRange{ 0 };
-			float bendFactor{ 0.f };
+			int rawBend{ 8192 };
+			int bendRange{ 2 };
+			float bendFactor{ 1.0f };
 			int pressure{ 0 };
-			std::vector<char> polyPressure{};
-			std::vector<char> controller{};
+			std::vector<char> polyPressure = std::vector<char>(128);
+			std::vector<char> controller = std::vector<char>(128);
 
 			static const double ONE_SEMITONE;
-			static std::vector<float> freqTable_;
+			static std::vector<float> freqTable;
 
 		public:
 			virtual void setLocation(std::string location) = 0;
 
 		private:
-			static void createFreqTable();
+			static std::vector<float> createFreqTable();
 
 		public:
 			static float midiFreq(float pitch);
@@ -75,9 +75,6 @@ namespace ctoot {
 
 		public:
 			virtual void noteOff(int noteNumber) = 0;
-
-		private:
-			static std::vector<float>* freqTable();
 
 		};
 	}

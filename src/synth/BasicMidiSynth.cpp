@@ -8,6 +8,8 @@
 #include <midi/misc/Controller.hpp>
 #include <synth/SynthChannel.hpp>
 
+#include <Logger.hpp>
+
 using namespace ctoot::audio::system;
 using namespace ctoot::synth;
 using namespace std;
@@ -114,9 +116,10 @@ void BasicMidiSynth::closeMidi()
 {
 }
 
-void BasicMidiSynth::addAudioOutput(std::shared_ptr<AudioOutput> output)
+void BasicMidiSynth::addAudioOutput(std::weak_ptr<AudioOutput> output)
 {
-	audioOutputs.push_back(std::move(output));
+	MLOG("BasicMidiSynth::addAudioOutput " + output.lock()->getName());
+	audioOutputs.push_back(output);
     setChanged();
     notifyObservers(output);
 }
@@ -124,7 +127,7 @@ void BasicMidiSynth::addAudioOutput(std::shared_ptr<AudioOutput> output)
 void BasicMidiSynth::removeAudioOutput(std::weak_ptr<AudioOutput> output)
 {
 	for (int i = 0; i < audioOutputs.size(); i++) {
-		if (audioOutputs[i] == output.lock()) {
+		if (audioOutputs[i].lock() == output.lock()) {
 			audioOutputs.erase(audioOutputs.begin() + i);
 			break;
 		}
@@ -135,10 +138,7 @@ void BasicMidiSynth::removeAudioOutput(std::weak_ptr<AudioOutput> output)
 
 vector<std::weak_ptr<AudioOutput>> BasicMidiSynth::getAudioOutputs()
 {
-	std::vector<std::weak_ptr<AudioOutput>> res;
-	for (auto& o : audioOutputs)
-		res.push_back(o);
-    return res;
+    return audioOutputs;
 }
 
 vector<std::weak_ptr<AudioInput>> BasicMidiSynth::getAudioInputs()
@@ -151,9 +151,4 @@ void BasicMidiSynth::closeAudio()
 }
 
 BasicMidiSynth::~BasicMidiSynth() {
-	for (auto& c : synthChannels) {
-		if (c != nullptr) {
-			c.reset();
-		}
-	}
 }

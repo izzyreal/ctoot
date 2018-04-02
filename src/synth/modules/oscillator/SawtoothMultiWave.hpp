@@ -18,7 +18,7 @@ namespace ctoot {
 					int32_t partial(std::vector<float>* data, int32_t length, int32_t partial, int32_t sign, float comp) override;
 
 				public:
-					SawtoothMultiWave(int32_t size, float fNyquist);
+					SawtoothMultiWave();
 
 				};
 

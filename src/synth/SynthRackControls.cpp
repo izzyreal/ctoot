@@ -8,10 +8,11 @@
 using namespace ctoot::synth;
 using namespace std;
 
-SynthRackControls::SynthRackControls(int nsynths) : CompoundControl(2, "Synth Rack")
+SynthRackControls::SynthRackControls(int nsynths)
+	: CompoundControl(2, "Synth Rack")
 {
 	this->nsynths = nsynths;
-	synthControls = vector<shared_ptr<SynthControls>>(nsynths);
+	synthControls = vector<weak_ptr<SynthControls>>(nsynths);
 }
 
 int SynthRackControls::size()
@@ -19,7 +20,7 @@ int SynthRackControls::size()
     return nsynths;
 }
 
-shared_ptr<SynthControls> SynthRackControls::getSynthControls(int synth)
+weak_ptr<SynthControls> SynthRackControls::getSynthControls(int synth)
 {
     return synthControls[synth];
 }
@@ -27,18 +28,19 @@ shared_ptr<SynthControls> SynthRackControls::getSynthControls(int synth)
 void SynthRackControls::setSynthControls(int synth, shared_ptr<SynthControls> controls)
 {
 	auto old = synthControls[synth];
-	if (old != nullptr) {
+	if (old.lock()) {
 		remove(old);
 	}
-	if (controls != nullptr) {
+	weak_ptr<SynthControls> weakRef = controls;
+	if (controls) {
 		string name = controls->getName();
 		if (find(name).lock()) {
 			disambiguate(controls);
 			controls->setAnnotation(name);
 		}
-		add(controls);
+		add(std::move(controls));
 	}
-	synthControls[synth] = controls;
+	synthControls[synth] = weakRef;
 	setChanged();
 	notifyObservers(synth);
 }

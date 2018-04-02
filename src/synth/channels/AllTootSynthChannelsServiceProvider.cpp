@@ -69,5 +69,5 @@ AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
         return new ctoot::synth::channels::nine::NineSynthChannel(java_cast< ctoot::synth::channels::nine::NineSynthControls* >(c));
     }
 	*/
-    return nullptr;
+	 return {};
 }

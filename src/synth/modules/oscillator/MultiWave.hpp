@@ -17,7 +17,7 @@ namespace ctoot {
 					std::vector<std::shared_ptr<Wave>> wave = std::vector<std::shared_ptr<Wave>>(128);
 
 				private:
-					static std::vector<int8_t> index;
+					static std::vector<int> index;
 
 				protected:
 					std::vector<float> sinetable{  };
@@ -36,7 +36,10 @@ namespace ctoot {
 					virtual float getWidthScalar(float width);
 					virtual float getWidthOffset(float width);
 
-					MultiWave(int32_t size, float fNyquist);
+				public:
+					MultiWave();
+					void init(int32_t size, float fNyquist);
+
 				};
 
 			}
