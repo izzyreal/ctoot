@@ -6,10 +6,10 @@
 #include <synth/synths/multi/MultiSynthControls.hpp>
 
 
-//#include <ctootextensions/MpcSoundPlayerChannel.hpp>
-//#include <ctootextensions/MpcBasicSoundPlayerChannel.hpp>
-//#include <ctootextensions/MpcSoundPlayerControls.hpp>
-//#include <ctootextensions/MpcBasicSoundPlayerControls.hpp>
+//#include <mpc/MpcSoundPlayerChannel.hpp>
+//#include <MpcBasicSoundPlayerChannel.hpp>
+//#include <MpcSoundPlayerControls.hpp>
+//#include <MpcBasicSoundPlayerControls.hpp>
 
 using namespace ctoot::synth::synths::multi;
 using namespace std;
@@ -37,10 +37,10 @@ void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, boost::an
 			/*
 			shared_ptr<SynthChannel> synthChannel;
 			if (chan < 4) {
-				synthChannel = make_shared<mpc::ctootextensions::MpcSoundPlayerChannel>(dynamic_pointer_cast<mpc::ctootextensions::MpcSoundPlayerControls>(channelControls));
+				synthChannel = make_shared<ctoot::mpc::MpcSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcSoundPlayerControls>(channelControls));
 			}
 			else {
-				synthChannel = make_shared<mpc::ctootextensions::MpcBasicSoundPlayerChannel>(dynamic_pointer_cast<mpc::ctootextensions::MpcBasicSoundPlayerControls>(channelControls));
+				synthChannel = make_shared<ctoot::mpc::MpcBasicSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcBasicSoundPlayerControls>(channelControls));
 			}
 			*/
 			if (!synthChannel) {

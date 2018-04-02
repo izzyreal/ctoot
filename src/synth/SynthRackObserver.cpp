@@ -12,8 +12,8 @@
 #include <synth/SynthRackControls.hpp>
 #include <synth/SynthServices.hpp>
 
-//#include <ctootextensions/MpcMultiMidiSynth.hpp>
-//#include <ctootextensions/MpcMultiSynthControls.hpp>
+//#include <MpcMultiMidiSynth.hpp>
+//#include <MpcMultiSynthControls.hpp>
 
 using namespace ctoot::synth;
 using namespace ctoot::synth::synths::multi;
@@ -36,7 +36,7 @@ void SynthRackObserver::update(moduru::observer::Observable* obs, boost::any obj
 		auto synthControls = controls.lock()->getSynthControls(nsynth).lock();
 		if (synthControls) {
 			auto synth = SynthServices::createSynth(synthControls);
-			//auto synth = make_shared<mpc::ctootextensions::MpcMultiMidiSynth>(dynamic_pointer_cast<MultiSynthControls>(synthControls));
+			//auto synth = make_shared<ctoot::mpc::MpcMultiMidiSynth>(dynamic_pointer_cast<MultiSynthControls>(synthControls));
 			if (!synth) {
 				MLOG("Synth creation failed!");
 				std::cout << "synth == nullptr!" << endl;

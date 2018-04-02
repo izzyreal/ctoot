@@ -31,7 +31,7 @@ void SawtoothOscillator::update()
     currentIncrement = increment * channel->getBendFactor();
 }
 
-float ctoot::synth::modules::oscillator::SawtoothOscillator::getSample(float mod)
+float SawtoothOscillator::getSample(float mod)
 {
 	auto inc = currentIncrement * mod;
 	auto sample = wave.lock()->get(index);
