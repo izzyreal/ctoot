@@ -44,12 +44,13 @@ namespace ctoot {
 
 		public:
 			MpcSoundPlayerControls(std::weak_ptr<MpcMultiMidiSynth> mms, std::weak_ptr<MpcSampler> sampler, int drumNumber, std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer, std::weak_ptr<ctoot::audio::server::AudioServer> server, MpcMixerSetupGui* mixerSetupGui);
+			MpcSoundPlayerControls();
 			~MpcSoundPlayerControls();
 
 		public:
 			static std::string NAME();
 
 		};
-
+		REGISTER_TYPE(ctoot::mpc::, MpcSoundPlayerControls)
 	}
 }

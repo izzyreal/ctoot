@@ -30,8 +30,8 @@ AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
 	std::string name;
     name = ctoot::synth::channels::valor::ValorSynthControls::NAME;
     addControls("class ctoot::synth::channel::SynthChannelControls", ctoot::synth::id::TootSynthControlsId::VALOR_CHANNEL_ID, "class ctoot::synth::channels::valor::ValorSynthControls", "Virtual Analog Polyphonic", "0.2");
-	addControls("class ctoot::mpc::MpcBasicSoundPlayerControls", ctoot::mpc::MpcBasicSoundPlayerControls::MPC_BASIC_SOUND_PLAYER_CHANNEL_ID, "class ctoot::mpc::MpcBasicSoundPlayerControls", "MPC Basic", "0.2");
-	addControls("class ctoot::mpc::MpcSoundPlayerControls", ctoot::mpc::MpcSoundPlayerControls::MPC_SOUND_PLAYER_CHANNEL_ID, "class ctoot::mpc::MpcSoundPlayerControls", "MPC", "0.2");
+	addControls("class ctoot::synth::channel::SynthChannelControls", ctoot::mpc::MpcBasicSoundPlayerControls::MPC_BASIC_SOUND_PLAYER_CHANNEL_ID, "class ctoot::mpc::MpcBasicSoundPlayerControls", "MPC Basic", "0.2");
+	addControls("class ctoot::synth::channel::SynthChannelControls", ctoot::mpc::MpcSoundPlayerControls::MPC_SOUND_PLAYER_CHANNEL_ID, "class ctoot::mpc::MpcSoundPlayerControls", "MPC", "0.2");
 
 	//add(ctoot::synth::channels::valor::ValorSynthChannel::class_(), name, u"Valor", u"0.2");
 
@@ -66,7 +66,7 @@ shared_ptr<ctoot::synth::SynthChannel> AllTootSynthChannelsServiceProvider::crea
 	if (name.compare("MpcBasicSoundPlayerChannel") == 0) {
 		return make_shared<ctoot::mpc::MpcBasicSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcBasicSoundPlayerControls>(c.lock()));
 	}
-	if (name.compare("MpcSoundPlayer") == 0) {
+	if (name.substr(0, 14).compare("MpcSoundPlayer") == 0) {
 		return make_shared<ctoot::mpc::MpcSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcSoundPlayerControls>(c.lock()));
 	}
 

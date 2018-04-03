@@ -7,6 +7,11 @@
 using namespace ctoot::mpc;
 using namespace std;
 
+MpcSoundPlayerControls::MpcSoundPlayerControls()
+	: ctoot::synth::SynthChannelControls(MPC_SOUND_PLAYER_CHANNEL_ID, NAME_)
+{
+}
+
 MpcSoundPlayerControls::MpcSoundPlayerControls(weak_ptr<MpcMultiMidiSynth> mms,
 	weak_ptr<MpcSampler> sampler
 	, int drumNumber

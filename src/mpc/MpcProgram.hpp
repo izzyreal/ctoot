@@ -5,6 +5,10 @@
 namespace ctoot {
 	namespace mpc {
 
+		class MpcNoteParameters;
+		class MpcStereoMixerChannel;
+		class MpcIndivFxMixerChannel;
+
 		class MpcProgram {
 
 		public:

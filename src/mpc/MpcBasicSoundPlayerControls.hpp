@@ -41,12 +41,13 @@ namespace ctoot {
 			std::weak_ptr<ctoot::mpc::MpcVoice> getVoice();
 
 			MpcBasicSoundPlayerControls(std::weak_ptr<ctoot::mpc::MpcSampler> sampler, std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer, std::weak_ptr<ctoot::mpc::MpcVoice> voice);
+			MpcBasicSoundPlayerControls();
 			~MpcBasicSoundPlayerControls();
 
 		public:
 			static std::string& NAME();
 
 		};
-
+		REGISTER_TYPE(ctoot::mpc::, MpcBasicSoundPlayerControls)
 	}
 }
