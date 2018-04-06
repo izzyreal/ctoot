@@ -5,18 +5,8 @@
 #include <dsp/FastMath.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::dsp;
 using namespace std;
-
-void MidSideDynamicsProcess::init()
-{
-	envelope = vector<float>(2);
-    isPeak = false;
-	sampleRate = 0;
-	NSQUARESUMS = 10;
-    squaresumsM = vector<float>(NSQUARESUMS);
-    squaresumsS = vector<float>(NSQUARESUMS);
-	nsqsum = 0;
-}
 
 MidSideDynamicsProcess::MidSideDynamicsProcess(MidSideDynamicsProcessVariables* vars)
 	: MidSideDynamicsProcess(vars, false)
@@ -25,7 +15,6 @@ MidSideDynamicsProcess::MidSideDynamicsProcess(MidSideDynamicsProcessVariables* 
 
 MidSideDynamicsProcess::MidSideDynamicsProcess(MidSideDynamicsProcessVariables* vars, bool peak)
 {
-	init();
 	this->vars = vars;
 	this->isPeak = peak;
 	wasBypassed = !vars->isBypassed();
@@ -55,7 +44,7 @@ int32_t MidSideDynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 		wasBypassed = true;
 		return AUDIO_OK;
 	}
-	auto sr = static_cast<int32_t>(buffer->getSampleRate());
+	auto sr = buffer->getSampleRate();
 	if (sr != sampleRate) {
 		sampleRate = sr;
 		vars->update(sr);
@@ -66,34 +55,35 @@ int32_t MidSideDynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	auto gainM = 0.0f;
 	auto gainS = 0.0f;
 	auto len = buffer->getSampleCount();
-	auto mslen = static_cast<int32_t>((buffer->getSampleRate() * 0.001f));
+	auto mslen = static_cast<int32_t>(buffer->getSampleRate() * 0.001f);
 	auto sumdiv = 1.0f / (mslen + mslen);
+
 	if (!buffer->encodeMidSide())
 		return AUDIO_OK;
 
 	samplesM = buffer->getChannel(0);
 	samplesS = buffer->getChannel(1);
-	for (auto i = int32_t(0); i < len; i++) {
-		float keyM = int32_t(0);
-		float keyS = int32_t(0);
+	for (int i = 0; i < len; i++) {
+		float keyM = 0.0f;
+		float keyS = 0.0f;
 		if (isPeak) {
-			keyM = ctoot::dsp::FastMath::max(keyM, abs((*samplesM)[i]));
-			keyS = ctoot::dsp::FastMath::max(keyS, abs((*samplesS)[i]));
+			keyM = FastMath::max(keyM, abs((*samplesM)[i]));
+			keyS = FastMath::max(keyS, abs((*samplesS)[i]));
 			targetGainM = function(0, keyM);
 			targetGainS = function(1, keyS);
 		}
 		else if ((i % mslen) == 0 && (i + mslen) < len) {
 			auto sumOfSquaresM = 0.0f;
 			auto sumOfSquaresS = 0.0f;
-			for (int32_t j = int32_t(0), k = i; j < mslen; j++, k++) {
+			for (int j = 0, k = i; j < mslen; j++, k++) {
 				sumOfSquaresM += (*samplesM)[k] * (*samplesM)[k];
 				sumOfSquaresS += (*samplesS)[k] * (*samplesS)[k];
 			}
 			squaresumsM[nsqsum] = sumOfSquaresM * sumdiv;
 			squaresumsS[nsqsum] = sumOfSquaresS * sumdiv;
-			float meanM = int32_t(0);
-			float meanS = int32_t(0);
-			for (auto s = int32_t(0); s < NSQUARESUMS; s++) {
+			float meanM = 0.0f;
+			float meanS = 0.0f;
+			for (int s = 0; s < NSQUARESUMS; s++) {
 				meanM += squaresumsM[s];
 				meanS += squaresumsS[s];
 			}

@@ -89,3 +89,12 @@ string ServiceProvider::toString()
 {
 	return string(" v" + version + " by " + providerName);
 }
+
+ServiceProvider::~ServiceProvider() {
+	MLOG("Service provider destructor called for " + this->getProviderName());
+	for (auto& s : services) {
+		for (auto& sd : s.second) {
+			if (sd != nullptr) delete sd;
+		}
+	}
+}

@@ -44,6 +44,7 @@ namespace ctoot {
 		public:
 			ServiceProvider(int providerId, std::string providerName, std::string description, std::string version);
 			ServiceProvider() {}
+			~ServiceProvider();
 		};
 
 	}

@@ -1,7 +1,5 @@
 #include <audio/dynamics/MidSideCompressorControls1.hpp>
 
-#include <audio/dynamics/MidSideCompressorControls.hpp>
-
 using namespace ctoot::audio::dynamics;
 using namespace std;
 

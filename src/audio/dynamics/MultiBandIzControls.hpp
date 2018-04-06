@@ -6,15 +6,15 @@ namespace ctoot {
 	namespace audio {
 		namespace dynamics {
 
-			class MidSideQuadBandControls
+			class MultiBandIzControls
 				: public MultiBandControls
 			{
 
 			public:
-				MidSideQuadBandControls();
+				MultiBandIzControls();
 
 			};
-			REGISTER_TYPE(ctoot::audio::dynamics::, MidSideQuadBandControls);
+			REGISTER_TYPE(ctoot::audio::dynamics::, MultiBandIzControls);
 		}
 	}
 }

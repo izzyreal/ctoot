@@ -66,7 +66,7 @@ shared_ptr<ctoot::synth::SynthChannel> AllTootSynthChannelsServiceProvider::crea
 	if (name.compare("MpcBasicSoundPlayerChannel") == 0) {
 		return make_shared<ctoot::mpc::MpcBasicSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcBasicSoundPlayerControls>(c.lock()));
 	}
-	if (name.substr(0, 14).compare("MpcSoundPlayer") == 0) {
+	if (name.length() >= 14 && name.substr(0, 14).compare("MpcSoundPlayer") == 0) {
 		return make_shared<ctoot::mpc::MpcSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcSoundPlayerControls>(c.lock()));
 	}
 

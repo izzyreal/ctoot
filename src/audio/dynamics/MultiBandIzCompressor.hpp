@@ -16,19 +16,19 @@ namespace ctoot {
 		namespace dynamics {
 
 			class CrossoverControl;
-			class MultiBandControls;
-			class MidSideCompressor;
+			class MultiBandIzControls;
+			class IzCompressor;
 
-			class MidSideMultiBandCompressor
+			class MultiBandIzCompressor
 				: public virtual ctoot::audio::core::AudioProcess
 			{
 
 			private:
-				MultiBandControls* multiBandControls{  };
-				std::vector<MidSideCompressor*> compressors{  };
-				ctoot::audio::filter::Crossover* midXO{  };
-				ctoot::audio::filter::Crossover* hiXO{  };
-				ctoot::audio::filter::Crossover* loXO{  };
+				MultiBandIzControls* multiBandControls{  };
+				std::vector<IzCompressor*> compressors{  };
+				ctoot::audio::filter::Crossover* midXO{ nullptr };
+				ctoot::audio::filter::Crossover* hiXO{ nullptr };
+				ctoot::audio::filter::Crossover* loXO{ nullptr };
 				std::vector<ctoot::audio::core::AudioBuffer*> bandBuffers{  };
 				int32_t nbands{  };
 				int32_t nchans{ -1 };
@@ -49,7 +49,8 @@ namespace ctoot {
 				virtual void updateSampleRate(int32_t rate);
 
 			public:
-				MidSideMultiBandCompressor(MultiBandControls* c);
+				MultiBandIzCompressor(MultiBandIzControls* c);
+				~MultiBandIzCompressor();
 
 			};
 

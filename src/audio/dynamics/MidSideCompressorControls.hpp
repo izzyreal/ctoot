@@ -21,21 +21,19 @@ namespace ctoot {
 				: public ctoot::audio::core::AudioControls
 				, public virtual MidSideDynamicsProcessVariables
 			{
-			private:
-				void init();
 
 			private:
 				std::weak_ptr<CompressorControls> mid{  };
 				std::weak_ptr<CompressorControls> side{  };
-				std::vector<float> threshold{  };
-				std::vector<float> inverseThreshold{  };
-				std::vector<float> knee{  };
-				std::vector<float> inverseRatio{  };
-				std::vector<float> attack{  };
-				std::vector<int32_t> hold{  };
-				std::vector<float> release{  };
-				std::vector<float> gain{  };
-				std::vector<float> depth{  };
+				std::vector<float> threshold = std::vector<float>(2);
+				std::vector<float> inverseThreshold = std::vector<float>(2);
+				std::vector<float> knee = std::vector<float>(2);
+				std::vector<float> inverseRatio = std::vector<float>(2);
+				std::vector<float> attack = std::vector<float>(2);
+				std::vector<int32_t> hold = std::vector<int32_t>(2);
+				std::vector<float> release = std::vector<float>(2);
+				std::vector<float> gain = std::vector<float>(2);
+				std::vector<float> depth = std::vector<float>(2);
 
 			protected:
 				virtual void deriveIndependentVariables();

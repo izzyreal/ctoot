@@ -32,3 +32,8 @@ void IIRCrossover::clear()
     lpf->clear();
     hpf->clear();
 }
+
+IIRCrossover::~IIRCrossover() {
+	if (lpf != nullptr) delete lpf;
+	if (hpf != nullptr) delete hpf;
+}

@@ -13,8 +13,8 @@ namespace ctoot {
 			{
 
 			private:
-				Filter* hpf{  };
-				Filter* lpf{  };
+				Filter* hpf{ nullptr };
+				Filter* lpf{ nullptr };
 
 			public:
 				void setSampleRate(int32_t rate) override;
@@ -23,6 +23,7 @@ namespace ctoot {
 
 			public:
 				IIRCrossover(FilterSpecification* low, FilterSpecification* high);
+				~IIRCrossover();
 			};
 		}
 	}

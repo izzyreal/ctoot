@@ -9,23 +9,9 @@
 using namespace ctoot::audio::dynamics;
 using namespace std;
 
-void MidSideCompressorControls::init()
-{
-    threshold = vector<float>(2);
-    inverseThreshold = vector<float>(2);
-    knee = vector<float>(2);
-    inverseRatio = vector<float>(2);
-    attack = vector<float>(2);
-    hold = vector<int32_t>(2);
-    release = vector<float>(2);
-    gain = vector<float>(2);
-    depth = vector<float>(2);
-}
-
 MidSideCompressorControls::MidSideCompressorControls()
 	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "Mid-Side Compressor")
 {
-    init();
 	auto m = make_shared<MidSideCompressorControls1>("Mid", 0);
 	mid = m;
 	add(std::move(m));
@@ -39,7 +25,6 @@ MidSideCompressorControls::MidSideCompressorControls()
 MidSideCompressorControls::MidSideCompressorControls(std::string band)
 	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "Mid-Side Compressor")
 {
-	init();
 	auto m = make_shared<MidSideCompressorControls1>(band + " " + "Mid", 0);
 	mid = m;
 	add(std::move(m));

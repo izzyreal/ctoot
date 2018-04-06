@@ -97,25 +97,26 @@ namespace ctoot {
 				virtual void deriveHysteresis();
 				virtual void deriveKey();
 				void setParent(ctoot::control::CompoundControl* parent) override;
-				virtual bool hasGainReductionIndicator();
 				virtual ctoot::control::ControlLaw* getThresholdLaw();
+				virtual ctoot::control::ControlLaw* getAttackLaw();
+				virtual ctoot::control::ControlLaw* getHoldLaw();
+				virtual ctoot::control::ControlLaw* getReleaseLaw();
+				virtual ctoot::control::ControlLaw* getDryGainLaw();
+				virtual ctoot::control::ControlLaw* getGainLaw();
+				virtual ctoot::control::ControlLaw* getDepthLaw();
+				virtual ctoot::control::ControlLaw* getHysteresisLaw();
+
+				virtual bool hasKey();
+				virtual bool hasHysteresis();
+				virtual bool hasDepth();
+				virtual bool hasGain();
+				virtual bool hasGainReductionIndicator();
 				virtual bool hasInverseRatio();
 				virtual bool hasRatio();
 				virtual bool hasKnee();
 				virtual bool hasRMS();
-				virtual ctoot::control::ControlLaw* getAttackLaw();
 				virtual bool hasHold();
-				virtual ctoot::control::ControlLaw* getHoldLaw();
-				virtual ctoot::control::ControlLaw* getReleaseLaw();
 				virtual bool hasDryGain();
-				virtual ctoot::control::ControlLaw* getDryGainLaw();
-				virtual bool hasGain();
-				virtual ctoot::control::ControlLaw* getGainLaw();
-				virtual bool hasDepth();
-				virtual ctoot::control::ControlLaw* getDepthLaw();
-				virtual bool hasHysteresis();
-				virtual ctoot::control::ControlLaw* getHysteresisLaw();
-				virtual bool hasKey();
 
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createGainControl();

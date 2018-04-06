@@ -13,12 +13,10 @@ namespace ctoot {
 			class MidSideDynamicsProcess
 				: public ctoot::audio::core::SimpleAudioProcess
 			{
-			private:
-				void init();
 
 			protected:
-				std::vector<float> envelope{  };
-				bool isPeak{  };
+				std::vector<float> envelope = std::vector<float>(2);
+				bool isPeak{ false };
 				std::vector<float> threshold{  };
 				std::vector<float> attack{  };
 				std::vector<float> release{  };
@@ -27,11 +25,11 @@ namespace ctoot {
 
 			private:
 				bool wasBypassed{  };
-				int32_t sampleRate{  };
-				int32_t NSQUARESUMS{  };
-				std::vector<float> squaresumsM{  };
-				std::vector<float> squaresumsS{  };
-				int32_t nsqsum{  };
+				int32_t sampleRate{ 0 };
+				const int32_t NSQUARESUMS{ 10 };
+				std::vector<float> squaresumsM = std::vector<float>(NSQUARESUMS);
+				std::vector<float> squaresumsS = std::vector<float>(NSQUARESUMS);
+				int32_t nsqsum{ 0 };
 				std::vector<float>* samplesM{  };
 				std::vector<float>* samplesS{  };
 
