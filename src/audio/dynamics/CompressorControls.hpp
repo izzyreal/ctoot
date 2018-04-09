@@ -21,7 +21,7 @@ namespace ctoot {
 				static std::weak_ptr<ctoot::control::ControlLaw> ATTACK_LAW();
 
 			protected:
-				ctoot::control::ControlLaw* getAttackLaw() override;
+				std::weak_ptr<ctoot::control::ControlLaw> getAttackLaw() override;
 				bool hasGainReductionIndicator() override;
 				bool hasRatio() override;
 				bool hasGain() override;

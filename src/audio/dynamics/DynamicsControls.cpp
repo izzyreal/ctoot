@@ -7,6 +7,7 @@
 #include <audio/dynamics/DynamicsControlIds.hpp>
 #include <audio/dynamics/InverseRatioControl.hpp>
 #include <audio/dynamics/GainReductionIndicator.hpp>
+#include <audio/dynamics/izcompressor/ChannelControl.hpp>
 #include <control/BooleanControl.hpp>
 #include <control/ControlColumn.hpp>
 #include <control/CompoundControl.hpp>
@@ -71,6 +72,12 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::DRY_GAIN_LAW()
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(0.0f, 20.0f, "dB");
+	return res;
+}
+
+weak_ptr<ctoot::control::ControlLaw> DynamicsControls::INPUT_GAIN_LAW()
+{
+	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
 	return res;
 }
 
@@ -143,8 +150,16 @@ void DynamicsControls::derive(ctoot::control::Control* c)
     case DynamicsControlIds::RMS:
         deriveRMS();
         break;
-    }
-
+	case DynamicsControlIds::DETECTION_CHANNEL_MODE:
+		deriveDetectionChannelMode();
+		break;
+	case DynamicsControlIds::ATTENUATION_CHANNEL_MODE:
+		deriveAttenuationChannelMode();
+		break;
+	case DynamicsControlIds::INPUT_GAIN:
+		deriveInputGain();
+		break;
+	}
 }
 
 void DynamicsControls::deriveThreshold()
@@ -152,6 +167,27 @@ void DynamicsControls::deriveThreshold()
 	thresholddB = thresholdControl.lock()->getValue();
 	threshold = static_cast<float>(ctoot::audio::core::KVolumeUtils::log2lin(thresholddB));
 	inverseThreshold = 1.0f / threshold;
+}
+
+void DynamicsControls::deriveInputGain() {
+	if (!inputGainControl.lock()) return;
+	inputGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(inputGainControl.lock()->getValue()));
+}
+
+void DynamicsControls::deriveDetectionChannelMode()
+{
+	if (!detectionChannelControl.lock())
+		return;
+
+	detectionChannelMode = boost::any_cast<string>(detectionChannelControl.lock()->getValue());
+}
+
+void DynamicsControls::deriveAttenuationChannelMode()
+{
+	if (!attenuationChannelControl.lock())
+		return;
+
+	attenuationChannelMode = boost::any_cast<string>(attenuationChannelControl.lock()->getValue());
 }
 
 void DynamicsControls::deriveRatio()
@@ -252,19 +288,23 @@ void DynamicsControls::setParent(ctoot::control::CompoundControl* parent)
 	}
 }
 
+bool DynamicsControls::hasInputGain() {
+	return false;
+}
+
 bool DynamicsControls::hasGainReductionIndicator()
 {
     return false;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getThresholdLaw()
+weak_ptr<ControlLaw> DynamicsControls::getThresholdLaw()
 {
-	return THRESH_LAW().lock().get();
+	return THRESH_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createThresholdControl()
 {
-    auto control = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::THRESHOLD + idOffset, "Threshold", THRESH_LAW(), 0.1f, 0.0f);
+    auto control = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::THRESHOLD + idOffset, "Threshold", getThresholdLaw(), 0.1f, 0.0f);
     return control;
 }
 
@@ -306,14 +346,14 @@ shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createRMSControl()
     return c;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getAttackLaw()
+weak_ptr<ControlLaw> DynamicsControls::getAttackLaw()
 {
-	return ATTACK_LAW().lock().get();
+	return ATTACK_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createAttackControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", ATTACK_LAW(), 0.1f, ATTACK_LAW().lock()->getMinimum());
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", getAttackLaw(), 0.1f, getAttackLaw().lock()->getMinimum());
 }
 
 bool DynamicsControls::hasHold()
@@ -321,24 +361,24 @@ bool DynamicsControls::hasHold()
     return false;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getHoldLaw()
+weak_ptr<ControlLaw> DynamicsControls::getHoldLaw()
 {
-	return HOLD_LAW().lock().get();
+	return HOLD_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createHoldControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HOLD + idOffset, "Hold", HOLD_LAW(), 1.0f, 10.0f);
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HOLD + idOffset, "Hold", getHoldLaw(), 1.0f, 10.0f);
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getReleaseLaw()
+weak_ptr<ControlLaw> DynamicsControls::getReleaseLaw()
 {
-	return RELEASE_LAW().lock().get();
+	return RELEASE_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createReleaseControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::RELEASE + idOffset, "Release", RELEASE_LAW(), 1.0f, RELEASE_LAW().lock()->getMinimum());
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::RELEASE + idOffset, "Release", getReleaseLaw(), 1.0f, getReleaseLaw().lock()->getMinimum());
 }
 
 bool DynamicsControls::hasDryGain()
@@ -346,14 +386,14 @@ bool DynamicsControls::hasDryGain()
     return false;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getDryGainLaw()
+weak_ptr<ControlLaw> DynamicsControls::getDryGainLaw()
 {
-    return DRY_GAIN_LAW().lock().get();
+    return DRY_GAIN_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDryGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry", DRY_GAIN_LAW(), 1.0f, 0);
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry", getDryGainLaw(), 1.0f, 0);
 }
 
 bool DynamicsControls::hasGain()
@@ -361,14 +401,19 @@ bool DynamicsControls::hasGain()
     return false;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getGainLaw()
+weak_ptr<ControlLaw> DynamicsControls::getGainLaw()
 {
-    return GAIN_LAW().lock().get();
+    return GAIN_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::GAIN + idOffset, "Gain", GAIN_LAW(), 1.0f, 0);
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::GAIN + idOffset, "Gain", getGainLaw(), 1.0f, 0);
+}
+
+shared_ptr<ctoot::control::FloatControl> DynamicsControls::createInputGainControl()
+{
+	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::INPUT_GAIN + idOffset, "Input Gain", INPUT_GAIN_LAW(), 1.0f, 0);
 }
 
 bool DynamicsControls::hasDepth()
@@ -376,14 +421,14 @@ bool DynamicsControls::hasDepth()
     return false;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getDepthLaw()
+weak_ptr<ControlLaw> DynamicsControls::getDepthLaw()
 {
-    return DEPTH_LAW().lock().get();
+    return DEPTH_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDepthControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DEPTH + idOffset, "Depth", DEPTH_LAW(), 1.0f, -40);
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DEPTH + idOffset, "Depth", getDepthLaw(), 1.0f, -40);
 }
 
 bool DynamicsControls::hasHysteresis()
@@ -391,14 +436,14 @@ bool DynamicsControls::hasHysteresis()
     return false;
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getHysteresisLaw()
+weak_ptr<ControlLaw> DynamicsControls::getHysteresisLaw()
 {
-    return HYSTERESIS_LAW().lock().get();
+    return HYSTERESIS_LAW();
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createHysteresisControl()
 {
-    auto hystC = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HYSTERESIS + idOffset, "Hysteresis", HYSTERESIS_LAW(), 1.0f, 0.0f);
+    auto hystC = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HYSTERESIS + idOffset, "Hysteresis", getHysteresisLaw(), 1.0f, 0.0f);
     return hystC;
 }
 
@@ -410,6 +455,18 @@ bool DynamicsControls::hasKey()
 shared_ptr<ctoot::audio::core::TapControl> DynamicsControls::createKeyControl()
 {
 	return make_shared<ctoot::audio::core::TapControl>(DynamicsControlIds::KEY + idOffset, "Key");
+}
+
+bool DynamicsControls::hasChannelMode() {
+	return false;
+}
+
+shared_ptr<ctoot::control::EnumControl> DynamicsControls::createDetectionChannelControl() {
+	return make_shared<ctoot::audio::dynamics::izcompressor::ChannelControl>(DynamicsControlIds::DETECTION_CHANNEL_MODE + idOffset, "Detection Channel Control");
+}
+
+shared_ptr<ctoot::control::EnumControl> DynamicsControls::createAttenuationChannelControl() {
+	return make_shared<ctoot::audio::dynamics::izcompressor::ChannelControl>(DynamicsControlIds::ATTENUATION_CHANNEL_MODE + idOffset, "Attenuation Channel Control");
 }
 
 float DynamicsControls::getThreshold()
@@ -472,6 +529,18 @@ float DynamicsControls::getHysteresis()
     return hysteresis;
 }
 
+string DynamicsControls::getDetectionChannelMode() {
+	return detectionChannelMode;
+}
+
+string DynamicsControls::getAttenuationChannelMode() {
+	return attenuationChannelMode;
+}
+
+float DynamicsControls::getInputGain() {
+	return inputGain;
+}
+
 ctoot::audio::core::AudioBuffer* DynamicsControls::getKeyBuffer()
 {
     return key;
@@ -490,9 +559,9 @@ void DynamicsControls::setDynamicGain(float dynamicGain)
 	gainReductionIndicator.lock()->setValue(static_cast<float>((int32_t(20) * log(dynamicGain))));
 }
 
-ctoot::control::ControlLaw* DynamicsControls::getInverseRatioLaw()
+weak_ptr<ControlLaw> DynamicsControls::getInverseRatioLaw()
 {
-    return INVERSE_RATIO_LAW().lock().get();
+    return INVERSE_RATIO_LAW();
 }
 
 vector<string> DynamicsControls::ratioPresets2 { "2", "4", "10", "Infinity", "-10", "-4", "-2" };
@@ -507,6 +576,22 @@ void DynamicsControls::init() {
 		MLOG("Error: DynamicsControls is already initialized!");
 		MLOG("I'll try to clear and re-init...");
 		controls.clear();
+	}
+	if (hasInputGain()) {
+		auto igc = createInputGainControl();
+		inputGainControl = igc;
+		derive(igc.get());
+		add(std::move(igc));
+	}
+	if (hasChannelMode()) {
+		auto dcc = createDetectionChannelControl();
+		detectionChannelControl = dcc;
+		derive(dcc.get());
+		add(std::move(dcc));
+		auto acc = createAttenuationChannelControl();
+		attenuationChannelControl = acc;
+		derive(acc.get());
+		add(std::move(acc));
 	}
 	if (hasGainReductionIndicator()) {
 		auto gri = make_shared<GainReductionIndicator>();

@@ -1,8 +1,9 @@
-#include <audio/dynamics/IzCompressor.hpp>
+#include <audio/dynamics/izcompressor/IzCompressor.hpp>
 
-#include <audio/dynamics/IzCompressorProcessVariables.hpp>
+#include <audio/dynamics/izcompressor/IzCompressorProcessVariables.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::audio::dynamics::izcompressor;
 using namespace std;
 
 IzCompressor::IzCompressor(IzCompressorProcessVariables* vars)

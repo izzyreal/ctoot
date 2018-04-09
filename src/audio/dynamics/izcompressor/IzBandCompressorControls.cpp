@@ -1,12 +1,13 @@
-#include <audio/dynamics/IzBandCompressorControls.hpp>
+#include <audio/dynamics/izcompressor/IzBandCompressorControls.hpp>
 
 #include <audio/dynamics/CompressorControls.hpp>
 #include <audio/dynamics/DynamicsControlIds.hpp>
 #include <audio/dynamics/DynamicsIds.hpp>
-#include <audio/dynamics/IzCompressorControls.hpp>
+#include <audio/dynamics/izcompressor/IzCompressorControls.hpp>
 #include <control/Control.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::audio::dynamics::izcompressor;
 using namespace std;
 
 IzBandCompressorControls::IzBandCompressorControls(string band)
@@ -36,6 +37,9 @@ void IzBandCompressorControls::deriveIndependentVariables()
     inverseRatio = compressorControls.lock()->getInverseRatio();
     gain = compressorControls.lock()->getGain();
     depth = compressorControls.lock()->getDepth();
+	detectionChannelMode = compressorControls.lock()->getDetectionChannelMode();
+	attenuationChannelMode = compressorControls.lock()->getAttenuationChannelMode();
+	inputGain = compressorControls.lock()->getInputGain();
 }
 
 void IzBandCompressorControls::deriveDependentVariables()
@@ -70,6 +74,15 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 		break;
 	case DynamicsControlIds::DEPTH:
 		depth = cc.lock()->getDepth();
+		break;
+	case DynamicsControlIds::DETECTION_CHANNEL_MODE:
+		detectionChannelMode = cc.lock()->getDetectionChannelMode();
+		break;
+	case DynamicsControlIds::ATTENUATION_CHANNEL_MODE:
+		attenuationChannelMode = cc.lock()->getAttenuationChannelMode();
+		break;
+	case DynamicsControlIds::INPUT_GAIN:
+		inputGain = cc.lock()->getInputGain();
 		break;
 	}
 }
@@ -128,4 +141,16 @@ void IzBandCompressorControls::setDynamicGain(float gain)
 bool IzBandCompressorControls::isBypassed()
 {
     return AudioControls::isBypassed();
+}
+
+string IzBandCompressorControls::getDetectionChannelMode() {
+	return detectionChannelMode;
+}
+
+string IzBandCompressorControls::getAttenuationChannelMode() {
+	return attenuationChannelMode;
+}
+
+float IzBandCompressorControls::getInputGain() {
+	return inputGain;
 }

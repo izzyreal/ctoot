@@ -1,7 +1,7 @@
-#include <audio/dynamics/MultiBandIzCompressor.hpp>
+#include <audio/dynamics/izcompressor/MultiBandIzCompressor.hpp>
 
-#include <audio/dynamics/IzBandCompressorControls.hpp>
-#include <audio/dynamics/IzCompressor.hpp>
+#include <audio/dynamics/izcompressor/IzBandCompressorControls.hpp>
+#include <audio/dynamics/izcompressor/IzCompressor.hpp>
 
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioProcess.hpp>
@@ -10,12 +10,13 @@
 #include <audio/dynamics/CrossoverControl.hpp>
 #include <audio/dynamics/CrossoverSection.hpp>
 #include <audio/dynamics/DynamicsProcess.hpp>
-#include <audio/dynamics/MultiBandIzControls.hpp>
+#include <audio/dynamics/izcompressor/MultiBandIzControls.hpp>
 #include <audio/filter/Crossover.hpp>
 #include <audio/filter/IIRCrossover.hpp>
 #include <control/Control.hpp>
 #include <dsp/filter/FilterShape.hpp>
 
+using namespace ctoot::audio::dynamics::izcompressor;
 using namespace ctoot::audio::dynamics;
 using namespace std;
 

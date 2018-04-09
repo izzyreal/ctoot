@@ -8,6 +8,7 @@
 namespace ctoot {
 
 	namespace control {
+		class EnumControl;
 		class ControlLaw;
 		class FloatControl;
 		class BooleanControl;
@@ -40,6 +41,8 @@ namespace ctoot {
 				static std::weak_ptr<ctoot::control::ControlLaw> GAIN_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> DEPTH_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> HYSTERESIS_LAW();
+				static std::weak_ptr<ctoot::control::ControlLaw> INPUT_GAIN_LAW();
+
 
 				std::weak_ptr<GainReductionIndicator> gainReductionIndicator{};
 				std::weak_ptr<ctoot::control::FloatControl> thresholdControl{};
@@ -54,10 +57,15 @@ namespace ctoot {
 				std::weak_ptr<ctoot::control::FloatControl> depthControl{};
 				std::weak_ptr<ctoot::control::FloatControl> hysteresisControl{};
 				std::weak_ptr<ctoot::audio::core::TapControl> keyControl{};
+				std::weak_ptr<ctoot::control::EnumControl> detectionChannelControl{};
+				std::weak_ptr<ctoot::control::EnumControl> attenuationChannelControl{};
+				std::weak_ptr<ctoot::control::FloatControl> inputGainControl;
 
 				float sampleRate{ 44100.0f };
 				float threshold{}, inverseThreshold{}, thresholddB{}, inverseRatio{}, kneedB{ 10.0f };
-				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f };
+				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f }, inputGain{ 1.0f };
+				std::string detectionChannelMode;
+				std::string attenuationChannelMode;
 				bool rms{ false };
 
 			public:
@@ -96,15 +104,19 @@ namespace ctoot {
 				virtual void deriveDepth();
 				virtual void deriveHysteresis();
 				virtual void deriveKey();
+				virtual void deriveDetectionChannelMode();
+				virtual void deriveAttenuationChannelMode();
+				virtual void deriveInputGain();
+
 				void setParent(ctoot::control::CompoundControl* parent) override;
-				virtual ctoot::control::ControlLaw* getThresholdLaw();
-				virtual ctoot::control::ControlLaw* getAttackLaw();
-				virtual ctoot::control::ControlLaw* getHoldLaw();
-				virtual ctoot::control::ControlLaw* getReleaseLaw();
-				virtual ctoot::control::ControlLaw* getDryGainLaw();
-				virtual ctoot::control::ControlLaw* getGainLaw();
-				virtual ctoot::control::ControlLaw* getDepthLaw();
-				virtual ctoot::control::ControlLaw* getHysteresisLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getThresholdLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getAttackLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getHoldLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getReleaseLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getDryGainLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getGainLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getDepthLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getHysteresisLaw();
 
 				virtual bool hasKey();
 				virtual bool hasHysteresis();
@@ -117,6 +129,8 @@ namespace ctoot {
 				virtual bool hasRMS();
 				virtual bool hasHold();
 				virtual bool hasDryGain();
+				virtual bool hasChannelMode();
+				virtual bool hasInputGain();
 
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createGainControl();
@@ -130,6 +144,9 @@ namespace ctoot {
 				virtual std::shared_ptr<ctoot::control::FloatControl> createReleaseControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createHysteresisControl();
 				virtual std::shared_ptr<ctoot::audio::core::TapControl> createKeyControl();
+				virtual std::shared_ptr<ctoot::control::EnumControl> createDetectionChannelControl();
+				virtual std::shared_ptr<ctoot::control::EnumControl> createAttenuationChannelControl();
+				virtual std::shared_ptr<ctoot::control::FloatControl> createInputGainControl();
 
 			public:
 				float getThreshold() override;
@@ -147,9 +164,12 @@ namespace ctoot {
 				ctoot::audio::core::AudioBuffer* getKeyBuffer() override;
 				bool isRMS() override;
 				void setDynamicGain(float dynamicGain) override;
+				std::string getDetectionChannelMode() override;
+				std::string getAttenuationChannelMode() override;
+				float getInputGain() override;
 
 			protected:
-				virtual ctoot::control::ControlLaw* getInverseRatioLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getInverseRatioLaw();
 
 			public:
 				static std::vector<std::string> ratioPresets2;

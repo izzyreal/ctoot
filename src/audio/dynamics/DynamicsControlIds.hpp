@@ -21,7 +21,9 @@ namespace ctoot {
 				static constexpr int32_t CROSSOVER_FREQUENCY{ 10 };
 				static constexpr int32_t HYSTERESIS{ 11 };
 				static constexpr int32_t RMS{ 12 };
-
+				static constexpr int32_t DETECTION_CHANNEL_MODE{ 13 };
+				static constexpr int32_t ATTENUATION_CHANNEL_MODE{ 14 };
+				static constexpr int32_t INPUT_GAIN{ 15 };
 			};
 
 		}

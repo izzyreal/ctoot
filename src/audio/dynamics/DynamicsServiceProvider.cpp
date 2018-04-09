@@ -15,8 +15,8 @@
 #include <audio/dynamics/Limiter.hpp>
 #include <audio/dynamics/MidSideCompressorControls.hpp>
 #include <audio/dynamics/MidSideCompressor.hpp>
-#include <audio/dynamics/MultiBandIzControls.hpp>
-#include <audio/dynamics/MultiBandIzCompressor.hpp>
+#include <audio/dynamics/izcompressor/MultiBandIzControls.hpp>
+#include <audio/dynamics/izcompressor/MultiBandIzCompressor.hpp>
 #include <audio/dynamics/DualBandControls.hpp>
 #include <audio/dynamics/QuadBandControls.hpp>
 #include <audio/dynamics/MultiBandControls.hpp>
@@ -51,7 +51,7 @@ DynamicsServiceProvider::DynamicsServiceProvider()
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::DualBandControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::QuadBandControls", family, "0.2");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MID_SIDE_COMPRESSOR_ID, "class ctoot::audio::dynamics::MidSideCompressorControls", family, "0.1");
-	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MID_SIDE_MULTI_BAND_COMPRESSOR_ID, "class ctoot::audio::dynamics::MultiBandIzControls", family, "0.1");
+	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::MULTI_BAND_IZ_COMPRESSOR_ID, "class ctoot::audio::dynamics::izcompressor::MultiBandIzControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::BUS_COMPRESSOR, "class ctoot::audio::dynamics::BusCompressorControls", family, "0.1");
 	addControls("class ctoot::audio::core::AudioControls", DynamicsIds::TREMOLO_ID, "class ctoot::audio::dynamics::TremoloControls", family, "0.1");
 }
@@ -85,7 +85,7 @@ shared_ptr<ctoot::audio::core::AudioProcess> DynamicsServiceProvider::createProc
 		return make_shared<MidSideCompressor>(dynamic_pointer_cast<MidSideDynamicsProcessVariables>(c.lock()).get());
 	}
 	if (name.compare("MultiBandIzCompressor") == 0) {
-		return make_shared<MultiBandIzCompressor>(dynamic_pointer_cast<MultiBandIzControls>(c.lock()).get());
+		return make_shared<izcompressor::MultiBandIzCompressor>(dynamic_pointer_cast<izcompressor::MultiBandIzControls>(c.lock()).get());
 	}
 
 	return nullptr;

@@ -1,8 +1,9 @@
-#include <audio/dynamics/MultiBandIzControls.hpp>
+#include <audio/dynamics/izcompressor/MultiBandIzControls.hpp>
 
-#include <audio/dynamics/IzBandCompressorControls.hpp>
+#include <audio/dynamics/izcompressor/IzBandCompressorControls.hpp>
 #include <audio/dynamics/CrossoverControl.hpp>
 
+using namespace ctoot::audio::dynamics::izcompressor;
 using namespace ctoot::audio::dynamics;
 using namespace std;
 

@@ -20,11 +20,8 @@ namespace ctoot {
 			private:
 				static constexpr int32_t SELF_VAL{ 16000 };
 				static std::string SELF_STR;
-				std::string prevTapName{  };
+				std::string prevTapName{ "Self" };
 				AudioBuffer* buffer{  };
-
-			private:
-				void init();
 
 			public:
 				virtual AudioBuffer* getBuffer();

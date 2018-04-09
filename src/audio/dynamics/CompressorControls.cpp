@@ -5,11 +5,12 @@
 #include <control/LogLaw.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::control;
 using namespace std;
 
-weak_ptr<ctoot::control::ControlLaw> CompressorControls::ATTACK_LAW()
+weak_ptr<ControlLaw> CompressorControls::ATTACK_LAW()
 {
-	static auto res = make_shared<ctoot::control::LogLaw>(10.0f, 100.0f, "ms");
+	static auto res = make_shared<LogLaw>(10.0f, 100.0f, "ms");
 	return res;
 }
 
@@ -25,9 +26,9 @@ CompressorControls::CompressorControls(std::string name, int32_t idOffset)
 	init();
 }
 
-ctoot::control::ControlLaw* CompressorControls::getAttackLaw()
+weak_ptr<ControlLaw> CompressorControls::getAttackLaw()
 {
-    return ATTACK_LAW().lock().get();
+    return ATTACK_LAW();
 }
 
 bool CompressorControls::hasGainReductionIndicator()

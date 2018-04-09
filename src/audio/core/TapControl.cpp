@@ -12,17 +12,11 @@ using namespace std;
 
 string TapControl::SELF_STR = "Self";
 
-void TapControl::init()
-{
-	prevTapName = SELF_STR;
-}
-
 constexpr int32_t TapControl::SELF_VAL;
 
 TapControl::TapControl(int32_t id, std::string name)
 	: EnumControl(id, name, SELF_STR)
 {
-	init();
 }
 
 ctoot::audio::core::AudioBuffer* TapControl::getBuffer()

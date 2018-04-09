@@ -21,7 +21,7 @@ namespace ctoot {
 				static std::weak_ptr<ctoot::control::ControlLaw> THRESH_LAW();
 			
 			protected:
-				ctoot::control::ControlLaw* getThresholdLaw() override;
+				std::weak_ptr<ctoot::control::ControlLaw> getThresholdLaw() override;
 				bool hasHold() override;
 				bool hasDepth() override;
 				bool hasHysteresis() override;

@@ -5,6 +5,7 @@
 #include <control/LinearLaw.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::control;
 using namespace std;
 
 weak_ptr<ctoot::control::ControlLaw> ExpanderControls::THRESH_LAW()
@@ -19,9 +20,9 @@ ExpanderControls::ExpanderControls()
 	init();
 }
 
-ctoot::control::ControlLaw* ExpanderControls::getThresholdLaw()
+weak_ptr<ControlLaw> ExpanderControls::getThresholdLaw()
 {
-	return THRESH_LAW().lock().get();
+	return THRESH_LAW();
 }
 
 bool ExpanderControls::hasRatio()

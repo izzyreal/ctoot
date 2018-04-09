@@ -22,8 +22,8 @@ namespace ctoot {
 				static std::weak_ptr<ctoot::control::ControlLaw> RELEASE_LAW();
 
 			protected:
-				ctoot::control::ControlLaw* getAttackLaw() override;
-				ctoot::control::ControlLaw* getReleaseLaw() override;
+				std::weak_ptr<ctoot::control::ControlLaw> getAttackLaw() override;
+				std::weak_ptr<ctoot::control::ControlLaw> getReleaseLaw() override;
 				bool hasGainReductionIndicator() override;
 				bool hasDryGain() override;
 				bool hasGain() override;

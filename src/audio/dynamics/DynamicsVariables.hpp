@@ -1,5 +1,7 @@
 #pragma once
 
+#include <string>
+
 namespace ctoot {
 	namespace audio {
 
@@ -30,6 +32,9 @@ namespace ctoot {
 				virtual float getHysteresis() = 0;
 				virtual void setDynamicGain(float gain) = 0;
 				virtual ctoot::audio::core::AudioBuffer* getKeyBuffer() = 0;
+				virtual std::string getDetectionChannelMode() = 0;
+				virtual std::string getAttenuationChannelMode() = 0;
+				virtual float getInputGain() = 0;
 
 			};
 

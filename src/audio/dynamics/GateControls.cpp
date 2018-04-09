@@ -5,6 +5,7 @@
 #include <control/LinearLaw.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::control;
 using namespace std;
 
 weak_ptr<ctoot::control::ControlLaw> GateControls::THRESH_LAW()
@@ -19,9 +20,9 @@ GateControls::GateControls()
 	init();
 }
 
-ctoot::control::ControlLaw* GateControls::getThresholdLaw()
+weak_ptr<ControlLaw> GateControls::getThresholdLaw()
 {
-	return THRESH_LAW().lock().get();
+	return THRESH_LAW();
 }
 
 bool GateControls::hasHold()

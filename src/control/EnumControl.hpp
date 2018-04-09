@@ -33,5 +33,6 @@ namespace ctoot {
 			EnumControl(int id, std::string name, boost::any value);
 
 		};
-	};
-};
+
+	}
+}

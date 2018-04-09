@@ -1,6 +1,6 @@
-#include <audio/dynamics/IzCompressorControls.hpp>
+#include <audio/dynamics/izcompressor/IzCompressorControls.hpp>
 
-using namespace ctoot::audio::dynamics;
+using namespace ctoot::audio::dynamics::izcompressor;
 using namespace std;
 
 IzCompressorControls::IzCompressorControls(string name, int32_t idOffset)

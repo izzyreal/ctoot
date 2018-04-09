@@ -32,14 +32,14 @@ BusCompressorControls::BusCompressorControls(string name, int32_t idOffset)
 	init();
 }
 
-ctoot::control::ControlLaw* BusCompressorControls::getAttackLaw()
+weak_ptr<ControlLaw> BusCompressorControls::getAttackLaw()
 {
-	return ATTACK_LAW().lock().get();
+	return ATTACK_LAW();
 }
 
-ctoot::control::ControlLaw* BusCompressorControls::getReleaseLaw()
+weak_ptr<ControlLaw> BusCompressorControls::getReleaseLaw()
 {
-    return RELEASE_LAW().lock().get();
+    return RELEASE_LAW();
 }
 
 bool BusCompressorControls::hasGainReductionIndicator()

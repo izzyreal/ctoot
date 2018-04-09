@@ -18,7 +18,9 @@ void EnumControl::setValue(boost::any value)
 		MLOG("EnumControl::setValue(), requested value is not supported.");
 		return;
 	}
-
+	this->value = value;
+	notifyParent(this);
+	return;
 	// Verify that this comparison does what it should do.
 	if (value.type() == this->value.type()) {
 		if (string(value.type().name()).find("int") != string::npos) {
@@ -53,6 +55,7 @@ boost::any EnumControl::getValue()
 
 bool EnumControl::isValueSupported(boost::any value)
 {
+	/*
 	try {
 		for (int i = 0; i < getValues().size(); i++) {
 			if (value.type() == this->value.type()) {
@@ -77,7 +80,8 @@ bool EnumControl::isValueSupported(boost::any value)
 		string msg = e.what();
 		MLOG("EnumControl value not supported, error msg: " + msg);
 	}
-	return false;
+	*/
+	return true;
 }
 
 string EnumControl::toString()
@@ -114,12 +118,13 @@ void EnumControl::setIntValue(int value)
 
 int EnumControl::getIntValue()
 {
-/*
+	MLOG("EnumControl getIntValue() is expected to work!");
+	/*
 	int index;
 	for (index = 0; index < getValues().size(); index++) {
 		if (getValue() == getValues()[index]) return index;
 	}
- */
+	*/
 	return -1;
 }
 

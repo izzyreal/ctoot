@@ -4,6 +4,7 @@
 #include <control/LogLaw.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::control;
 using namespace std;
 
 weak_ptr<ctoot::control::ControlLaw> LimiterControls::RELEASE_LAW()
@@ -18,9 +19,9 @@ LimiterControls::LimiterControls()
 	init();
 }
 
-ctoot::control::ControlLaw* LimiterControls::getReleaseLaw()
+weak_ptr<ControlLaw> LimiterControls::getReleaseLaw()
 {
-	return RELEASE_LAW().lock().get();
+	return RELEASE_LAW();
 }
 
 bool LimiterControls::hasGainReductionIndicator()

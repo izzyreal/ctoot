@@ -5,6 +5,7 @@
 #include <control/LogLaw.hpp>
 
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::control;
 using namespace std;
 
 weak_ptr<ctoot::control::ControlLaw> VariMuCompressorControls::RELEASE_LAW()
@@ -25,9 +26,9 @@ VariMuCompressorControls::VariMuCompressorControls(std::string name, int32_t idO
 	init();
 }
 
-ctoot::control::ControlLaw* VariMuCompressorControls::getReleaseLaw()
+weak_ptr<ControlLaw> VariMuCompressorControls::getReleaseLaw()
 {
-	return RELEASE_LAW().lock().get();
+	return RELEASE_LAW();
 }
 
 bool VariMuCompressorControls::hasGainReductionIndicator()
