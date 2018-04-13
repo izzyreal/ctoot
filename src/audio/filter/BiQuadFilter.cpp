@@ -38,11 +38,11 @@ void BiQuadFilter::filter(std::vector<float>* buffer, std::vector<float>* mixBuf
 void BiQuadFilter::updateFilterCoefficients()
 {
     auto d = dynamic_cast<BiQuadDesign*>(getDesign());
-    a0 = d->a[int32_t(0)];
-    a1 = d->a[int32_t(1)];
-    a2 = d->a[int32_t(2)];
-    a3 = d->a[int32_t(3)];
-    a4 = d->a[int32_t(4)];
+    a0 = d->a[0];
+    a1 = d->a[1];
+    a2 = d->a[2];
+    a3 = d->a[3];
+    a4 = d->a[4];
 }
 
 FilterDesign* BiQuadFilter::createDesign(FilterSpecification* spec)
