@@ -22,6 +22,7 @@ namespace ctoot {
 					float threshold;
 					float attack;
 					float release;
+					float lookAhead;
 					float makeupGain;
 					std::string detectionChannelMode;
 					std::string attenuationChannelMode;

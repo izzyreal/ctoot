@@ -24,6 +24,8 @@ namespace ctoot {
 				static constexpr int32_t DETECTION_CHANNEL_MODE{ 13 };
 				static constexpr int32_t ATTENUATION_CHANNEL_MODE{ 14 };
 				static constexpr int32_t INPUT_GAIN{ 15 };
+				static constexpr int32_t LOOK_AHEAD{ 16 };
+
 			};
 
 		}

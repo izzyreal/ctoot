@@ -46,6 +46,7 @@ void IzBandCompressorControls::deriveDependentVariables()
 {
     attack = compressorControls.lock()->getAttack();
     release = compressorControls.lock()->getRelease();
+	lookAhead = compressorControls.lock()->getLookAhead();
 }
 
 void IzBandCompressorControls::derive(ctoot::control::Control* c)
@@ -84,6 +85,9 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 	case DynamicsControlIds::INPUT_GAIN:
 		inputGain = cc.lock()->getInputGain();
 		break;
+	case DynamicsControlIds::LOOK_AHEAD:
+		lookAhead = cc.lock()->getLookAhead();
+		break;
 	}
 }
 
@@ -91,6 +95,11 @@ void IzBandCompressorControls::update(float sampleRate)
 {
     compressorControls.lock()->update(sampleRate);
     deriveDependentVariables();
+}
+
+float IzBandCompressorControls::getLookAhead()
+{
+	return lookAhead;
 }
 
 float IzBandCompressorControls::getThreshold()

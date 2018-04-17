@@ -42,6 +42,7 @@ namespace ctoot {
 				static std::weak_ptr<ctoot::control::ControlLaw> DEPTH_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> HYSTERESIS_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> INPUT_GAIN_LAW();
+				static std::weak_ptr<ctoot::control::ControlLaw> LOOK_AHEAD_LAW();
 
 
 				std::weak_ptr<GainReductionIndicator> gainReductionIndicator{};
@@ -60,10 +61,12 @@ namespace ctoot {
 				std::weak_ptr<ctoot::control::EnumControl> detectionChannelControl{};
 				std::weak_ptr<ctoot::control::EnumControl> attenuationChannelControl{};
 				std::weak_ptr<ctoot::control::FloatControl> inputGainControl;
+				std::weak_ptr<ctoot::control::FloatControl> lookAheadControl;
 
 				float sampleRate{ 44100.0f };
 				float threshold{}, inverseThreshold{}, thresholddB{}, inverseRatio{}, kneedB{ 10.0f };
 				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f }, inputGain{ 1.0f };
+				float lookAhead{ 0.0f };
 				std::string detectionChannelMode;
 				std::string attenuationChannelMode;
 				bool rms{ false };
@@ -107,6 +110,7 @@ namespace ctoot {
 				virtual void deriveDetectionChannelMode();
 				virtual void deriveAttenuationChannelMode();
 				virtual void deriveInputGain();
+				virtual void deriveLookAhead();
 
 				void setParent(ctoot::control::CompoundControl* parent) override;
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getThresholdLaw();
@@ -117,6 +121,7 @@ namespace ctoot {
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getGainLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getDepthLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getHysteresisLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getLookAheadLaw();
 
 				virtual bool hasKey();
 				virtual bool hasHysteresis();
@@ -131,6 +136,7 @@ namespace ctoot {
 				virtual bool hasDryGain();
 				virtual bool hasChannelMode();
 				virtual bool hasInputGain();
+				virtual bool hasLookAhead();
 
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createGainControl();
@@ -147,6 +153,7 @@ namespace ctoot {
 				virtual std::shared_ptr<ctoot::control::EnumControl> createDetectionChannelControl();
 				virtual std::shared_ptr<ctoot::control::EnumControl> createAttenuationChannelControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createInputGainControl();
+				virtual std::shared_ptr<ctoot::control::FloatControl> createLookAheadControl();
 
 			public:
 				float getThreshold() override;
@@ -167,6 +174,7 @@ namespace ctoot {
 				std::string getDetectionChannelMode() override;
 				std::string getAttenuationChannelMode() override;
 				float getInputGain() override;
+				float getLookAhead() override;
 
 			protected:
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getInverseRatioLaw();

@@ -51,6 +51,12 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::ATTACK_LAW()
 	return res;
 }
 
+weak_ptr<ctoot::control::ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
+{
+	static auto res = make_shared<LogLaw>(0.0f, 20.0f, "ms");
+	return res;
+}
+
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::HOLD_LAW()
 {
 	static auto res = make_shared<LogLaw>(1.0f, 1000.0f, "ms");
@@ -110,6 +116,7 @@ void DynamicsControls::update(float sampleRate)
     deriveAttack();
     deriveHold();
     deriveRelease();
+	deriveLookAhead();
 }
 
 void DynamicsControls::derive(ctoot::control::Control* c)
@@ -158,6 +165,9 @@ void DynamicsControls::derive(ctoot::control::Control* c)
 		break;
 	case DynamicsControlIds::INPUT_GAIN:
 		deriveInputGain();
+		break;
+	case DynamicsControlIds::LOOK_AHEAD:
+		deriveLookAhead();
 		break;
 	}
 }
@@ -228,6 +238,12 @@ float DynamicsControls::deriveTimeFactor(float milliseconds)
 void DynamicsControls::deriveAttack()
 {
     attack = deriveTimeFactor(attackControl.lock()->getValue());
+}
+
+void DynamicsControls::deriveLookAhead()
+{
+	if (!lookAheadControl.lock()) return;
+	lookAhead = deriveTimeFactor(lookAheadControl.lock()->getValue());
 }
 
 void DynamicsControls::deriveHold()
@@ -351,9 +367,24 @@ weak_ptr<ControlLaw> DynamicsControls::getAttackLaw()
 	return ATTACK_LAW();
 }
 
+weak_ptr<ControlLaw> DynamicsControls::getLookAheadLaw()
+{
+	return LOOK_AHEAD_LAW();
+}
+
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createAttackControl()
 {
     return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", getAttackLaw(), 0.1f, getAttackLaw().lock()->getMinimum());
+}
+
+shared_ptr<ctoot::control::FloatControl> DynamicsControls::createLookAheadControl()
+{
+	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::LOOK_AHEAD + idOffset, "Look Ahead", getLookAheadLaw(), 0.1f, getLookAheadLaw().lock()->getMinimum());
+}
+
+bool DynamicsControls::hasLookAhead()
+{
+	return false;
 }
 
 bool DynamicsControls::hasHold()
@@ -499,6 +530,11 @@ float DynamicsControls::getAttack()
     return attack;
 }
 
+float DynamicsControls::getLookAhead()
+{
+	return lookAhead;
+}
+
 int32_t DynamicsControls::getHold()
 {
     return hold;
@@ -582,6 +618,12 @@ void DynamicsControls::init() {
 		inputGainControl = igc;
 		derive(igc.get());
 		add(std::move(igc));
+	}
+	if (hasLookAhead()) {
+		auto lac = createLookAheadControl();
+		lookAheadControl = lac;
+		derive(lac.get());
+		add(std::move(lac));
 	}
 	if (hasChannelMode()) {
 		auto dcc = createDetectionChannelControl();

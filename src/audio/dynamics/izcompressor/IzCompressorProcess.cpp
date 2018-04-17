@@ -34,6 +34,7 @@ void IzCompressorProcess::cacheProcessVariables()
     threshold = vars->getThreshold();
     attack = vars->getAttack();
     release = vars->getRelease();
+	lookAhead = vars->getLookAhead();
     makeupGain = vars->getGain();
 	detectionChannelMode = vars->getDetectionChannelMode();
 	attenuationChannelMode = vars->getAttenuationChannelMode();
@@ -66,8 +67,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	detectionSamples1 = buffer->getChannel(1);
 	attenuationSamples0 = buffer->getChannel(0);
 	attenuationSamples1 = buffer->getChannel(1);
-	//MLOG("Input gain: " + std::to_string(inputGain));
-	//MLOG("Make up gain: " + std::to_string(makeupGain));
+
 	for (int i = 0; i < buffer->getSampleCount(); i++) {
 		(*detectionSamples0)[i] *= inputGain;
 		(*detectionSamples1)[i] *= inputGain;

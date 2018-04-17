@@ -42,12 +42,12 @@ int TempoDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	auto ns = buffer->getSampleCount();
 	auto nc = buffer->getChannelCount();
 	auto feedback = vars->getFeedback();
-	feedback = 0.75;
+	//feedback = 0.75;
 	auto mix = vars->getMix();
 	if (delayBuffer == nullptr) {
 		delayBuffer = new DelayBuffer(nc, msToSamples(vars->getMaxDelayMilliseconds(), sampleRate), sampleRate);
-		MLOG("max delay ms: " + to_string(vars->getMaxDelayMilliseconds()));
-		MLOG("delay buffer size: " + to_string(delayBuffer->getSampleCount()));
+		//MLOG("max delay ms: " + to_string(vars->getMaxDelayMilliseconds()));
+		//MLOG("delay buffer size: " + to_string(delayBuffer->getSampleCount()));
 	}
 	else {
 		delayBuffer->conform(buffer);

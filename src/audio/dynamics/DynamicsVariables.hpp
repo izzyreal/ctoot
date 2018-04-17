@@ -35,6 +35,7 @@ namespace ctoot {
 				virtual std::string getDetectionChannelMode() = 0;
 				virtual std::string getAttenuationChannelMode() = 0;
 				virtual float getInputGain() = 0;
+				virtual float getLookAhead() = 0;
 
 			};
 
