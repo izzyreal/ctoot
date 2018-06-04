@@ -41,7 +41,6 @@ namespace ctoot {
 					bool hasRatio() override { return true; }
 					bool hasInputGain() override { return true; }
 					// mix needs to be implemented
-					// look ahead needs to be implemented
 					bool hasLookAhead() override { return true; }
 
 					bool hasHysteresis() override { return false; } // only used for gates

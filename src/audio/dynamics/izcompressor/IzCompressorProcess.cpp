@@ -4,6 +4,8 @@
 #include <audio/dynamics/izcompressor/IzCompressorProcessVariables.hpp>
 #include <dsp/FastMath.hpp>
 
+#include <VecUtil.hpp>
+
 using namespace ctoot::audio::dynamics::izcompressor;
 using namespace ctoot::audio::dynamics;
 using namespace ctoot::dsp;
@@ -22,6 +24,8 @@ IzCompressorProcess::IzCompressorProcess(IzCompressorProcessVariables* vars, boo
 	this->vars = vars;
 	this->isPeak = peak;
 	wasBypassed = !vars->isBypassed();
+	labL = make_unique<moduru::io::CircularTBuffer>(48000);
+	labR = make_unique<moduru::io::CircularTBuffer>(48000);
 }
 
 void IzCompressorProcess::clear()
@@ -63,71 +67,49 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	auto mslen = static_cast<int32_t>(buffer->getSampleRate() * 0.001f);
 	auto sumdiv = 1.0f / (mslen + mslen);
 
-	detectionSamples0 = buffer->getChannel(0);
-	detectionSamples1 = buffer->getChannel(1);
-	attenuationSamples0 = buffer->getChannel(0);
-	attenuationSamples1 = buffer->getChannel(1);
+	auto b0 = buffer->getChannel(0);
+	auto b1 = buffer->getChannel(1);
 
-	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		(*detectionSamples0)[i] *= inputGain;
-		(*detectionSamples1)[i] *= inputGain;
+	if (inputGain != 1.0f) {
+		for (int i = 0; i < buffer->getSampleCount(); i++) {
+			(*b0)[i] *= inputGain;
+			(*b1)[i] *= inputGain;
+		}
 	}
-
-	AudioBuffer* attenuationSpareBuffer = nullptr;
 
 	auto dcm = detectionChannelMode;
 	auto acm = attenuationChannelMode;
-	bool detIsMidSide = false;
 
 	if (dcm.compare("LR") == 0 && acm.compare("LR") != 0) return AUDIO_OK;
 
-	if (dcm.compare("M") == 0 || dcm.compare("S") == 0) {
-		if (!buffer->encodeMidSide()) return AUDIO_OK;
-		detIsMidSide = true;
-	}
+	labL->write(b0);
+	labR->write(b1);
 
-	if (acm.compare("M") == 0 || acm.compare("S") == 0) {
-		if (!detIsMidSide) {
-			attenuationSpareBuffer = new AudioBuffer("spare", 2, buffer->getSampleCount(), buffer->getSampleRate());
-			attenuationSpareBuffer->copyFrom(buffer);
-			attenuationSpareBuffer->encodeMidSide();
-			attenuationSamples0 = attenuationSpareBuffer->getChannel(0);
-			attenuationSamples1 = attenuationSpareBuffer->getChannel(1);
-		}
+	vector<float> factorsL(len);
+	vector<float> factorsR(len);
+
+	const int lookAheadLenSamples = lookAhead * mslen;
+
+	for (int i = 0; i < len; i++) {
+		calcGain(b0, targetGain, i, mslen, len, sumdiv, gain);
+		factorsL[i] = (gain * makeupGain);
+		calcGain(b1, targetGain, i, mslen, len, sumdiv, gain);
+		factorsR[i] = (gain * makeupGain);
 	}
 
 	for (int i = 0; i < len; i++) {
-
-		if (dcm.compare("M") == 0 || dcm.compare("L") == 0) {
-			calcGain(detectionSamples0, targetGain, i, mslen, len, sumdiv, gain);
-		}
-		else if (dcm.compare("S") == 0 || dcm.compare("R") == 0) {
-			calcGain(detectionSamples1, targetGain, i, mslen, len, sumdiv, gain);
-		}
-		else if (dcm.compare("LR") == 0 && acm.compare("LR") == 0) {
-			calcGain(detectionSamples0, targetGain, i, mslen, len, sumdiv, gain);
-			(*attenuationSamples0)[i] *= gain * makeupGain;
-			calcGain(detectionSamples1, targetGain, i, mslen, len, sumdiv, gain);
-			(*attenuationSamples1)[i] *= gain * makeupGain;
-		}
-
-		if (acm.compare("M") == 0 || acm.compare("L") == 0) {
-			(*attenuationSamples0)[i] *= gain * makeupGain;
-		}
-		else if (acm.compare("S") == 0 || acm.compare("R") == 0) {
-			(*attenuationSamples1)[i] *= gain * makeupGain;
-		}
-		else if (acm.compare("LR") == 0 && dcm.compare("LR") != 0) {
-			(*attenuationSamples0)[i] *= gain * makeupGain;
-			(*attenuationSamples1)[i] *= gain * makeupGain;
-		}
+		labL->multiply(-lookAheadLenSamples + i, factorsL[i]);
+		labR->multiply(-lookAheadLenSamples + i, factorsR[i]);
 	}
-	if (detIsMidSide) buffer->decodeMidSide();
-	if (attenuationSpareBuffer != nullptr) {
-		buffer->copyFrom(attenuationSpareBuffer);
-		buffer->decodeMidSide();
-		delete attenuationSpareBuffer;
-	}
+
+	labL->moveReadPos(len);
+	labR->moveReadPos(len);
+
+	const int correctiveLenSamples = (MAX_LOOK_AHEAD * mslen);
+
+	labL->read(b0, -correctiveLenSamples, len);
+	labR->read(b1, -correctiveLenSamples, len);
+
 	vars->setDynamicGain(gain);
 	wasBypassed = bypassed;
 	return AUDIO_OK;
@@ -162,4 +144,7 @@ float IzCompressorProcess::dynamics(float target)
 	auto factor = target < envelope ? attack : release;
 	envelope = factor * (envelope - target) + target;
 	return envelope;
+}
+
+IzCompressorProcess::~IzCompressorProcess() {
 }

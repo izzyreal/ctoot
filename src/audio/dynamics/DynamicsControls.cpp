@@ -53,7 +53,8 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::ATTACK_LAW()
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
 {
-	static auto res = make_shared<LogLaw>(0.0f, 20.0f, "ms");
+	//static auto res = make_shared<LogLaw>(0.0f, 20.0f, "ms");
+	static auto res = make_shared<LogLaw>(0.0f, 1000.0f, "ms");
 	return res;
 }
 
@@ -243,7 +244,7 @@ void DynamicsControls::deriveAttack()
 void DynamicsControls::deriveLookAhead()
 {
 	if (!lookAheadControl.lock()) return;
-	lookAhead = deriveTimeFactor(lookAheadControl.lock()->getValue());
+	lookAhead = lookAheadControl.lock()->getValue();
 }
 
 void DynamicsControls::deriveHold()

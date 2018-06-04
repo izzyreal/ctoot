@@ -2,6 +2,8 @@
 
 #include <audio/core/SimpleAudioProcess.hpp>
 
+#include <io/CircularTBuffer.hpp>
+
 #include <string>
 #include <vector>
 
@@ -30,21 +32,17 @@ namespace ctoot {
 					IzCompressorProcessVariables* vars{  };
 
 				private:
+					std::unique_ptr<moduru::io::CircularTBuffer> labL;
+					std::unique_ptr<moduru::io::CircularTBuffer> labR;
 					bool wasBypassed{  };
 					int32_t sampleRate{ 0 };
 					const int32_t NSQUARESUMS{ 10 };
+					const float MAX_LOOK_AHEAD{ 1000.0f };
 					std::vector<float> squaresums = std::vector<float>(NSQUARESUMS);
 					int32_t nsqsum{ 0 };
 
-					std::vector<float>* detectionSamples0;
-					std::vector<float>* detectionSamples1;
-					std::vector<float>* detectionSamplesM;
-					std::vector<float>* detectionSamplesS;
-
-					std::vector<float>* attenuationSamples0;
-					std::vector<float>* attenuationSamples1;
-					std::vector<float>* attenuationSamplesM;
-					std::vector<float>* attenuationSamplesS;
+					//std::vector<float>* attenuationSamples0;
+					//std::vector<float>* attenuationSamples1;
 
 				public:
 					virtual void clear();
@@ -65,6 +63,8 @@ namespace ctoot {
 				public:
 					IzCompressorProcess(IzCompressorProcessVariables* vars);
 					IzCompressorProcess(IzCompressorProcessVariables* vars, bool peak);
+
+					~IzCompressorProcess();
 				};
 
 			}

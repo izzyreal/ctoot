@@ -17,3 +17,8 @@ double VolumeUtils::log2lin(double dLogarithmic)
 {
     return pow(10.0, dLogarithmic * FACTOR2);
 }
+
+double VolumeUtils::lin2log(double dLinear, double a, double b)
+{
+	return (a / log(b)) * log(dLinear);
+}
