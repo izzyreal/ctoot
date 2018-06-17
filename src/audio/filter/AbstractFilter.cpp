@@ -12,9 +12,8 @@ using namespace std;
 
 AbstractFilter::AbstractFilter(FilterSpecification* spec, bool relative)
 {
-    init();
+	this->spec = spec;
     levelOffset = relative ? 1.0f : 0.0f;
-    specObserver = new AbstractFilterObserver(this);
 }
 
 void AbstractFilter::open()
@@ -46,18 +45,18 @@ void AbstractFilter::clear()
 
 FilterState* AbstractFilter::getState(int32_t chan)
 {
-    if(chan >= MAX_CHANNELS || chan < 0)
-        return nullptr;
+	if (chan >= MAX_CHANNELS || chan < 0)
+		return nullptr;
 
-    if(doUpdate) {
-        updateFilterCoefficients();
-        doUpdate = false;
-    }
-    amplitudeAdj = design->getFilterSpecification()->getLevelFactor() - levelOffset;
-    if(states[chan] == nullptr) {
-        states[chan] = createState();
-    }
-    return states[chan];
+	if (doUpdate) {
+		updateFilterCoefficients();
+		doUpdate = false;
+	}
+	amplitudeAdj = design->getFilterSpecification()->getLevelFactor() - levelOffset;
+	if (states[chan] == nullptr) {
+		states[chan] = createState();
+	}
+	return states[chan];
 }
 
 void AbstractFilter::setSampleRate(int32_t rate)
@@ -69,12 +68,7 @@ void AbstractFilter::setSampleRate(int32_t rate)
 
 void AbstractFilter::init()
 {
-	design = nullptr;
-	specObserver = nullptr;
-	doUpdate = true;
-	states = vector<FilterState*>(MAX_CHANNELS);
-	amplitudeAdj = 0.0f;
-	sampleRate = -int32_t(1);
+	specObserver = new AbstractFilterObserver(this);
 }
 
 constexpr int32_t AbstractFilter::MAX_CHANNELS;

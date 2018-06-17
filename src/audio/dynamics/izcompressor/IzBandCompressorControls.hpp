@@ -39,7 +39,9 @@ namespace ctoot {
 					std::string detectionChannelMode;
 					std::string attenuationChannelMode;
 					float inputGain;
+					float outputGain;
 					float lookAhead;
+					bool mute;
 
 				protected:
 					virtual void deriveIndependentVariables();
@@ -60,7 +62,9 @@ namespace ctoot {
 					std::string getDetectionChannelMode() override;
 					std::string getAttenuationChannelMode() override;
 					float getInputGain() override;
+					float getOutputGain() override;
 					float getLookAhead() override;
+					bool getMute() override;
 
 				public:
 					IzBandCompressorControls();

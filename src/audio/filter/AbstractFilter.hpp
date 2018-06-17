@@ -17,17 +17,19 @@ namespace ctoot {
 			{
 
 			protected:
-				FilterDesign* design{  };
+				FilterSpecification* spec{ nullptr };
+				FilterDesign* design{ nullptr };
 
 			private:
-				moduru::observer::Observer* specObserver{  };
-				bool doUpdate{  };
+				moduru::observer::Observer* specObserver{ nullptr };
+				bool doUpdate{ true };
 				static constexpr int32_t MAX_CHANNELS{ int32_t(6) };
-				std::vector<FilterState*> states{  };
+				std::vector<FilterState*> states = std::vector<FilterState*>(MAX_CHANNELS);
+
 
 			protected:
-				float amplitudeAdj{  };
-				int32_t sampleRate{  };
+				float amplitudeAdj{ 0.0f };
+				int32_t sampleRate{ -1 };
 
 			private:
 				float levelOffset{  };
@@ -52,8 +54,8 @@ namespace ctoot {
 			public:
 				AbstractFilter(FilterSpecification* spec, bool relative);
 
-			private:
-				void init();
+			public:
+				virtual void init() override;
 
 			private:
 				friend class AbstractFilterObserver;

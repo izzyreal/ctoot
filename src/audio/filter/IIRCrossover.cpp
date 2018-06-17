@@ -11,6 +11,8 @@ IIRCrossover::IIRCrossover(FilterSpecification* low, FilterSpecification* high)
 {
     lpf = new BiQuadFilter(low, true);
     hpf = new BiQuadFilter(high, true);
+	lpf->init();
+	hpf->init();
     lpf->open();
     hpf->open();
 }
@@ -23,8 +25,10 @@ void IIRCrossover::setSampleRate(int32_t rate)
 
 void IIRCrossover::filter(std::vector<float>* source, std::vector<float>* lo, std::vector<float>* hi, int32_t nsamples, int32_t chan)
 {
-    lpf->filter(source, lo, nsamples, chan, false);
-    hpf->filter(source, hi, nsamples, chan, false);
+	if (hi != nullptr)
+		hpf->filter(source, hi, nsamples, chan, false);
+	if (lo != nullptr)
+		lpf->filter(source, lo, nsamples, chan, false);
 }
 
 void IIRCrossover::clear()

@@ -24,8 +24,7 @@ IzCompressorProcess::IzCompressorProcess(IzCompressorProcessVariables* vars, boo
 	this->vars = vars;
 	this->isPeak = peak;
 	wasBypassed = !vars->isBypassed();
-	labL = make_unique<moduru::io::CircularTBuffer>(48000);
-	labR = make_unique<moduru::io::CircularTBuffer>(48000);
+	lab = make_unique<moduru::io::StereoCircularTBuffer>(48000);
 }
 
 void IzCompressorProcess::clear()
@@ -43,6 +42,8 @@ void IzCompressorProcess::cacheProcessVariables()
 	detectionChannelMode = vars->getDetectionChannelMode();
 	attenuationChannelMode = vars->getAttenuationChannelMode();
 	inputGain = vars->getInputGain();
+	outputGain = vars->getOutputGain();
+	mute = vars->getMute();
 }
 
 int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
@@ -80,36 +81,90 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	auto dcm = detectionChannelMode;
 	auto acm = attenuationChannelMode;
 
-	if (dcm.compare("LR") == 0 && acm.compare("LR") != 0) return AUDIO_OK;
+	//if (dcm.compare("LR") == 0 && acm.compare("LR") != 0) return AUDIO_OK;
 
-	labL->write(b0);
-	labR->write(b1);
+	lab->write(b0, b1);
+
+	if (mute) {
+		buffer->makeSilence();
+		lab->moveReadPos(len);
+		return AUDIO_OK;
+	}
 
 	vector<float> factorsL(len);
 	vector<float> factorsR(len);
 
 	const int lookAheadLenSamples = lookAhead * mslen;
 
-	for (int i = 0; i < len; i++) {
-		calcGain(b0, targetGain, i, mslen, len, sumdiv, gain);
-		factorsL[i] = (gain * makeupGain);
-		calcGain(b1, targetGain, i, mslen, len, sumdiv, gain);
-		factorsR[i] = (gain * makeupGain);
+	if (dcm.compare("M") == 0 || dcm.compare("S") == 0) {
+		buffer->encodeMidSide();
 	}
 
+	bool dcmM = dcm.compare("M") == 0;
+	bool dcmS = dcm.compare("S") == 0;
+	bool dcmL = dcm.compare("L") == 0;
+	bool dcmR = dcm.compare("R") == 0;
+	bool dcmLR = dcm.compare("LR") == 0;
+	bool acmM = acm.compare("M") == 0;
+	bool acmS = acm.compare("S") == 0;
+	bool acmL = acm.compare("L") == 0;
+	bool acmR = acm.compare("R") == 0;
+	bool acmLR = acm.compare("LR") == 0;
+
 	for (int i = 0; i < len; i++) {
-		labL->multiply(-lookAheadLenSamples + i, factorsL[i]);
-		labR->multiply(-lookAheadLenSamples + i, factorsR[i]);
+		if (dcmM || dcmL || dcmLR) {
+			calcGain(b0, targetGain, i, mslen, len, sumdiv, gain);
+			factorsL[i] = (gain * makeupGain) * outputGain;
+		}
+		if (dcmS || dcmR || dcmLR) {
+			calcGain(b1, targetGain, i, mslen, len, sumdiv, gain);
+			factorsR[i] = (gain * makeupGain) * outputGain;
+		}
 	}
 
-	labL->moveReadPos(len);
-	labR->moveReadPos(len);
+	float factorL;
+	float factorR;
+	for (int i = 0; i < len; i++) {
+		if (acmM) {
+			float factor = factorsL[i];
+			if (dcmS || dcmR) factor = factorsR[i];
+			lab->encodeMidSide(-lookAheadLenSamples + i);
+			lab->multiply(-lookAheadLenSamples + i, factor, true);
+			lab->decodeMidSide(-lookAheadLenSamples + i);
+		}
+		else if (acmS) {
+			float factor = factorsR[i];
+			if (dcmM || dcmL) factor = factorsL[i];
+			lab->encodeMidSide(-lookAheadLenSamples + i);
+			lab->multiply(-lookAheadLenSamples + i, factor, false);
+			lab->decodeMidSide(-lookAheadLenSamples + i);
+		}
+		else if (acmL) {
+			float factor = factorsL[i];
+			if (dcmS || dcmR) factor = factorsR[i];
+			lab->multiply(-lookAheadLenSamples + i, factor, true);
+		}
+		else if (acmR) {
+			float factor = factorsR[i];
+			if (dcmM || dcmL) factor = factorsL[i];
+			lab->multiply(-lookAheadLenSamples + i, factor, false);
+		}
+		else if (acmLR) {
+			factorL = factorsL[i];
+			factorR = factorsR[i];
+			if (dcmL || dcmM)
+				factorR = factorL;
+			if (dcmR || dcmS)
+				factorL = factorR;
+			lab->multiply(-lookAheadLenSamples + i, factorL, true);
+			lab->multiply(-lookAheadLenSamples + i, factorR, false);
+		}
+	}
 
 	const int correctiveLenSamples = (MAX_LOOK_AHEAD * mslen);
 
-	labL->read(b0, -correctiveLenSamples, len);
-	labR->read(b1, -correctiveLenSamples, len);
-
+	lab->read(b0, b1, -correctiveLenSamples, len);
+	lab->moveReadPos(len);
 	vars->setDynamicGain(gain);
 	wasBypassed = bypassed;
 	return AUDIO_OK;

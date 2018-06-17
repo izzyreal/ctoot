@@ -2,7 +2,7 @@
 
 #include <audio/core/SimpleAudioProcess.hpp>
 
-#include <io/CircularTBuffer.hpp>
+#include <io/StereoCircularTBuffer.hpp>
 
 #include <string>
 #include <vector>
@@ -29,15 +29,16 @@ namespace ctoot {
 					std::string detectionChannelMode;
 					std::string attenuationChannelMode;
 					float inputGain = 1.0f;
+					float outputGain = 1.0f;
 					IzCompressorProcessVariables* vars{  };
+					bool mute{ false };
 
 				private:
-					std::unique_ptr<moduru::io::CircularTBuffer> labL;
-					std::unique_ptr<moduru::io::CircularTBuffer> labR;
+					std::unique_ptr<moduru::io::StereoCircularTBuffer> lab;
 					bool wasBypassed{  };
 					int32_t sampleRate{ 0 };
 					const int32_t NSQUARESUMS{ 10 };
-					const float MAX_LOOK_AHEAD{ 1000.0f };
+					const float MAX_LOOK_AHEAD{ 15.0f };
 					std::vector<float> squaresums = std::vector<float>(NSQUARESUMS);
 					int32_t nsqsum{ 0 };
 

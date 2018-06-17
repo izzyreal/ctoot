@@ -141,14 +141,16 @@ void MultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* bu
 void MultiBandCompressor::split(ctoot::audio::filter::Crossover* xo, ctoot::audio::core::AudioBuffer* source, ctoot::audio::core::AudioBuffer* low, ctoot::audio::core::AudioBuffer* high)
 {
     for (auto c = 0; c < source->getChannelCount(); c++) {
+		auto lowC = low != nullptr ? low->getChannel(c) : nullptr;
+		auto highC = high != nullptr ? high->getChannel(c) : nullptr;
         xo->filter(source->getChannel(c), low->getChannel(c), high->getChannel(c), source->getSampleCount(), c);
     }
 }
 
 ctoot::audio::filter::Crossover* MultiBandCompressor::createCrossover(CrossoverControl* c)
 {
-	auto cs1 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::LPF);
-	auto cs2 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::HPF);
+	auto cs2 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::LPF);
+	auto cs1 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::HPF);
 	return new ctoot::audio::filter::IIRCrossover(cs1, cs2);
 }
 

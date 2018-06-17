@@ -53,8 +53,8 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::ATTACK_LAW()
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
 {
-	//static auto res = make_shared<LogLaw>(0.0f, 20.0f, "ms");
-	static auto res = make_shared<LogLaw>(0.0f, 1000.0f, "ms");
+	static auto res = make_shared<LogLaw>(0.0f, 15.0f, "ms");
+	//static auto res = make_shared<LogLaw>(0.0f, 1000.0f, "ms");
 	return res;
 }
 
@@ -83,6 +83,12 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::GAIN_LAW()
 }
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::INPUT_GAIN_LAW()
+{
+	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
+	return res;
+}
+
+weak_ptr<ctoot::control::ControlLaw> DynamicsControls::OUTPUT_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
 	return res;
@@ -167,8 +173,14 @@ void DynamicsControls::derive(ctoot::control::Control* c)
 	case DynamicsControlIds::INPUT_GAIN:
 		deriveInputGain();
 		break;
+	case DynamicsControlIds::OUTPUT_GAIN:
+		deriveOutputGain();
+		break;
 	case DynamicsControlIds::LOOK_AHEAD:
 		deriveLookAhead();
+		break;
+	case DynamicsControlIds::MUTE:
+		deriveMute();
 		break;
 	}
 }
@@ -183,6 +195,16 @@ void DynamicsControls::deriveThreshold()
 void DynamicsControls::deriveInputGain() {
 	if (!inputGainControl.lock()) return;
 	inputGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(inputGainControl.lock()->getValue()));
+}
+
+void DynamicsControls::deriveOutputGain() {
+	if (!inputGainControl.lock()) return;
+	outputGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(outputGainControl.lock()->getValue()));
+}
+
+void DynamicsControls::deriveMute() {
+	if (!muteControl.lock()) return;
+	mute = muteControl.lock()->getValue();
 }
 
 void DynamicsControls::deriveDetectionChannelMode()
@@ -306,6 +328,14 @@ void DynamicsControls::setParent(ctoot::control::CompoundControl* parent)
 }
 
 bool DynamicsControls::hasInputGain() {
+	return false;
+}
+
+bool DynamicsControls::hasOutputGain() {
+	return false;
+}
+
+bool DynamicsControls::hasMute() {
 	return false;
 }
 
@@ -448,6 +478,16 @@ shared_ptr<ctoot::control::FloatControl> DynamicsControls::createInputGainContro
 	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::INPUT_GAIN + idOffset, "Input Gain", INPUT_GAIN_LAW(), 1.0f, 0);
 }
 
+shared_ptr<ctoot::control::FloatControl> DynamicsControls::createOutputGainControl()
+{
+	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::OUTPUT_GAIN + idOffset, "Output Gain", OUTPUT_GAIN_LAW(), 1.0f, 0);
+}
+
+shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createMuteControl()
+{
+	return make_shared<ctoot::control::BooleanControl>(DynamicsControlIds::MUTE + idOffset, "Mute", false);
+}
+
 bool DynamicsControls::hasDepth()
 {
     return false;
@@ -578,6 +618,14 @@ float DynamicsControls::getInputGain() {
 	return inputGain;
 }
 
+float DynamicsControls::getOutputGain() {
+	return outputGain;
+}
+
+bool DynamicsControls::getMute() {
+	return mute;
+}
+
 ctoot::audio::core::AudioBuffer* DynamicsControls::getKeyBuffer()
 {
     return key;
@@ -614,11 +662,23 @@ void DynamicsControls::init() {
 		MLOG("I'll try to clear and re-init...");
 		controls.clear();
 	}
+	if (hasMute()) {
+		auto mc = createMuteControl();
+		muteControl = mc;
+		derive(mc.get());
+		add(std::move(mc));
+	}
 	if (hasInputGain()) {
 		auto igc = createInputGainControl();
 		inputGainControl = igc;
 		derive(igc.get());
 		add(std::move(igc));
+	}
+	if (hasOutputGain()) {
+		auto ogc = createOutputGainControl();
+		outputGainControl = ogc;
+		derive(ogc.get());
+		add(std::move(ogc));
 	}
 	if (hasLookAhead()) {
 		auto lac = createLookAheadControl();

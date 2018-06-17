@@ -14,6 +14,7 @@ namespace ctoot {
 				virtual void filter(std::vector<float>* source, std::vector<float>* dest, int32_t length, int32_t chan, bool mix) = 0;
 				virtual void clear() = 0;
 				virtual void setSampleRate(int32_t sampleRate) = 0;
+				virtual void init() = 0;
 
 			};
 		}

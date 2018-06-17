@@ -40,6 +40,8 @@ void IzBandCompressorControls::deriveIndependentVariables()
 	detectionChannelMode = compressorControls.lock()->getDetectionChannelMode();
 	attenuationChannelMode = compressorControls.lock()->getAttenuationChannelMode();
 	inputGain = compressorControls.lock()->getInputGain();
+	outputGain = compressorControls.lock()->getOutputGain();
+	mute = compressorControls.lock()->getMute();
 }
 
 void IzBandCompressorControls::deriveDependentVariables()
@@ -85,8 +87,14 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 	case DynamicsControlIds::INPUT_GAIN:
 		inputGain = cc.lock()->getInputGain();
 		break;
+	case DynamicsControlIds::OUTPUT_GAIN:
+		inputGain = cc.lock()->getOutputGain();
+		break;
 	case DynamicsControlIds::LOOK_AHEAD:
 		lookAhead = cc.lock()->getLookAhead();
+		break;
+	case DynamicsControlIds::MUTE:
+		mute = cc.lock()->getMute();
 		break;
 	}
 }
@@ -142,6 +150,10 @@ float IzBandCompressorControls::getDepth()
     return depth;
 }
 
+bool IzBandCompressorControls::getMute() {
+	return mute;
+}
+
 void IzBandCompressorControls::setDynamicGain(float gain)
 {
     compressorControls.lock()->setDynamicGain(gain);
@@ -162,4 +174,8 @@ string IzBandCompressorControls::getAttenuationChannelMode() {
 
 float IzBandCompressorControls::getInputGain() {
 	return inputGain;
+}
+
+float IzBandCompressorControls::getOutputGain() {
+	return outputGain;
 }
