@@ -44,6 +44,8 @@ void IzCompressorProcess::cacheProcessVariables()
 	inputGain = vars->getInputGain();
 	outputGain = vars->getOutputGain();
 	mute = vars->getMute();
+	dryGain = vars->getDryGain();
+	wetGain = vars->getWetGain();
 }
 
 int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)

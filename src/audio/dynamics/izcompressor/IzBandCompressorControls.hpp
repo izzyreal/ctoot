@@ -42,6 +42,8 @@ namespace ctoot {
 					float outputGain;
 					float lookAhead;
 					bool mute;
+					float dryGain;
+					float wetGain;
 
 				protected:
 					virtual void deriveIndependentVariables();
@@ -65,6 +67,8 @@ namespace ctoot {
 					float getOutputGain() override;
 					float getLookAhead() override;
 					bool getMute() override;
+					float getDryGain() override;
+					float getWetGain() override;
 
 				public:
 					IzBandCompressorControls();

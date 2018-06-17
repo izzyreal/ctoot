@@ -42,6 +42,8 @@ void IzBandCompressorControls::deriveIndependentVariables()
 	inputGain = compressorControls.lock()->getInputGain();
 	outputGain = compressorControls.lock()->getOutputGain();
 	mute = compressorControls.lock()->getMute();
+	dryGain = compressorControls.lock()->getDryGain();
+	wetGain = compressorControls.lock()->getWetGain();
 }
 
 void IzBandCompressorControls::deriveDependentVariables()
@@ -95,6 +97,12 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 		break;
 	case DynamicsControlIds::MUTE:
 		mute = cc.lock()->getMute();
+		break;
+	case DynamicsControlIds::DRY_GAIN:
+		dryGain = cc.lock()->getDryGain();
+		break;
+	case DynamicsControlIds::WET_GAIN:
+		wetGain = cc.lock()->getWetGain();
 		break;
 	}
 }
@@ -178,4 +186,12 @@ float IzBandCompressorControls::getInputGain() {
 
 float IzBandCompressorControls::getOutputGain() {
 	return outputGain;
+}
+
+float IzBandCompressorControls::getDryGain() {
+	return dryGain;
+}
+
+float IzBandCompressorControls::getWetGain() {
+	return wetGain;
 }

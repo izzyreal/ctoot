@@ -28,6 +28,7 @@ namespace ctoot {
 				virtual float getRelease() = 0;
 				virtual float getDepth() = 0;
 				virtual float getDryGain() = 0;
+				virtual float getWetGain() = 0;
 				virtual float getGain() = 0;
 				virtual float getHysteresis() = 0;
 				virtual void setDynamicGain(float gain) = 0;

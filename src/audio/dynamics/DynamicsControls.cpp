@@ -76,6 +76,12 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::DRY_GAIN_LAW()
 	return res;
 }
 
+weak_ptr<ctoot::control::ControlLaw> DynamicsControls::WET_GAIN_LAW()
+{
+	static auto res = make_shared<LinearLaw>(-40.0f, 0.0f, "dB");
+	return res;
+}
+
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(0.0f, 20.0f, "dB");
@@ -149,7 +155,11 @@ void DynamicsControls::derive(ctoot::control::Control* c)
         break;
     case DynamicsControlIds::DRY_GAIN:
         deriveDryGain();
-    case DynamicsControlIds::GAIN:
+		break;
+	case DynamicsControlIds::WET_GAIN:
+		deriveWetGain();
+		break;
+	case DynamicsControlIds::GAIN:
         deriveGain();
         break;
     case DynamicsControlIds::DEPTH:
@@ -288,6 +298,14 @@ void DynamicsControls::deriveDryGain()
 		return;
 
 	dryGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(dryGainControl.lock()->getValue()));
+}
+
+void DynamicsControls::deriveWetGain()
+{
+	if (!wetGainControl.lock())
+		return;
+
+	wetGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(wetGainControl.lock()->getValue()));
 }
 
 void DynamicsControls::deriveGain()
@@ -448,6 +466,16 @@ bool DynamicsControls::hasDryGain()
     return false;
 }
 
+bool DynamicsControls::hasWetGain()
+{
+	return false;
+}
+
+weak_ptr<ControlLaw> DynamicsControls::getWetGainLaw()
+{
+	return WET_GAIN_LAW();
+}
+
 weak_ptr<ControlLaw> DynamicsControls::getDryGainLaw()
 {
     return DRY_GAIN_LAW();
@@ -456,6 +484,11 @@ weak_ptr<ControlLaw> DynamicsControls::getDryGainLaw()
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDryGainControl()
 {
     return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry", getDryGainLaw(), 1.0f, 0);
+}
+
+shared_ptr<ctoot::control::FloatControl> DynamicsControls::createWetGainControl()
+{
+	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::WET_GAIN + idOffset, "Wet", getWetGainLaw(), 1.0f, 0);
 }
 
 bool DynamicsControls::hasGain()
@@ -589,6 +622,11 @@ float DynamicsControls::getRelease()
 float DynamicsControls::getDryGain()
 {
     return dryGain;
+}
+
+float DynamicsControls::getWetGain()
+{
+	return wetGain;
 }
 
 float DynamicsControls::getGain()
@@ -768,6 +806,13 @@ void DynamicsControls::init() {
 
 	auto g3 = make_shared<ctoot::control::ControlColumn>();
 	auto useg3 = false;
+	if (hasWetGain()) {
+		auto wgc = createWetGainControl();
+		wetGainControl = wgc;
+		derive(wgc.get());
+		g3->add(std::move(wgc));
+		useg3 = true;
+	}
 	if (hasDryGain()) {
 		auto dgc = createDryGainControl();
 		dryGainControl = dgc;

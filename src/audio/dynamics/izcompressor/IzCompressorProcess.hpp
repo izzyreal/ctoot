@@ -32,6 +32,8 @@ namespace ctoot {
 					float outputGain = 1.0f;
 					IzCompressorProcessVariables* vars{  };
 					bool mute{ false };
+					float dryGain = 1.0f;
+					float wetGain = 1.0f;
 
 				private:
 					std::unique_ptr<moduru::io::StereoCircularTBuffer> lab;

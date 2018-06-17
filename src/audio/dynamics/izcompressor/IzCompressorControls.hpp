@@ -36,6 +36,7 @@ namespace ctoot {
 					bool hasKnee() override { return true; }
 					bool hasGain() override { return true; }
 					bool hasDryGain() override { return true; }
+					bool hasWetGain() override { return true; }
 					bool hasRatio() override { return true; }
 					bool hasInputGain() override { return true; }
 					bool hasOutputGain() override { return true; }

@@ -27,6 +27,7 @@ namespace ctoot {
 				static constexpr int32_t OUTPUT_GAIN{ 16 };
 				static constexpr int32_t LOOK_AHEAD{ 17 };
 				static constexpr int32_t MUTE{ 18 };
+				static constexpr int32_t WET_GAIN{ 19 };
 
 			};
 

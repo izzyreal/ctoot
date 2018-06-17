@@ -38,6 +38,7 @@ namespace ctoot {
 				static std::weak_ptr<ctoot::control::ControlLaw> HOLD_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> RELEASE_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> DRY_GAIN_LAW();
+				static std::weak_ptr<ctoot::control::ControlLaw> WET_GAIN_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> GAIN_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> DEPTH_LAW();
 				static std::weak_ptr<ctoot::control::ControlLaw> HYSTERESIS_LAW();
@@ -55,6 +56,7 @@ namespace ctoot {
 				std::weak_ptr<ctoot::control::FloatControl> holdControl{};
 				std::weak_ptr<ctoot::control::FloatControl> releaseControl{};
 				std::weak_ptr<ctoot::control::FloatControl> dryGainControl{};
+				std::weak_ptr<ctoot::control::FloatControl> wetGainControl{};
 				std::weak_ptr<ctoot::control::FloatControl> gainControl{};
 				std::weak_ptr<ctoot::control::FloatControl> depthControl{};
 				std::weak_ptr<ctoot::control::FloatControl> hysteresisControl{};
@@ -68,7 +70,7 @@ namespace ctoot {
 
 				float sampleRate{ 44100.0f };
 				float threshold{}, inverseThreshold{}, thresholddB{}, inverseRatio{}, kneedB{ 10.0f };
-				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f }, inputGain{ 1.0f }, outputGain{ 1.0f };
+				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, wetGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f }, inputGain{ 1.0f }, outputGain{ 1.0f };
 				float lookAhead{ 0.0f };
 				bool mute{ false };
 				std::string detectionChannelMode;
@@ -107,6 +109,7 @@ namespace ctoot {
 				virtual void deriveHold();
 				virtual void deriveRelease();
 				virtual void deriveDryGain();
+				virtual void deriveWetGain();
 				virtual void deriveGain();
 				virtual void deriveDepth();
 				virtual void deriveHysteresis();
@@ -124,6 +127,7 @@ namespace ctoot {
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getHoldLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getReleaseLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getDryGainLaw();
+				virtual std::weak_ptr<ctoot::control::ControlLaw> getWetGainLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getGainLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getDepthLaw();
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getHysteresisLaw();
@@ -140,6 +144,7 @@ namespace ctoot {
 				virtual bool hasRMS();
 				virtual bool hasHold();
 				virtual bool hasDryGain();
+				virtual bool hasWetGain();
 				virtual bool hasChannelMode();
 				virtual bool hasInputGain();
 				virtual bool hasOutputGain();
@@ -149,6 +154,7 @@ namespace ctoot {
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createGainControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDryGainControl();
+				virtual std::shared_ptr<ctoot::control::FloatControl> createWetGainControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createThresholdControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createRatioControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createKneeControl();
@@ -175,6 +181,7 @@ namespace ctoot {
 				int32_t getHold() override;
 				float getRelease() override;
 				float getDryGain() override;
+				float getWetGain() override;
 				float getGain() override;
 				float getDepth() override;
 				float getHysteresis() override;
