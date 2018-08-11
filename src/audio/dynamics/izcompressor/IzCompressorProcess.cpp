@@ -25,6 +25,7 @@ IzCompressorProcess::IzCompressorProcess(IzCompressorProcessVariables* vars, boo
 	this->isPeak = peak;
 	wasBypassed = !vars->isBypassed();
 	lab = make_unique<moduru::io::StereoCircularTBuffer>(48000);
+	dryBuffer = make_unique<moduru::io::StereoCircularTBuffer>(48000);
 }
 
 void IzCompressorProcess::clear()
@@ -73,6 +74,8 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	auto b0 = buffer->getChannel(0);
 	auto b1 = buffer->getChannel(1);
 
+	dryBuffer->write(b0, b1);
+
 	if (inputGain != 1.0f) {
 		for (int i = 0; i < buffer->getSampleCount(); i++) {
 			(*b0)[i] *= inputGain;
@@ -90,6 +93,8 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	if (mute) {
 		buffer->makeSilence();
 		lab->moveReadPos(len);
+		dryBuffer->moveReadPos(len);
+		vars->setDynamicGain(1.0f);
 		return AUDIO_OK;
 	}
 
@@ -167,6 +172,18 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 
 	lab->read(b0, b1, -correctiveLenSamples, len);
 	lab->moveReadPos(len);
+	
+	vector<float> dryL(len);
+	vector<float> dryR(len);
+
+	dryBuffer->read(&dryL, &dryR, -correctiveLenSamples, len);
+	dryBuffer->moveReadPos(len);
+
+	for (int i = 0; i < len; i++) {
+		(*b0)[i] = ((*b0)[i] * wetGain) + (dryL[i] * dryGain);
+		(*b1)[i] = ((*b1)[i] * wetGain) + (dryR[i] * dryGain);
+	}
+
 	vars->setDynamicGain(gain);
 	wasBypassed = bypassed;
 	return AUDIO_OK;

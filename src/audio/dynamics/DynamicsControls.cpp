@@ -72,13 +72,13 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::RELEASE_LAW()
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::DRY_GAIN_LAW()
 {
-	static auto res = make_shared<LinearLaw>(-40.0f, 0.0f, "dB");
+	static auto res = make_shared<LinearLaw>(-40.0f, 10.0f, "dB");
 	return res;
 }
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::WET_GAIN_LAW()
 {
-	static auto res = make_shared<LinearLaw>(-40.0f, 0.0f, "dB");
+	static auto res = make_shared<LinearLaw>(-40.0f, 10.0f, "dB");
 	return res;
 }
 
@@ -483,12 +483,12 @@ weak_ptr<ControlLaw> DynamicsControls::getDryGainLaw()
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDryGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry", getDryGainLaw(), 1.0f, 0);
+    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry Gain", getDryGainLaw(), 1.0f, 0);
 }
 
 shared_ptr<ctoot::control::FloatControl> DynamicsControls::createWetGainControl()
 {
-	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::WET_GAIN + idOffset, "Wet", getWetGainLaw(), 1.0f, 0);
+	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::WET_GAIN + idOffset, "Wet Gain", getWetGainLaw(), 1.0f, 0);
 }
 
 bool DynamicsControls::hasGain()

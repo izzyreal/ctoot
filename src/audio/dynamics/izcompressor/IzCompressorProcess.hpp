@@ -37,6 +37,7 @@ namespace ctoot {
 
 				private:
 					std::unique_ptr<moduru::io::StereoCircularTBuffer> lab;
+					std::unique_ptr<moduru::io::StereoCircularTBuffer> dryBuffer;
 					bool wasBypassed{  };
 					int32_t sampleRate{ 0 };
 					const int32_t NSQUARESUMS{ 10 };

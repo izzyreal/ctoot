@@ -12,6 +12,9 @@
 #include <audio/core/ChannelFormat.hpp>
 #include <audio/core/AudioProcess.hpp>
 
+#include <audio/analysis/SpectrumAnalyserControl.hpp>
+#include <audio/analysis/SpectrumAnalyserProcess.hpp>
+
 using namespace ctoot::audio::basic;
 using namespace std;
 
@@ -28,6 +31,7 @@ BasicServiceProvider::BasicServiceProvider()
     add(::stereoImage::StereoImageProcess::class_(), ctoot::misc::Localisation::getString("Stereo.Image"), family, u"0.1");
 	*/
 	addControls("class ctoot::audio::core::AudioControls", BasicIds::TAP, "class ctoot::audio::basic::tap::TapControls", family, "0.1");
+	addControls("class ctoot::audio::core::AudioControls", BasicIds::SPECTRUM_ANALYSER, "class ctoot::audio::analysis::SpectrumAnalyserControls", family, "0.1");
 
 }
 
@@ -36,6 +40,9 @@ shared_ptr<ctoot::audio::core::AudioProcess> BasicServiceProvider::createProcess
 	auto name = c.lock()->getName();
 	if (name.compare("Tap") == 0) {
 		return make_shared<tap::TapProcess>(dynamic_pointer_cast<tap::TapControls>(c.lock()).get());
+	}
+	else if (name.compare("SpectrumAnalyser") == 0) {
+		return make_shared<analysis::SpectrumAnalyserProcess>(dynamic_pointer_cast<analysis::SpectrumAnalyserControl>(c.lock()));
 	}
 	/*
 	if(dynamic_cast< ::tap::TapControls* >(c) != nullptr) {
