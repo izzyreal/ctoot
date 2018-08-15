@@ -17,11 +17,11 @@ namespace ctoot {
 			{
 
 			protected:
-				FilterSpecification* spec{ nullptr };
+//				FilterSpecification* spec{ nullptr };
 				FilterDesign* design{ nullptr };
+				moduru::observer::Observer* specObserver{ nullptr };
 
 			private:
-				moduru::observer::Observer* specObserver{ nullptr };
 				bool doUpdate{ true };
 				static constexpr int32_t MAX_CHANNELS{ int32_t(6) };
 				std::vector<FilterState*> states = std::vector<FilterState*>(MAX_CHANNELS);
@@ -55,7 +55,7 @@ namespace ctoot {
 				AbstractFilter(FilterSpecification* spec, bool relative);
 
 			public:
-				virtual void init() override;
+				//virtual void init() override;
 
 			private:
 				friend class AbstractFilterObserver;

@@ -80,7 +80,7 @@ shared_ptr<AudioProcess> AudioServices::createProcess(weak_ptr<AudioControls> co
 
 void AudioServices::scan()
 {
-	auto prov = lookup(ctoot::audio::spi::AudioServiceProvider());
+	auto prov = lookup(ctoot::audio::spi::AudioServiceProvider("dummy"));
 	providers.clear();
 	for (auto& p : prov) {
 		auto candidate = dynamic_pointer_cast<ctoot::audio::spi::AudioServiceProvider>(p.lock());

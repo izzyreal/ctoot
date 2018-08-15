@@ -36,7 +36,7 @@ namespace ctoot {
 
 			public:
 				AudioServiceProvider(int providerId, std::string providerName, std::string description, std::string version);
-				AudioServiceProvider() {}
+				AudioServiceProvider(std::string providerName) { this->providerName = providerName; }
 			};
 		}
 	}

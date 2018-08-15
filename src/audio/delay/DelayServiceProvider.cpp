@@ -60,7 +60,6 @@ DelayServiceProvider::DelayServiceProvider()
 shared_ptr<ctoot::audio::core::AudioProcess> DelayServiceProvider::createProcessor(weak_ptr<AudioControls> c)
 {
 	auto name = c.lock()->getName();
-	MLOG("DelayServiceProvider::createProcessor c name: " + name);
 	if (name.compare("Phaser") == 0) {
 		return make_shared<PhaserProcess>(dynamic_pointer_cast<PhaserProcessVariables>(c.lock()).get());
 	}

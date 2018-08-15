@@ -1,6 +1,5 @@
 #include <audio/filter/AbstractFilter.hpp>
 
-#include <audio/filter/AbstractFilterObserver.hpp>
 #include <audio/filter/FilterState.hpp>
 #include <audio/filter/FilterDesign.hpp>
 #include <audio/filter/FilterSpecification.hpp>
@@ -12,7 +11,7 @@ using namespace std;
 
 AbstractFilter::AbstractFilter(FilterSpecification* spec, bool relative)
 {
-	this->spec = spec;
+//	this->spec = spec;
     levelOffset = relative ? 1.0f : 0.0f;
 }
 
@@ -66,9 +65,11 @@ void AbstractFilter::setSampleRate(int32_t rate)
 	doUpdate = true;
 }
 
+/*
 void AbstractFilter::init()
 {
 	specObserver = new AbstractFilterObserver(this);
 }
+*/
 
 constexpr int32_t AbstractFilter::MAX_CHANNELS;

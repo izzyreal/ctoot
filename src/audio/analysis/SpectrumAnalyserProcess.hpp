@@ -1,5 +1,9 @@
 #include <audio/core/AudioProcess.hpp>
 
+#include <io/StereoCircularTBuffer.hpp>
+
+#include <thirdp/fftreal/FFTReal.h>
+
 #include <vector>
 #include <memory>
 
@@ -13,17 +17,20 @@ namespace ctoot {
 
 		namespace analysis {
 
-			class SpectrumAnalyserControl;
+			class SpectrumAnalyserControls;
 
 			class SpectrumAnalyserProcess
 				: public audio::core::AudioProcess
 			{
 
 			private:
-				std::weak_ptr<SpectrumAnalyserControl> control;
+				static const int FFT_SIZE = 2048;
 
-			public:
-				int getBandCount();
+			private:
+				std::weak_ptr<SpectrumAnalyserControls> controls;
+				int sampleRate = 0;
+				std::unique_ptr<moduru::io::StereoCircularTBuffer> circBuf;
+				std::unique_ptr<FFTReal> fft;
 
 			public:
 				int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
@@ -31,7 +38,7 @@ namespace ctoot {
 				void close() override {};
 
 			public:
-				SpectrumAnalyserProcess(std::weak_ptr<SpectrumAnalyserControl> control);
+				SpectrumAnalyserProcess(std::weak_ptr<SpectrumAnalyserControls> controls);
 				~SpectrumAnalyserProcess();
 
 			};

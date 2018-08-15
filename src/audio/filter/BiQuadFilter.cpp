@@ -6,17 +6,23 @@
 #include <audio/filter/FilterState.hpp>
 #include <audio/filter/FilterDesign.hpp>
 
+#include <audio/filter/AbstractFilterObserver.hpp>
+
 using namespace ctoot::audio::filter;
 
 BiQuadFilter::BiQuadFilter(FilterSpecification* spec, bool relative)
 	: AbstractFilter(spec, relative)
 {
+	design = createDesign(spec);
+	specObserver = new AbstractFilterObserver(this);
 }
 
+/*
 void BiQuadFilter::init() {
 	design = createDesign(spec);
 	AbstractFilter::init();
 }
+*/
 
 void BiQuadFilter::filter(std::vector<float>* buffer, std::vector<float>* mixBuffer, int32_t length, int32_t chan, bool doMix)
 {

@@ -11,10 +11,12 @@ ServiceDescriptor::ServiceDescriptor(string parentClass, string childClass, stri
 	this->childClass = childClass;
 	this->description = description;
 	this->version = version;
+	/*
 	MLOG("\nServiceDescriptor parentClass: " + parentClass);
 	MLOG("ServiceDescriptor childClass: " + childClass);
 	MLOG("ServiceDescriptor description: " + description);
 	MLOG("ServiceDescriptor version: " + version);
+	*/
 }
 
 string ServiceDescriptor::getParentClass()

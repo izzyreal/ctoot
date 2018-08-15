@@ -169,6 +169,7 @@ weak_ptr<Control> CompoundControl::findByTypeIdName(string typeIdName)
 {
 	for (int i = 0; i < controls.size(); i++) {
 		string currentTypeIdName = typeid(*controls[i].get()).name();
+
 		if (currentTypeIdName.compare(typeIdName) == 0) {
 			return controls[i];
 		}
@@ -178,7 +179,6 @@ weak_ptr<Control> CompoundControl::findByTypeIdName(string typeIdName)
 
 weak_ptr<Control> CompoundControl::find(string name)
 {
-	//MLOG("Attempting to find compound control by string, arg == " + name);
 	for (int i = 0; i < controls.size(); i++) {
 		if (controls[i]->getName().compare(name) == 0) {
 			return controls[i];

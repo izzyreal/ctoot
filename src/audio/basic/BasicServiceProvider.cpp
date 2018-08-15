@@ -12,7 +12,7 @@
 #include <audio/core/ChannelFormat.hpp>
 #include <audio/core/AudioProcess.hpp>
 
-#include <audio/analysis/SpectrumAnalyserControl.hpp>
+#include <audio/analysis/SpectrumAnalyserControls.hpp>
 #include <audio/analysis/SpectrumAnalyserProcess.hpp>
 
 using namespace ctoot::audio::basic;
@@ -42,7 +42,7 @@ shared_ptr<ctoot::audio::core::AudioProcess> BasicServiceProvider::createProcess
 		return make_shared<tap::TapProcess>(dynamic_pointer_cast<tap::TapControls>(c.lock()).get());
 	}
 	else if (name.compare("SpectrumAnalyser") == 0) {
-		return make_shared<analysis::SpectrumAnalyserProcess>(dynamic_pointer_cast<analysis::SpectrumAnalyserControl>(c.lock()));
+		return make_shared<analysis::SpectrumAnalyserProcess>(dynamic_pointer_cast<analysis::SpectrumAnalyserControls>(c.lock()));
 	}
 	/*
 	if(dynamic_cast< ::tap::TapControls* >(c) != nullptr) {

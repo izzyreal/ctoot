@@ -49,7 +49,7 @@ vector<ServiceDescriptor*>* ServiceProvider::service(string typeIdName)
 
 void ServiceProvider::add(ServiceDescriptor* d)
 {
-	MLOG("ServiceProvider trying to add: " + d->getDescription());
+	//MLOG("ServiceProvider trying to add: " + d->getDescription());
 	auto candidate = services.find(d->getParentClass());
 	if (candidate != services.end()) {
 		services[d->getParentClass()].push_back(d);
@@ -91,7 +91,7 @@ string ServiceProvider::toString()
 }
 
 ServiceProvider::~ServiceProvider() {
-	MLOG("Service provider destructor called for " + this->getProviderName());
+	MLOG("Service provider destructor called for " + this->getProviderName() + " " + getDescription());
 	for (auto& s : services) {
 		for (auto& sd : s.second) {
 			if (sd != nullptr) delete sd;

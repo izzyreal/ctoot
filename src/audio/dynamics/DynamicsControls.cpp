@@ -35,7 +35,7 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::RATIO_LAW()
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::INVERSE_RATIO_LAW()
 {
-	static auto res = make_shared<LinearLaw>(int32_t(1), -int32_t(1), "");
+	static auto res = make_shared<LinearLaw>(1, -1, "");
 	return res;
 }
 
@@ -54,7 +54,6 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::ATTACK_LAW()
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
 {
 	static auto res = make_shared<LogLaw>(0.0f, 15.0f, "ms");
-	//static auto res = make_shared<LogLaw>(0.0f, 1000.0f, "ms");
 	return res;
 }
 
@@ -696,8 +695,8 @@ bool DynamicsControls::isBypassed()
 
 void DynamicsControls::init() {
 	if (initialized) {
-		MLOG("Error: DynamicsControls is already initialized!");
-		MLOG("I'll try to clear and re-init...");
+		//MLOG("Error: DynamicsControls is already initialized!");
+		//MLOG("I'll try to clear and re-init...");
 		controls.clear();
 	}
 	if (hasMute()) {
