@@ -13,7 +13,7 @@ using namespace std;
 SpectrumAnalyserProcess::SpectrumAnalyserProcess(weak_ptr<SpectrumAnalyserControls> controls)
 {
 	this->controls = controls;
-	circBuf = make_unique<moduru::io::StereoCircularTBuffer>(FFT_SIZE);
+	circBuf = make_unique<moduru::io::StereoCircularTBuffer>(48000);
 	fft = make_unique<FFTReal>(FFT_SIZE);
 	controls.lock()->setValues(vector<float>(FFT_SIZE/2));
 }
@@ -23,7 +23,7 @@ SpectrumAnalyserProcess::~SpectrumAnalyserProcess()
 }
 
 
-/*
+// Hann
 void applyWindow(vector<float>& data) {
 	auto ns = data.size();
 	for (int i = 0; i < ns; i++) {
@@ -31,8 +31,9 @@ void applyWindow(vector<float>& data) {
 		data[i] = multiplier * data[i];
 	}
 }
-*/
 
+/*
+// 4-term Blackman-Harris
 void applyWindow(vector<float>& samples)
 {
 	auto numSamples = samples.size();
@@ -54,9 +55,8 @@ void applyWindow(vector<float>& samples)
 		samples[i] *= window;
 		windowFactor += window;
 	}
-
-	windowFactor *= (float)oneOverSize;
 }
+*/
 
 int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 
@@ -68,34 +68,27 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 
 	if (sampleRate != buffer->getSampleRate()) {
 		this->sampleRate = buffer->getSampleRate();
-		//c->setValues(vector<float>(FFT_SIZE / 2));
-		//c->setValues(vector<float>(FFT_SIZE / 8));
+		c->setSampleRate(buffer->getSampleRate());
 	}
 
 	const int ns = buffer->getSampleCount();
 	auto l = *buffer->getChannel(0);
 	auto r = *buffer->getChannel(1);
-
-	//applyWindow(l);
-	//applyWindow(r);
-
-	int length = min(ns, FFT_SIZE);
-
-	circBuf->write(&l, &r, length);
+	circBuf->write(&l, &r, ns);
 
 	vector<float> l1(FFT_SIZE);
 	vector<float> r1(FFT_SIZE);
 	vector<float> resultL(FFT_SIZE);
 	vector<float> resultR(FFT_SIZE);
 
-	circBuf->read(&l1, &r1, 0, FFT_SIZE);
+	circBuf->read(&l1, &r1, -FFT_SIZE, FFT_SIZE);
+	circBuf->moveReadPos(ns);
+
+	applyWindow(l1);
+	applyWindow(r1);
 
 	fft->do_fft(&resultL[0], &l1[0]);
 	fft->do_fft(&resultR[0], &r1[0]);
-	fft->do_ifft(&resultL[0], &l1[0]);
-	fft->do_ifft(&resultR[0], &r1[0]);
-	fft->rescale(&l1[0]);
-	fft->rescale(&r1[0]);
 
 	int vCounter = 0;
 	for (int i = 0; i <= FFT_SIZE / 2; i++)
@@ -103,22 +96,16 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 		double img;
 
 		const double real = resultL[i];
-		if (i > 0 && i < FFT_SIZE / 2)
-		{
+		if (i > 0 && i < FFT_SIZE / 2) {
 			img = resultL[i + FFT_SIZE / 2];
 		}
-		else
-		{
+		else {
 			img = 0;
 		}
 
 		const double f_abs = sqrt(real * real + img * img);
-		//float v = 20 * log10(f_abs * f_abs);
-		float v = f_abs;
-		//v /= sampleRate / (FFT_SIZE / 2);
-		v = abs(v / (FFT_SIZE / 2));
+		float v = abs(f_abs / (FFT_SIZE / 2));
 		c->setValue(vCounter++, v);
-		//if (v > 100) MLOG("Final v: " + to_string(v));
 	}
 
 	return AUDIO_OK;

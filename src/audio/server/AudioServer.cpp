@@ -11,6 +11,9 @@ float AudioServer::getSampleRate() {
 
 void AudioServer::setSampleRate(int rate) {
 	sampleRate = rate;
+	for (auto& b : buffers) {
+		b->setSampleRate(sampleRate);
+	}
 }
 
 const std::vector<IOAudioProcess*>& AudioServer::getActiveInputs() {

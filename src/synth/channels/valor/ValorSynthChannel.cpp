@@ -40,7 +40,6 @@ ValorSynthChannel::ValorSynthChannel(ValorSynthControls* controls)
 	lpfCutoffModMixer = controls->getModulationMixerVariables(3).lock().get();
 	svfCutoffModMixer = controls->getModulationMixerVariables(4).lock().get();
 	vibModMixer = controls->getModulationMixerVariables(5).lock().get();
-	createVoice(42, 0, 44100);
 }
 
 void ValorSynthChannel::setSampleRate(int32_t rate)

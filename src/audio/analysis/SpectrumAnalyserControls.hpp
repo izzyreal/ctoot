@@ -12,13 +12,10 @@ namespace ctoot {
 			{
 
 			private:
-				int bandCount = 16;
-
-			public:
-				void setBandCount(int count);
-
-			private:
 				std::vector<float> values;
+				int min = -140;
+				int max = 40;
+				float sampleRate = 0;
 
 			private:
 				void setValues(const std::vector<float>& values);
@@ -26,6 +23,12 @@ namespace ctoot {
 
 			public:
 				std::vector<float>* getValues();
+				void setRangeMin(int min);
+				void setRangeMax(int max);
+				int getRangeMin();
+				int getRangeMax();
+				void setSampleRate(float sr);
+				float getSampleRate();
 
 			public:
 				SpectrumAnalyserControls();
