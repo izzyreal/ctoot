@@ -14,6 +14,9 @@ BusControls::BusControls(int id, string name, weak_ptr<ChannelFormat> format)
 	soloCount = 0;
 	soloIndicator = new SoloIndicator();
 	channelFormat = format.lock();
+	auto mc = make_shared<ctoot::audio::meter::MeterControls>(format, "Meter");
+	meterControls = mc;
+	add(std::move(mc));
 }
 
 bool BusControls::hasSolo()

@@ -3,9 +3,12 @@
 #include <audio/core/AudioControls.hpp>
 #include <audio/core/ChannelFormat.hpp>
 #include <audio/mixer/SoloIndicator.hpp>
+#include <audio/meter/MeterControls.hpp>
+
 #include <observer/Observer.hpp>
 
 #include <string>
+#include <memory>
 
 namespace ctoot {
 	namespace audio {
@@ -18,13 +21,13 @@ namespace ctoot {
 
 			private:
 				SoloIndicator* soloIndicator{ nullptr };
-				//    ctoot::audio::meter::MeterControls* meterControls {  };
+				std::weak_ptr<ctoot::audio::meter::MeterControls> meterControls;
 				int soloCount{ 0 };
 				std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
 
 			public:
 				SoloIndicator* getSoloIndicator();
-				//    virtual ctoot::audio::meter::MeterControls* getMeterControls();
+				std::weak_ptr<ctoot::audio::meter::MeterControls> getMeterControls();
 				virtual bool hasSolo();
 				virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
 				virtual void update(moduru::observer::Observable* o, boost::any a) override;
