@@ -197,7 +197,8 @@ void DynamicsControls::derive(ctoot::control::Control* c)
 void DynamicsControls::deriveThreshold()
 {
 	thresholddB = thresholdControl.lock()->getValue();
-	threshold = static_cast<float>(ctoot::audio::core::KVolumeUtils::log2lin(thresholddB));
+	//threshold = static_cast<float>(ctoot::audio::core::KVolumeUtils::log2lin(thresholddB));
+	threshold = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(thresholddB));
 	inverseThreshold = 1.0f / threshold;
 }
 
