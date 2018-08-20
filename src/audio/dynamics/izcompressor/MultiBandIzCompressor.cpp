@@ -73,12 +73,23 @@ int32_t MultiBandIzCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 		}
 		return AUDIO_OK;
 	}
+	
+	const float inputGain = multiBandControls->getInputGain();
+
+	auto l = buffer->getChannel(0);
+	auto r = buffer->getChannel(1);
+	for (int i = 0; i < buffer->getSampleCount(); i++) {
+		(*l)[i] *= inputGain;
+		(*r)[i] *= inputGain;
+	}
+	
 	conformBandBuffers(buffer);
 	split(midXO, buffer, bandBuffers[0], bandBuffers[1]);
 	if (nbands > 2) {
 		split(hiXO, bandBuffers[1], bandBuffers[2], bandBuffers[3]);
 		split(loXO, bandBuffers[0], bandBuffers[0], bandBuffers[1]);
 	}
+	
 	for (auto b = 0; b < nbands; b++) {
 		compressors[b]->processAudio(bandBuffers[b]);
 	}
@@ -86,6 +97,8 @@ int32_t MultiBandIzCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 	auto nc = buffer->getChannelCount();
 	auto ns = buffer->getSampleCount();
 	float out;
+
+
 	for (auto c = 0; c < nc; c++) {
 		auto samples = buffer->getChannel(c);
 		for (auto b = 0; b < nbands; b++) {
