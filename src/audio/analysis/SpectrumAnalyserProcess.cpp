@@ -32,8 +32,8 @@ void applyWindow(vector<float>& data) {
 	}
 }
 
-/*
 // 4-term Blackman-Harris
+/*
 void applyWindow(vector<float>& samples)
 {
 	auto numSamples = samples.size();
@@ -59,7 +59,6 @@ void applyWindow(vector<float>& samples)
 */
 
 int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
-
 	auto c = controls.lock();
 
 	if (c->isBypassed()) {
@@ -72,9 +71,8 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 	}
 
 	const int ns = buffer->getSampleCount();
-	auto l = *buffer->getChannel(0);
-	auto r = *buffer->getChannel(1);
-	circBuf->write(&l, &r, ns);
+
+	circBuf->write(buffer->getChannel(0), buffer->getChannel(1), ns);
 
 	vector<float> l1(FFT_SIZE);
 	vector<float> r1(FFT_SIZE);
@@ -106,6 +104,7 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 		const double f_abs = sqrt(real * real + img * img);
 		float v = abs(f_abs / (FFT_SIZE / 2));
 		c->setValue(vCounter++, v);
+
 	}
 
 	return AUDIO_OK;
