@@ -239,8 +239,6 @@ void AudioMixer::createStrips(weak_ptr<MixerControls> mixerControls)
 weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::AudioControlsChain> controls)
 {
 
-	// AudioMixerStrip2 uses a specialised createProcess() method
-	//AudioMixerStrip* strip = new AudioMixerStrip2(this, controls);
 	auto strip = make_shared<AudioMixerStrip>(this, controls);
 
 	switch (controls.lock()->getId()) {

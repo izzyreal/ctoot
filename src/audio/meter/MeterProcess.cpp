@@ -8,6 +8,7 @@ using namespace std;
 
 MeterProcess::MeterProcess(weak_ptr<MeterControls> controls) 
 {
+	MLOG("MeterProcess ctor");
     this->controls = controls;
 }
 

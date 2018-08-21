@@ -6,11 +6,15 @@
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/core/AudioProcess.hpp>
 #include <audio/core/ChannelFormat.hpp>
+
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/mixer/AudioMixerBus.hpp>
 #include <audio/mixer/MainMixProcess.hpp>
 #include <audio/mixer/MixVariables.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
+
+#include <audio/meter/MeterProcess.hpp>
+#include <audio/meter/MeterControls.hpp>
 
 using namespace ctoot::audio::mixer;
 using namespace ctoot::audio::core;
@@ -140,23 +144,28 @@ void AudioMixerStrip::checkMetaInfo(weak_ptr<MetaInfo> wInfo)
 
 shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> controls)
 {
-	auto candidate = dynamic_pointer_cast<MixVariables>(controls.lock());
-	if (candidate) {
+	auto mixVars = dynamic_pointer_cast<MixVariables>(controls.lock());
+	if (mixVars) {
 		weak_ptr<AudioMixerStrip> routedStrip;
-		if (candidate->getName().compare(mixer->getMainBus()->getName()) == 0) {
+		if (mixVars->getName().compare(mixer->getMainBus()->getName()) == 0) {
 			routedStrip = mixer->getMainStrip();
 			try {
-				return make_shared<MainMixProcess>(routedStrip.lock(), candidate, mixer);
+				return make_shared<MainMixProcess>(routedStrip.lock(), mixVars, mixer);
 			}
 			catch (bad_cast e) {
 				printf("\n%s", e.what());
 			}
 		}
 		else {
-			routedStrip = mixer->getStripImpl(candidate->getName());
-			return make_shared<MixProcess>(routedStrip.lock(), candidate);
+			routedStrip = mixer->getStripImpl(mixVars->getName());
+			return make_shared<MixProcess>(routedStrip.lock(), mixVars);
 		}
 	}
+	auto meterControls = dynamic_pointer_cast<ctoot::audio::meter::MeterControls>(controls.lock());
+	if (meterControls) {
+		return make_shared<ctoot::audio::meter::MeterProcess>(meterControls);
+	}
+
 	return AudioProcessChain::createProcess(controls);
 }
 

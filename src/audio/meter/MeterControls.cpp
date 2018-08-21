@@ -33,6 +33,7 @@ MeterControls::MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> fo
 MeterControls::MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> format, string name, bool full)
 	: ctoot::audio::core::AudioControls(METER, name)
 {
+	MLOG("MeterControls ctor");
 	channelFormat = format;
 	auto nchannels = channelFormat.lock()->getCount();
 	channelState = vector<ChannelState>(nchannels);

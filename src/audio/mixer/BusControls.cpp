@@ -11,6 +11,7 @@ using namespace std;
 BusControls::BusControls(int id, string name, weak_ptr<ChannelFormat> format)
 	: AudioControls(id, name, -1)
 {
+	MLOG("Bus name: " + name);
 	soloCount = 0;
 	soloIndicator = new SoloIndicator();
 	channelFormat = format.lock();
@@ -55,6 +56,10 @@ string BusControls::toString()
 
 SoloIndicator* BusControls::getSoloIndicator() {
 	return soloIndicator;
+}
+
+weak_ptr<ctoot::audio::meter::MeterControls> BusControls::getMeterControls() {
+	return meterControls;
 }
 
 BusControls::~BusControls() {
