@@ -35,7 +35,7 @@ float MixerControls::getSmoothingFactor()
     return smoothingFactor;
 }
 
-shared_ptr<BusControls> MixerControls::createFxBusControls(string name, weak_ptr<ChannelFormat> format)
+void MixerControls::createFxBusControls(string name, weak_ptr<ChannelFormat> format)
 {
 	if (!canAddBusses) {
 		string error = "Can't add busses after adding strips";
@@ -52,28 +52,22 @@ shared_ptr<BusControls> MixerControls::createFxBusControls(string name, weak_ptr
 		printf("ERROR: %s", error.c_str());
 	}
 	auto busControls = make_shared<BusControls>(MixerControlsIds::FX_BUS, name, format);
-	fxBusControls.push_back(busControls);
-	return busControls;
+	fxBusControls.push_back(std::move(busControls));
 }
 
-shared_ptr<BusControls> MixerControls::createAuxBusControls(string name, weak_ptr<ChannelFormat> format)
+void MixerControls::createAuxBusControls(string name, weak_ptr<ChannelFormat> format)
 {
 	if (!canAddBusses) {
-		//		printf("%s", string("Can't add busses after adding strips").c_str());
-		return nullptr;
+		return;
 	}
 	auto busControls = make_shared<BusControls>(MixerControlsIds::AUX_BUS, name, format);
-	auxBusControls.push_back(busControls);
-	return busControls;
+	auxBusControls.push_back(std::move(busControls));
 }
 
 weak_ptr<BusControls> MixerControls::getBusControls(string name)
 {
 	auto mbc = mainBusControls;
 	
-	//std::cout << "bus controls name: " << name << std::endl;
-	//std::cout << "mbc getName: " << mbc->getName() << std::endl;
-
 	auto mbcName = mbc->getName();
 
 	if (std::mismatch(mbcName.begin(), mbcName.end(), name.begin()).first == mbcName.end()) {
@@ -92,7 +86,7 @@ weak_ptr<BusControls> MixerControls::getBusControls(string name)
 			return busControls;
 		}
 	}
-	return weak_ptr<BusControls>();
+	return {};
 }
 
 weak_ptr<BusControls> MixerControls::getMainBusControls()

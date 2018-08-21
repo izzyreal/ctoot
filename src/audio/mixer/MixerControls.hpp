@@ -26,8 +26,8 @@ namespace ctoot {
 			public:
 				int getProviderId() override;
 				virtual float getSmoothingFactor();
-				virtual std::shared_ptr<BusControls> createFxBusControls(std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);
-				virtual std::shared_ptr<BusControls> createAuxBusControls(std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);
+				virtual void createFxBusControls(std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);
+				virtual void createAuxBusControls(std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);
 				virtual std::weak_ptr<BusControls> getBusControls(std::string name);
 				virtual std::weak_ptr<BusControls> getMainBusControls();
 				virtual std::vector<std::shared_ptr<BusControls>> getFxBusControls();
