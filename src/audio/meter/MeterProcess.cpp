@@ -8,7 +8,6 @@ using namespace std;
 
 MeterProcess::MeterProcess(weak_ptr<MeterControls> controls) 
 {
-	MLOG("MeterProcess ctor");
     this->controls = controls;
 }
 
@@ -71,7 +70,7 @@ void ctoot::audio::meter::MeterProcess::detectAverage(int chan, vector<float>* s
 {
 	auto sumOfSquares = 0.0f;
 	float sample;
-	for (auto i = int(0); i < len; i++) {
+	for (int i = 0; i < len; i++) {
 		sample = (*samples)[i];
 		sumOfSquares += (sample * sample);
 	}

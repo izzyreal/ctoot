@@ -208,7 +208,7 @@ void DynamicsControls::deriveInputGain() {
 }
 
 void DynamicsControls::deriveOutputGain() {
-	if (!inputGainControl.lock()) return;
+	if (!outputGainControl.lock()) return;
 	outputGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(outputGainControl.lock()->getValue()));
 }
 

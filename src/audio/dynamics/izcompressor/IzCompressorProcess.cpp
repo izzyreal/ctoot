@@ -121,11 +121,11 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	for (int i = 0; i < len; i++) {
 		if (dcmM || dcmL || dcmLR) {
 			calcGain(b0, targetGain, i, mslen, len, sumdiv, gain);
-			factorsL[i] = (gain * makeupGain) * outputGain;
+			factorsL[i] = (gain * makeupGain);
 		}
 		if (dcmS || dcmR || dcmLR) {
 			calcGain(b1, targetGain, i, mslen, len, sumdiv, gain);
-			factorsR[i] = (gain * makeupGain) * outputGain;
+			factorsR[i] = (gain * makeupGain);
 		}
 	}
 
@@ -181,7 +181,9 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 
 	for (int i = 0; i < len; i++) {
 		(*b0)[i] = ((*b0)[i] * wetGain) + (dryL[i] * dryGain);
+		(*b0)[i] *= outputGain;
 		(*b1)[i] = ((*b1)[i] * wetGain) + (dryR[i] * dryGain);
+		(*b1)[i] *= outputGain;
 	}
 
 	vars->setDynamicGain(gain);

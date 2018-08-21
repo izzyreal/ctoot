@@ -90,7 +90,7 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 		inputGain = cc.lock()->getInputGain();
 		break;
 	case DynamicsControlIds::OUTPUT_GAIN:
-		inputGain = cc.lock()->getOutputGain();
+		outputGain = cc.lock()->getOutputGain();
 		break;
 	case DynamicsControlIds::LOOK_AHEAD:
 		lookAhead = cc.lock()->getLookAhead();

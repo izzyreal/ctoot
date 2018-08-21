@@ -33,7 +33,6 @@ MeterControls::MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> fo
 MeterControls::MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> format, string name, bool full)
 	: ctoot::audio::core::AudioControls(METER, name)
 {
-	MLOG("MeterControls ctor");
 	channelFormat = format;
 	auto nchannels = channelFormat.lock()->getCount();
 	channelState = vector<ChannelState>(nchannels);
@@ -101,7 +100,6 @@ ChannelState ctoot::audio::meter::MeterControls::getState(int chan)
 {
 	if (invalidChannel(chan))
 		return {};
-
 	return channelState[chan];
 }
 
@@ -149,14 +147,14 @@ void ctoot::audio::meter::MeterControls::setAverage(int chan, float average)
 {
 	if (invalidChannel(chan))
 		return;
+	auto state = &channelState[chan];
 
-	auto state = channelState[chan];
-	if (average != average)
+	if (average != average) // NaN protection
 		average = 0;
 
-	state.average += averageSmooth * (average - state.average);
-	if (state.average > state.maxAverage) {
-		state.maxAverage = state.average;
+	state->average += averageSmooth * (average - state->average);
+	if (state->average > state->maxAverage) {
+		state->maxAverage = state->average;
 	}
 }
 
