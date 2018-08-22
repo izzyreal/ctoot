@@ -185,8 +185,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 		(*b1)[i] = ((*b1)[i] * wetGain) + (dryR[i] * dryGain);
 		(*b1)[i] *= outputGain;
 	}
-
-	vars->setDynamicGain(gain);
+	vars->setDynamicGain(gain >= 0.999937f ? 1.0f : gain);
 	wasBypassed = bypassed;
 	return AUDIO_OK;
 }
