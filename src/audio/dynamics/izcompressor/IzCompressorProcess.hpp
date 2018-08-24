@@ -45,6 +45,9 @@ namespace ctoot {
 					std::vector<float> squaresums = std::vector<float>(NSQUARESUMS);
 					int32_t nsqsum{ 0 };
 					float smoothedInputGain;
+					float smoothedDryGain;
+					float smoothedWetGain;
+
 					//std::vector<float>* attenuationSamples0;
 					//std::vector<float>* attenuationSamples1;
 

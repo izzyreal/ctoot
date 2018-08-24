@@ -179,10 +179,13 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	dryBuffer->read(&dryL, &dryR, -correctiveLenSamples, len);
 	dryBuffer->moveReadPos(len);
 
+	smoothedWetGain += 0.05f * (wetGain - smoothedWetGain);
+	smoothedDryGain += 0.05f * (dryGain - smoothedDryGain);
+
 	for (int i = 0; i < len; i++) {
-		(*b0)[i] = ((*b0)[i] * wetGain) + (dryL[i] * dryGain);
+		(*b0)[i] = ((*b0)[i] * smoothedWetGain) + (dryL[i] * smoothedDryGain);
 		(*b0)[i] *= outputGain;
-		(*b1)[i] = ((*b1)[i] * wetGain) + (dryR[i] * dryGain);
+		(*b1)[i] = ((*b1)[i] * smoothedWetGain) + (dryR[i] * smoothedDryGain);
 		(*b1)[i] *= outputGain;
 	}
 	vars->setDynamicGain(gain >= 0.999937f ? 1.0f : gain);
