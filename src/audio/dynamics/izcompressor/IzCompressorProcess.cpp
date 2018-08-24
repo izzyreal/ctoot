@@ -76,11 +76,11 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 
 	dryBuffer->write(b0, b1);
 
-	if (inputGain != 1.0f) {
-		for (int i = 0; i < buffer->getSampleCount(); i++) {
-			(*b0)[i] *= inputGain;
-			(*b1)[i] *= inputGain;
-		}
+	smoothedInputGain += 0.05f * (inputGain - smoothedInputGain);
+
+	for (int i = 0; i < buffer->getSampleCount(); i++) {
+		(*b0)[i] *= smoothedInputGain;
+		(*b1)[i] *= smoothedInputGain;
 	}
 
 	auto dcm = detectionChannelMode;

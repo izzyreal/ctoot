@@ -75,12 +75,13 @@ int32_t MultiBandIzCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 	}
 	
 	const float inputGain = multiBandControls->getInputGain();
+	smoothedInputGain += 0.05f * (inputGain - smoothedInputGain);
 
 	auto l = buffer->getChannel(0);
 	auto r = buffer->getChannel(1);
 	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		(*l)[i] *= inputGain;
-		(*r)[i] *= inputGain;
+		(*l)[i] *= smoothedInputGain;
+		(*r)[i] *= smoothedInputGain;
 	}
 	
 	conformBandBuffers(buffer);

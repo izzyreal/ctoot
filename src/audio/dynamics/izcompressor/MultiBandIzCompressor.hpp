@@ -38,6 +38,7 @@ namespace ctoot {
 					int32_t nsamples{ -1 };
 					int32_t sampleRate{ -1 };
 					bool wasBypassed{  };
+					float smoothedInputGain;
 
 				public:
 					void open() override;
