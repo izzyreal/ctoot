@@ -21,6 +21,7 @@ void EnumControl::setValue(boost::any value)
 	this->value = value;
 	notifyParent(this);
 	return;
+	/*
 	// Verify that this comparison does what it should do.
 	if (value.type() == this->value.type()) {
 		if (string(value.type().name()).find("int") != string::npos) {
@@ -46,6 +47,7 @@ void EnumControl::setValue(boost::any value)
 			}
 		}
 	}
+	*/
 }
 
 boost::any EnumControl::getValue()

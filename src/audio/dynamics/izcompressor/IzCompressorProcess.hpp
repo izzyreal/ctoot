@@ -44,9 +44,9 @@ namespace ctoot {
 					const float MAX_LOOK_AHEAD{ 15.0f };
 					std::vector<float> squaresums = std::vector<float>(NSQUARESUMS);
 					int32_t nsqsum{ 0 };
-					float smoothedInputGain;
-					float smoothedDryGain;
-					float smoothedWetGain;
+					float smoothedInputGain{ 1.0f };
+					float smoothedDryGain{ 1.0f };
+					float smoothedWetGain{ 1.0f };
 
 					//std::vector<float>* attenuationSamples0;
 					//std::vector<float>* attenuationSamples1;
