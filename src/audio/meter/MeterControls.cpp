@@ -131,15 +131,15 @@ void ctoot::audio::meter::MeterControls::setPeak(int chan, float peak)
 	if (invalidChannel(chan))
 		return;
 
-	auto state = channelState[chan];
-	if (peak > state.peak) {
-		state.peak = peak;
+	auto state = &channelState[chan];
+	if (peak > state->peak) {
+		state->peak = peak;
 	}
 	else {
-		state.peak += peakRelease * (peak - state.peak);
+		state->peak += peakRelease * (peak - state->peak);
 	}
-	if (state.peak > state.maxPeak) {
-		state.maxPeak = state.peak;
+	if (state->peak > state->maxPeak) {
+		state->maxPeak = state->peak;
 	}
 }
 
