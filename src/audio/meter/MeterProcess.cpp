@@ -64,7 +64,7 @@ void MeterProcess::detectPeak(int chan, vector<float>* samples, int len)
 			peak = -sample;
 		}
 	}
-	controls.lock()->setPeak(chan, peak);
+	//controls.lock()->setPeak(chan, peak);
 }
 
 void MeterProcess::detectAverage(int chan, vector<float>* samples, int len)

@@ -8,7 +8,7 @@ using namespace std;
 
 weak_ptr<ctoot::control::ControlLaw> CrossoverControl::XO_LAW()
 {
-	static auto res = make_shared<ctoot::control::LogLaw>(10.0f, 10000.0f, "Hz");
+	static auto res = make_shared<ctoot::control::LogLaw>(30.0f, 10000.0f, "Hz");
 	return res;
 }
 

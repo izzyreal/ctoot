@@ -156,6 +156,8 @@ void ctoot::audio::meter::MeterControls::setAverage(int chan, float average)
 	if (state->average > state->maxAverage) {
 		state->maxAverage = state->average;
 	}
+
+	setPeak(chan, state->average);
 }
 
 double ctoot::audio::meter::MeterControls::PEAK_K_PER_MS()
