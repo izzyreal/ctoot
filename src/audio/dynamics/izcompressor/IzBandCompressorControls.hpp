@@ -43,6 +43,7 @@ namespace ctoot {
 					float outputGain;
 					float lookAhead;
 					bool mute;
+					bool solo;
 					float dryGain;
 					float wetGain;
 
@@ -68,6 +69,7 @@ namespace ctoot {
 					float getOutputGain() override;
 					float getLookAhead() override;
 					bool getMute() override;
+					bool getSolo() override;
 					float getDryGain() override;
 					float getWetGain() override;
 

@@ -67,12 +67,13 @@ namespace ctoot {
 				std::weak_ptr<ctoot::control::FloatControl> outputGainControl;
 				std::weak_ptr<ctoot::control::FloatControl> lookAheadControl;
 				std::weak_ptr<ctoot::control::BooleanControl> muteControl;
+				std::weak_ptr<ctoot::control::BooleanControl> soloControl;
 
 				float sampleRate{ 44100.0f };
 				float threshold{}, inverseThreshold{}, thresholddB{}, inverseRatio{}, kneedB{ 10.0f };
 				float attack{}, release{}, gain{ 1.0f }, dryGain{ 0.0f }, wetGain{ 0.0f }, depth{ 40.0f }, hysteresis{ 0.0f }, inputGain{ 1.0f }, outputGain{ 1.0f };
 				float lookAhead{ 0.0f };
-				bool mute{ false };
+				bool mute{ false }, solo{ false };
 				std::string detectionChannelMode;
 				std::string attenuationChannelMode;
 				bool rms{ false };
@@ -120,6 +121,7 @@ namespace ctoot {
 				virtual void deriveOutputGain();
 				virtual void deriveLookAhead();
 				virtual void deriveMute();
+				virtual void deriveSolo();
 
 				void setParent(ctoot::control::CompoundControl* parent) override;
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getThresholdLaw();
@@ -150,6 +152,7 @@ namespace ctoot {
 				virtual bool hasOutputGain();
 				virtual bool hasLookAhead();
 				virtual bool hasMute();
+				virtual bool hasSolo();
 
 				virtual std::shared_ptr<ctoot::control::FloatControl> createDepthControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createGainControl();
@@ -170,6 +173,7 @@ namespace ctoot {
 				virtual std::shared_ptr<ctoot::control::FloatControl> createOutputGainControl();
 				virtual std::shared_ptr<ctoot::control::FloatControl> createLookAheadControl();
 				virtual std::shared_ptr<ctoot::control::BooleanControl> createMuteControl();
+				virtual std::shared_ptr<ctoot::control::BooleanControl> createSoloControl();
 
 			public:
 				float getThreshold() override;
@@ -194,6 +198,7 @@ namespace ctoot {
 				float getOutputGain() override;
 				float getLookAhead() override;
 				bool getMute() override;
+				bool getSolo() override;
 
 			protected:
 				virtual std::weak_ptr<ctoot::control::ControlLaw> getInverseRatioLaw();

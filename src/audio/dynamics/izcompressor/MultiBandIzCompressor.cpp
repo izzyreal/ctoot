@@ -65,6 +65,12 @@ void MultiBandIzCompressor::clear()
 
 int32_t MultiBandIzCompressor::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
+	auto controls = multiBandControls->getControls();
+	vector<int> soloBands;
+	for (auto i = 0; i < nbands; i++) {
+		if (dynamic_cast<IzBandCompressorControls*>(controls[1 + (i * 2)].lock().get())->getSolo())
+			soloBands.push_back(i);
+	}
 	auto bypassed = multiBandControls->isBypassed();
 	if (bypassed) {
 		if (!wasBypassed) {
@@ -104,6 +110,25 @@ int32_t MultiBandIzCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 		auto samples = buffer->getChannel(c);
 		for (auto b = 0; b < nbands; b++) {
 			auto bandsamples = bandBuffers[b]->getChannel(c);
+
+			if (soloBands.size() != 0) {
+				bool thisBandIsSolo = false;
+				for (int i = 0; i < soloBands.size(); i++) {
+					if (soloBands[i] == b) {
+						thisBandIsSolo = true;
+						break;
+					}
+				}
+
+				if (!thisBandIsSolo) {
+
+					for (int i = 0; i < bandsamples->size(); i++)
+						(*bandsamples)[i] = 0.0f;
+
+					continue;
+				}
+			}
+
 			for (auto i = 0; i < ns; i++) {
 				out = (*bandsamples)[i];
 				if (ctoot::audio::core::FloatDenormals::isDenormalOrZero(out))

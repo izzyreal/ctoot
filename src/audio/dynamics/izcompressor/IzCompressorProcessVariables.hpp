@@ -30,6 +30,7 @@ namespace ctoot {
 					virtual float getOutputGain() = 0;
 					virtual float getLookAhead() = 0;
 					virtual bool getMute() = 0;
+					virtual bool getSolo() = 0;
 
 				};
 

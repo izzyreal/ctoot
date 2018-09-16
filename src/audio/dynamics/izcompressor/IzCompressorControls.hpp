@@ -29,6 +29,7 @@ namespace ctoot {
 					*/
 					bool hasRMS() override { return false; }
 					bool hasMute() override { return true; }
+					bool hasSolo() override { return true; }
 
 					/*
 					* FloatControls

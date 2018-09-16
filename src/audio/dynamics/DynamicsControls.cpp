@@ -191,14 +191,18 @@ void DynamicsControls::derive(ctoot::control::Control* c)
 	case DynamicsControlIds::MUTE:
 		deriveMute();
 		break;
+	case DynamicsControlIds::SOLO:
+		deriveSolo();
+		break;
+
 	}
 }
 
 void DynamicsControls::deriveThreshold()
 {
 	thresholddB = thresholdControl.lock()->getValue();
-	//threshold = static_cast<float>(ctoot::audio::core::KVolumeUtils::log2lin(thresholddB));
-	threshold = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(thresholddB));
+	threshold = static_cast<float>(ctoot::audio::core::KVolumeUtils::log2lin(thresholddB));
+	//threshold = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(thresholddB));
 	inverseThreshold = 1.0f / threshold;
 }
 
@@ -215,6 +219,11 @@ void DynamicsControls::deriveOutputGain() {
 void DynamicsControls::deriveMute() {
 	if (!muteControl.lock()) return;
 	mute = muteControl.lock()->getValue();
+}
+
+void DynamicsControls::deriveSolo() {
+	if (!soloControl.lock()) return;
+	solo = soloControl.lock()->getValue();
 }
 
 void DynamicsControls::deriveDetectionChannelMode()
@@ -354,6 +363,10 @@ bool DynamicsControls::hasOutputGain() {
 }
 
 bool DynamicsControls::hasMute() {
+	return false;
+}
+
+bool DynamicsControls::hasSolo() {
 	return false;
 }
 
@@ -521,6 +534,11 @@ shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createMuteControl()
 	return make_shared<ctoot::control::BooleanControl>(DynamicsControlIds::MUTE + idOffset, "Mute", false);
 }
 
+shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createSoloControl()
+{
+	return make_shared<ctoot::control::BooleanControl>(DynamicsControlIds::SOLO + idOffset, "Solo", false);
+}
+
 bool DynamicsControls::hasDepth()
 {
     return false;
@@ -664,6 +682,10 @@ bool DynamicsControls::getMute() {
 	return mute;
 }
 
+bool DynamicsControls::getSolo() {
+	return solo;
+}
+
 ctoot::audio::core::AudioBuffer* DynamicsControls::getKeyBuffer()
 {
     return key;
@@ -699,6 +721,12 @@ void DynamicsControls::init() {
 		//MLOG("Error: DynamicsControls is already initialized!");
 		//MLOG("I'll try to clear and re-init...");
 		controls.clear();
+	}
+	if (hasSolo()) {
+		auto sc = createSoloControl();
+		soloControl = sc;
+		derive(sc.get());
+		add(std::move(sc));
 	}
 	if (hasMute()) {
 		auto mc = createMuteControl();
