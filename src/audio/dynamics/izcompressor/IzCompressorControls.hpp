@@ -22,12 +22,12 @@ namespace ctoot {
 					/*
 					* Sidechain
 					*/
-					bool hasKey() override { return true; }
+					bool hasKey() override { return false; }
 
 					/*
 					* BooleanControls
 					*/
-					bool hasRMS() override { return true; }
+					bool hasRMS() override { return false; }
 					bool hasMute() override { return true; }
 
 					/*

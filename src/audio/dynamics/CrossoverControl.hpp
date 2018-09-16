@@ -24,7 +24,7 @@ namespace ctoot {
 				virtual int32_t getFrequency();
 
 			public:
-				CrossoverControl(std::string name, float freq);
+				CrossoverControl(int idOffset, std::string name, float freq);
 
 			};
 

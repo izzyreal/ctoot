@@ -18,33 +18,6 @@ FaderLaw::FaderLaw(int resolution)
 	this->resolution = resolution;
 }
 
-/*
-FaderLaw* FaderLaw::SEMI_LOG()
-{
-    return new FaderLaw(1024, -10.0f, 10.0f, 0.33f);
-}
-
-FaderLaw* FaderLaw::LOG()
-{
-    return new FaderLaw(1024, -20.0f, 15.0f, 0.2f);
-}
-
-FaderLaw* FaderLaw::BROADCAST()
-{
-    return new FaderLaw(1024, -30.0f, 15.0f, 0.125f);
-}
-
-float FaderLaw::ATTENUATION_CUTOFF()
-{
-    return 100.0f;
-}
-
-FaderLaw* FaderLaw::defaultLaw()
-{
-    return new FaderLaw(1024, -30.0f, 15.0f, 0.125f);
-}
-*/
-
 int FaderLaw::getResolution()
 {
     return resolution;
@@ -67,18 +40,18 @@ string FaderLaw::getUnits()
 
 int FaderLaw::intValue(float v)
 {
-    if(floatValues.size() == 0) {
-        floatValues = *createFloatValues();
-    }
+	if (floatValues.size() == 0) {
+		floatValues = createFloatValues();
+	}
 
-    if(v <= floatValues[0]) return 0;
+	if (v <= floatValues[0]) return 0;
 
-    if(v >= floatValues[resolution - 1]) return resolution - 1;
+	if (v >= floatValues[resolution - 1]) return resolution - 1;
 
-    auto ret = binarySearch(floatValues, v, 0, 100);
-    if(ret >= 0) return ret;
+	auto ret = binarySearch(floatValues, v, 0, 100);
+	if (ret >= 0) return ret;
 
-    return -(++ret);
+	return -(++ret);
 }
 
 int FaderLaw::binarySearch(vector<float> buf, float key, int min, int max)
@@ -102,7 +75,7 @@ int FaderLaw::binarySearch(vector<float> buf, float key, int min, int max)
 float FaderLaw::userValue(int v)
 {
 	if (floatValues.size() == 0) {
-		floatValues = *createFloatValues();
+		floatValues = createFloatValues();
 	}
 	if (v < 0)
 		return floatValues[0];
@@ -113,11 +86,11 @@ float FaderLaw::userValue(int v)
 	return floatValues[v];
 }
 
-vector<float>* FaderLaw::createFloatValues()
+vector<float> FaderLaw::createFloatValues()
 {
-	auto vals = new vector < float > ;
+	auto vals = vector<float>(resolution);
     for (auto i = 0; i < resolution; i++) {
-        (*vals)[i] = calculateFloatValue(i);
+        vals[i] = calculateFloatValue(i);
     }
     return vals;
 }
@@ -127,7 +100,7 @@ float FaderLaw::calculateFloatValue(int v)
 	auto val = static_cast<float>(v) / (resolution - 1);
 	val = maxdB + (2 * halfdB * (1 - val));
 	auto linZerodB = maxdB + (2 * halfdB);
-	auto cutoff = static_cast<int>((attenuationCutoffFactor * (resolution - 1)));
+	auto cutoff = static_cast<int>(attenuationCutoffFactor * (resolution - 1));
 	if (v < cutoff) {
 		auto attenFactor = static_cast<float>((cutoff - v)) / cutoff;
 		attenFactor *= attenFactor;

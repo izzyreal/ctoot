@@ -27,8 +27,8 @@ void CompoundControlChain::add(shared_ptr<CompoundControl> control)
 
 void CompoundControlChain::add(int index, shared_ptr<CompoundControl> control)
 {
-	controls.insert(controls.begin() + index, control);
 	control->setParent(this);
+	controls.insert(controls.begin() + index, std::move(control));
 }
 
 void CompoundControlChain::insert(string insertName, string insertBeforeName)

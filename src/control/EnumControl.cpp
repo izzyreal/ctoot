@@ -111,6 +111,8 @@ string EnumControl::getValueString()
 
 void EnumControl::setIntValue(int value)
 {
+	auto values = getValues();
+	if (value >= values.size()) return;
     try {
 		setValue(getValues()[value]);
     } catch (const exception& e) {
@@ -121,12 +123,17 @@ void EnumControl::setIntValue(int value)
 int EnumControl::getIntValue()
 {
 	MLOG("EnumControl getIntValue() is expected to work!");
-	/*
 	int index;
 	for (index = 0; index < getValues().size(); index++) {
-		if (getValue() == getValues()[index]) return index;
+		auto v = getValues()[index];
+		try {
+			auto s1 = boost::any_cast<string>(v);
+			auto s2 = boost::any_cast<string>(getValue());
+			if (s1.compare(s2) == 0) return index;
+		}
+		catch (const boost::bad_any_cast& e) {
+		}
 	}
-	*/
 	return -1;
 }
 

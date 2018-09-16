@@ -72,7 +72,7 @@ namespace ctoot {
 
 				public:
 					IzBandCompressorControls();
-					IzBandCompressorControls(std::string band);
+					IzBandCompressorControls(std::string band, int idOffset);
 
 				public:
 					virtual bool isBypassed();

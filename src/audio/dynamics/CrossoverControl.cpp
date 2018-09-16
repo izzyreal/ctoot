@@ -12,8 +12,8 @@ weak_ptr<ctoot::control::ControlLaw> CrossoverControl::XO_LAW()
 	return res;
 }
 
-CrossoverControl::CrossoverControl(std::string name, float freq)
-	: ctoot::control::FloatControl(DynamicsControlIds::CROSSOVER_FREQUENCY, name, XO_LAW(), 1.0f, freq)
+CrossoverControl::CrossoverControl(int idOffset, std::string name, float freq)
+	: ctoot::control::FloatControl(DynamicsControlIds::CROSSOVER_FREQUENCY + idOffset, name, XO_LAW(), 1.0f, freq)
 {
 }
 

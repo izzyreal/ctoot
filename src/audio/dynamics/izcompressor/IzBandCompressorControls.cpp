@@ -10,10 +10,10 @@ using namespace ctoot::audio::dynamics;
 using namespace ctoot::audio::dynamics::izcompressor;
 using namespace std;
 
-IzBandCompressorControls::IzBandCompressorControls(string band)
-	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "IzBand Compressor")
+IzBandCompressorControls::IzBandCompressorControls(string band, int idOffset)
+	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "IzBand Compressor", idOffset)
 {
-	auto cc = make_shared<IzCompressorControls>(band, 0);
+	auto cc = make_shared<IzCompressorControls>(band, idOffset);
 	compressorControls = cc;
 	add(std::move(cc));
 	deriveIndependentVariables();

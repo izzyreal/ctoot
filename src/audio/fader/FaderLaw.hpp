@@ -27,22 +27,15 @@ namespace ctoot {
 				float userValue(int v);
 
 			private:
-				std::vector<float>* createFloatValues();
+				std::vector<float> createFloatValues();
 
 			public:
 				virtual float calculateFloatValue(int v);
 
+			public:
 				FaderLaw(int resolution, float halfdB, float maxdB, float attenuationCutoffFactor);
 				FaderLaw(int resolution);
 
-			public:
-				/*
-				static FaderLaw* SEMI_LOG();
-				static FaderLaw* LOG();
-				static FaderLaw* BROADCAST();
-				static float* ATTENUATION_CUTOFF();
-				static FaderLaw* defaultLaw();
-				*/
 			};
 
 		}

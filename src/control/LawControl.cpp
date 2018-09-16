@@ -36,6 +36,9 @@ string LawControl::getValueString()
 
 void LawControl::setValue(float value)
 {
+	if (getName().find("Master Input") != string::npos) {
+		MLOG("Trying to set LawControl to float value " + to_string(value));
+	}
 	if (!isEnabled()) return;
 	this->value = value;
 	notifyParent(this);
@@ -48,7 +51,15 @@ float LawControl::getPrecision()
 
 void LawControl::setIntValue(int value)
 {
+	if (getName().find("Look Ahead") != string::npos) {
+		MLOG("Trying to set LawControl to int value " + to_string(value));
+		MLOG("User value will become " + to_string(law.lock()->userValue(value)));
+	}
     setValue(law.lock()->userValue(value));
+	if (getName().find("Look Ahead") != string::npos) {
+		string s = to_string(getIntValue());
+		MLOG("Calculated intValue after: " + s);
+	}
 }
 
 int LawControl::getIntValue()

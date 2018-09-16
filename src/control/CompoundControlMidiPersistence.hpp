@@ -2,26 +2,27 @@
 #include <control/CompoundControl.hpp>
 #include <control/CompoundControlPersistence.hpp>
 
+#include <file/File.hpp>
+
 namespace ctoot {
 	namespace control {
 		class CompoundControlMidiPersistence
 			: public virtual CompoundControlPersistence
 		{
 
-
 		private:
-			FILE* root{};
+			std::string rootPath;
 
 		public:
-			//    vector<string*> getPresets(CompoundControl* c) override;
-			//    void loadPreset(CompoundControl* c, string* name) override;
-			//    void savePreset(CompoundControl* c, string* name) override;
+			std::vector<std::string> getPresets(std::weak_ptr<CompoundControl> c) override;
+			void loadPreset(std::weak_ptr<CompoundControl> c, const std::string& name) override;
+			void savePreset(std::weak_ptr<CompoundControl> c, const std::string& name) override;
 
 		public:
-			virtual std::string* path(control::CompoundControl* c);
+			virtual std::string getPath(std::weak_ptr<CompoundControl> c);
 
 		public:
-			CompoundControlMidiPersistence(FILE* root);
+			CompoundControlMidiPersistence(const std::string& rootPath);
 
 		};
 	}

@@ -1,15 +1,20 @@
 #pragma once
 #include <control/Control.hpp>
-//#include <control/CompoundControlPersistence.hpp>
+#include <control/CompoundControlPersistence.hpp>
 
 namespace ctoot {
 	namespace control {
+
 		class CompoundControl
 			: public Control
 		{
 
 		private:
-			//static CompoundControlPersistence* persistence_;
+			static std::shared_ptr<CompoundControlPersistence> persistence;
+
+		public:
+			static std::weak_ptr<CompoundControlPersistence> getPersistence();
+			static void setPersistence(std::shared_ptr<CompoundControlPersistence> p);
 
 		public:
 			static const int USE_PARENT_PROVIDER_ID{ 0 };
@@ -48,8 +53,6 @@ namespace ctoot {
 			virtual std::weak_ptr<Control> find(std::string name);
 			virtual std::weak_ptr<CompoundControl> find(int providerId, int moduleId, int instanceIndex);
 			virtual std::weak_ptr<Control> deepFind(int controlId);
-			//static CompoundControlPersistence* getPersistence();
-			//static void setPersistence(CompoundControlPersistence* p);
 			virtual bool canBeMoved();
 			virtual bool canBeMovedBefore();
 			virtual bool canBeInsertedBefore();
@@ -83,7 +86,6 @@ namespace ctoot {
 			virtual ~CompoundControl();
 
 		private:
-			//static CompoundControlPersistence*& persistence();
 			friend class ControlColumn;
 			friend class ControlRow;
 			friend class BypassControl;

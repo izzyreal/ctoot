@@ -1,9 +1,10 @@
 #include <control/CompoundControl.hpp>
-//#include <control/CompoundControlPersistence.hpp>
 #include <control/Control.hpp>
 
 using namespace ctoot::control;
 using namespace std;
+
+std::shared_ptr<CompoundControlPersistence> CompoundControl::persistence;
 
 CompoundControl::CompoundControl(int id, string name) 
 	: CompoundControl(id, deriveInstanceIndex(name), name) {
@@ -50,14 +51,6 @@ int CompoundControl::deriveInstanceIndex(string name) {
 
 const int CompoundControl::USE_PARENT_PROVIDER_ID;
 
-/*
-CompoundControlPersistence*& CompoundControl::persistence()
-{
-    return persistence_;
-}
-CompoundControlPersistence* CompoundControl::persistence_;
-*/
-
 void CompoundControl::checkInstanceIndex(int index)
 {
 	if (index < 0) {
@@ -77,9 +70,9 @@ int CompoundControl::getMaxInstance()
 
 void CompoundControl::add(shared_ptr<Control> control)
 {
-	if (control == nullptr) return;
-	control->setParent(this);
+	if (!control) return;
 	string name = control->getName();
+	control->setParent(this);
 	controls.push_back(std::move(control));
 }
 
@@ -207,33 +200,32 @@ weak_ptr<CompoundControl> CompoundControl::find(int providerId, int moduleId, in
 
 weak_ptr<Control> CompoundControl::deepFind(int controlId)
 {
-	for (int i = 0; i < controls.size(); i++) {
-		auto currentControl = controls[i];
-		auto currentCompoundControl = dynamic_pointer_cast<CompoundControl>(currentControl);
-		if (!currentCompoundControl)
-			continue;
-		auto deepFoundControl = currentCompoundControl->deepFind(controlId).lock();
-		if (deepFoundControl) {
-			return deepFoundControl;
+	for (auto& c : controls) {
+
+		auto cc = dynamic_pointer_cast<CompoundControl>(c);
+
+		if (cc) {
+			auto c2 = cc->deepFind(controlId).lock();
+			if (c2) return c2;
+
 		}
-		else if (controlId == currentControl->getId()) {
-			return controls[i];
+		else if (controlId == c->getId()) {
+			return c;
 		}
+	
 	}
 	return {};
 }
 
-/*
-CompoundControlPersistence* CompoundControl::getPersistence()
+weak_ptr<CompoundControlPersistence> CompoundControl::getPersistence()
 {
-    return persistence_;
+    return persistence;
 }
 
-void CompoundControl::setPersistence(CompoundControlPersistence* p)
+void CompoundControl::setPersistence(shared_ptr<CompoundControlPersistence> p)
 {
-    persistence_ = p;
+    persistence = p;
 }
-*/
 
 bool CompoundControl::canBeMoved()
 {

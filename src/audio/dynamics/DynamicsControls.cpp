@@ -53,7 +53,7 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::ATTACK_LAW()
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
 {
-	static auto res = make_shared<LogLaw>(0.0f, 15.0f, "ms");
+	static auto res = make_shared<LinearLaw>(0.0f, 15.0f, "ms");
 	return res;
 }
 

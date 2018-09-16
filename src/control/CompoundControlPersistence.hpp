@@ -1,16 +1,22 @@
 #pragma once
-//#include "CompoundControl.hpp"
+
+#include <string>
 #include <vector>
+#include <memory>
 
 namespace ctoot {
 	namespace control {
 
-		struct CompoundControlPersistence
+		class CompoundControl;
+
+		class CompoundControlPersistence
 		{
-			//    virtual vector<string*> getPresets(CompoundControl* c) = 0;
-			//    virtual void loadPreset(CompoundControl* c, string* name) = 0;
-			//    virtual void savePreset(CompoundControl* c, string* name) = 0;
+		public:
+			virtual std::vector<std::string> getPresets(std::weak_ptr<CompoundControl> c) = 0;
+			virtual void loadPreset(std::weak_ptr<CompoundControl> c, const std::string& name) = 0;
+			virtual void savePreset(std::weak_ptr<CompoundControl> c, const std::string& name) = 0;
 
 		};
-	};
-};
+
+	}
+}

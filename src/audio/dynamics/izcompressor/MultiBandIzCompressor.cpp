@@ -113,6 +113,15 @@ int32_t MultiBandIzCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 			}
 		}
 	}
+
+	const float outputGain = multiBandControls->getOutputGain();
+	smoothedOutputGain += 0.05f * (outputGain - smoothedOutputGain);
+
+	for (int i = 0; i < buffer->getSampleCount(); i++) {
+		(*l)[i] *= smoothedOutputGain;
+		(*r)[i] *= smoothedOutputGain;
+	}
+
 	wasBypassed = bypassed;
 	return AUDIO_OK;
 }

@@ -28,6 +28,8 @@ namespace ctoot {
 				static constexpr int32_t LOOK_AHEAD{ 17 };
 				static constexpr int32_t MUTE{ 18 };
 				static constexpr int32_t WET_GAIN{ 19 };
+				static constexpr int32_t MASTER_INPUT_GAIN{ 20 };
+				static constexpr int32_t MASTER_OUTPUT_GAIN{ 21 };
 
 			};
 

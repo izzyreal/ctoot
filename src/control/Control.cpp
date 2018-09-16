@@ -49,12 +49,17 @@ int Control::getId()
 
 CompoundControl* Control::getParent()
 {
+	MLOG("Trying to return parent for " + getName());
     return parent;
 }
 
 void Control::setParent(CompoundControl* c)
 {
 	parent = c;
+	//MLOG("Parent set for " + getName());
+	if (parent == nullptr) {
+		MLOG("Parent for " + getName() + " is nullptr!");
+	}
 }
 
 void Control::notifyParent(Control* c)
@@ -98,7 +103,7 @@ void Control::setAnnotation(string a)
 void Control::setIntValue(int value)
 {
 	string description = "ERROR: Unexpected setIntValue(" + to_string(value) + ") called on " + getControlPath();
-	printf("%s", description.c_str());
+	MLOG(description);
 }
 
 int Control::getIntValue()
@@ -155,14 +160,17 @@ string Control::getControlPath()
 
 string Control::getControlPath(Control* from, string sep)
 {
-	if (sizeof(getName()) > 0) {
-		string result = parent->getControlPath(from, sep) + sep + getName();
-		return result;
-	}
-	else {
-		return parent->getControlPath(from, sep);
+	if (parent != from) {
+		if (getName().length() > 0) {
+			string result = parent->getControlPath(from, sep) + sep + getName();
+			return result;
+		}
+		else {
+			return parent->getControlPath(from, sep);
+		}
 	}
 	return getName();
+
 }
 
 Control::~Control() {
