@@ -20,9 +20,9 @@ MultiBandIzControls::MultiBandIzControls()
    add(make_shared<IzBandCompressorControls>("Low", 0));
    add(make_shared<CrossoverControl>(0, "Low Freq", 250.0f));
    add(make_shared<IzBandCompressorControls>("Lo.Mid", 30));
-   add(make_shared<CrossoverControl>(10, "Mid Freq", 1000.0f));
+   add(make_shared<CrossoverControl>(1, "Mid Freq", 1000.0f));
    add(make_shared<IzBandCompressorControls>("Hi.Mid", 60));
-   add(make_shared<CrossoverControl>(20, "High Freq", 4000.0f));
+   add(make_shared<CrossoverControl>(2, "High Freq", 4000.0f));
    add(make_shared<IzBandCompressorControls>("High", 90));
 
    auto igc = createInputGainControl();
