@@ -91,11 +91,15 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	lab->write(b0, b1);
 
 	if (mute) {
+		MLOG("band is muted");
 		buffer->makeSilence();
 		lab->moveReadPos(len);
 		dryBuffer->moveReadPos(len);
 		vars->setDynamicGain(1.0f);
 		return AUDIO_OK;
+	}
+	else {
+		//MLOG("band is not muted");
 	}
 
 	vector<float> factorsL(len);

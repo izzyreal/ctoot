@@ -14,6 +14,7 @@ IzBandCompressorControls::IzBandCompressorControls(string band, int idOffset)
 	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "IzBand Compressor", idOffset)
 {
 	auto cc = make_shared<IzCompressorControls>(band, idOffset);
+	this->idOffset = idOffset;
 	compressorControls = cc;
 	add(std::move(cc));
 	deriveIndependentVariables();
@@ -55,7 +56,9 @@ void IzBandCompressorControls::deriveDependentVariables()
 
 void IzBandCompressorControls::derive(ctoot::control::Control* c)
 {
-	auto id = c->getId();
+	auto id = c->getId() - idOffset;
+	MLOG("Control name: " + c->getName() + ", id " + to_string(id));
+	MLOG("Parent controls idOffset: " + to_string(idOffset));
 	auto n = 0;
 	auto cc = compressorControls;
 	switch (id) {

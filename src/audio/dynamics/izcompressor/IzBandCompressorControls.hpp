@@ -26,6 +26,7 @@ namespace ctoot {
 				{
 
 				private:
+					int idOffset = 0;
 					std::weak_ptr<IzCompressorControls> compressorControls;
 					float threshold;
 					float inverseThreshold;
