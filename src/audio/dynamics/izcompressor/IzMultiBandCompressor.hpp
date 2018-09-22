@@ -19,15 +19,15 @@ namespace ctoot {
 
 			namespace izcompressor {
 
-				class MultiBandIzControls;
+				class IzMultiBandControls;
 				class IzCompressor;
 
-				class MultiBandIzCompressor
+				class IzMultiBandCompressor
 					: public virtual ctoot::audio::core::AudioProcess
 				{
 
 				private:
-					MultiBandIzControls * multiBandControls{  };
+					IzMultiBandControls * multiBandControls{  };
 					std::vector<IzCompressor*> compressors{  };
 					ctoot::audio::filter::Crossover* midXO{ nullptr };
 					ctoot::audio::filter::Crossover* hiXO{ nullptr };
@@ -54,8 +54,8 @@ namespace ctoot {
 					virtual void updateSampleRate(int32_t rate);
 
 				public:
-					MultiBandIzCompressor(MultiBandIzControls* c);
-					~MultiBandIzCompressor();
+					IzMultiBandCompressor(IzMultiBandControls* c);
+					~IzMultiBandCompressor();
 
 				};
 

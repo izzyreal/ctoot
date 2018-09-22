@@ -13,7 +13,7 @@ namespace ctoot {
 		namespace dynamics {
 			namespace izcompressor {
 
-				class MultiBandIzControls
+				class IzMultiBandControls
 					: public MultiBandControls
 				{
 				private:
@@ -35,10 +35,10 @@ namespace ctoot {
 					float getOutputGain();
 
 				public:
-					MultiBandIzControls();
+					IzMultiBandControls();
 
 				};
-				REGISTER_TYPE(ctoot::audio::dynamics::izcompressor::, MultiBandIzControls);
+				REGISTER_TYPE(ctoot::audio::dynamics::izcompressor::, IzMultiBandControls);
 			}
 		}
 	}

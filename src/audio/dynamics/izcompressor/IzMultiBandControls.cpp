@@ -1,6 +1,6 @@
-#include <audio/dynamics/izcompressor/MultiBandIzControls.hpp>
+#include "IzMultiBandControls.hpp"
 
-#include <audio/dynamics/izcompressor/IzBandCompressorControls.hpp>
+#include "IzBandCompressorControls.hpp"
 #include <audio/dynamics/CrossoverControl.hpp>
 #include <audio/dynamics/DynamicsControlIds.hpp>
 
@@ -14,8 +14,8 @@ using namespace ctoot::audio::dynamics;
 using namespace ctoot::control;
 using namespace std;
 
-MultiBandIzControls::MultiBandIzControls()
-	: MultiBandControls("MultiBandIzCompressor")
+IzMultiBandControls::IzMultiBandControls()
+	: MultiBandControls("IzMultiBandCompressor")
 {
    add(make_shared<IzBandCompressorControls>("Low", 0));
    add(make_shared<CrossoverControl>(0, "Low Freq", 250.0f));
@@ -34,44 +34,44 @@ MultiBandIzControls::MultiBandIzControls()
    add(std::move(ogc));
 }
 
-weak_ptr<ctoot::control::ControlLaw> MultiBandIzControls::INPUT_GAIN_LAW()
+weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::INPUT_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
 	return res;
 }
 
-shared_ptr<ctoot::control::FloatControl> MultiBandIzControls::createInputGainControl()
+shared_ptr<ctoot::control::FloatControl> IzMultiBandControls::createInputGainControl()
 {
 	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::MASTER_INPUT_GAIN, "Master Input Gain", INPUT_GAIN_LAW(), 1.0f, 0);
 }
 
-void MultiBandIzControls::deriveInputGain() {
+void IzMultiBandControls::deriveInputGain() {
 	if (!inputGainControl.lock()) return;
 	inputGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(inputGainControl.lock()->getValue()));
 }
 
-float MultiBandIzControls::getInputGain() {
+float IzMultiBandControls::getInputGain() {
 	deriveInputGain();
 	return inputGain;
 }
 
-weak_ptr<ctoot::control::ControlLaw> MultiBandIzControls::OUTPUT_GAIN_LAW()
+weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::OUTPUT_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
 	return res;
 }
 
-shared_ptr<ctoot::control::FloatControl> MultiBandIzControls::createOutputGainControl()
+shared_ptr<ctoot::control::FloatControl> IzMultiBandControls::createOutputGainControl()
 {
 	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::MASTER_OUTPUT_GAIN, "Master Output Gain", OUTPUT_GAIN_LAW(), 1.0f, 0);
 }
 
-void MultiBandIzControls::deriveOutputGain() {
+void IzMultiBandControls::deriveOutputGain() {
 	if (!outputGainControl.lock()) return;
 	outputGain = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(outputGainControl.lock()->getValue()));
 }
 
-float MultiBandIzControls::getOutputGain() {
+float IzMultiBandControls::getOutputGain() {
 	deriveOutputGain();
 	return outputGain;
 }

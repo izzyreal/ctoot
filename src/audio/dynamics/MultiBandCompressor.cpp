@@ -39,6 +39,7 @@ MultiBandCompressor::MultiBandCompressor(MultiBandControls* c)
 	for (auto i = 0; i < nbands; i++) {
 		compressors[i] = new Compressor(dynamic_cast<CompressorControls*>(controls[1 + (i * 2)].lock().get()));
 	}
+
 }
 
 void MultiBandCompressor::open()

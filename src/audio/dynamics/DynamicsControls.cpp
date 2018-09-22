@@ -700,7 +700,6 @@ void DynamicsControls::setDynamicGain(float dynamicGain)
 {
 	if (!gainReductionIndicator.lock())
 		return;
-
 	gainReductionIndicator.lock()->setValue(static_cast<float>((int32_t(20) * log(dynamicGain))));
 }
 
