@@ -33,7 +33,7 @@ namespace ctoot {
 				}
 
 				SynthChannelServiceProvider(int32_t providerId, std::string providerName, std::string description, std::string version);
-				SynthChannelServiceProvider() {}
+				SynthChannelServiceProvider() { providerName = "SynthChannelServiceProvider dummy"; }
 
 			};
 

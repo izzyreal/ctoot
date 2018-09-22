@@ -13,10 +13,16 @@ namespace ctoot {
 		private:
 			std::string rootPath;
 
+		private:
+			void addDirContents(std::map<std::string, PresetTreeNode>& m, std::shared_ptr<moduru::file::Directory> dir);
+
 		public:
-			std::vector<std::string> getPresets(std::weak_ptr<CompoundControl> c) override;
+			//std::vector<std::string> getPresets(std::weak_ptr<CompoundControl> c) override;
+			std::vector<std::string> getPresets() override;
 			void loadPreset(std::weak_ptr<CompoundControl> c, const std::string& name) override;
 			void savePreset(std::weak_ptr<CompoundControl> c, const std::string& name) override;
+			//PresetTreeNode getPresetsRecursive(std::weak_ptr<CompoundControl> c) override;
+			PresetTreeNode getPresetsRecursive() override;
 
 		public:
 			virtual std::string getPath(std::weak_ptr<CompoundControl> c);

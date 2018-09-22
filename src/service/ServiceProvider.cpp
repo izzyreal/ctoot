@@ -91,7 +91,7 @@ string ServiceProvider::toString()
 }
 
 ServiceProvider::~ServiceProvider() {
-	MLOG("Service provider destructor called for " + this->getProviderName() + " " + getDescription());
+	MLOG("Service provider destructor called for " + getProviderName() + " " + getDescription() + " id " + to_string(getProviderId()));
 	for (auto& s : services) {
 		for (auto& sd : s.second) {
 			if (sd != nullptr) delete sd;

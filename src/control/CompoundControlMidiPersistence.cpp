@@ -8,6 +8,7 @@
 
 #include <file/FileUtil.hpp>
 #include <file/Directory.hpp>
+#include <file/FsNode.hpp>
 
 #include <thirdp/midifile/MidiFile.h>
 
@@ -22,16 +23,11 @@ CompoundControlMidiPersistence::CompoundControlMidiPersistence(const string& roo
 	this->rootPath = rootPath;
 }
 
-vector<string> CompoundControlMidiPersistence::getPresets(weak_ptr<CompoundControl> c)
+vector<string> CompoundControlMidiPersistence::getPresets()
 {
-	vector<string> res;
-	auto p = getPath(c);
-	MLOG("path: " + p);
+	vector<string> res;	
+	auto dir = make_unique<Directory>(rootPath, nullptr);
 	
-	//auto dir = make_unique<Directory>(p, nullptr);
-	
-	auto dir = make_unique<Directory>("C:/Users/Izmar/git/compressor/compressor/Builds/VisualStudio2017", nullptr);
-
 	if (!dir->exists() || !dir->isDirectory()) {
 		MLOG(dir->getName() + " does not exist or is not a directory");
 		return res;
@@ -48,18 +44,60 @@ vector<string> CompoundControlMidiPersistence::getPresets(weak_ptr<CompoundContr
 	return res;
 }
 
+void CompoundControlMidiPersistence::addDirContents(map<string, PresetTreeNode>& m, shared_ptr<Directory> dir) {
+	for (auto& f : dir->listFiles()) {
+		if (f->isDirectory()) {
+			PresetTreeNode node;
+			node.directory = true;
+			string parentPath = dir->getPath();
+
+			std::string::size_type i = parentPath.find(rootPath);
+
+			if (i != std::string::npos)
+				parentPath.erase(i, rootPath.length());
+
+			node.parentPath = parentPath;
+			addDirContents(node.node, dynamic_pointer_cast<Directory>(f));
+			m.emplace(f->getName(), node);
+			//MLOG("addDirContents added dir " + f->getName());
+		}
+		else {
+			PresetTreeNode node;
+			string parentPath = dir->getPath();
+
+			std::string::size_type i = parentPath.find(rootPath);
+
+			if (i != std::string::npos)
+				parentPath.erase(i, rootPath.length());
+
+			node.parentPath = parentPath;
+
+			m.emplace(f->getName(), node);
+			//MLOG("addDirContents added file " + f->getName());
+		}
+	}
+}
+
+PresetTreeNode CompoundControlMidiPersistence::getPresetsRecursive() {
+	auto dir = make_shared<Directory>(rootPath, nullptr);
+	PresetTreeNode res;
+	addDirContents(res.node, dir);
+	return res;
+}
+
 void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, const string& name)
 {
-	MLOG("Trying to load preset " + name + " for control " + c.lock()->getName());
 	auto cl = c.lock();
 	if (!cl) return;
 	auto providerId = cl->getProviderId();
 	auto moduleId = cl->getId();
 
 	Directory rootDir(rootPath, nullptr);
+	auto finalName = rootDir.getPath() + name;
 
-	auto path = make_unique<Directory>(getPath(c), &rootDir);
-	auto file = make_unique<File>(name, path.get());
+	MLOG("finalName to load: " + finalName);
+
+	auto file = make_unique<File>(finalName, nullptr);
 
 	if (!file->exists())
 		return;
@@ -68,8 +106,6 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 	sequence.read(file->getPath());
 	auto eventCount = sequence.getNumEvents(0);
 	for (int i = 0; i < eventCount; i++) {
-		//if (i > 82) break;
-		MLOG("\nPreset checking event " + to_string(i));
 		auto msg = sequence.getEvent(0, i);
 		auto data = msg.data();
 		vector<char> dataVec(msg.size());
@@ -104,7 +140,7 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 			continue;
 		}
 		auto v = ControlSysexMsg::getValue(dataVec);
-		MLOG("preset loading setting int value " + to_string(v) + " for control " + control->getName());
+		//MLOG("preset loading setting int value " + to_string(v) + " for control " + control->getName());
 		control->setIntValue(v);
 	}
 }
@@ -116,14 +152,15 @@ void CompoundControlMidiPersistence::savePreset(weak_ptr<CompoundControl> c, con
 	auto moduleId = cl->getId();
 	//auto sequence = new ::javax::sound::midi::Sequence(::javax::sound::midi::Sequence::PPQ, int(1));
 	
-	Directory rootDir(rootPath, nullptr);
 	MidiFile sequence;
 
 	sequence.addTrack();
 	MidiPersistence::store(providerId, moduleId, 0, c, sequence);
-	auto path = moduru::file::Directory(getPath(c), &rootDir);
-	if (!path.exists()) path.create();
-	File f(name, &path);
+
+	Directory rootDir(rootPath, nullptr);
+	if (!rootDir.exists()) rootDir.create();
+	File f(rootDir.getPath() + name, nullptr);
+	MLOG("Trying to write sequence to path " + f.getPath());
 	sequence.write(f.getPath());
 }
 

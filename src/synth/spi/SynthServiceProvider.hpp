@@ -36,7 +36,7 @@ namespace ctoot {
 				}
 
 				SynthServiceProvider(int32_t providerId, std::string providerName, std::string description, std::string version);
-				SynthServiceProvider() {}
+				SynthServiceProvider() { providerName = "SynthServiceProvider dummy"; }
 
 			};
 

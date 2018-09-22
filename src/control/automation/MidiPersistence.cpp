@@ -28,7 +28,7 @@ void MidiPersistence::store(int32_t providerId, int32_t moduleId, int32_t instan
 			auto cl = c.lock();
 			auto id = cl->getId();
 			if (!cl->isIndicator() && id >= 0 && id < 128) {
-				MLOG("Storing event " + to_string(eventCounter) + " for control " + cl->getName() + " intValue " + to_string(cl->getIntValue()) + " id " + to_string(id));
+				//MLOG("Storing event " + to_string(eventCounter) + " for control " + cl->getName() + " intValue " + to_string(cl->getIntValue()) + " id " + to_string(id));
 				auto msg = ControlSysexMsg::createControl(providerId, moduleId, instanceIndex, id, cl->getIntValue());
 				smf::MidiEvent me;
 				me.setMessage(msg);
