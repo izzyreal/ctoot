@@ -2,6 +2,8 @@
 
 #include <audio/dynamics/izcompressor/IzCompressorProcessVariables.hpp>
 
+#include <Logger.hpp>
+
 using namespace ctoot::audio::dynamics;
 using namespace ctoot::audio::dynamics::izcompressor;
 using namespace std;
@@ -14,9 +16,10 @@ IzCompressor::IzCompressor(IzCompressorProcessVariables* vars)
 void IzCompressor::cacheProcessVariables()
 {
 	IzCompressorProcess::cacheProcessVariables();
+	auto cl = vars->getLink().lock();
 	inverseRatio = vars->getInverseRatio();
 	ratio = 1.0f - inverseRatio;
-	inverseThreshold = vars->getInverseThreshold();
+	inverseThreshold = cl ? cl->getInverseThreshold() : vars->getInverseThreshold();
 }
 
 float IzCompressor::function(float value)

@@ -46,6 +46,7 @@ namespace ctoot {
 					bool solo;
 					float dryGain;
 					float wetGain;
+					std::weak_ptr<IzCompressorProcessVariables> link;
 
 				protected:
 					virtual void deriveIndependentVariables();
@@ -72,6 +73,8 @@ namespace ctoot {
 					bool getSolo() override;
 					float getDryGain() override;
 					float getWetGain() override;
+					void setLink(std::weak_ptr<IzCompressorProcessVariables> link) override;
+					std::weak_ptr<IzCompressorProcessVariables> getLink() override;
 
 				public:
 					IzBandCompressorControls();
@@ -80,8 +83,11 @@ namespace ctoot {
 				public:
 					virtual bool isBypassed();
 
+				private:
+					friend class LinkControl;
+
 				};
-				REGISTER_TYPE(ctoot::audio::dynamics::izcompressor:: , IzBandCompressorControls)
+				REGISTER_TYPE(ctoot::audio::dynamics::izcompressor::, IzBandCompressorControls)
 			}
 		}
 	}

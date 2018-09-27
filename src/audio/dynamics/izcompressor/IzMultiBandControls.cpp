@@ -3,9 +3,11 @@
 #include "IzBandCompressorControls.hpp"
 #include <audio/dynamics/CrossoverControl.hpp>
 #include <audio/dynamics/DynamicsControlIds.hpp>
+#include <audio/dynamics/izcompressor/LinkControl.hpp>
 
 #include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
+#include <control/IntegerLaw.hpp>
 
 #include <dsp/VolumeUtils.hpp>
 
@@ -17,21 +19,33 @@ using namespace std;
 IzMultiBandControls::IzMultiBandControls()
 	: MultiBandControls("IzMultiBandCompressor")
 {
-   add(make_shared<IzBandCompressorControls>("Low", 0));
-   add(make_shared<CrossoverControl>(0, "Low Freq", 250.0f));
-   add(make_shared<IzBandCompressorControls>("Lo.Mid", 30));
-   add(make_shared<CrossoverControl>(1, "Mid Freq", 1000.0f));
-   add(make_shared<IzBandCompressorControls>("Hi.Mid", 60));
-   add(make_shared<CrossoverControl>(2, "High Freq", 4000.0f));
-   add(make_shared<IzBandCompressorControls>("High", 90));
+	vector<weak_ptr<IzBandCompressorControls>> controls;
+	auto c1 = make_shared<IzBandCompressorControls>("Low", 0);
+	controls.push_back(c1);
+	add(std::move(c1));
+	add(make_shared<CrossoverControl>(0, "Low Freq", 250.0f));
+	auto c2 = make_shared<IzBandCompressorControls>("Lo.Mid", 30);
+	controls.push_back(c2);
+	add(std::move(c2));
+	add(make_shared<CrossoverControl>(1, "Mid Freq", 1000.0f));
+	auto c3 = make_shared<IzBandCompressorControls>("Hi.Mid", 60);
+	controls.push_back(c3);
+	add(std::move(c3));
+	add(make_shared<CrossoverControl>(2, "High Freq", 4000.0f));
+	auto c4 = make_shared<IzBandCompressorControls>("High", 90);
+	controls.push_back(c4);
+	add(std::move(c4));
 
-   auto igc = createInputGainControl();
-   inputGainControl = igc;
-   add(std::move(igc));
+	auto igc = createInputGainControl();
+	inputGainControl = igc;
+	add(std::move(igc));
 
-   auto ogc = createOutputGainControl();
-   outputGainControl = ogc;
-   add(std::move(ogc));
+	auto ogc = createOutputGainControl();
+	outputGainControl = ogc;
+	add(std::move(ogc));
+
+	auto lc = createLinkControl(controls);
+	lc->setValue(1);
 }
 
 weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::INPUT_GAIN_LAW()
@@ -53,6 +67,16 @@ void IzMultiBandControls::deriveInputGain() {
 float IzMultiBandControls::getInputGain() {
 	deriveInputGain();
 	return inputGain;
+}
+
+weak_ptr<IntegerLaw> IzMultiBandControls::LINK_LAW()
+{
+	static auto res = make_shared<IntegerLaw>(0, 4, "Band");
+	return res;
+}
+
+shared_ptr<LinkControl> IzMultiBandControls::createLinkControl(vector<weak_ptr<IzBandCompressorControls>> controls) {
+	return make_shared<LinkControl>(120 + 0, "Link", LINK_LAW(), controls);
 }
 
 weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::OUTPUT_GAIN_LAW()

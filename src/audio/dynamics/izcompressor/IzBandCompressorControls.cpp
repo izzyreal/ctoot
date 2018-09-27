@@ -33,26 +33,28 @@ IzBandCompressorControls::IzBandCompressorControls()
 
 void IzBandCompressorControls::deriveIndependentVariables()
 {
-    threshold = compressorControls.lock()->getThreshold();
-    inverseThreshold = compressorControls.lock()->getInverseThreshold();
-    inverseRatio = compressorControls.lock()->getInverseRatio();
-    gain = compressorControls.lock()->getGain();
-    depth = compressorControls.lock()->getDepth();
-	detectionChannelMode = compressorControls.lock()->getDetectionChannelMode();
-	attenuationChannelMode = compressorControls.lock()->getAttenuationChannelMode();
-	inputGain = compressorControls.lock()->getInputGain();
-	outputGain = compressorControls.lock()->getOutputGain();
-	mute = compressorControls.lock()->getMute();
-	solo = compressorControls.lock()->getSolo();
-	dryGain = compressorControls.lock()->getDryGain();
-	wetGain = compressorControls.lock()->getWetGain();
+	auto cl = compressorControls.lock();
+	threshold = cl->getThreshold();
+    inverseThreshold = cl->getInverseThreshold();
+    inverseRatio = cl->getInverseRatio();
+    gain = cl->getGain();
+    depth = cl->getDepth();
+	detectionChannelMode = cl->getDetectionChannelMode();
+	attenuationChannelMode = cl->getAttenuationChannelMode();
+	inputGain = cl->getInputGain();
+	outputGain = cl->getOutputGain();
+	mute = cl->getMute();
+	solo = cl->getSolo();
+	dryGain = cl->getDryGain();
+	wetGain = cl->getWetGain();
 }
 
 void IzBandCompressorControls::deriveDependentVariables()
 {
-    attack = compressorControls.lock()->getAttack();
-    release = compressorControls.lock()->getRelease();
-	lookAhead = compressorControls.lock()->getLookAhead();
+	auto cl = compressorControls.lock();
+    attack = cl->getAttack();
+    release = cl->getRelease();
+	lookAhead = cl->getLookAhead();
 }
 
 void IzBandCompressorControls::derive(ctoot::control::Control* c)
@@ -203,4 +205,12 @@ float IzBandCompressorControls::getDryGain() {
 
 float IzBandCompressorControls::getWetGain() {
 	return wetGain;
+}
+
+void IzBandCompressorControls::setLink(weak_ptr<IzCompressorProcessVariables> link) {
+	this->link = link;
+}
+
+weak_ptr<IzCompressorProcessVariables> IzBandCompressorControls::getLink() {
+	return link;
 }

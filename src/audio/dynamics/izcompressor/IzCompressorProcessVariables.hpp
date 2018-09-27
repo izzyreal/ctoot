@@ -31,7 +31,8 @@ namespace ctoot {
 					virtual float getLookAhead() = 0;
 					virtual bool getMute() = 0;
 					virtual bool getSolo() = 0;
-
+					virtual void setLink(std::weak_ptr<IzCompressorProcessVariables> link) = 0;
+					virtual std::weak_ptr<IzCompressorProcessVariables> getLink() = 0;
 				};
 
 			}
