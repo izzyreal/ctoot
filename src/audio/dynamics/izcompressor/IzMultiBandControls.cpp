@@ -45,7 +45,9 @@ IzMultiBandControls::IzMultiBandControls()
 	add(std::move(ogc));
 
 	auto lc = createLinkControl(controls);
-	lc->setValue(1);
+	linkControl = lc;
+	add(std::move(lc));
+	//lc->setValue(1);
 }
 
 weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::INPUT_GAIN_LAW()
