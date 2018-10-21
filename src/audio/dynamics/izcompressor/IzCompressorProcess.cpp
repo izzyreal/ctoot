@@ -37,13 +37,13 @@ void IzCompressorProcess::cacheProcessVariables()
 {
 	auto cl = vars->getLink().lock();
 	if (cl) {
-		MLOG("link detected");
+		//MLOG("link detected");
 	}
 	else {
-		MLOG("no link detected");
+		//MLOG("no link detected");
 	}
     threshold = cl ? cl->getThreshold() : vars->getThreshold();
-	MLOG("threshold is now " + to_string(threshold));
+	//MLOG("threshold is now " + to_string(threshold));
     attack = vars->getAttack();
     release = vars->getRelease();
 	lookAhead = vars->getLookAhead();
