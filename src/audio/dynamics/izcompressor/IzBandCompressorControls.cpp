@@ -1,4 +1,4 @@
-#include <audio/dynamics/izcompressor/IzBandCompressorControls.hpp>
+#include "IzBandCompressorControls.hpp"
 
 #include <audio/dynamics/CompressorControls.hpp>
 #include <audio/dynamics/DynamicsControlIds.hpp>
@@ -47,6 +47,7 @@ void IzBandCompressorControls::deriveIndependentVariables()
 	solo = cl->getSolo();
 	dryGain = cl->getDryGain();
 	wetGain = cl->getWetGain();
+	keyBuffer = cl->getKeyBuffer();
 }
 
 void IzBandCompressorControls::deriveDependentVariables()
@@ -110,6 +111,9 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 		break;
 	case DynamicsControlIds::SOLO:
 		solo = cc.lock()->getSolo();
+		break;
+	case DynamicsControlIds::KEY:
+		keyBuffer = cc.lock()->getKeyBuffer();
 		break;
 	}
 }
@@ -205,6 +209,10 @@ float IzBandCompressorControls::getDryGain() {
 
 float IzBandCompressorControls::getWetGain() {
 	return wetGain;
+}
+
+ctoot::audio::core::AudioBuffer* IzBandCompressorControls::getKeyBuffer() {
+	return keyBuffer;
 }
 
 void IzBandCompressorControls::setLink(weak_ptr<IzCompressorProcessVariables> link) {

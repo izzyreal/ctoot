@@ -2,7 +2,7 @@
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/core/AudioProcess.hpp>
-//#include <audio/core/Taps.hpp>
+#include <audio/core/Taps.hpp>
 #include <audio/mixer/MixerControlsObserver.hpp>
 #include <audio/mixer/AudioMixerBus.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
@@ -28,7 +28,7 @@ AudioMixer::AudioMixer(weak_ptr<MixerControls> controls, weak_ptr<AudioServer> s
 {
 	this->controls = controls;
 	this->server = server;
-	//Taps::setAudioServer(server);
+	ctoot::audio::core::Taps::setAudioServer(server);
 	sharedAudioBuffer = server.lock()->createAudioBuffer("Mixer (shared)");
 	createBusses(controls);
 	createStrips(controls);

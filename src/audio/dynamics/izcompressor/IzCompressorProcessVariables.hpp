@@ -5,6 +5,11 @@
 
 namespace ctoot {
 	namespace audio {
+
+		namespace core {
+			class AudioBuffer;
+		}
+
 		namespace dynamics {
 			namespace izcompressor {
 
@@ -33,6 +38,8 @@ namespace ctoot {
 					virtual bool getSolo() = 0;
 					virtual void setLink(std::weak_ptr<IzCompressorProcessVariables> link) = 0;
 					virtual std::weak_ptr<IzCompressorProcessVariables> getLink() = 0;
+					virtual ctoot::audio::core::AudioBuffer* getKeyBuffer() = 0;
+
 				};
 
 			}

@@ -47,6 +47,7 @@ namespace ctoot {
 					float dryGain;
 					float wetGain;
 					std::weak_ptr<IzCompressorProcessVariables> link;
+					ctoot::audio::core::AudioBuffer* keyBuffer;
 
 				protected:
 					virtual void deriveIndependentVariables();
@@ -75,6 +76,7 @@ namespace ctoot {
 					float getWetGain() override;
 					void setLink(std::weak_ptr<IzCompressorProcessVariables> link) override;
 					std::weak_ptr<IzCompressorProcessVariables> getLink() override;
+					ctoot::audio::core::AudioBuffer* getKeyBuffer() override;
 
 				public:
 					IzBandCompressorControls();

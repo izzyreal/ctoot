@@ -13,19 +13,19 @@
 using namespace ctoot::audio::core;
 using namespace std;
 
-void Taps::setAudioServer(ctoot::audio::server::AudioServer* s)
+void Taps::setAudioServer(weak_ptr<ctoot::audio::server::AudioServer> s)
 {
 	Taps::server = s;
 }
 
 vector<ctoot::audio::basic::tap::TapControls*> Taps::taps;
-ctoot::audio::server::AudioServer* Taps::server;
+weak_ptr<ctoot::audio::server::AudioServer> Taps::server;
 
 ctoot::audio::core::AudioBuffer* Taps::create(ctoot::audio::basic::tap::TapControls* controls)
 {
 	check();
 	auto name = tapName(controls);
-	auto buffer = server->createAudioBuffer(name);
+	auto buffer = server.lock()->createAudioBuffer(name);
 	taps.push_back(controls);
 	return buffer;
 }
@@ -37,7 +37,7 @@ void Taps::remove(AudioBuffer* buffer)
 		auto t = taps[i];
 		if (t->getBuffer() == buffer) {
 			taps.erase(taps.begin() + i);
-			server->removeAudioBuffer(buffer);
+			server.lock()->removeAudioBuffer(buffer);
 			return;
 		}
 	}
@@ -59,21 +59,19 @@ ctoot::audio::basic::tap::TapControls* Taps::getControls(std::string name)
 ctoot::audio::core::AudioBuffer* Taps::getBuffer(std::string name)
 {
 	auto c = getControls(name);
-	if (c == nullptr)
-		return nullptr;
-
+	if (c == nullptr) return nullptr;
 	return c->getBuffer();
 }
 
 void Taps::check()
 {
-	if (server == nullptr)
+	if (!server.lock())
 		throw std::exception("null AudioServer");
 }
 
-std::string Taps::tapName(ctoot::audio::basic::tap::TapControls* controls)
+string Taps::tapName(ctoot::audio::basic::tap::TapControls* controls)
 {
-	vector<string> parts = moduru::lang::StrUtil::split(controls->getName(), ' ');
+	auto parts = moduru::lang::StrUtil::split(controls->getName(), ' ');
 
 	auto name = controls->getParent()->getName();
 	if (parts.size() > 1)

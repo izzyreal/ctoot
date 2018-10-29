@@ -1,7 +1,7 @@
-#include <audio/dynamics/izcompressor/IzCompressorProcess.hpp>
+#include "IzCompressorProcess.hpp"
 
 #include <audio/core/AudioBuffer.hpp>
-#include <audio/dynamics/izcompressor/IzCompressorProcessVariables.hpp>
+#include "IzCompressorProcessVariables.hpp"
 #include <dsp/FastMath.hpp>
 
 #include <VecUtil.hpp>
@@ -79,16 +79,19 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	auto mslen = static_cast<int32_t>(buffer->getSampleRate() * 0.001f);
 	auto sumdiv = 1.0f / (mslen + mslen);
 
-	auto b0 = buffer->getChannel(0);
-	auto b1 = buffer->getChannel(1);
+	auto dBuffer0 = buffer->getChannel(0);
+	auto dBuffer1 = buffer->getChannel(1);
 
-	dryBuffer->write(b0, b1);
+	auto aBuffer0 = buffer->getChannel(0);
+	auto aBuffer1 = buffer->getChannel(1);
+
+	dryBuffer->write(aBuffer0, aBuffer1);
 
 	smoothedInputGain += 0.05f * (inputGain - smoothedInputGain);
 
 	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		(*b0)[i] *= smoothedInputGain;
-		(*b1)[i] *= smoothedInputGain;
+		(*dBuffer0)[i] *= smoothedInputGain;
+		(*dBuffer1)[i] *= smoothedInputGain;
 	}
 
 	auto dcm = detectionChannelMode;
@@ -96,7 +99,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 
 	//if (dcm.compare("LR") == 0 && acm.compare("LR") != 0) return AUDIO_OK;
 
-	lab->write(b0, b1);
+	lab->write(aBuffer0, aBuffer1);
 
 	if (mute) {
 		//MLOG("band is muted");
@@ -132,11 +135,11 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 
 	for (int i = 0; i < len; i++) {
 		if (dcmM || dcmL || dcmLR) {
-			calcGain(b0, targetGain, i, mslen, len, sumdiv, gain);
+			calcGain(dBuffer0, targetGain, i, mslen, len, sumdiv, gain);
 			factorsL[i] = (gain * makeupGain);
 		}
 		if (dcmS || dcmR || dcmLR) {
-			calcGain(b1, targetGain, i, mslen, len, sumdiv, gain);
+			calcGain(dBuffer1, targetGain, i, mslen, len, sumdiv, gain);
 			factorsR[i] = (gain * makeupGain);
 		}
 	}
@@ -182,7 +185,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 
 	const int correctiveLenSamples = (MAX_LOOK_AHEAD * mslen);
 
-	lab->read(b0, b1, -correctiveLenSamples, len);
+	lab->read(aBuffer0, aBuffer1, -correctiveLenSamples, len);
 	lab->moveReadPos(len);
 	
 	vector<float> dryL(len);
@@ -195,10 +198,10 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	smoothedDryGain += 0.05f * (dryGain - smoothedDryGain);
 
 	for (int i = 0; i < len; i++) {
-		(*b0)[i] = ((*b0)[i] * smoothedWetGain) + (dryL[i] * smoothedDryGain);
-		(*b0)[i] *= outputGain;
-		(*b1)[i] = ((*b1)[i] * smoothedWetGain) + (dryR[i] * smoothedDryGain);
-		(*b1)[i] *= outputGain;
+		(*aBuffer0)[i] = ((*aBuffer0)[i] * smoothedWetGain) + (dryL[i] * smoothedDryGain);
+		(*aBuffer0)[i] *= outputGain;
+		(*aBuffer1)[i] = ((*aBuffer1)[i] * smoothedWetGain) + (dryR[i] * smoothedDryGain);
+		(*aBuffer1)[i] *= outputGain;
 	}
 	vars->setDynamicGain(gain >= 0.999937f ? 1.0f : gain);
 	wasBypassed = bypassed;

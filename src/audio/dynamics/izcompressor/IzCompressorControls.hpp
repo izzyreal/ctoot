@@ -22,7 +22,7 @@ namespace ctoot {
 					/*
 					* Sidechain
 					*/
-					bool hasKey() override { return false; }
+					bool hasKey() override { return true; }
 
 					/*
 					* BooleanControls

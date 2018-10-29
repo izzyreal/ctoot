@@ -2,6 +2,7 @@
 
 #include <string>
 #include <vector>
+#include <memory>
 
 namespace ctoot {
 	namespace audio {
@@ -29,10 +30,10 @@ namespace ctoot {
 				static std::vector<ctoot::audio::basic::tap::TapControls*> taps;
 
 			private:
-				static ctoot::audio::server::AudioServer* server;
+				static std::weak_ptr<ctoot::audio::server::AudioServer> server;
 
 			public:
-				static void setAudioServer(ctoot::audio::server::AudioServer* aserver);
+				static void setAudioServer(std::weak_ptr<ctoot::audio::server::AudioServer> aserver);
 				static AudioBuffer* create(ctoot::audio::basic::tap::TapControls* controls);
 				static void remove(AudioBuffer* buffer);
 				static ctoot::audio::basic::tap::TapControls* getControls(std::string name);
