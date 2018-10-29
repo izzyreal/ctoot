@@ -16,6 +16,7 @@ MidiPersistence::MidiPersistence()
 {
 }
 int MidiPersistence::eventCounter = 0;
+std::set<int> MidiPersistence::eventSet;
 
 void MidiPersistence::store(int32_t providerId, int32_t moduleId, int32_t instanceIndex, std::weak_ptr<CompoundControl> parent, smf::MidiFile& midiFile)
 {
@@ -27,6 +28,9 @@ void MidiPersistence::store(int32_t providerId, int32_t moduleId, int32_t instan
 		else {
 			auto cl = c.lock();
 			auto id = cl->getId();
+			if (cl->getName().find("Link") != string::npos) {
+				MLOG("\nSaving link control int value " + to_string(cl->getIntValue()) + ", id: " + to_string(id) + "\n");
+			}
 			if (!cl->isIndicator() && id >= 0 && id < 128) {
 				//MLOG("Storing event " + to_string(eventCounter) + " for control " + cl->getName() + " intValue " + to_string(cl->getIntValue()) + " id " + to_string(id));
 				auto msg = ControlSysexMsg::createControl(providerId, moduleId, instanceIndex, id, cl->getIntValue());
@@ -34,6 +38,10 @@ void MidiPersistence::store(int32_t providerId, int32_t moduleId, int32_t instan
 				me.setMessage(msg);
 				midiFile.addEvent(0, 0, me);
 				eventCounter++;
+				auto res = eventSet.emplace(id);
+				if (!res.second) {
+					MLOG(cl->getName() + " could not be saved properly, " + to_string(id) + " was already taken.");
+				}
 			}
 		}
 	}

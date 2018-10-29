@@ -1,6 +1,7 @@
 #include <control/CompoundControlMidiPersistence.hpp>
 
 #include <control/BypassControl.hpp>
+#include <control/IntegerControl.hpp>
 #include <control/CompoundControl.hpp>
 #include <control/Control.hpp>
 #include <control/automation/ControlSysexMsg.hpp>
@@ -140,7 +141,13 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 			continue;
 		}
 		auto v = ControlSysexMsg::getValue(dataVec);
-		//MLOG("preset loading setting int value " + to_string(v) + " for control " + control->getName());
+		auto ic = dynamic_pointer_cast<IntegerControl>(control);
+		if (control->getId() == 33) {
+			MLOG("control 33 has name " + control->getName());
+		}
+		if (control->getName().find("Link") != string::npos) {
+			MLOG("preset loading setting int value " + to_string(v) + " for control " + control->getName());
+		}
 		control->setIntValue(v);
 	}
 }
@@ -156,6 +163,12 @@ void CompoundControlMidiPersistence::savePreset(weak_ptr<CompoundControl> c, con
 
 	sequence.addTrack();
 	MidiPersistence::store(providerId, moduleId, 0, c, sequence);
+
+	for (int i = 0; i < 128; i++) {
+		if (MidiPersistence::eventSet.find(i) == MidiPersistence::eventSet.end()) {
+			MLOG("id " + to_string(i) + " is still available");
+		}
+	}
 
 	Directory rootDir(rootPath, nullptr);
 	if (!rootDir.exists()) rootDir.create();

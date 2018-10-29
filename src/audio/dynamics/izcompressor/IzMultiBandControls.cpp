@@ -24,15 +24,15 @@ IzMultiBandControls::IzMultiBandControls()
 	controls.push_back(c1);
 	add(std::move(c1));
 	add(make_shared<CrossoverControl>(0, "Low Freq", 250.0f));
-	auto c2 = make_shared<IzBandCompressorControls>("Lo.Mid", 30);
+	auto c2 = make_shared<IzBandCompressorControls>("Lo.Mid", 25);
 	controls.push_back(c2);
 	add(std::move(c2));
 	add(make_shared<CrossoverControl>(1, "Mid Freq", 1000.0f));
-	auto c3 = make_shared<IzBandCompressorControls>("Hi.Mid", 60);
+	auto c3 = make_shared<IzBandCompressorControls>("Hi.Mid", 50);
 	controls.push_back(c3);
 	add(std::move(c3));
 	add(make_shared<CrossoverControl>(2, "High Freq", 4000.0f));
-	auto c4 = make_shared<IzBandCompressorControls>("High", 90);
+	auto c4 = make_shared<IzBandCompressorControls>("High", 75);
 	controls.push_back(c4);
 	add(std::move(c4));
 
@@ -47,7 +47,6 @@ IzMultiBandControls::IzMultiBandControls()
 	auto lc = createLinkControl(controls);
 	linkControl = lc;
 	add(std::move(lc));
-	//lc->setValue(1);
 }
 
 weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::INPUT_GAIN_LAW()
@@ -78,7 +77,7 @@ weak_ptr<IntegerLaw> IzMultiBandControls::LINK_LAW()
 }
 
 shared_ptr<LinkControl> IzMultiBandControls::createLinkControl(vector<weak_ptr<IzBandCompressorControls>> controls) {
-	return make_shared<LinkControl>(120 + 0, "Link", LINK_LAW(), controls);
+	return make_shared<LinkControl>(DynamicsControlIds::LINK, "Link", LINK_LAW(), controls);
 }
 
 weak_ptr<ctoot::control::ControlLaw> IzMultiBandControls::OUTPUT_GAIN_LAW()
