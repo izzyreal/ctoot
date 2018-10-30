@@ -13,8 +13,10 @@ AudioControls::AudioControls(int id, string name, int bypassId) : CompoundContro
 	// can't call derived class virtual function in ctor, so we do a bypassId check instead
 	//if (canBypass()) {
 	if (bypassId != -1) {
-		auto bypassControl = make_shared<BypassControl>(bypassId);
-		add(bypassControl);
+		auto bpc = make_shared<BypassControl>(bypassId);
+		add(bpc);
+		bypassControl = bpc;
+
 	}
 }
 
@@ -35,20 +37,20 @@ bool AudioControls::canBypass()
 
 void AudioControls::setBypassed(bool state)
 {
-	if (canBypass() && bypassControl != nullptr) {
-		bypassControl->setValue(state);
+	if (canBypass() && bypassControl.lock()) {
+		bypassControl.lock()->setValue(state);
 	}
 }
 
 bool AudioControls::isBypassed()
 {
-    if(bypassControl == nullptr) return false;
-    return bypassControl->getValue();
+    if (!bypassControl.lock()) return false;
+    return bypassControl.lock()->getValue();
 }
 
 ctoot::control::BooleanControl* AudioControls::getBypassControl()
 {
-    return bypassControl;
+    return bypassControl.lock().get();
 }
 
 string AudioControls::getPersistenceDomain()
@@ -57,8 +59,4 @@ string AudioControls::getPersistenceDomain()
 }
 
 AudioControls::~AudioControls() {
-	if (bypassControl != nullptr) {
-		delete bypassControl;
-		bypassControl = nullptr;
-	}
 }

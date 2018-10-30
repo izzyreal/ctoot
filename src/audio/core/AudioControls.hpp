@@ -15,7 +15,7 @@ namespace ctoot {
 				typedef control::CompoundControl super;
 
 			private:
-                ctoot::control::BypassControl* bypassControl{ nullptr };
+                std::weak_ptr<ctoot::control::BypassControl> bypassControl;
 
 			public:
 				virtual bool hasOrderedFrequencies();
