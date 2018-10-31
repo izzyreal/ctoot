@@ -53,17 +53,7 @@ void IzCompressorProcess::cacheProcessVariables()
 int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
 	auto key = vars->getKeyBuffer();
-	if (key == nullptr) {
-		//MLOG("processAudio key == nullptr!");
-	}
-	else {
-		//MLOG("processAudio key is fine :)");
-		int counter = 0;
-		for (auto& f : *key->getChannel(0)) {
-			//MLOG(to_string(f));
-			if (counter++ > 100) break;
-		}
-	}
+
 	auto bypassed = vars->isBypassed();
 	if (bypassed) {
 		if (!wasBypassed) {
