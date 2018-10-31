@@ -31,18 +31,22 @@ void TapControl::remove()
 
 void TapControl::derive(ctoot::control::Control* obj)
 {
+	MLOG("\n\nTapControl::derive is called\n\n");
 	auto tapName = boost::any_cast<string>(getValue());
+	MLOG("\n\nTapControl::derive tapName after boost cast is " + tapName +"\n\n");
+	MLOG("\n\nTapControl::derive prevTapName is " + prevTapName + "\n\n");
 	reference(prevTapName, -1);
 	reference(tapName, 1);
 	prevTapName = tapName;
 	if (tapName.compare(SELF_STR) == 0) {
+		MLOG("tapname is SELF_STR");
 		buffer = nullptr;
 		return;
 	}
 	buffer = Taps::getBuffer(tapName);
 	if (buffer == nullptr) {
 		string errormsg = "Taps returned null buffer for Tap " + tapName;
-		printf(errormsg.c_str());
+		MLOG(errormsg);
 	}
 }
 
@@ -56,8 +60,8 @@ void TapControl::reference(string name, int32_t ref)
 		c->reference(ref);
 	}
 	else {
-		string errormsg = "Taps couldn't find Tap " + name;
-		printf(errormsg.c_str());
+		string errormsg = "Taps::reference couldn't find Tap " + name;
+		MLOG(errormsg);
 	}
 }
 
@@ -77,12 +81,14 @@ void TapControl::setIntValue(int32_t value)
 		setValue(SELF_STR);
 		return;
 	}
-	auto instance = value & int32_t(7);
-	auto strip = value >> int32_t(3);
+	auto instance = value & 0x07;
+	MLOG("setIntValue instance: " + to_string(instance));
+	auto strip = value >> 3;
+	MLOG("setIntValue strip: " + to_string(strip));
 	auto name = to_string(strip + 1);
 	if (instance > 0)
 		name = name + "#" + to_string(instance + 1);
-
+	MLOG("Setting value to: " + name);
 	setValue(name);
 }
 

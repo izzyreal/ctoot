@@ -11,6 +11,7 @@
 #include <stdexcept>
 
 using namespace ctoot::audio::core;
+using namespace ctoot::audio::basic::tap;
 using namespace std;
 
 void Taps::setAudioServer(weak_ptr<ctoot::audio::server::AudioServer> s)
@@ -23,9 +24,12 @@ weak_ptr<ctoot::audio::server::AudioServer> Taps::server;
 
 ctoot::audio::core::AudioBuffer* Taps::create(ctoot::audio::basic::tap::TapControls* controls)
 {
+	MLOG("Taps::create is called");
 	check();
+	MLOG("Taps::create passed the check");
 	auto name = tapName(controls);
 	auto buffer = server.lock()->createAudioBuffer(name);
+	MLOG("Taps::create created an audiobuffer");
 	taps.push_back(controls);
 	return buffer;
 }
@@ -45,10 +49,13 @@ void Taps::remove(AudioBuffer* buffer)
 	printf(errormsg.c_str());
 }
 
-ctoot::audio::basic::tap::TapControls* Taps::getControls(std::string name)
+ctoot::audio::basic::tap::TapControls* Taps::getControls(string name)
 {
 	for (auto& t : taps) {
 		auto tapname = tapName(t);
+		
+		MLOG("Checking against tapName " + tapname);
+		
 		if (name.compare(tapname) == 0) {
 			return t;
 		}
@@ -56,10 +63,14 @@ ctoot::audio::basic::tap::TapControls* Taps::getControls(std::string name)
 	return nullptr;
 }
 
-ctoot::audio::core::AudioBuffer* Taps::getBuffer(std::string name)
+ctoot::audio::core::AudioBuffer* Taps::getBuffer(string name)
 {
+	MLOG("Taps::getBuffer for " + name);
 	auto c = getControls(name);
-	if (c == nullptr) return nullptr;
+	if (c == nullptr) {
+		MLOG("Taps::getBuffer for " + name + " returns nullptr");
+		return nullptr;
+	}
 	return c->getBuffer();
 }
 
@@ -69,13 +80,16 @@ void Taps::check()
 		throw std::exception("null AudioServer");
 }
 
-string Taps::tapName(ctoot::audio::basic::tap::TapControls* controls)
+string Taps::tapName(TapControls* controls)
 {
+	MLOG("tapName tries to make a tap name from control name " + controls->getName());
 	auto parts = moduru::lang::StrUtil::split(controls->getName(), ' ');
-
+	for (auto& p : parts) 
+		MLOG("part from " + controls->getName() + ": " + p);
+	
 	auto name = controls->getParent()->getName();
 	if (parts.size() > 1)
 		name += parts[1];
-
+	MLOG("tapName converted " + controls->getName() + " to " + name);
 	return name;
 }

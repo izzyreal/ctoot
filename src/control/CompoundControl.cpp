@@ -44,8 +44,8 @@ CompoundControl::CompoundControl(int id, int instanceIndex, string name) : Contr
 
 int CompoundControl::deriveInstanceIndex(string name) {
 	int result;
-	int hash = (int)(name.find('#'));
-	result = hash > 0 ? stoi(name.substr(hash + 1)) - 1 : 0;
+	auto hash = name.find('#');
+	result = hash != string::npos ? stoi(name.substr(hash + 1)) - 1 : 0;
 	return result;
 }
 
@@ -55,11 +55,11 @@ void CompoundControl::checkInstanceIndex(int index)
 {
 	if (index < 0) {
 		string desc = getName() + " instance " + to_string(index) + " < 0\n";
-		//printf("%s", desc.c_str());
+		MLOG(desc);
 	}
 	if (index > getMaxInstance()) {
 		string desc = getName() + " instance " + to_string(index) + " > " + to_string(getMaxInstance()) + "\n";
-		//printf("%s", desc.c_str());
+		MLOG(desc);
 	}
 }
 

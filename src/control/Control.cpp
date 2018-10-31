@@ -49,14 +49,12 @@ int Control::getId()
 
 CompoundControl* Control::getParent()
 {
-	MLOG("Trying to return parent for " + getName());
     return parent;
 }
 
 void Control::setParent(CompoundControl* c)
 {
 	parent = c;
-	//MLOG("Parent set for " + getName());
 	if (parent == nullptr) {
 		MLOG("Parent for " + getName() + " is nullptr!");
 	}

@@ -114,6 +114,8 @@ void IzBandCompressorControls::derive(ctoot::control::Control* c)
 		break;
 	case DynamicsControlIds::KEY:
 		keyBuffer = cc.lock()->getKeyBuffer();
+		MLOG("KeyBuffer derived");
+		if (keyBuffer == nullptr) MLOG("... but still nullptr");
 		break;
 	}
 }

@@ -36,16 +36,9 @@ void IzCompressorProcess::clear()
 void IzCompressorProcess::cacheProcessVariables()
 {
 	auto cl = vars->getLink().lock();
-	if (cl) {
-		//MLOG("link detected");
-	}
-	else {
-		//MLOG("no link detected");
-	}
     threshold = cl ? cl->getThreshold() : vars->getThreshold();
-	//MLOG("threshold is now " + to_string(threshold));
     attack = vars->getAttack();
-    release = vars->getRelease();
+    release = cl ? cl->getThreshold() : vars->getRelease();
 	lookAhead = vars->getLookAhead();
     makeupGain = vars->getGain();
 	detectionChannelMode = vars->getDetectionChannelMode();
@@ -59,6 +52,18 @@ void IzCompressorProcess::cacheProcessVariables()
 
 int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
+	auto key = vars->getKeyBuffer();
+	if (key == nullptr) {
+		//MLOG("processAudio key == nullptr!");
+	}
+	else {
+		//MLOG("processAudio key is fine :)");
+		int counter = 0;
+		for (auto& f : *key->getChannel(0)) {
+			//MLOG(to_string(f));
+			if (counter++ > 100) break;
+		}
+	}
 	auto bypassed = vars->isBypassed();
 	if (bypassed) {
 		if (!wasBypassed) {
@@ -79,8 +84,11 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	auto mslen = static_cast<int32_t>(buffer->getSampleRate() * 0.001f);
 	auto sumdiv = 1.0f / (mslen + mslen);
 
-	auto dBuffer0 = buffer->getChannel(0);
-	auto dBuffer1 = buffer->getChannel(1);
+	//auto dBuffer0 = buffer->getChannel(0);
+	//auto dBuffer1 = buffer->getChannel(1);
+
+	auto dBuffer0 = key != nullptr ? key->getChannel(0) : buffer->getChannel(0);
+	auto dBuffer1 = key != nullptr ? key->getChannel(1) : buffer->getChannel(1);
 
 	auto aBuffer0 = buffer->getChannel(0);
 	auto aBuffer1 = buffer->getChannel(1);

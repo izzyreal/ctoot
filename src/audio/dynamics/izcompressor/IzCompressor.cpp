@@ -17,7 +17,7 @@ void IzCompressor::cacheProcessVariables()
 {
 	IzCompressorProcess::cacheProcessVariables();
 	auto cl = vars->getLink().lock();
-	inverseRatio = vars->getInverseRatio();
+	inverseRatio = cl ? cl->getInverseRatio() : vars->getInverseRatio();
 	ratio = 1.0f - inverseRatio;
 	inverseThreshold = cl ? cl->getInverseThreshold() : vars->getInverseThreshold();
 }

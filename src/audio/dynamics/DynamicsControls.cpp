@@ -340,9 +340,10 @@ void DynamicsControls::deriveHysteresis()
 
 void DynamicsControls::deriveKey()
 {
+	MLOG("Derivekey is called");
 	if (!keyControl.lock())
 		return;
-
+	MLOG("keyControl != null");
 	key = keyControl.lock()->getBuffer();
 }
 
