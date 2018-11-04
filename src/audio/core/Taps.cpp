@@ -24,12 +24,9 @@ weak_ptr<ctoot::audio::server::AudioServer> Taps::server;
 
 ctoot::audio::core::AudioBuffer* Taps::create(ctoot::audio::basic::tap::TapControls* controls)
 {
-	MLOG("Taps::create is called");
 	check();
-	MLOG("Taps::create passed the check");
 	auto name = tapName(controls);
 	auto buffer = server.lock()->createAudioBuffer(name);
-	MLOG("Taps::create created an audiobuffer");
 	taps.push_back(controls);
 	return buffer;
 }
@@ -53,9 +50,7 @@ ctoot::audio::basic::tap::TapControls* Taps::getControls(string name)
 {
 	for (auto& t : taps) {
 		auto tapname = tapName(t);
-		
-		MLOG("Checking against tapName " + tapname);
-		
+				
 		if (name.compare(tapname) == 0) {
 			return t;
 		}
@@ -65,10 +60,8 @@ ctoot::audio::basic::tap::TapControls* Taps::getControls(string name)
 
 ctoot::audio::core::AudioBuffer* Taps::getBuffer(string name)
 {
-	MLOG("Taps::getBuffer for " + name);
 	auto c = getControls(name);
 	if (c == nullptr) {
-		MLOG("Taps::getBuffer for " + name + " returns nullptr");
 		return nullptr;
 	}
 	return c->getBuffer();
@@ -82,14 +75,9 @@ void Taps::check()
 
 string Taps::tapName(TapControls* controls)
 {
-	MLOG("tapName tries to make a tap name from control name " + controls->getName());
 	auto parts = moduru::lang::StrUtil::split(controls->getName(), ' ');
-	for (auto& p : parts) 
-		MLOG("part from " + controls->getName() + ": " + p);
-	
 	auto name = controls->getParent()->getName();
 	if (parts.size() > 1)
 		name += parts[1];
-	MLOG("tapName converted " + controls->getName() + " to " + name);
 	return name;
 }

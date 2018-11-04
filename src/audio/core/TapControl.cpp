@@ -31,15 +31,11 @@ void TapControl::remove()
 
 void TapControl::derive(ctoot::control::Control* obj)
 {
-	MLOG("\n\nTapControl::derive is called\n\n");
 	auto tapName = boost::any_cast<string>(getValue());
-	MLOG("\n\nTapControl::derive tapName after boost cast is " + tapName +"\n\n");
-	MLOG("\n\nTapControl::derive prevTapName is " + prevTapName + "\n\n");
 	reference(prevTapName, -1);
 	reference(tapName, 1);
 	prevTapName = tapName;
 	if (tapName.compare(SELF_STR) == 0) {
-		MLOG("tapname is SELF_STR");
 		buffer = nullptr;
 		return;
 	}

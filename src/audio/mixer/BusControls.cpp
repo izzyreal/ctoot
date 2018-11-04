@@ -11,7 +11,6 @@ using namespace std;
 BusControls::BusControls(int id, string name, weak_ptr<ChannelFormat> format)
 	: AudioControls(id, name, -1)
 {
-	MLOG("Bus name: " + name);
 	soloCount = 0;
 	soloIndicator = new SoloIndicator();
 	channelFormat = format.lock();
