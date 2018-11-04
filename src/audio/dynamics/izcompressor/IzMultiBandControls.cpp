@@ -24,15 +24,15 @@ IzMultiBandControls::IzMultiBandControls()
 	controls.push_back(c1);
 	add(std::move(c1));
 	add(make_shared<CrossoverControl>(0, "Low Freq", 250.0f));
-	auto c2 = make_shared<IzBandCompressorControls>("Lo.Mid", 25);
+	auto c2 = make_shared<IzBandCompressorControls>("Lo.Mid", 26);
 	controls.push_back(c2);
 	add(std::move(c2));
 	add(make_shared<CrossoverControl>(1, "Mid Freq", 1000.0f));
-	auto c3 = make_shared<IzBandCompressorControls>("Hi.Mid", 50);
+	auto c3 = make_shared<IzBandCompressorControls>("Hi.Mid", 52);
 	controls.push_back(c3);
 	add(std::move(c3));
 	add(make_shared<CrossoverControl>(2, "High Freq", 4000.0f));
-	auto c4 = make_shared<IzBandCompressorControls>("High", 75);
+	auto c4 = make_shared<IzBandCompressorControls>("High", 78);
 	controls.push_back(c4);
 	add(std::move(c4));
 

@@ -122,7 +122,7 @@ void EnumControl::setIntValue(int value)
 
 int EnumControl::getIntValue()
 {
-	MLOG("EnumControl getIntValue() is expected to work!");
+	//MLOG("EnumControl getIntValue() is expected to work!");
 	int index;
 	for (index = 0; index < getValues().size(); index++) {
 		auto v = getValues()[index];

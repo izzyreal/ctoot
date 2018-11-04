@@ -11,7 +11,7 @@ using namespace ctoot::audio::dynamics::izcompressor;
 using namespace std;
 
 IzBandCompressorControls::IzBandCompressorControls(string band, int idOffset)
-	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "IzBand Compressor", idOffset)
+	: ctoot::audio::core::AudioControls(DynamicsIds::MID_SIDE_COMPRESSOR_ID, "IzBand Compressor", idOffset + DynamicsControlIds::BYPASS)
 {
 	auto cc = make_shared<IzCompressorControls>(band, idOffset);
 	this->idOffset = idOffset;
