@@ -37,8 +37,8 @@ void IzCompressorProcess::cacheProcessVariables()
 {
 	auto cl = vars->getLink().lock();
     threshold = cl ? cl->getThreshold() : vars->getThreshold();
-    attack = vars->getAttack();
-    release = cl ? cl->getThreshold() : vars->getRelease();
+    attack = cl ? cl->getAttack() : vars->getAttack();
+    release = cl ? cl->getRelease() : vars->getRelease();
 	lookAhead = vars->getLookAhead();
     makeupGain = vars->getGain();
 	detectionChannelMode = vars->getDetectionChannelMode();
