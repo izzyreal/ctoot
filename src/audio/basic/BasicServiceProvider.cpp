@@ -41,7 +41,7 @@ shared_ptr<ctoot::audio::core::AudioProcess> BasicServiceProvider::createProcess
 	if (name.compare("Tap") == 0) {
 		return make_shared<tap::TapProcess>(dynamic_pointer_cast<tap::TapControls>(c.lock()).get());
 	}
-	else if (name.compare("SpectrumAnalyser") == 0) {
+	else if (name.find("SpectrumAnalyser") != string::npos) {
 		return make_shared<analysis::SpectrumAnalyserProcess>(dynamic_pointer_cast<analysis::SpectrumAnalyserControls>(c.lock()));
 	}
 	/*

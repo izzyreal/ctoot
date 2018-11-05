@@ -19,12 +19,12 @@ void ControlChainObserver::update(moduru::observer::Observable* o, boost::any ar
 	}
 	catch (boost::bad_any_cast e) {
 		std::string msg = e.what();
-		//MLOG("Couldn't cast to chain mutation");
+		//MLOG("Couldn't cast to chain mutation " + msg);
 		return;
 	}
 	auto candidate = boost::any_cast<ctoot::control::ChainMutation*>(arg);
-	//MLOG("Cast to chain mutation successful, mutation type == " + candidate->toString());
 	apc->mutationQueue.try_enqueue(candidate);
+	apc->processMutations();
 }
 
 ControlChainObserver::~ControlChainObserver() {

@@ -33,13 +33,14 @@ void CompoundControlChain::add(int index, shared_ptr<CompoundControl> control)
 
 void CompoundControlChain::insert(string insertName, string insertBeforeName)
 {
+	MLOG("CompoundControlChain::insert " + insertName + " before " + insertBeforeName);
 	auto controlToInsert = createControl(insertName);
 	if (!controlToInsert) {
 		string error = getName() + ": insert failed to create " + insertName;
 		MLOG("CompoundControlChain::insert error: " + error);
 		return;
 	}
-	if (find(insertName).lock()) {
+	if (find(insertName).lock() || find(controlToInsert->getName()).lock()) {
 		disambiguate(controlToInsert);
 	}
 	insert(shared_ptr<Control>(controlToInsert), insertBeforeName);
@@ -60,11 +61,16 @@ void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string in
 		return;
 	}
 	for (int i = 0; i < controls.size(); i++) {
-		if (controls[i] == controlToInsertBefore) insertionIndex = i;
+		if (controls[i] == controlToInsertBefore) {
+			insertionIndex = i;
+			break;
+		}
 	}
-	controls.insert(controls.begin() + insertionIndex, shared_ptr<Control>(controlToInsert));
 	controlToInsert->setParent(this);
+	//MLOG("		Creating chainmutation for " + controlToInsert->getName());
+	//ChainMutation* newccccm = new ChainMutation(ChainMutation::INSERT, (int)(controlToInsert->getName().find("Compressor") != string::npos ? 2 : insertionIndex));
 	ChainMutation* newccccm = new ChainMutation(ChainMutation::INSERT, (int)(insertionIndex));
+	controls.insert(controls.begin() + insertionIndex, std::move(controlToInsert));
 	setChanged();
 	notifyObservers(newccccm);
 }

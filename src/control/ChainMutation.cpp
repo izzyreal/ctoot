@@ -7,10 +7,8 @@ using namespace std;
 
 ChainMutation::ChainMutation(int type)
 {
-	MLOG("ChainMutation ctor, type == " + to_string(type));
 	if (type != COMMENCE && type != COMPLETE) {
-		string error = "illegal no indices constructor for this type";
-		printf("%s", error.c_str());
+		MLOG("ChainMutation:illegal no indices constructor for this type");
 		return;
 	}
 	this->type = type;

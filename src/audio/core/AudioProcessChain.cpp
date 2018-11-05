@@ -120,8 +120,7 @@ shared_ptr<AudioProcess> AudioProcessChain::createProcess(weak_ptr<AudioControls
 void AudioProcessChain::processMutations()
 {
 	ChainMutation* m = nullptr;
-	mutationQueue.try_dequeue(m);
-	if (m == nullptr) return;
+	if (!mutationQueue.try_dequeue(m)) return;
 	shared_ptr<AudioProcess> p;
 	shared_ptr<Control> controls;
 	switch (m->getType()) {
@@ -139,8 +138,13 @@ void AudioProcessChain::processMutations()
 	}
 	case ChainMutation::INSERT:
 	{
+		MLOG("Currently in " + getName() + " controlChain controls:");
+		for (auto& c : controlChain.lock()->getControls()) {
+			MLOG("	@@@ " + c.lock()->getName());
+		}
 		controls = dynamic_pointer_cast<Control>(controlChain.lock()->getControls()[m->getIndex0()].lock());
 		auto candidate = dynamic_pointer_cast<AudioControls>(controls);
+		MLOG("ChainMutation INSERT for " + candidate->getName() + ", controls index " + to_string(m->getIndex0()));
 		if (candidate) {
 			p = createProcess(candidate);
 			processes.insert(processes.begin() + m->getIndex0(), p);
