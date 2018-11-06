@@ -1,12 +1,18 @@
 #pragma once
+
 #include <cstdint>
 #include <string>
+#include <memory>
 
 namespace ctoot {
 	namespace control {
 
+		class Control;
+
 		class ChainMutation
 		{
+		protected:
+			std::weak_ptr<Control> control;
 
 		public:
 			static const int DELETE{ 1 };
@@ -20,6 +26,8 @@ namespace ctoot {
 			static ChainMutation* COMPLETE_INSTANCE_;
 			int type{};
 			int index0 = -1;
+
+		protected:
 			int index1 = -1;
 
 		public:
@@ -31,9 +39,11 @@ namespace ctoot {
 		private:
 			std::string typeName();
 
-		public:
+		protected:
 			ChainMutation(int type);
 			ChainMutation(int type, int index);
+
+		public:
 			ChainMutation(int type, int index0, int index1);
 
 
@@ -41,6 +51,22 @@ namespace ctoot {
 			static ChainMutation*& COMMENCE_INSTANCE();
 			static ChainMutation*& COMPLETE_INSTANCE();
 
+		};
+
+		class DeleteMutation : public ChainMutation {
+		public:
+			DeleteMutation(int index);
+		};
+
+		class InsertMutation : public ChainMutation {
+		public:
+			InsertMutation(int index, std::weak_ptr<Control> c);
+			std::weak_ptr<Control> getControl();
+		};
+
+		class MoveMutation : public ChainMutation {
+		public:
+			MoveMutation(int index0, int index1);
 		};
 
 	}

@@ -121,12 +121,12 @@ void AudioProcessChain::processMutations()
 {
 	ChainMutation* m = nullptr;
 	if (!mutationQueue.try_dequeue(m)) return;
-	shared_ptr<AudioProcess> p;
-	shared_ptr<Control> controls;
+
 	switch (m->getType()) {
+
 	case ChainMutation::DELETE:
 	{
-		p = dynamic_pointer_cast<AudioProcess>(processes[m->getIndex0()]);
+		auto p = dynamic_pointer_cast<AudioProcess>(processes[m->getIndex0()]);
 		p->close();
 		for (int i = 0; i < processes.size(); i++) {
 			if (processes[i] == p) {
@@ -142,11 +142,11 @@ void AudioProcessChain::processMutations()
 		for (auto& c : controlChain.lock()->getControls()) {
 			MLOG("	@@@ " + c.lock()->getName());
 		}
-		controls = dynamic_pointer_cast<Control>(controlChain.lock()->getControls()[m->getIndex0()].lock());
+		auto controls = dynamic_cast<InsertMutation*>(m)->getControl().lock();
 		auto candidate = dynamic_pointer_cast<AudioControls>(controls);
 		MLOG("ChainMutation INSERT for " + candidate->getName() + ", controls index " + to_string(m->getIndex0()));
 		if (candidate) {
-			p = createProcess(candidate);
+			auto p = createProcess(candidate);
 			processes.insert(processes.begin() + m->getIndex0(), p);
 			if (p) {
 				p->open();

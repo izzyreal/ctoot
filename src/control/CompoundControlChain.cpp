@@ -43,7 +43,8 @@ void CompoundControlChain::insert(string insertName, string insertBeforeName)
 	if (find(insertName).lock() || find(controlToInsert->getName()).lock()) {
 		disambiguate(controlToInsert);
 	}
-	insert(shared_ptr<Control>(controlToInsert), insertBeforeName);
+	insert(controlToInsert, insertBeforeName);
+	MLOG("Insert completed");
 }
 
 void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string insertBeforeName)
@@ -68,8 +69,7 @@ void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string in
 	}
 	controlToInsert->setParent(this);
 	//MLOG("		Creating chainmutation for " + controlToInsert->getName());
-	//ChainMutation* newccccm = new ChainMutation(ChainMutation::INSERT, (int)(controlToInsert->getName().find("Compressor") != string::npos ? 2 : insertionIndex));
-	ChainMutation* newccccm = new ChainMutation(ChainMutation::INSERT, (int)(insertionIndex));
+	ChainMutation* newccccm = new InsertMutation((int)(insertionIndex), controlToInsert);
 	controls.insert(controls.begin() + insertionIndex, std::move(controlToInsert));
 	setChanged();
 	notifyObservers(newccccm);
@@ -92,22 +92,24 @@ void CompoundControlChain::delete_(string deleteName)
 		}
 	}
 	remove(controlToDelete);
+	ChainMutation* m = new DeleteMutation(index);
 	setChanged();
-	notifyObservers(new ChainMutation(ChainMutation::DELETE, index));
+	notifyObservers(m);
 }
 
 void CompoundControlChain::delete_(int indexToDelete)
 {
 	remove(controls[indexToDelete]);
+	ChainMutation* m = new DeleteMutation(indexToDelete);
 	setChanged();
-	notifyObservers(new ChainMutation(ChainMutation::DELETE, indexToDelete));
+	notifyObservers(m);
 }
 
 void CompoundControlChain::move(string moveName, string moveBeforeName)
 {
 	auto controlToMove = find(moveName).lock();
 	auto controlToMoveBefore = find(moveBeforeName).lock();
-	if (!controlToMove || !controlToMoveBefore ) return;
+	if (!controlToMove || !controlToMoveBefore) return;
 	int indexToMove = 0;
 	for (indexToMove = 0; indexToMove < controls.size(); indexToMove++) {
 		if (controls[indexToMove] == controlToMove) {
@@ -122,8 +124,9 @@ void CompoundControlChain::move(string moveName, string moveBeforeName)
 		}
 	}
 	controls.insert(controls.begin() + insertionIndex, controlToMove);
+	ChainMutation* m = new MoveMutation(indexToMove, insertionIndex);
 	setChanged();
-	notifyObservers(new ChainMutation(ChainMutation::MOVE, indexToMove, insertionIndex));
+	notifyObservers(m);
 }
 
 void CompoundControlChain::setMutating(bool mutating)
@@ -135,7 +138,7 @@ void CompoundControlChain::setMutating(bool mutating)
 
 bool CompoundControlChain::isPluginParent()
 {
-    return true;
+	return true;
 }
 
 CompoundControlChain::~CompoundControlChain() {

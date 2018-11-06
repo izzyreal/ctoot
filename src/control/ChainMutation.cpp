@@ -85,3 +85,17 @@ string ChainMutation::typeName()
 
     return string("unknown mutation");
 }
+
+DeleteMutation::DeleteMutation(int index) : ChainMutation(ChainMutation::DELETE, index) {}
+
+InsertMutation::InsertMutation(int index, weak_ptr<Control> c) : ChainMutation(ChainMutation::INSERT, index) {
+	this->control = c;
+}
+
+weak_ptr<Control> InsertMutation::getControl() {
+	return control;
+}
+
+MoveMutation::MoveMutation(int index0, int index1) : ChainMutation(ChainMutation::MOVE, index0) {
+	this->index1 = index1;
+}
