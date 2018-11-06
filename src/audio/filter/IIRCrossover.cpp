@@ -11,8 +11,6 @@ IIRCrossover::IIRCrossover(FilterSpecification* low, FilterSpecification* high)
 {
     lpf = new BiQuadFilter(low, true);
     hpf = new BiQuadFilter(high, true);
-	//lpf->init();
-	//hpf->init();
     lpf->open();
     hpf->open();
 }

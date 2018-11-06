@@ -32,7 +32,11 @@ namespace ctoot {
 					ctoot::audio::filter::Crossover* midXO{ nullptr };
 					ctoot::audio::filter::Crossover* hiXO{ nullptr };
 					ctoot::audio::filter::Crossover* loXO{ nullptr };
+					ctoot::audio::filter::Crossover* kmidXO{ nullptr };
+					ctoot::audio::filter::Crossover* khiXO{ nullptr };
+					ctoot::audio::filter::Crossover* kloXO{ nullptr };
 					std::vector<ctoot::audio::core::AudioBuffer*> bandBuffers{  };
+					std::vector<ctoot::audio::core::AudioBuffer*> keyBuffers{  };
 					int32_t nbands{  };
 					int32_t nchans{ -1 };
 					int32_t nsamples{ -1 };

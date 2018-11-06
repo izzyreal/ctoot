@@ -28,13 +28,20 @@ IzMultiBandCompressor::IzMultiBandCompressor(IzMultiBandControls* c)
 	nbands = (controls.size() + 1) / 2;
 	if (nbands > 2) {
 		nbands = 4;
+		
 		loXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[1 + 1].lock().get()));
+		kloXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[1 + 1].lock().get()));
+		
 		midXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[3 + 1].lock().get()));
+		kmidXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[3 + 1].lock().get()));
+		
 		hiXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[5 + 1].lock().get()));
+		khiXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[5 + 1].lock().get()));
 	}
 	else {
 		auto cc = controls[1 + 1].lock().get();
 		midXO = createCrossover(dynamic_cast<CrossoverControl*>(cc));
+		kmidXO = createCrossover(dynamic_cast<CrossoverControl*>(cc));
 		nbands = 2;
 	}
 	compressors = vector<IzCompressor*>(nbands);
@@ -54,9 +61,13 @@ void IzMultiBandCompressor::close()
 void IzMultiBandCompressor::clear()
 {
 	midXO->clear();
+	kmidXO->clear();
+	
 	if (nbands > 2) {
 		loXO->clear();
+		kloXO->clear();
 		hiXO->clear();
+		khiXO->clear();
 	}
 	for (auto b = 0; b < nbands; b++) {
 		compressors[b]->clear();
@@ -65,13 +76,18 @@ void IzMultiBandCompressor::clear()
 
 int32_t IzMultiBandCompressor::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
-	auto controls = multiBandControls->getControls();
+	const auto controls = multiBandControls->getControls();
+	const auto key = dynamic_cast<IzBandCompressorControls*>(controls[1 + (0 * 2)].lock().get())->getKeyBuffer();
+	
 	vector<int> soloBands;
+	
 	for (auto i = 0; i < nbands; i++) {
 		if (dynamic_cast<IzBandCompressorControls*>(controls[1 + (i * 2)].lock().get())->getSolo())
 			soloBands.push_back(i);
 	}
-	auto bypassed = multiBandControls->isBypassed();
+	
+	const auto bypassed = multiBandControls->isBypassed();
+	
 	if (bypassed) {
 		if (!wasBypassed) {
 			clear();
@@ -85,19 +101,39 @@ int32_t IzMultiBandCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 
 	auto l = buffer->getChannel(0);
 	auto r = buffer->getChannel(1);
-	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		(*l)[i] *= smoothedInputGain;
-		(*r)[i] *= smoothedInputGain;
+
+	if (key != nullptr) {
+		for (int i = 0; i < key->getSampleCount(); i++) {
+			(*key->getChannel(0))[i] *= smoothedInputGain;
+			(*key->getChannel(1))[i] *= smoothedInputGain;
+		}
+	}
+	else {
+		for (int i = 0; i < buffer->getSampleCount(); i++) {
+			(*l)[i] *= smoothedInputGain;
+			(*r)[i] *= smoothedInputGain;
+		}
 	}
 	
 	conformBandBuffers(buffer);
+
 	split(midXO, buffer, bandBuffers[0], bandBuffers[1]);
 	if (nbands > 2) {
 		split(hiXO, bandBuffers[1], bandBuffers[2], bandBuffers[3]);
 		split(loXO, bandBuffers[0], bandBuffers[0], bandBuffers[1]);
 	}
 	
+
+	if (key != nullptr) {
+		split(kmidXO, key, keyBuffers[0], keyBuffers[1]);
+		if (nbands > 2) {
+			split(khiXO, keyBuffers[1], keyBuffers[2], keyBuffers[3]);
+			split(kloXO, keyBuffers[0], keyBuffers[0], keyBuffers[1]);
+		}
+	}
+
 	for (auto b = 0; b < nbands; b++) {
+		if (key!= nullptr) key->copyFrom(keyBuffers[b]);
 		compressors[b]->processAudio(bandBuffers[b]);
 	}
 	buffer->makeSilence();
@@ -158,8 +194,10 @@ void IzMultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* 
 	auto sr = static_cast<int32_t>(buf->getSampleRate());
 	if (bandBuffers.size() == 0) {
 		bandBuffers = vector<ctoot::audio::core::AudioBuffer*>(nbands);
+		keyBuffers = vector<ctoot::audio::core::AudioBuffer*>(nbands);
 		for (auto b = 0; b < nbands; b++) {
 			bandBuffers[b] = new ctoot::audio::core::AudioBuffer("IzMultiBandCompressor band " + to_string(1 + b), nc, ns, sr);
+			keyBuffers[b] = new ctoot::audio::core::AudioBuffer("IzMultiBandCompressor key " + to_string(1 + b), nc, ns, sr);
 		}
 		updateSampleRate(sr);
 	}
@@ -169,20 +207,25 @@ void IzMultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* 
 
 		for (auto b = 0; b < nbands; b++) {
 			auto bbuf = bandBuffers[b];
+			auto kbuf = keyBuffers[b];
 			if (nchans < nc) {
 				for (auto i = 0; i < nc - nchans; i++) {
 					bbuf->addChannel(true);
+					kbuf->addChannel(true);
 				}
 			}
 			if (nsamples != ns) {
 				bbuf->changeSampleCount(ns, false);
+				kbuf->changeSampleCount(ns, false);
 			}
 			if (sampleRate != sr) {
 				bbuf->setSampleRate(sr);
+				kbuf->setSampleRate(sr);
 				updateSampleRate(sr);
 			}
 		}
 	}
+
 	nchans = nc;
 	nsamples = ns;
 	sampleRate = sr;
@@ -205,14 +248,24 @@ ctoot::audio::filter::Crossover* IzMultiBandCompressor::createCrossover(Crossove
 void IzMultiBandCompressor::updateSampleRate(int32_t rate)
 {
     midXO->setSampleRate(rate);
+    kmidXO->setSampleRate(rate);
+
     if(nbands > 2) {
 		loXO->setSampleRate(rate);
+		kloXO->setSampleRate(rate);
         hiXO->setSampleRate(rate);
+        khiXO->setSampleRate(rate);
     }
 }
 
 IzMultiBandCompressor::~IzMultiBandCompressor() {
 	for (auto& b : bandBuffers) {
 		if (b != nullptr) delete b;
+	}
+	for (auto& k : keyBuffers) {
+		if (k != nullptr) delete k;
+	}
+	for (auto& c : compressors) {
+		if (c != nullptr) delete c;
 	}
 }
