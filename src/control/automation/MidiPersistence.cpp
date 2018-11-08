@@ -31,11 +31,6 @@ void MidiPersistence::store(int32_t providerId, int32_t moduleId, int32_t instan
 			auto cl = c.lock();
 			auto id = cl->getId();
 		
-			if (cl->getName().find("Release") != std::string::npos) {
-				MLOG("float value before saving: " + std::to_string(dynamic_pointer_cast<ctoot::control::FloatControl>(cl)->getValue()) + " for control " + cl->getName());
-				MLOG("int value before saving  :   " + std::to_string(cl->getIntValue()) + " for control " + cl->getName());
-			}
-
 			if (!cl->isIndicator() && id >= 0 && id < 128) {
 				auto msg = ControlSysexMsg::createControl(providerId, moduleId, instanceIndex, id, cl->getIntValue());
 				smf::MidiEvent me;

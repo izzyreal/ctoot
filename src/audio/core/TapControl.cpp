@@ -78,13 +78,10 @@ void TapControl::setIntValue(int32_t value)
 		return;
 	}
 	auto instance = value & 0x07;
-	MLOG("setIntValue instance: " + to_string(instance));
 	auto strip = value >> 3;
-	MLOG("setIntValue strip: " + to_string(strip));
 	auto name = to_string(strip + 1);
 	if (instance > 0)
 		name = name + "#" + to_string(instance + 1);
-	MLOG("Setting value to: " + name);
 	setValue(name);
 }
 

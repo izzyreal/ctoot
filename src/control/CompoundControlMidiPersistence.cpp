@@ -44,6 +44,12 @@ vector<string> CompoundControlMidiPersistence::getPresets()
 	return res;
 }
 
+void removeExtension(std::string& path) {
+	const auto index = path.find(".mbc");
+	if (index != std::string::npos)
+		path.erase(path.begin() + index, path.end());
+}
+
 void CompoundControlMidiPersistence::addDirContents(map<string, PresetTreeNode>& m, shared_ptr<Directory> dir) {
 	for (auto& f : dir->listFiles()) {
 		if (f->isDirectory()) {
@@ -58,8 +64,8 @@ void CompoundControlMidiPersistence::addDirContents(map<string, PresetTreeNode>&
 
 			node.parentPath = parentPath;
 			addDirContents(node.node, dynamic_pointer_cast<Directory>(f));
-			m.emplace(f->getName(), node);
-			//MLOG("addDirContents added dir " + f->getName());
+			auto name = f->getName();
+			m.emplace(name, node);
 		}
 		else {
 			PresetTreeNode node;
@@ -72,8 +78,9 @@ void CompoundControlMidiPersistence::addDirContents(map<string, PresetTreeNode>&
 
 			node.parentPath = parentPath;
 
-			m.emplace(f->getName(), node);
-			//MLOG("addDirContents added file " + f->getName());
+			auto name = f->getName();
+			removeExtension(name);
+			m.emplace(name, node);
 		}
 	}
 }
@@ -93,7 +100,7 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 	auto moduleId = cl->getId();
 
 	Directory rootDir(rootPath, nullptr);
-	auto finalName = rootDir.getPath() + name;
+	auto finalName = rootDir.getPath() + name + ".mbc";
 
 	MLOG("finalName to load: " + finalName);
 
@@ -148,7 +155,7 @@ void CompoundControlMidiPersistence::setStateFromVector(vector<char>& vec, weak_
 		auto control = cl->deepFind(ControlSysexMsg::getControlId(dataVec)).lock();
 
 		if (!control) {
-			MLOG("no control deepFound, controlId in event data is " + to_string(ControlSysexMsg::getControlId(dataVec)));
+			//MLOG("no control deepFound, controlId in event data is " + to_string(ControlSysexMsg::getControlId(dataVec)));
 			continue;
 		}
 
@@ -166,7 +173,7 @@ void CompoundControlMidiPersistence::savePreset(weak_ptr<CompoundControl> c, con
 	auto state = getStateAsMidiFile(c);
 	Directory rootDir(rootPath, nullptr);
 	if (!rootDir.exists()) rootDir.create();
-	File f(rootDir.getPath() + name, nullptr);
+	File f(rootDir.getPath() + name + ".mbc", nullptr);
 	MLOG("Trying to write sequence to path " + f.getPath());
 	state->write(f.getPath());
 	delete state;

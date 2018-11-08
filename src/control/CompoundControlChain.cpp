@@ -33,7 +33,7 @@ void CompoundControlChain::add(int index, shared_ptr<CompoundControl> control)
 
 void CompoundControlChain::insert(string insertName, string insertBeforeName)
 {
-	MLOG("CompoundControlChain::insert " + insertName + " before " + insertBeforeName);
+//	MLOG("CompoundControlChain::insert " + insertName + " before " + insertBeforeName);
 	auto controlToInsert = createControl(insertName);
 	if (!controlToInsert) {
 		string error = getName() + ": insert failed to create " + insertName;
@@ -44,7 +44,6 @@ void CompoundControlChain::insert(string insertName, string insertBeforeName)
 		disambiguate(controlToInsert);
 	}
 	insert(controlToInsert, insertBeforeName);
-	MLOG("Insert completed");
 }
 
 void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string insertBeforeName)
