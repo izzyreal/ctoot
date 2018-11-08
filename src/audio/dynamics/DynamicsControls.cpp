@@ -65,7 +65,7 @@ weak_ptr<ctoot::control::ControlLaw> DynamicsControls::HOLD_LAW()
 
 weak_ptr<ctoot::control::ControlLaw> DynamicsControls::RELEASE_LAW()
 {
-	static auto res = make_shared<LogLaw>(20.0f, 2000.0f, "ms");
+	static auto res = make_shared<LogLaw>(10.0f, 2000.0f, "ms");
 	return res;
 }
 

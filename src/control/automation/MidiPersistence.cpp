@@ -8,6 +8,8 @@
 #include <control/Control.hpp>
 #include <control/automation/ControlSysexMsg.hpp>
 
+#include <control/FloatControl.hpp>
+
 using namespace ctoot::control::automation;
 using namespace ctoot::control;
 using namespace std;
@@ -29,9 +31,12 @@ void MidiPersistence::store(int32_t providerId, int32_t moduleId, int32_t instan
 			auto cl = c.lock();
 			auto id = cl->getId();
 		
+			if (cl->getName().find("Release") != std::string::npos) {
+				MLOG("float value before saving: " + std::to_string(dynamic_pointer_cast<ctoot::control::FloatControl>(cl)->getValue()) + " for control " + cl->getName());
+				MLOG("int value before saving  :   " + std::to_string(cl->getIntValue()) + " for control " + cl->getName());
+			}
+
 			if (!cl->isIndicator() && id >= 0 && id < 128) {
-				if (id == 0 || id == 26 || id == 52 || id == 78)
-					MLOG("\nSaving control int value " + to_string(cl->getIntValue()) + ", id: " + to_string(id) + ", name is " + cl->getName() + ", parent is " + cl->getParent()->getName() + "\n");
 				auto msg = ControlSysexMsg::createControl(providerId, moduleId, instanceIndex, id, cl->getIntValue());
 				smf::MidiEvent me;
 				me.setMessage(msg);

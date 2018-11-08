@@ -4,6 +4,8 @@
 
 #include <file/File.hpp>
 
+#include <thirdp/midifile/MidiFile.h>
+
 namespace ctoot {
 	namespace control {
 		class CompoundControlMidiPersistence
@@ -23,6 +25,12 @@ namespace ctoot {
 			void savePreset(std::weak_ptr<CompoundControl> c, const std::string& name) override;
 			//PresetTreeNode getPresetsRecursive(std::weak_ptr<CompoundControl> c) override;
 			PresetTreeNode getPresetsRecursive() override;
+			void getStateAsVector(std::vector<char>& vec, std::weak_ptr<CompoundControl> c);
+			void setStateFromVector(std::vector<char>& vec, std::weak_ptr<CompoundControl> c);
+
+		private:
+			smf::MidiFile* getStateAsMidiFile(std::weak_ptr<CompoundControl> c);
+			smf::MidiFile* getMidiFileFromStateVec(std::vector<char>& vec);
 
 		public:
 			virtual std::string getPath(std::weak_ptr<CompoundControl> c);

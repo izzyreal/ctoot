@@ -9,7 +9,7 @@ namespace ctoot {
 		{
 
 		protected:
-			static const int resolution{ 1024 };
+			static const int resolution{ 16384 };
 			float min{};
 			float max{};
 			std::string units{ "" };

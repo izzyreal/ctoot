@@ -11,7 +11,6 @@
 #include <file/Directory.hpp>
 #include <file/FsNode.hpp>
 
-#include <thirdp/midifile/MidiFile.h>
 
 using namespace ctoot::control;
 using namespace ctoot::control::automation;
@@ -102,12 +101,29 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 
 	if (!file->exists())
 		return;
+	std::vector<char> vec(file->getLength());
+	file->getData(&vec);
+	setStateFromVector(vec, c);
+}
 
-	auto sequence = smf::MidiFile();
-	sequence.read(file->getPath());
-	auto eventCount = sequence.getNumEvents(0);
+void CompoundControlMidiPersistence::getStateAsVector(vector<char>& vec, weak_ptr<CompoundControl> c) {
+	auto state = getStateAsMidiFile(c);
+	state->writeToArray(vec);
+	delete state;
+}
+
+void CompoundControlMidiPersistence::setStateFromVector(vector<char>& vec, weak_ptr<CompoundControl> c) {
+
+	auto cl = c.lock();
+	if (!cl) return;
+	auto providerId = cl->getProviderId();
+	auto moduleId = cl->getId();
+
+	auto sequence = new smf::MidiFile();
+	sequence->readFromArray(vec);
+	auto eventCount = sequence->getNumEvents(0);
 	for (int i = 0; i < eventCount; i++) {
-		auto msg = sequence.getEvent(0, i);
+		auto msg = sequence->getEvent(0, i);
 		auto data = msg.data();
 		vector<char> dataVec(msg.size());
 		for (int i = 0; i < msg.size(); i++) {
@@ -137,44 +153,50 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 		}
 
 		if (dynamic_pointer_cast<BypassControl>(control)) {
-			MLOG("control is a BypassControl");
+//			MLOG("control is a BypassControl");
 			continue;
 		}
 		auto v = ControlSysexMsg::getValue(dataVec);
-		auto ic = dynamic_pointer_cast<IntegerControl>(control);
-		if (control->getId() == 33) {
-			MLOG("control 33 has name " + control->getName());
-		}
-		if (control->getName().find("Link") != string::npos) {
-			MLOG("preset loading setting int value " + to_string(v) + " for control " + control->getName());
+		if (control->getName().find("Release") != string::npos) {
+			MLOG("\npreset loading setting int value " + to_string(v) + " for control " + control->getName());
+			MLOG("float value before " + to_string(dynamic_pointer_cast<FloatControl>(control)->getValue()) + " for control " + control->getName());
+			MLOG("int value before   " + to_string(dynamic_pointer_cast<FloatControl>(control)->getIntValue()) + " for control " + control->getName());
 		}
 		control->setIntValue(v);
+		if (control->getName().find("Release") != string::npos) {
+			MLOG("float value after  " + to_string(dynamic_pointer_cast<FloatControl>(control)->getValue()) + " for control " + control->getName());
+			MLOG("int value after    " + to_string(dynamic_pointer_cast<FloatControl>(control)->getIntValue()) + " for control " + control->getName());
+		}
 	}
 }
 
 void CompoundControlMidiPersistence::savePreset(weak_ptr<CompoundControl> c, const string& name)
 {
-	auto cl = c.lock();
-	auto providerId = cl->getProviderId();
-	auto moduleId = cl->getId();
-	//auto sequence = new ::javax::sound::midi::Sequence(::javax::sound::midi::Sequence::PPQ, int(1));
 	
-	MidiFile sequence;
-
-	sequence.addTrack();
-	MidiPersistence::store(providerId, moduleId, 0, c, sequence);
-
-	for (int i = 0; i < 128; i++) {
-		if (MidiPersistence::eventSet.find(i) == MidiPersistence::eventSet.end()) {
-			MLOG("id " + to_string(i) + " is still available");
-		}
-	}
-
+	auto state = getStateAsMidiFile(c);
 	Directory rootDir(rootPath, nullptr);
 	if (!rootDir.exists()) rootDir.create();
 	File f(rootDir.getPath() + name, nullptr);
 	MLOG("Trying to write sequence to path " + f.getPath());
-	sequence.write(f.getPath());
+	state->write(f.getPath());
+	delete state;
+}
+
+MidiFile* CompoundControlMidiPersistence::getStateAsMidiFile(weak_ptr<CompoundControl> c) {
+	auto cl = c.lock();
+	auto providerId = cl->getProviderId();
+	auto moduleId = cl->getId();
+
+	MidiFile* m = new MidiFile();
+	m->addTrack();
+	MidiPersistence::store(providerId, moduleId, 0, c, *m);
+
+	for (int i = 0; i < 128; i++) {
+		if (MidiPersistence::eventSet.find(i) == MidiPersistence::eventSet.end()) {
+			//MLOG("id " + to_string(i) + " is still available");
+		}
+	}
+	return m;
 }
 
 string CompoundControlMidiPersistence::getPath(weak_ptr<CompoundControl> c)

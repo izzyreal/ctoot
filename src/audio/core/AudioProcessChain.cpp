@@ -138,22 +138,17 @@ void AudioProcessChain::processMutations()
 	}
 	case ChainMutation::INSERT:
 	{
-		MLOG("Currently in " + getName() + " controlChain controls:");
-		for (auto& c : controlChain.lock()->getControls()) {
-			MLOG("	@@@ " + c.lock()->getName());
-		}
 		auto controls = dynamic_cast<InsertMutation*>(m)->getControl().lock();
 		auto candidate = dynamic_pointer_cast<AudioControls>(controls);
-		MLOG("ChainMutation INSERT for " + candidate->getName() + ", controls index " + to_string(m->getIndex0()));
 		if (candidate) {
 			auto p = createProcess(candidate);
 			processes.insert(processes.begin() + m->getIndex0(), p);
 			if (p) {
 				p->open();
-				MLOG("Successfully inserted process based on control " + controls->getName());
+//				MLOG("Successfully inserted process based on control " + controls->getName());
 			}
 			else {
-				MLOG("NOT successfully inserted process based on control " + controls->getName());
+//				MLOG("NOT successfully inserted process based on control " + controls->getName());
 			}
 		}
 		break;

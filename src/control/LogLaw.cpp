@@ -2,6 +2,9 @@
 
 #include <control/ControlLaw.hpp>
 
+#include <Logger.hpp>
+
+#include <cassert>
 #include <cmath>
 
 using namespace ctoot::control;
@@ -9,6 +12,8 @@ using namespace std;
 
 LogLaw::LogLaw(float min, float max, string units) : AbstractLaw(min, max, units)
 {
+	assert(min != 0f);
+	assert(max != 0f);
 	logMin = log10(min);
 	logMax = log10(max);
 	logSpan = logMax - logMin;
@@ -17,7 +22,7 @@ LogLaw::LogLaw(float min, float max, string units) : AbstractLaw(min, max, units
 int LogLaw::intValue(float userVal)
 {
 	if (userVal == 0) userVal = 1;
-	return static_cast<int>((resolution - 1) * (log10(userVal) - logMin) / logSpan);
+	return static_cast<int>(0.5f + ((resolution - 1) * (log10(userVal) - logMin) / logSpan));
 }
 
 float LogLaw::userValue(int intVal)
