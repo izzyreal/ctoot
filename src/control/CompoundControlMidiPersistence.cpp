@@ -153,20 +153,10 @@ void CompoundControlMidiPersistence::setStateFromVector(vector<char>& vec, weak_
 		}
 
 		if (dynamic_pointer_cast<BypassControl>(control)) {
-//			MLOG("control is a BypassControl");
 			continue;
 		}
 		auto v = ControlSysexMsg::getValue(dataVec);
-		if (control->getName().find("Release") != string::npos) {
-			MLOG("\npreset loading setting int value " + to_string(v) + " for control " + control->getName());
-			MLOG("float value before " + to_string(dynamic_pointer_cast<FloatControl>(control)->getValue()) + " for control " + control->getName());
-			MLOG("int value before   " + to_string(dynamic_pointer_cast<FloatControl>(control)->getIntValue()) + " for control " + control->getName());
-		}
 		control->setIntValue(v);
-		if (control->getName().find("Release") != string::npos) {
-			MLOG("float value after  " + to_string(dynamic_pointer_cast<FloatControl>(control)->getValue()) + " for control " + control->getName());
-			MLOG("int value after    " + to_string(dynamic_pointer_cast<FloatControl>(control)->getIntValue()) + " for control " + control->getName());
-		}
 	}
 }
 
