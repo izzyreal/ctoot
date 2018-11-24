@@ -9,11 +9,16 @@ using namespace ctoot::audio::spi;
 using namespace ctoot::audio::core;
 using namespace std;
 
+#include <boost/core/demangle.hpp>
+
 AudioServiceProvider::AudioServiceProvider(int providerId, string providerName, string description, string version)
 	: ServiceProvider(providerId, providerName, description, version)
 {
-	string info = typeid(AudioControls).name();
+    string info = boost::core::demangle(typeid(AudioControls).name());
+    printf("\n\n\nsetting controls for %s\n", description.c_str());
+    printf("info %s\n", info.c_str());
 	controls = service(info);
+    printf("controls size is now %i\n", (int) controls->size());
 }
 
 string AudioServiceProvider::getAvailableControls() {
@@ -68,8 +73,12 @@ shared_ptr<AudioControls> AudioServiceProvider::createControls(int moduleId)
 
 shared_ptr<AudioControls> AudioServiceProvider::createControls(string name)
 {
+    printf("AudioServiceProvider::createControls name %s\n", name.c_str());
+    printf("AudioServiceProvider::createControls controls size %i\n", (int) controls->size());
+    
 	for (int i = 0; i < controls->size(); i++) {
 		service::ServiceDescriptor* d = dynamic_cast<service::ServiceDescriptor*>((*controls)[i]);
+        printf("AudioServiceProvider::createControls control descriptor %s\n", d->getChildClass().c_str());
 		if (d->getChildClass().compare(name) == 0) {
 			return createControls(d);
 		}

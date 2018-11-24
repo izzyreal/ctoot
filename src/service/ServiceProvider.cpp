@@ -41,15 +41,23 @@ string ServiceProvider::getDescription()
 
 vector<ServiceDescriptor*>* ServiceProvider::service(string typeIdName)
 {
+    printf("ServiceProvider adding %s to %s, %s\n", typeIdName.c_str(), this->getProviderName().c_str(), this->getDescription().c_str());
+    printf("ServiceProvider services size %i\n\n", (int)services.size());
 	if (services.find(typeIdName) == services.end()) {
+        printf("service not yet found, adding it\n");
 		services[typeIdName] = vector<ServiceDescriptor*>{};
+        if (services.find(typeIdName) == services.end()) {
+            printf("service still not found!\n");
+        } else {
+            printf("service is now found, services size: %i.\n", (int) services.size());
+        }
 	}
 	return &services[typeIdName];
 }
 
 void ServiceProvider::add(ServiceDescriptor* d)
 {
-	//MLOG("ServiceProvider trying to add: " + d->getDescription());
+	MLOG("ServiceProvider trying to add: " + d->getDescription());
 	auto candidate = services.find(d->getParentClass());
 	if (candidate != services.end()) {
 		services[d->getParentClass()].push_back(d);

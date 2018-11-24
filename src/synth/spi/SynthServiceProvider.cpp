@@ -5,12 +5,14 @@
 #include <synth/SynthControls.hpp>
 #include <synth/spi/SynthControlServiceDescriptor.hpp>
 
+#include <boost/core/demangle.hpp>
+
 using namespace ctoot::synth::spi;
 
 SynthServiceProvider::SynthServiceProvider(int32_t providerId, std::string providerName, std::string description, std::string version)
 	: ctoot::service::ServiceProvider(providerId, providerName, description, version)
 {
-	std::string info = typeid(SynthControls).name();
+	std::string info = boost::core::demangle(typeid(SynthControls).name());
 	controls = service(info);
 }
 

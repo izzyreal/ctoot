@@ -11,6 +11,9 @@ ServiceDescriptor::ServiceDescriptor(string parentClass, string childClass, stri
 	this->childClass = childClass;
 	this->description = description;
 	this->version = version;
+    
+    printf("\nServiceDescriptor constructor %s, %s", parentClass.c_str(), childClass.c_str());
+    
 	/*
 	MLOG("\nServiceDescriptor parentClass: " + parentClass);
 	MLOG("ServiceDescriptor childClass: " + childClass);

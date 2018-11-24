@@ -16,11 +16,14 @@ Control::Control(int id, string name)
 
 void Control::registerType(const std::string& name, ControlFactory *factory)
 {
+//    printf("registerType %s\n", name.c_str());
 	(*getRegistry())[name] = factory;
+//    printf("registrySize %i\n", (int)(*getRegistry()).size());
 }
 
 shared_ptr<Control> Control::create(const std::string &name)
 {
+    printf("\n\ncreate %s\n", name.c_str());
     MLOG("Registry size: " + to_string(getRegistry()->size()));
     MLOG("Registry contains: ");
 	for (auto& s : *getRegistry()) {

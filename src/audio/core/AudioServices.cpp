@@ -49,7 +49,10 @@ shared_ptr<AudioControls> AudioServices::createControls(int providerId, int modu
 
 shared_ptr<AudioControls> AudioServices::createControls(string name)
 {
+    printf("AudioServices::createControls %s\n", name.c_str());
 	for (auto& p : providers) {
+        printf("Provider desc %s\n", p.lock()->description.c_str());
+        printf("Provider name %s\n", p.lock()->getProviderName().c_str());
 		auto controls = p.lock()->createControls(name);
 		if (controls) {
 			controls->setProviderId(p.lock()->getProviderId());
