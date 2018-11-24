@@ -3,6 +3,8 @@
 #include <audio/dynamics/DynamicsVariables.hpp>
 #include <dsp/FastMath.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::dynamics;
 
 Compressor::Compressor(DynamicsVariables* vars)

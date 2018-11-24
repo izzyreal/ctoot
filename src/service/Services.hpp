@@ -22,9 +22,9 @@ namespace ctoot {
 			static std::vector<std::weak_ptr<ServiceProvider>> lookup(T clazz)
 			{
 				std::string clazzName = typeid(clazz).name();
-				vector<weak_ptr<ServiceProvider>> res;
+                std::vector<std::weak_ptr<ServiceProvider>> res;
 				for (auto& p : getServiceProviders()) {
-					if (dynamic_pointer_cast<T>(p.lock())) {
+                    if (std::dynamic_pointer_cast<T>(p.lock())) {
 						res.push_back(p);
 					}
 				}

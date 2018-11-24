@@ -7,6 +7,8 @@
 
 #include <Logger.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::delay;
 using namespace std;
 

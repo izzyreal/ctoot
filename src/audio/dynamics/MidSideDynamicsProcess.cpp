@@ -4,6 +4,8 @@
 #include <audio/dynamics/MidSideDynamicsProcessVariables.hpp>
 #include <dsp/FastMath.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::dynamics;
 using namespace ctoot::dsp;
 using namespace std;

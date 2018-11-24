@@ -6,6 +6,8 @@
 
 #include <VecUtil.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::dynamics::izcompressor;
 using namespace ctoot::audio::dynamics;
 using namespace ctoot::dsp;

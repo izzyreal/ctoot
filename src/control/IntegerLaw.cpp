@@ -1,5 +1,7 @@
 #include <control/IntegerLaw.hpp>
 
+#include <cmath>
+
 using namespace ctoot::control;
 using namespace std;
 

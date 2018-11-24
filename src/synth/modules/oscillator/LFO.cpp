@@ -4,6 +4,7 @@
 #include <synth/modules/oscillator/LFOVariables.hpp>
 
 #include <cmath>
+#include <cstdlib>
 
 #define _USE_MATH_DEFINES
 #include <math.h>

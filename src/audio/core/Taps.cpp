@@ -70,7 +70,8 @@ ctoot::audio::core::AudioBuffer* Taps::getBuffer(string name)
 void Taps::check()
 {
 	if (!server.lock())
-		throw std::exception("null AudioServer");
+//        throw std::exception("null AudioServer");
+        throw std::exception();
 }
 
 string Taps::tapName(TapControls* controls)

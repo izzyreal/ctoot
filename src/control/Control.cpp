@@ -21,18 +21,18 @@ void Control::registerType(const std::string& name, ControlFactory *factory)
 
 shared_ptr<Control> Control::create(const std::string &name)
 {
-	//MLOG("Registry size: " + to_string(getRegistry()->size()));
-	//MLOG("Registry contains: ");
+    MLOG("Registry size: " + to_string(getRegistry()->size()));
+    MLOG("Registry contains: ");
 	for (auto& s : *getRegistry()) {
-		//MLOG(s.first);
+        MLOG(s.first);
 		if (s.second == nullptr) {
-			//MLOG(s.first + " factory is nullptr!");
+            MLOG(s.first + " factory is nullptr!");
 		}
 	}
-	//MLOG("Trying to create " + name);
+    MLOG("Trying to create " + name);
 	auto res = (*getRegistry())[name]->create();
 	auto namestr = res->getName();
-	//MLOG("Created control name: " + namestr);
+    MLOG("Created control name: " + namestr);
 	return res;
 }
 

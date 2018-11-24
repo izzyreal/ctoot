@@ -8,6 +8,9 @@
 #include <memory>
 
 namespace ctoot {
+    namespace control {
+        class ControlColumn;
+    }
 	namespace audio {
 		namespace delay {
 			class AbstractDelayControls

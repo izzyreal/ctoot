@@ -76,15 +76,15 @@ namespace ctoot {
 				float deriveSize();
 
 			public:
-				int getMaxPreDelaySamples();
-				int getPreDelaySamples();
-				float getBandwidth();
-				float getInputDiffusion();
-				float getDamping();
-				float getDecay();
-				float getDecayDiffusion();
-				float getSize();
-				bool canBypass() { return false; }
+				int getMaxPreDelaySamples() override;
+				int getPreDelaySamples() override;
+				float getBandwidth() override;
+				float getInputDiffusion() override;
+				float getDamping() override;
+				float getDecay() override;
+				float getDecayDiffusion() override;
+				float getSize() override;
+				bool canBypass() override { return false; }
 
 				// KB keeps block diffuser length much longer than input diffuser lengths
 				// KB keeps delay length a bit less than sum of dif1 and dif2 lengths
@@ -107,9 +107,9 @@ namespace ctoot {
 				{ 47, 3533 } };
 
 			public:
-				std::vector<std::vector<int>> getSizes();
-				std::vector<std::vector<int>> getLeftTaps();
-				std::vector<std::vector<int>> getRightTaps();
+				std::vector<std::vector<int>> getSizes() override;
+				std::vector<std::vector<int>> getLeftTaps() override;
+				std::vector<std::vector<int>> getRightTaps() override;
 
 			};
 			REGISTER_TYPE(ctoot::audio::reverb::, BarrControls)

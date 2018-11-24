@@ -8,6 +8,15 @@ using namespace std;
 using namespace ctoot::audio::reverb;
 using namespace ctoot::control;
 
+const int BarrControls::MAX_PRE_DELAY_MS;
+const int BarrControls::PRE_DELAY;
+const int BarrControls::BANDWIDTH;
+const int BarrControls::INPUT_DIFFUSION;
+const int BarrControls::DAMPING;
+const int BarrControls::DECAY;
+const int BarrControls::DECAY_DIFFUSION;
+const int BarrControls::SIZE;
+
 BarrControls::BarrControls()
 	: AudioControls(0x50 + 1, "Barr.Reverb")
 {

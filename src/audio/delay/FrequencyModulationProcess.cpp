@@ -4,6 +4,8 @@
 #include <audio/delay/DelayBuffer.hpp>
 #include <audio/delay/DelayVariables.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::delay;
 using namespace std;
 

@@ -118,7 +118,7 @@ weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int inde
 {
 	if (getStripControls(name).lock()) {
 		string error = name.append(" already exists");
-		MLOG("ERROR: %s", error.c_str());
+		MLOG("ERROR: " + error);
 		return {};
 	}
 	auto chain = make_shared<AudioControlsChain>(id, index, name, constraintFormat);

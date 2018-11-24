@@ -2,6 +2,8 @@
 
 #include <audio/dynamics/MidSideDynamicsProcessVariables.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::dynamics;
 using namespace std;
 

@@ -1,12 +1,14 @@
 #pragma once
 
+#include <dsp/filter/FilterShape.hpp>
+
 #include <vector>
 
 namespace ctoot {
 	namespace dsp {
 		namespace filter {
 
-			enum FilterShape;
+//            enum FilterShape;
 
 			class BiQuadDesigner
 			{

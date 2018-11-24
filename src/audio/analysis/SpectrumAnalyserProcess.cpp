@@ -10,6 +10,8 @@ using namespace ctoot::audio::core;
 using namespace ctoot::control;
 using namespace std;
 
+const int SpectrumAnalyserProcess::FFT_SIZE;
+
 SpectrumAnalyserProcess::SpectrumAnalyserProcess(weak_ptr<SpectrumAnalyserControls> controls)
 {
 	this->controls = controls;
