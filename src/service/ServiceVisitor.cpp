@@ -2,6 +2,7 @@
 #include <service/ServiceDescriptor.hpp>
 
 using namespace ctoot::service;
+using namespace std;
 
 ServiceVisitor::ServiceVisitor()
 {

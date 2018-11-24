@@ -12,20 +12,29 @@
 using namespace std;
 using namespace ctoot::service;
 
+std::vector<std::shared_ptr<ServiceProvider>> Services::serviceProviders;
+
 Services::Services()
 {
 }
 
 vector<weak_ptr<ServiceProvider>> Services::getServiceProviders() {
-	static auto p1 = make_shared<ctoot::audio::reverb::ReverbServiceProvider>();
-	static auto p2 = make_shared<ctoot::audio::delay::DelayServiceProvider>();
-	static auto p3 = make_shared<ctoot::audio::dynamics::DynamicsServiceProvider>();
-	static auto p4 = make_shared<ctoot::audio::basic::BasicServiceProvider>();
-	//static auto p5 = make_shared<ctoot::synth::spi::SynthServiceProvider>();
-	static auto p6 = make_shared<ctoot::synth::spi::SynthChannelServiceProvider>();
-	static auto p7 = make_shared<ctoot::synth::channels::AllTootSynthChannelsServiceProvider>();
-	static auto p8 = make_shared<ctoot::synth::synths::multi::MultiSynthServiceProvider>();
-	static vector<weak_ptr<ServiceProvider>> res{ p1, p2, p3, p4, p6, p7, p8 };
+	if (serviceProviders.size() == 0) {
+		MLOG("making serviceproviders");
+		serviceProviders.push_back(move(make_shared<ctoot::audio::reverb::ReverbServiceProvider>()));
+		serviceProviders.push_back(move(make_shared<ctoot::audio::delay::DelayServiceProvider>()));
+		serviceProviders.push_back(move(make_shared<ctoot::audio::dynamics::DynamicsServiceProvider>()));
+		serviceProviders.push_back(move(make_shared<ctoot::audio::basic::BasicServiceProvider>()));
+		//static auto p5 = make_shared<ctoot::synth::spi::SynthServiceProvider>();
+		serviceProviders.push_back(move(make_shared<ctoot::synth::spi::SynthChannelServiceProvider>()));
+		serviceProviders.push_back(move(make_shared<ctoot::synth::channels::AllTootSynthChannelsServiceProvider>()));
+		serviceProviders.push_back(move(make_shared<ctoot::synth::synths::multi::MultiSynthServiceProvider>()));
+	}
+	MLOG("Service providers:");
+	for (auto& sp : serviceProviders)
+		MLOG(sp->getDescription() + ", " + sp->getProviderName());
+	vector<weak_ptr<ServiceProvider>> res;
+	for (auto& sp : serviceProviders)
+		res.push_back(sp);
 	return res;
 }
-

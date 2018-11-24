@@ -4,6 +4,7 @@
 #include <service/ServiceVisitor.hpp>
 #include <service/ServiceDescriptor.hpp>
 #include <vector>
+#include <memory>
 #include <map>
 #include <stdio.h>
 
@@ -13,10 +14,10 @@ namespace ctoot {
 		{
 
 		public:
-			int providerId{};
-			std::string providerName{};
-			std::string version{};
-			std::string description{};
+			int providerId;
+			std::string providerName;
+			std::string version;
+			std::string description;
 
 		public:
 			virtual int getProviderId();
@@ -25,24 +26,36 @@ namespace ctoot {
 			virtual std::string getDescription();
 
 		private:
-			std::map<std::string, std::vector<ServiceDescriptor*>> services{};
+			std::map<std::string, std::shared_ptr<std::vector<std::shared_ptr<ServiceDescriptor>>>> services;
 
 		public:
-			virtual std::vector<ServiceDescriptor*>* service(std::string typeIdName);
-			virtual void add(ServiceDescriptor* d);
-			virtual void add(std::string typeIdName, std::string name, std::string description, std::string version);
+			virtual std::weak_ptr<std::vector<std::shared_ptr<ServiceDescriptor>>> service(const std::string& typeIdName);
+			virtual void add(std::shared_ptr<ServiceDescriptor> d);
+			virtual void add
+			(
+				const std::string& typeIdName, 
+				const std::string& name,
+				const std::string& description,
+				const std::string& version
+			);
 
 		public:
-			virtual void accept(ServiceVisitor* v, std::string typeIdName);
+			virtual void accept(std::weak_ptr<ServiceVisitor> v, const std::string& typeIdName);
 
 		public:
-			virtual void visit(ServiceVisitor* v, std::vector<ServiceDescriptor*> dit);
+			virtual void visit(std::weak_ptr<ServiceVisitor> v, const std::vector<std::shared_ptr<ServiceDescriptor>>& serviceDescriptors);
 
 		public:
 			std::string toString();
 
 		public:
-			ServiceProvider(int providerId, std::string providerName, std::string description, std::string version);
+			ServiceProvider
+			(
+				int providerId, 
+				const std::string& providerName, 
+				const std::string& description, 
+				const std::string& version
+			);
 			ServiceProvider() { providerName = "ServiceProvider dummy"; }
 			~ServiceProvider();
 		};

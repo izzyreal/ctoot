@@ -10,7 +10,13 @@
 using namespace ctoot::service;
 using namespace std;
 
-ServiceProvider::ServiceProvider(int providerId, string providerName, string description, string version)
+ServiceProvider::ServiceProvider
+(
+	int providerId, 
+	const string& providerName, 
+	const string& description, 
+	const string& version
+)
 {
 	services.clear();
 	this->providerId = providerId;
@@ -39,58 +45,68 @@ string ServiceProvider::getDescription()
     return description;
 }
 
-vector<ServiceDescriptor*>* ServiceProvider::service(string typeIdName)
+weak_ptr<vector<shared_ptr<ServiceDescriptor>>> ServiceProvider::service(const string& typeIdName)
 {
-    printf("ServiceProvider adding %s to %s, %s\n", typeIdName.c_str(), this->getProviderName().c_str(), this->getDescription().c_str());
-    printf("ServiceProvider services size %i\n\n", (int)services.size());
+    MLOG("\nServiceProvider adding " + typeIdName + " to " + this->getProviderName() + ", " + this->getDescription());
+    MLOG("ServiceProvider services size " + to_string(services.size()));
 	if (services.find(typeIdName) == services.end()) {
-        printf("service not yet found, adding it\n");
-		services[typeIdName] = vector<ServiceDescriptor*>{};
+        MLOG("service not yet found, adding it");
+		services[typeIdName] = make_shared<vector<shared_ptr<ServiceDescriptor>>>();
         if (services.find(typeIdName) == services.end()) {
-            printf("service still not found!\n");
+            MLOG("service still not found!");
         } else {
-            printf("service is now found, services size: %i.\n", (int) services.size());
+            MLOG("service is now found, services size: " + to_string(services.size()));
         }
 	}
-	return &services[typeIdName];
+	return services[typeIdName];
 }
 
-void ServiceProvider::add(ServiceDescriptor* d)
+void ServiceProvider::add(shared_ptr<ServiceDescriptor> d)
 {
 	MLOG("ServiceProvider trying to add: " + d->getDescription());
 	auto candidate = services.find(d->getParentClass());
 	if (candidate != services.end()) {
-		services[d->getParentClass()].push_back(d);
+		MLOG("ServiceProvider added: " + d->getDescription());
+		MLOG("services vector size is now " + to_string(services[d->getParentClass()]->size()));
+		services[d->getParentClass()]->push_back(std::move(d));
+	}
+	else {
+		MLOG("!!ServiceProvider not added!! " + d->getDescription());
 	}
 }
 
-void ServiceProvider::add(string typeIdName, string name, string description, string version)
+void ServiceProvider::add
+(
+	const string& typeIdName, 
+	const string& name,
+	const string& description,
+	const string& version
+)
 {
-	ServiceDescriptor* toAdd = new ServiceDescriptor(typeIdName, name, description, version);
+	auto toAdd = make_shared<ServiceDescriptor>(typeIdName, name, description, version);
     add(toAdd);
 }
 
 
-void ServiceProvider::accept(ServiceVisitor* v, string typeIdName)
+void ServiceProvider::accept(weak_ptr<ServiceVisitor> v, const string& typeIdName)
 {
-	v->visitProvider(this);
+	v.lock()->visitProvider(this);
 	if (typeIdName.compare("") == 0) {
-		for (map<string, vector<ServiceDescriptor*>>::iterator it = services.begin(); it != services.end(); ++it) {
-			vector<ServiceDescriptor*> vectorToVisit = it->second;
-			visit(v, vectorToVisit);
+		for (auto it = services.begin(); it != services.end(); ++it) {
+			auto vectorToVisit = it->second;
+			//visit(v, vectorToVisit);
 		}
 	}
 	else {
-		visit(v, services[typeIdName]);
+		//visit(v, services[typeIdName]);
 	}
 }
 
 
-void ServiceProvider::visit(ServiceVisitor* v, vector<ServiceDescriptor*> dit)
+void ServiceProvider::visit(weak_ptr<ServiceVisitor> v, const vector<shared_ptr<ServiceDescriptor>>& serviceDescriptors)
 {
-	for (auto& sd : dit) {
-		v->visitDescriptor(sd);
-	}
+	for (auto& sd : serviceDescriptors)
+		v.lock()->visitDescriptor(sd.get());
 }
 
 string ServiceProvider::toString()
@@ -99,10 +115,4 @@ string ServiceProvider::toString()
 }
 
 ServiceProvider::~ServiceProvider() {
-	MLOG("Service provider destructor called for " + getProviderName() + " " + getDescription() + " id " + to_string(getProviderId()));
-	for (auto& s : services) {
-		for (auto& sd : s.second) {
-			if (sd != nullptr) delete sd;
-		}
-	}
 }

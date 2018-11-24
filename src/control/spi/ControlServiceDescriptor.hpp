@@ -1,6 +1,5 @@
 #pragma once
 #include <service/ServiceDescriptor.hpp>
-#include <cstdint>
 
 namespace ctoot {
 	namespace control {
@@ -14,9 +13,9 @@ namespace ctoot {
 				int moduleId{};
 
 			public:
-				virtual int getModuleId();
+				int getModuleId();
 
-				ControlServiceDescriptor(std::string typeIdName, int moduleId, std::string name, std::string description, std::string version);
+				ControlServiceDescriptor(const std::string& typeIdName, const int moduleId, const std::string& name, const std::string& description, const std::string& version);
 			};
 		}
 	}

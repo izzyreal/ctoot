@@ -15,27 +15,41 @@ namespace ctoot {
 			{
 
 			private:
-				std::vector<ctoot::service::ServiceDescriptor*>* controls{};
+				std::weak_ptr<std::vector<std::shared_ptr<ctoot::service::ServiceDescriptor>>> controls;
 
 			public:
 				virtual std::string lookupName(int32_t moduleId);
 				virtual std::shared_ptr<ctoot::synth::SynthControls> createControls(int32_t moduleId);
 
 			protected:
-				virtual void addControls(std::string typeIdName, int32_t moduleId, std::string name, std::string description, std::string version);
+				virtual void addControls
+				(
+					const std::string& typeIdName, 
+					int32_t moduleId, 
+					const std::string& typeIdNamename, 
+					const std::string& typeIdNamedescription, 
+					const std::string& typeIdNameversion
+				);
 
 			public:
-				virtual std::shared_ptr<ctoot::synth::SynthControls> createControls(std::string name);
+				virtual std::shared_ptr<ctoot::synth::SynthControls> createControls(const std::string& name);
 
 			protected:
-				virtual std::shared_ptr<ctoot::synth::SynthControls> createControls(ctoot::service::ServiceDescriptor* d);
+				virtual std::shared_ptr<ctoot::synth::SynthControls> createControls(std::weak_ptr<ctoot::service::ServiceDescriptor> d);
 
 			public:
 				virtual std::shared_ptr<ctoot::synth::MidiSynth> createSynth(std::weak_ptr<ctoot::synth::SynthControls> controls) {
 					return {};
 				}
 
-				SynthServiceProvider(int32_t providerId, std::string providerName, std::string description, std::string version);
+				SynthServiceProvider
+				(
+					int32_t providerId, 
+					const std::string& providerName, 
+					const std::string& description, 
+					const std::string& version
+				);
+				
 				SynthServiceProvider() { providerName = "SynthServiceProvider dummy"; }
 
 			};

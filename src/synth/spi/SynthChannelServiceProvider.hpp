@@ -17,22 +17,36 @@ namespace ctoot {
 			{
 
 			private:
-				std::vector<ctoot::service::ServiceDescriptor*>* controls{};
+				std::weak_ptr<std::vector<std::shared_ptr<ctoot::service::ServiceDescriptor>>> controls;
 
 			public:
 				virtual std::string lookupName(int32_t moduleId);
 				virtual std::shared_ptr<ctoot::synth::SynthChannelControls> createControls(int32_t moduleId);
 
 			protected:
-				virtual void addControls(std::string typeIdName, int32_t moduleId, std::string name, std::string description, std::string version);
+				void addControls
+				(
+					const std::string& typeIdName, 
+					int32_t moduleId, 
+					const std::string& name, 
+					const std::string& description,
+					const std::string& version
+				);
 
 			public:
-				virtual std::shared_ptr<ctoot::synth::SynthChannelControls> createControls(std::string name);
-				virtual std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(std::weak_ptr<ctoot::synth::SynthChannelControls> controls2) {
+				virtual std::shared_ptr<ctoot::synth::SynthChannelControls> createControls(const std::string& name);
+				virtual std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(std::weak_ptr<ctoot::synth::SynthChannelControls> controls) {
 					return {};
 				}
 
-				SynthChannelServiceProvider(int32_t providerId, std::string providerName, std::string description, std::string version);
+				SynthChannelServiceProvider
+				(
+					int32_t providerId, 
+					const std::string& providerName, 
+					const std::string& description, 
+					const std::string& version
+				);
+				
 				SynthChannelServiceProvider() { providerName = "SynthChannelServiceProvider dummy"; }
 
 			};

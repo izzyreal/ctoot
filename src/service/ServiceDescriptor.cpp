@@ -5,7 +5,7 @@
 using namespace ctoot::service;
 using namespace std;
 
-ServiceDescriptor::ServiceDescriptor(string parentClass, string childClass, string description, string version) 
+ServiceDescriptor::ServiceDescriptor(const string& parentClass, const string& childClass, const string& description, const string& version)
 {
 	this->parentClass = parentClass;
 	this->childClass = childClass;

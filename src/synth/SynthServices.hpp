@@ -4,6 +4,8 @@
 
 #include <synth/spi/SynthServiceProvider.hpp>
 
+#include <memory>
+
 namespace ctoot {
 	namespace synth {
 		class SynthServices
@@ -18,7 +20,7 @@ namespace ctoot {
 			static std::shared_ptr<SynthControls> createControls(std::string name);
 			static std::shared_ptr<MidiSynth> createSynth(std::weak_ptr<SynthControls> controls);
 			static void scan();
-			static void accept(service::ServiceVisitor* v, std::string typeIdName);
+			static void accept(std::weak_ptr<service::ServiceVisitor> v, std::string typeIdName);
 			static void printServiceDescriptors(std::string typeIdName);
 
 		protected:

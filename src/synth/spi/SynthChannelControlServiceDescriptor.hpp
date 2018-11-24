@@ -12,7 +12,12 @@ namespace ctoot {
 
 
 			public:
-				SynthChannelControlServiceDescriptor(std::string typeIdName, int32_t moduleId, std::string name, std::string description, std::string version);
+				SynthChannelControlServiceDescriptor(
+					const std::string& typeIdName, 
+					int32_t moduleId, 
+					const std::string& name,
+					const std::string& description,
+					const std::string& version);
 
 			};
 

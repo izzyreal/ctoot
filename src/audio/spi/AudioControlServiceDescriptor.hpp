@@ -21,8 +21,20 @@ namespace ctoot {
 				virtual std::string getPluginPath();
 
 			public:
-				AudioControlServiceDescriptor(std::string typeIdName, int moduleId, std::string name, std::string description, std::string version);
-				AudioControlServiceDescriptor(std::string typeIdName, int moduleId, std::string name, std::string description, std::string version, std::weak_ptr<ctoot::audio::core::ChannelFormat> format, std::string path);
+				AudioControlServiceDescriptor(
+					const std::string& typeIdName, 
+					int moduleId, 
+					const std::string& name, 
+					const std::string& description, 
+					const std::string& version);
+
+				AudioControlServiceDescriptor(const std::string& typeIdName, 
+					int moduleId, 
+					const std::string& name,
+					const std::string& description,
+					const std::string& version,
+					std::weak_ptr<ctoot::audio::core::ChannelFormat> format, 
+					const std::string& path);
 			};
 
 		}

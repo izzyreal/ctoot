@@ -2,8 +2,6 @@
 
 #include <audio/core/AudioControls.hpp>
 #include <audio/spi/AudioControlServiceDescriptor.hpp>
-#include <control/spi/ControlServiceDescriptor.hpp>
-#include <service/ServiceDescriptor.hpp>
 
 using namespace ctoot::audio::spi;
 using namespace ctoot::audio::core;
@@ -11,19 +9,26 @@ using namespace std;
 
 #include <boost/core/demangle.hpp>
 
-AudioServiceProvider::AudioServiceProvider(int providerId, string providerName, string description, string version)
+AudioServiceProvider::AudioServiceProvider
+(
+	int providerId, 
+	const string& providerName, 
+	const string& description,
+	const string& version
+)
 	: ServiceProvider(providerId, providerName, description, version)
 {
-    string info = boost::core::demangle(typeid(AudioControls).name());
-    printf("\n\n\nsetting controls for %s\n", description.c_str());
-    printf("info %s\n", info.c_str());
+    //string info = boost::core::demangle(typeid(AudioControls).name());
+	string info = typeid(AudioControls).name();
+    MLOG("setting controls for " + description);
+	MLOG("info (typeid name) " + info);
 	controls = service(info);
-    printf("controls size is now %i\n", (int) controls->size());
+    MLOG("controls size is now " + to_string(controls.lock()->size()));
 }
 
 string AudioServiceProvider::getAvailableControls() {
 	string res;
-	for (auto& c : *controls) {
+	for (auto& c : *controls.lock()) {
 		res += c->getChildClass() + "\n";
 	}
 	return res;
@@ -31,54 +36,68 @@ string AudioServiceProvider::getAvailableControls() {
 
 string AudioServiceProvider::lookupName(int moduleId)
 {
-	auto d = lookupDescriptor(moduleId);
-	return d == nullptr ? static_cast<string>(nullptr) : d->getChildClass();
+	auto d = lookupDescriptor(moduleId).lock();
+	return !d ? string("module id " + to_string(moduleId) + " not found!") : d->getChildClass();
 }
 
-ctoot::service::ServiceDescriptor* AudioServiceProvider::lookupDescriptor(int moduleId)
+weak_ptr<ctoot::service::ServiceDescriptor> AudioServiceProvider::lookupDescriptor(int moduleId)
 {
-	for (int i = 0; i < controls->size(); i++) {
-		service::ServiceDescriptor* d = dynamic_cast<service::ServiceDescriptor*>((*controls)[i]);
-		if (dynamic_cast<control::spi::ControlServiceDescriptor*>(d)->getModuleId() == moduleId) {
+	auto c = controls.lock();
+	for (int i = 0; i < c->size(); i++) {
+		auto d = c->at(i);
+		if (dynamic_pointer_cast<control::spi::ControlServiceDescriptor>(d)->getModuleId() == moduleId) {
 			return d;
-		}
-	}
-	return nullptr;
-}
-
-void AudioServiceProvider::addControls(string typeIdName, int moduleId, string name, string description, string version)
-{
-	add(new AudioControlServiceDescriptor(typeIdName, moduleId, name, description, version));
-}
-
-void AudioServiceProvider::addControls(string typeIdName, int moduleId, string name, string description, string version, std::weak_ptr<ChannelFormat> format, string path)
-{
-	add(new AudioControlServiceDescriptor(typeIdName, moduleId, name, description, version, format, path));
-}
-
-shared_ptr<AudioControls> AudioServiceProvider::createControls(int moduleId)
-{
-	for (int i = 0; i < controls->size(); i++) {
-		try {
-			auto d = dynamic_cast<AudioControlServiceDescriptor::ControlServiceDescriptor*>((*controls)[i]);
-			if (d->getModuleId() == moduleId) return createControls(d);
-		}
-		catch (const bad_cast &e) {
-			string msg = e.what();
-			MLOG("AudioServiceProvider::createControls bad cast, error msg " + msg);
 		}
 	}
 	return {};
 }
 
-shared_ptr<AudioControls> AudioServiceProvider::createControls(string name)
+void AudioServiceProvider::addControls
+(
+	const string& typeIdName, 
+	int moduleId, 
+	const string& name,
+	const string& description,
+	const string& version
+)
 {
-    printf("AudioServiceProvider::createControls name %s\n", name.c_str());
-    printf("AudioServiceProvider::createControls controls size %i\n", (int) controls->size());
+	auto descriptor = make_shared<AudioControlServiceDescriptor>(typeIdName, moduleId, name, description, version);
+	add(descriptor);
+}
+
+void AudioServiceProvider::addControls
+(
+	const string& typeIdName, 
+	int moduleId, 
+	const string& name, 
+	const string& description, 
+	const string& version, 
+	std::weak_ptr<ChannelFormat> format, 
+	const string& path
+)
+{
+	add(make_shared<AudioControlServiceDescriptor>(typeIdName, moduleId, name, description, version, format, path));
+}
+
+shared_ptr<AudioControls> AudioServiceProvider::createControls(int moduleId)
+{
+	auto c = controls.lock();
+	for (int i = 0; i < c->size(); i++) {
+		auto d = dynamic_pointer_cast<AudioControlServiceDescriptor::ControlServiceDescriptor>(c->at(i));
+		if (d&& d->getModuleId() == moduleId) return createControls(d);
+	}
+	return {};
+}
+
+shared_ptr<AudioControls> AudioServiceProvider::createControls(const string& name)
+{
+    MLOG("AudioServiceProvider::createControls name " + name);
+    MLOG("AudioServiceProvider::createControls controls size " + to_string(controls.lock()->size()));
     
-	for (int i = 0; i < controls->size(); i++) {
-		service::ServiceDescriptor* d = dynamic_cast<service::ServiceDescriptor*>((*controls)[i]);
-        printf("AudioServiceProvider::createControls control descriptor %s\n", d->getChildClass().c_str());
+	auto c = controls.lock();
+	for (int i = 0; i < c->size(); i++) {
+		auto d = c->at(i);
+        MLOG("AudioServiceProvider::createControls control descriptor child class " + d->getChildClass());
 		if (d->getChildClass().compare(name) == 0) {
 			return createControls(d);
 		}
@@ -86,11 +105,10 @@ shared_ptr<AudioControls> AudioServiceProvider::createControls(string name)
 	return {};
 }
 
-shared_ptr<AudioControls> AudioServiceProvider::createControls(ctoot::service::ServiceDescriptor* d)
+shared_ptr<AudioControls> AudioServiceProvider::createControls(weak_ptr<ctoot::service::ServiceDescriptor> d)
 {
-	auto candidate = dynamic_pointer_cast<AudioControls>(ctoot::control::Control::create(d->getChildClass()));
-	if (candidate) {
-		return candidate;
-	}
+	auto c = ctoot::control::Control::create(d.lock()->getChildClass());
+	auto ac = dynamic_pointer_cast<ctoot::audio::core::AudioControls>(c);
+	if (ac) return ac;
 	return {};
 }

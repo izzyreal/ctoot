@@ -47,12 +47,12 @@ shared_ptr<AudioControls> AudioServices::createControls(int providerId, int modu
 	return {};
 }
 
-shared_ptr<AudioControls> AudioServices::createControls(string name)
+shared_ptr<AudioControls> AudioServices::createControls(const string& name)
 {
-    printf("AudioServices::createControls %s\n", name.c_str());
+    MLOG("AudioServices::createControls " + name);
 	for (auto& p : providers) {
-        printf("Provider desc %s\n", p.lock()->description.c_str());
-        printf("Provider name %s\n", p.lock()->getProviderName().c_str());
+        MLOG("Provider desc " + p.lock()->getDescription());
+        MLOG("Provider name " + p.lock()->getProviderName());
 		auto controls = p.lock()->createControls(name);
 		if (controls) {
 			controls->setProviderId(p.lock()->getProviderId());
@@ -93,14 +93,14 @@ void AudioServices::scan()
 	}
 }
 
-void AudioServices::accept(ctoot::service::ServiceVisitor* v, string typeIdName)
+void AudioServices::accept(weak_ptr<ctoot::service::ServiceVisitor> v, const string& typeIdName)
 {
 	for (auto& p : providers) {
 		p.lock()->accept(v, typeIdName);
 	}
 }
 
-void AudioServices::printServiceDescriptors(string typeIdName)
+void AudioServices::printServiceDescriptors(const string& typeIdName)
 {
     //accept(new service::ServicePrinter(), clazz);
 }

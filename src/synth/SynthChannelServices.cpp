@@ -10,9 +10,9 @@ using namespace std;
 SynthChannelServices::SynthChannelServices()
 {
 }
-vector<weak_ptr<ctoot::synth::spi::SynthChannelServiceProvider>> SynthChannelServices::providers;
+vector<weak_ptr<spi::SynthChannelServiceProvider>> SynthChannelServices::providers;
 
-std::string ctoot::synth::SynthChannelServices::lookupModuleName(int32_t providerId, int32_t moduleId)
+string SynthChannelServices::lookupModuleName(int32_t providerId, int32_t moduleId)
 {
 	for (auto& p : providers) {
 		if (p.lock()->getProviderId() == providerId) {
@@ -22,9 +22,9 @@ std::string ctoot::synth::SynthChannelServices::lookupModuleName(int32_t provide
 	return "Module not found!";
 }
 
-std::shared_ptr<ctoot::synth::SynthChannelControls> ctoot::synth::SynthChannelServices::createControls(std::string name)
+shared_ptr<SynthChannelControls> SynthChannelServices::createControls(const string& name)
 {
-	shared_ptr<ctoot::synth::SynthChannelControls> controls;
+	shared_ptr<SynthChannelControls> controls;
 	for (auto& p : providers) {
 		controls = p.lock()->createControls(name);
 		if (controls) {
@@ -35,7 +35,7 @@ std::shared_ptr<ctoot::synth::SynthChannelControls> ctoot::synth::SynthChannelSe
 	return {};
 }
 
-shared_ptr<ctoot::synth::SynthChannel> SynthChannelServices::createSynthChannel(weak_ptr<SynthChannelControls> controls)
+shared_ptr<SynthChannel> SynthChannelServices::createSynthChannel(weak_ptr<SynthChannelControls> controls)
 {
 	MLOG("Trying to create synth channel");
 	for (auto& p : providers) {
@@ -50,24 +50,24 @@ shared_ptr<ctoot::synth::SynthChannel> SynthChannelServices::createSynthChannel(
 
 void SynthChannelServices::scan()
 {
-	auto prov = lookup(ctoot::synth::spi::SynthChannelServiceProvider());
+	auto prov = lookup(spi::SynthChannelServiceProvider());
 	providers.clear();
 	for (auto& p : prov) {
-		auto candidate = dynamic_pointer_cast<ctoot::synth::spi::SynthChannelServiceProvider>(p.lock());
+		auto candidate = dynamic_pointer_cast<spi::SynthChannelServiceProvider>(p.lock());
 		if (candidate) {
 			providers.push_back(candidate);
 		}
 	}
 }
 
-void SynthChannelServices::accept(ctoot::service::ServiceVisitor* v, string typeIdName)
+void SynthChannelServices::accept(weak_ptr<ctoot::service::ServiceVisitor> v, const string& typeIdName)
 {
 	for (auto& p : providers) {
 		p.lock()->accept(v, typeIdName);
 	}
 }
 
-void SynthChannelServices::printServiceDescriptors(string typeIdName)
+void SynthChannelServices::printServiceDescriptors(const string& typeIdName)
 {
 	//accept(new ctoot::service::ServicePrinter(), clazz);
 }

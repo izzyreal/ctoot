@@ -15,28 +15,52 @@ namespace ctoot {
 			{
 
 			private:
-				std::vector<ctoot::service::ServiceDescriptor*>* controls{};
+				std::weak_ptr<std::vector<std::shared_ptr<ctoot::service::ServiceDescriptor>>> controls;
 
 			public:
 				virtual std::string lookupName(int moduleId);
-				virtual service::ServiceDescriptor* lookupDescriptor(int moduleId);
+				virtual std::weak_ptr<service::ServiceDescriptor> lookupDescriptor(int moduleId);
 
 			public:
-				virtual void addControls(std::string typeIdName, int moduleId, std::string name, std::string description, std::string version);
-				virtual void addControls(std::string typeIdName, int moduleId, std::string name, std::string description, std::string version, std::weak_ptr<ctoot::audio::core::ChannelFormat> format, std::string path);
+				virtual void addControls
+				(
+					const std::string& typeIdName, 
+					int moduleId, 
+					const std::string& name,
+					const std::string& description,
+					const std::string& version
+				);
+				
+				virtual void addControls
+				(
+					const std::string& typeIdName,
+					int moduleId, 
+					const std::string& name,
+					const std::string& description,
+					const std::string& version,
+					std::weak_ptr<ctoot::audio::core::ChannelFormat> format, 
+					const std::string& path
+				);
 
 			public:
 				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(int moduleId);
-				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(std::string name);
-				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(service::ServiceDescriptor* d);
+				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(const std::string& name);
+				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(std::weak_ptr<service::ServiceDescriptor> d);
 				virtual std::shared_ptr<ctoot::audio::core::AudioProcess> createProcessor(std::weak_ptr<audio::core::AudioControls> c) { return {}; };
 
 			public:
 				std::string getAvailableControls();
 
 			public:
-				AudioServiceProvider(int providerId, std::string providerName, std::string description, std::string version);
-				AudioServiceProvider(std::string providerName) { this->providerName = providerName; }
+				AudioServiceProvider
+				(
+					int providerId, 
+					const std::string& providerName,
+					const std::string& description,
+					const std::string& version
+				);
+				
+				AudioServiceProvider(const std::string& providerName) { this->providerName = providerName; }
 			};
 		}
 	}

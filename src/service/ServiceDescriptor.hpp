@@ -1,6 +1,5 @@
 #pragma once
 #include <string>
-#include <typeinfo>
 
 namespace ctoot {
 	namespace service {
@@ -15,15 +14,15 @@ namespace ctoot {
 			std::string version;
 
 		public:
-			virtual std::string getParentClass();
-			virtual std::string getChildClass();
-			virtual std::string getDescription();
-			virtual std::string getVersion();
+			std::string getParentClass();
+			std::string getChildClass();
+			std::string getDescription();
+			std::string getVersion();
 			std::string toString();
 
 		public:
-			ServiceDescriptor(std::string parentClass, std::string childClass, std::string description, std::string version);
-
+			ServiceDescriptor(const std::string& parentClass, const std::string& childClass, const std::string& description, const std::string& version);
+			virtual ~ServiceDescriptor() {}
 		};
 	}
 }

@@ -17,11 +17,11 @@ namespace ctoot {
 
 		public:
 			static std::string lookupModuleName(int32_t providerId, int32_t moduleId);
-			static std::shared_ptr<SynthChannelControls> createControls(std::string name);
+			static std::shared_ptr<SynthChannelControls> createControls(const std::string& name);
 			static std::shared_ptr<SynthChannel> createSynthChannel(std::weak_ptr<SynthChannelControls> controls);
 			static void scan();
-			static void accept(service::ServiceVisitor* v, std::string typeIdName);
-			static void printServiceDescriptors(std::string typeIdName);
+			static void accept(std::weak_ptr<service::ServiceVisitor> v, const std::string& typeIdName);
+			static void printServiceDescriptors(const std::string& typeIdName);
 
 		protected:
 			SynthChannelServices();

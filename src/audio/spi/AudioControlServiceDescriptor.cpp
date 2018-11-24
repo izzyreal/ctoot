@@ -3,22 +3,24 @@
 using namespace ctoot::audio::spi;
 using namespace std;
 
-AudioControlServiceDescriptor::AudioControlServiceDescriptor(string typeIdName
-	, int moduleId
-	, string name
-	, string description
-	, string version) 
+AudioControlServiceDescriptor::AudioControlServiceDescriptor(
+	const string& typeIdName,
+	int moduleId,
+	const string& name,
+	const string& description,
+	const string& version)
 	: ControlServiceDescriptor(typeIdName, moduleId, name, description, version)
 {
 }
 
-AudioControlServiceDescriptor::AudioControlServiceDescriptor(string typeIdName
-	, int moduleId
-	, string name
-	, string description
-	, string version
-	, std::weak_ptr<ctoot::audio::core::ChannelFormat> format
-	, string path)  
+AudioControlServiceDescriptor::AudioControlServiceDescriptor(
+	const string& typeIdName,
+	int moduleId,
+	const string& name,
+	const string& description,
+	const string& version,
+	std::weak_ptr<ctoot::audio::core::ChannelFormat> format,
+	const string& path)
 	: ControlServiceDescriptor(typeIdName, moduleId, name, description, version)
 {
 	channelFormat = format;
