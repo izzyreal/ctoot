@@ -21,8 +21,7 @@ SynthChannelServiceProvider::SynthChannelServiceProvider
 )
 	: ctoot::service::ServiceProvider(providerId, providerName, description, version)
 {
-	//string info = boost::core::demangle(typeid(SynthChannelControls).name());
-	string info = typeid(SynthChannelControls).name();
+	string info = boost::core::demangle(typeid(SynthChannelControls).name());
 	controls = service(info);
 }
 

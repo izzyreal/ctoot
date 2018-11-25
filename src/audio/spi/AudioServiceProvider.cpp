@@ -18,9 +18,8 @@ AudioServiceProvider::AudioServiceProvider
 )
 	: ServiceProvider(providerId, providerName, description, version)
 {
-    //string info = boost::core::demangle(typeid(AudioControls).name());
-	string info = typeid(AudioControls).name();
-    MLOG("setting controls for " + description);
+    string info = boost::core::demangle(typeid(AudioControls).name());
+	MLOG("setting controls for " + description);
 	MLOG("info (typeid name) " + info);
 	controls = service(info);
     MLOG("controls size is now " + to_string(controls.lock()->size()));
