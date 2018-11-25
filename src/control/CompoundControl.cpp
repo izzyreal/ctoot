@@ -4,7 +4,7 @@
 using namespace ctoot::control;
 using namespace std;
 
-#include <boost/core/demangle.hpp>
+#include <System.hpp>
 
 std::shared_ptr<CompoundControlPersistence> CompoundControl::persistence;
 
@@ -163,7 +163,7 @@ int CompoundControl::getInstanceIndex()
 weak_ptr<Control> CompoundControl::findByTypeIdName(string typeIdName)
 {
 	for (int i = 0; i < controls.size(); i++) {
-		string currentTypeIdName = boost::core::demangle(typeid(*controls[i].get()).name());
+		string currentTypeIdName = moduru::System::demangle(typeid(*controls[i].get()).name());
 		
 		if (currentTypeIdName.compare(typeIdName) == 0) {
 			return controls[i];

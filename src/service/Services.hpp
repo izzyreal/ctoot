@@ -8,7 +8,7 @@
 #include <vector>
 #include <string>
 
-#include <boost/core/demangle.hpp>
+#include <System.hpp>
 
 namespace ctoot {
 	namespace service {
@@ -26,7 +26,7 @@ namespace ctoot {
 			template <typename T>
 			static std::vector<std::weak_ptr<ServiceProvider>> lookup(T clazz)
 			{
-				std::string clazzName = boost::core::demangle(typeid(clazz).name());
+				std::string clazzName = moduru::System::demangle(typeid(clazz).name());
 				std::vector<std::weak_ptr<ServiceProvider>> res;
 				for (auto& p : getServiceProviders()) {
                     if (std::dynamic_pointer_cast<T>(p.lock())) {

@@ -5,7 +5,7 @@
 #include <synth/SynthControls.hpp>
 #include <synth/spi/SynthControlServiceDescriptor.hpp>
 
-#include <boost/core/demangle.hpp>
+#include <System.hpp>
 
 using namespace ctoot::synth::spi;
 using namespace std;
@@ -19,7 +19,7 @@ SynthServiceProvider::SynthServiceProvider
 )
 	: ctoot::service::ServiceProvider(providerId, providerName, description, version)
 {
-	string info = boost::core::demangle(typeid(SynthControls).name());
+	string info = moduru::System::demangle(typeid(SynthControls).name());
 	controls = service(info);
 }
 

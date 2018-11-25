@@ -7,7 +7,7 @@ using namespace ctoot::audio::spi;
 using namespace ctoot::audio::core;
 using namespace std;
 
-#include <boost/core/demangle.hpp>
+#include <System.hpp>
 
 AudioServiceProvider::AudioServiceProvider
 (
@@ -18,7 +18,7 @@ AudioServiceProvider::AudioServiceProvider
 )
 	: ServiceProvider(providerId, providerName, description, version)
 {
-    string info = boost::core::demangle(typeid(AudioControls).name());
+    string info = moduru::System::demangle(typeid(AudioControls).name());
 	MLOG("setting controls for " + description);
 	MLOG("info (typeid name) " + info);
 	controls = service(info);

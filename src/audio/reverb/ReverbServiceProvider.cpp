@@ -17,8 +17,8 @@ ReverbServiceProvider::ReverbServiceProvider()
 	addControls(PlateControls.class, ReverbIds.PLATE_ID, getString("Plate.Reverb"), family, "0.1");
 	add(PlateProcess.class, getString("Plate.Reverb"), family, "0.1");
 	*/
-	addControls("class ctoot::audio::core::AudioControls", ctoot::audio::reverb::ReverbIds::BARR_ID, "class ctoot::audio::reverb::BarrControls", family, "0.1");
-	//add("class ctoot::audio::reverb::BarrProcess", "Barr.Reverb", family, "0.1");
+	addControls("ctoot::audio::core::AudioControls", ctoot::audio::reverb::ReverbIds::BARR_ID, "ctoot::audio::reverb::BarrControls", family, "0.1");
+	//add("ctoot::audio::reverb::BarrProcess", "Barr.Reverb", family, "0.1");
 }
 
 shared_ptr<ctoot::audio::core::AudioProcess> ReverbServiceProvider::createProcessor(weak_ptr<ctoot::audio::core::AudioControls> c) {

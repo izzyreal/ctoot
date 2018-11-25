@@ -14,7 +14,7 @@
     public: \
         klass##Factory() \
         { \
-            ctoot::control::Control::registerType("class " #nspace#klass, this); \
+            ctoot::control::Control::registerType("" #nspace#klass, this); \
         } \
         virtual std::shared_ptr<ctoot::control::Control> create() { \
             return std::make_shared<klass>(); \

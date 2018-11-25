@@ -14,7 +14,7 @@ MultiSynthServiceProvider::MultiSynthServiceProvider()
 	: ctoot::synth::spi::SynthServiceProvider(ctoot::control::id::ProviderId::TOOT_PROVIDER_ID, "Toot Software", MultiSynthControls::NAME(), "0.1")
 {
     auto name = MultiSynthControls::NAME();
-    addControls("class ctoot::synth::synths::multi::MultiSynthControls", MultiSynthControls::ID, name, "", "0.1");
+    addControls("ctoot::synth::synths::multi::MultiSynthControls", MultiSynthControls::ID, name, "", "0.1");
     //add(MultiMidiSynth::class_(), name, "", "0.1");
 }
 

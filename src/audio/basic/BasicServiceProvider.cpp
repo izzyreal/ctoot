@@ -30,8 +30,8 @@ BasicServiceProvider::BasicServiceProvider()
     add(::trim::TrimProcess::class_(), ctoot::misc::Localisation::getString("Trim"), family, u"0.1");
     add(::stereoImage::StereoImageProcess::class_(), ctoot::misc::Localisation::getString("Stereo.Image"), family, u"0.1");
 	*/
-	addControls("class ctoot::audio::core::AudioControls", BasicIds::TAP, "class ctoot::audio::basic::tap::TapControls", family, "0.1");
-	addControls("class ctoot::audio::core::AudioControls", BasicIds::SPECTRUM_ANALYSER, "class ctoot::audio::analysis::SpectrumAnalyserControls", family, "0.1");
+	addControls("ctoot::audio::core::AudioControls", BasicIds::TAP, "ctoot::audio::basic::tap::TapControls", family, "0.1");
+	addControls("ctoot::audio::core::AudioControls", BasicIds::SPECTRUM_ANALYSER, "ctoot::audio::analysis::SpectrumAnalyserControls", family, "0.1");
 
 }
 

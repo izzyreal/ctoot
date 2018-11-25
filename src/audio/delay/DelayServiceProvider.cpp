@@ -30,22 +30,22 @@ DelayServiceProvider::DelayServiceProvider()
 {
     auto family = description;
 	//"Modulated.Delay"
-	addControls("class ctoot::audio::core::AudioControls", DelayIds::MODULATED_DELAY_ID, "class ctoot::audio::delay::ModulatedDelayControls", family, "0.2");
+	addControls("ctoot::audio::core::AudioControls", DelayIds::MODULATED_DELAY_ID, "ctoot::audio::delay::ModulatedDelayControls", family, "0.2");
 
 	//"Stereo.Multi.Tap.Delay"
-    addControls("class ctoot::audio::core::AudioControls", DelayIds::MULTI_TAP_DELAY_ID, "class ctoot::audio::delay::MultiTapDelayStereoControls", family, "0.1", ChannelFormat::STEREO(), "");
+    addControls("ctoot::audio::core::AudioControls", DelayIds::MULTI_TAP_DELAY_ID, "ctoot::audio::delay::MultiTapDelayStereoControls", family, "0.1", ChannelFormat::STEREO(), "");
     
 	//"BPM.Delay"
-	addControls("class ctoot::audio::core::AudioControls", DelayIds::TEMPO_DELAY_ID, "class ctoot::audio::delay::TempoDelayControls", family, "0.2");
+	addControls("ctoot::audio::core::AudioControls", DelayIds::TEMPO_DELAY_ID, "ctoot::audio::delay::TempoDelayControls", family, "0.2");
     
 	//"Phaser"
-	addControls("class ctoot::audio::core::AudioControls", DelayIds::PHASER_ID, "class ctoot::audio::delay::PhaserControls", family, "0.1", ChannelFormat::MONO(), "");
+	addControls("ctoot::audio::core::AudioControls", DelayIds::PHASER_ID, "ctoot::audio::delay::PhaserControls", family, "0.1", ChannelFormat::MONO(), "");
     
 	//"Wow & Flutter"
-	addControls("class ctoot::audio::core::AudioControls", DelayIds::WOW_FLUTTER_ID, "class ctoot::audio::delay::WowFlutterControls", family, "0.1");
+	addControls("ctoot::audio::core::AudioControls", DelayIds::WOW_FLUTTER_ID, "ctoot::audio::delay::WowFlutterControls", family, "0.1");
     
 	//"Cab.Mic"
-	addControls("class ctoot::audio::core::AudioControls", DelayIds::CAB_MICING_ID, "class ctoot::audio::delay::CabMicingControls", "EQ", "0.1");
+	addControls("ctoot::audio::core::AudioControls", DelayIds::CAB_MICING_ID, "ctoot::audio::delay::CabMicingControls", "EQ", "0.1");
 	
 	/*
 	add(ModulatedDelayProcess::class_(), "Modulated.Delay", family, "0.2");
