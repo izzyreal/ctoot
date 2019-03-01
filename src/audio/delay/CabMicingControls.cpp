@@ -10,6 +10,8 @@
 #include <audio/delay/CabMicingNControl.hpp>
 #include <audio/delay/CabMicingControlsTap.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::delay;
 using namespace ctoot::control;
 using namespace std;
@@ -91,7 +93,7 @@ void CabMicingControls::derive(ctoot::control::Control* c)
 
 int CabMicingControls::extract(weak_ptr<ctoot::control::EnumControl> c)
 {
-	auto s = boost::any_cast<string>(c.lock()->getValue());
+	auto s = std::any_cast<string>(c.lock()->getValue());
     s = s.substr(0, s.length() - 1);
     return stoi(s);
 }

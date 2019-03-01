@@ -7,6 +7,8 @@
 #include <synth/modules/filter/FilterControlIds.hpp>
 #include <synth/modules/filter/FilterIds.hpp>
 
+#include <cmath>
+
 using namespace ctoot::synth::modules::filter;
 using namespace std;
 
@@ -48,7 +50,7 @@ float DualStateVariableFilterControls::deriveResonance()
 
  DualStateVariableFilterConfig* ctoot::synth::modules::filter::DualStateVariableFilterControls::deriveType()
 {
-    return boost::any_cast<DualStateVariableFilterConfig*>(typeControl.lock()->getValue());
+    return std::any_cast<DualStateVariableFilterConfig*>(typeControl.lock()->getValue());
 }
 
 shared_ptr<ctoot::control::EnumControl> ctoot::synth::modules::filter::DualStateVariableFilterControls::createTypeControl()

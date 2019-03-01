@@ -13,7 +13,7 @@ namespace ctoot {
 				{
 
 				public:
-					void update(moduru::observer::Observable* obs, boost::any a) override;
+					void update(moduru::observer::Observable* obs, std::any a) override;
 
 				private:
 					MultiMidiSynth* mms{ nullptr };

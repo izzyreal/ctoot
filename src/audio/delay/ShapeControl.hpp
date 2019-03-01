@@ -5,7 +5,7 @@
 #include <string>
 #include <vector>
 
-#include <boost/any.hpp>
+#include <any>
 
 namespace ctoot {
 	namespace audio {
@@ -18,7 +18,7 @@ namespace ctoot {
 				static std::vector<std::string> values;
 
 			public:
-				std::vector<boost::any> getValues() override;
+				std::vector<std::any> getValues() override;
 				bool hasLabel() override;
 
 			public:

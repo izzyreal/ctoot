@@ -2,7 +2,7 @@
 #include <audio/system/DefaultAudioSystem.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 #include <memory>
 
@@ -25,7 +25,7 @@ namespace ctoot {
 				* Implement specialized moduru::observable::Observer notify method
 				*/
 			public:
-				void notifyObservers(boost::any arg) override;
+				void notifyObservers(std::any arg) override;
 
 			public:
 				std::vector<AudioConnection*>* getConnections();

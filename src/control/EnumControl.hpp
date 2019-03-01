@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include <boost/any.hpp>
+#include <any>
 
 namespace ctoot {
 	namespace control {
@@ -11,13 +11,13 @@ namespace ctoot {
 			: public Control
 		{
 		private:
-			boost::any value;
+			std::any value;
 
 		public:
-			virtual void setValue(boost::any value);
-			virtual boost::any getValue();
-			virtual std::vector<boost::any> getValues() = 0;
-			virtual bool isValueSupported(boost::any value);
+			virtual void setValue(std::any value);
+			virtual std::any getValue();
+			virtual std::vector<std::any> getValues() = 0;
+			virtual bool isValueSupported(std::any value);
 
 		public:
 			std::string toString();
@@ -30,7 +30,7 @@ namespace ctoot {
 			int getIntValue() override;
 
 		public:
-			EnumControl(int id, std::string name, boost::any value);
+			EnumControl(int id, std::string name, std::any value);
 
 		};
 

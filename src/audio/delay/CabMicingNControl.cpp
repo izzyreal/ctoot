@@ -16,9 +16,9 @@ CabMicingNControl::CabMicingNControl()
 	values.push_back("4x");
 }
 
-vector<boost::any> CabMicingNControl::getValues()
+vector<std::any> CabMicingNControl::getValues()
 {
-	vector<boost::any> res;
+	vector<std::any> res;
 	for (auto& v : values)
 		res.push_back(v);
 	return res;

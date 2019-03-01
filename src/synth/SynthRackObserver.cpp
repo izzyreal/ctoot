@@ -27,11 +27,11 @@ SynthRackObserver::SynthRackObserver(SynthRack* sr, weak_ptr<SynthRackControls> 
 {
 }
 
-void SynthRackObserver::update(moduru::observer::Observable* obs, boost::any obj)
+void SynthRackObserver::update(moduru::observer::Observable* obs, std::any obj)
 {
 	MLOG("SynthRackObserver::update()");
 	try {
-		int nsynth = boost::any_cast<int>(obj);
+		int nsynth = std::any_cast<int>(obj);
 		if (nsynth < 0 || nsynth >= sr->synths.size()) return;
 		auto synthControls = controls.lock()->getSynthControls(nsynth).lock();
 		if (synthControls) {
@@ -55,7 +55,7 @@ void SynthRackObserver::update(moduru::observer::Observable* obs, boost::any obj
 			sr->setMidiSynth(nsynth, shared_ptr<ctoot::synth::MidiSynth>());
 		}
 	}
-	catch (const boost::bad_any_cast& e) {
+	catch (const std::bad_any_cast& e) {
 	}
 }
 

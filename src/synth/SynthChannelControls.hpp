@@ -30,7 +30,7 @@ namespace ctoot {
 			virtual void ensureMapExists();
 
 		public:
-			void update(moduru::observer::Observable* o, boost::any a) override;
+			void update(moduru::observer::Observable* o, std::any a) override;
 			//    void run() override;
 
 		public:

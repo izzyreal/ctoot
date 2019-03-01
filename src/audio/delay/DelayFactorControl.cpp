@@ -14,19 +14,19 @@ DelayFactorControl::DelayFactorControl(TempoDelayControls *TempoDelayControls_th
 }
 
 
-vector<boost::any> DelayFactorControl::getValues()
+vector<std::any> DelayFactorControl::getValues()
 {
-	vector<boost::any> res;
+	vector<std::any> res;
 	for (auto& f : TempoDelayControls::factors()) {
 		res.push_back(f);
 	}
 	return res;
 }
 
-void DelayFactorControl::setValue(boost::any value)
+void DelayFactorControl::setValue(std::any value)
 {
     super::setValue(value);
-    TempoDelayControls_this->delayFactor = boost::any_cast<NamedFactor*>(value)->getFactor();
+    TempoDelayControls_this->delayFactor = std::any_cast<NamedFactor*>(value)->getFactor();
 }
 
 bool DelayFactorControl::hasLabel()

@@ -19,21 +19,21 @@ MixerConnectedAudioSystem::MixerConnectedAudioSystem(shared_ptr<ctoot::audio::mi
 	mixerControls = mixer->getMixerControls();
 }
 
-void MixerConnectedAudioSystem::notifyObservers(boost::any obj)
+void MixerConnectedAudioSystem::notifyObservers(std::any obj)
 {
 	MLOG("\n\nMixerConnectedAudioSystem::notifyObservers called\n\n");
 	std::weak_ptr<AudioDevice> deviceCandidate;
 	std::weak_ptr<AudioOutput> outputCandidate;
 	try {
-		deviceCandidate = boost::any_cast<std::weak_ptr<AudioDevice>>(obj);
+		deviceCandidate = std::any_cast<std::weak_ptr<AudioDevice>>(obj);
 	}
-	catch (const boost::bad_any_cast const &e) {
+	catch (const std::bad_any_cast const &e) {
 		MLOG("cast to AudioDevice failed, trying to cast to AudioOutput");
 		try {
-			outputCandidate = boost::any_cast<std::weak_ptr<AudioOutput>>(obj);
+			outputCandidate = std::any_cast<std::weak_ptr<AudioOutput>>(obj);
 			MLOG("outputCandidate is AudioOutput" + outputCandidate.lock()->getName());
 		}
-		catch (const boost::bad_any_cast const &e1) {
+		catch (const std::bad_any_cast const &e1) {
 			string msg = e1.what();
 			MLOG("cast error: " + msg);
 			return;

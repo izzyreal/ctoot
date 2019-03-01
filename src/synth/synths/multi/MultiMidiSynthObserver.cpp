@@ -21,10 +21,10 @@ MultiMidiSynthObserver::MultiMidiSynthObserver(MultiMidiSynth *mms, weak_ptr<Mul
 }
 
 
-void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, boost::any a)
+void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, std::any a)
 {
 	try {
-		auto chan = boost::any_cast<int>(a);
+		auto chan = std::any_cast<int>(a);
 		if (chan < 0 || chan > 15) return;
 
 		//temp limitation! remove once things are better.
@@ -57,7 +57,7 @@ void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, boost::an
 			mms->setChannel(chan, shared_ptr<SynthChannel>());
 		}
 	}
-	catch (const boost::bad_any_cast& e) {
+	catch (const std::bad_any_cast& e) {
 		e.what();
 	}
 }

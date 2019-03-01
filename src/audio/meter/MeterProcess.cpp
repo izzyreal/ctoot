@@ -3,6 +3,8 @@
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/meter/MeterControls.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::meter;
 using namespace std;
 

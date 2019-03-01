@@ -15,7 +15,7 @@ namespace ctoot {
 			ctoot::audio::mixer::AudioMixer* mixer;
 
 		public:
-			void update(moduru::observer::Observable* o, boost::any a) override;
+			void update(moduru::observer::Observable* o, std::any a) override;
 
 			RouteObserver(ctoot::audio::mixer::MainMixProcess* mmp, ctoot::audio::mixer::AudioMixer* mixer);
 

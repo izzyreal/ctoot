@@ -2,7 +2,7 @@
 
 #include <control/EnumControl.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 namespace ctoot {
 	namespace audio {
@@ -13,11 +13,11 @@ namespace ctoot {
 			{
 
 			private:
-				std::vector<boost::any> values{  };
+				std::vector<std::any> values{  };
 				std::vector<float> floatValues{  };
 
 			public:
-				std::vector<boost::any> getValues() override;
+				std::vector<std::any> getValues() override;
 				float getMindB();
 				int getWidthLimit() override;
 				

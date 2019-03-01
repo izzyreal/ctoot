@@ -47,7 +47,7 @@ void SynthChannelControls::ensureMapExists()
 	if (map.size() != 128) map = vector<Control*>(128);
 }
 
-void SynthChannelControls::update(moduru::observer::Observable* o, boost::any a)
+void SynthChannelControls::update(moduru::observer::Observable* o, std::any a)
 {
 
 	if (dynamic_cast<ControlChange*>(o) == nullptr) return;

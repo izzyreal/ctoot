@@ -2,7 +2,7 @@
 #include <control/EnumControl.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 namespace ctoot {
 	namespace audio {
@@ -17,7 +17,7 @@ namespace ctoot {
 				bool canRouteToGroups{};
 
 			public:
-				std::vector<boost::any> getValues();
+				std::vector<std::any> getValues();
 				
 			public:
 				RouteControl(MainMixControls* mmc, std::string defaultRoute, bool canRouteToGroups);

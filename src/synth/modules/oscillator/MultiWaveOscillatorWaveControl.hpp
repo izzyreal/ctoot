@@ -1,7 +1,7 @@
 #pragma once
 #include <control/EnumControl.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 namespace ctoot {
 	namespace synth {
@@ -13,10 +13,10 @@ namespace ctoot {
 				{
 
 				public:
-					std::vector<boost::any> getValues() override;
+					std::vector<std::any> getValues() override;
 
 				public:
-					MultiWaveOscillatorWaveControl(int id, std::string name, boost::any value);
+					MultiWaveOscillatorWaveControl(int id, std::string name, std::any value);
 
 				};
 			}

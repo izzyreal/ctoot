@@ -15,7 +15,7 @@ namespace ctoot {
 				AudioProcessChain* apc{ nullptr };
 
 			public:
-				 void update(moduru::observer::Observable* o, boost::any arg) override;
+				 void update(moduru::observer::Observable* o, std::any arg) override;
 
 				 ControlChainObserver(AudioProcessChain* apc);
 				 ~ControlChainObserver();

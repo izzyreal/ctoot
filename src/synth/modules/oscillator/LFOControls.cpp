@@ -111,7 +111,7 @@ float LFOControls::deriveDeviation()
 
 bool ctoot::synth::modules::oscillator::LFOControls::deriveShape()
 {
-	return boost::any_cast<string>(shapeControl.lock()->getValue()).compare("Sine") == 0;
+	return std::any_cast<string>(shapeControl.lock()->getValue()).compare("Sine") == 0;
 }
 
 float ctoot::synth::modules::oscillator::LFOControls::getFrequency()

@@ -2,7 +2,7 @@
 
 #include <control/EnumControl.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 #include <vector>
 
@@ -16,13 +16,13 @@ namespace ctoot {
 				{
 
 				private:
-					std::vector<boost::any> values{  };
+					std::vector<std::any> values{  };
 
 				private:
 					void createValues();
 
 				public:
-					std::vector<boost::any> getValues() override;
+					std::vector<std::any> getValues() override;
 					int32_t getWidthLimit() override;
 
 					DualStateVariableFilterControlsTypeControl(int32_t id, std::string name);

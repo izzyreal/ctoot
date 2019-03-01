@@ -2,7 +2,7 @@
 
 #include <control/EnumControl.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 #include <string>
 #include <vector>
@@ -24,7 +24,7 @@ namespace ctoot {
 				static std::vector<std::string> values;
 			
 			public:
-				std::vector<boost::any> getValues() override;
+				std::vector<std::any> getValues() override;
 
 
 			public:

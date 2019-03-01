@@ -9,6 +9,8 @@
 #include <control/Control.hpp>
 #include <control/LinearLaw.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::meter;
 using namespace std;
 

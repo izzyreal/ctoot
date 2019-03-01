@@ -5,14 +5,14 @@
 using namespace ctoot::synth::modules::oscillator;
 using namespace std;
 
-MultiWaveOscillatorOctaveControl::MultiWaveOscillatorOctaveControl(int id, std::string name, boost::any value)
+MultiWaveOscillatorOctaveControl::MultiWaveOscillatorOctaveControl(int id, std::string name, std::any value)
 	: ctoot::control::EnumControl(id, name, value)
 {
 }
 
-vector<boost::any> MultiWaveOscillatorOctaveControl::getValues()
+vector<std::any> MultiWaveOscillatorOctaveControl::getValues()
 {
-	auto res = vector<boost::any>();
+	auto res = vector<std::any>();
 	for (auto& s : MultiWaveOscillatorControls::octaveArray)
 		res.push_back(s);
 	return res;

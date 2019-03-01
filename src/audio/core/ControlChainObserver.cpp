@@ -11,13 +11,13 @@ ControlChainObserver::ControlChainObserver(AudioProcessChain* apc) {
 	this->apc = apc;
 }
 
-void ControlChainObserver::update(moduru::observer::Observable* o, boost::any arg)
+void ControlChainObserver::update(moduru::observer::Observable* o, std::any arg)
 {
 	ctoot::control::ChainMutation* candidate = nullptr;
 	try {
-		candidate = boost::any_cast<ctoot::control::ChainMutation*>(arg);
+		candidate = std::any_cast<ctoot::control::ChainMutation*>(arg);
 	}
-	catch (boost::bad_any_cast e) {
+	catch (std::bad_any_cast e) {
 		std::string msg = e.what();
 		//MLOG("Couldn't cast to chain mutation " + msg);
 		return;

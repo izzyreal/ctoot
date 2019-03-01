@@ -2,7 +2,7 @@
 
 #include <control/EnumControl.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 #include <vector>
 
@@ -15,11 +15,11 @@ namespace ctoot {
 			{
 
 			private:
-				std::vector<boost::any> values{  };
+				std::vector<std::any> values{  };
 				std::vector<float> floatValues{  };
 
 			public:
-				std::vector<boost::any> getValues() override;
+				std::vector<std::any> getValues() override;
 				virtual float getMaxdB();
 				int32_t getWidthLimit() override;
 

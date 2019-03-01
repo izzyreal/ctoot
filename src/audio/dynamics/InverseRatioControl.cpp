@@ -3,6 +3,8 @@
 #include <audio/dynamics/DynamicsControlIds.hpp>
 #include <audio/dynamics/DynamicsControls.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::dynamics;
 using namespace std;
 

@@ -11,9 +11,9 @@ TapeSpeedControl::TapeSpeedControl(WowFlutterControls *WowFlutterControls_this)
 {
 }
 
-vector<boost::any> TapeSpeedControl::getValues()
+vector<std::any> TapeSpeedControl::getValues()
 {
-	vector<boost::any> res;
+	vector<std::any> res;
 	for (auto& s : WowFlutterControls::speeds())
 		res.push_back(s);
 	return res;

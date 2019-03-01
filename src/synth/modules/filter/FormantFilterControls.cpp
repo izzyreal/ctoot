@@ -9,6 +9,8 @@
 #include <control/LogLaw.hpp>
 #include <synth/modules/filter/FilterIds.hpp>
 
+#include <cmath>
+
 using namespace ctoot::synth::modules::filter;
 using namespace std;
 

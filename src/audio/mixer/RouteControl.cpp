@@ -19,9 +19,9 @@ RouteControl::RouteControl(MainMixControls* mmc, string defaultRoute, bool canRo
 }
 
 
-vector<boost::any> RouteControl::getValues()
+vector<std::any> RouteControl::getValues()
 {
-	vector<boost::any> values;
+	vector<std::any> values;
 	auto controls = mmc->getMixerControls()->getControls();
 	for (auto& c : controls) {
 		auto control = c.lock();

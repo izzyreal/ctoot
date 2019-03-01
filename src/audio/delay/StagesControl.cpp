@@ -13,9 +13,9 @@ StagesControl::StagesControl(int stages)
 {
 }
 
-vector<boost::any> StagesControl::getValues()
+vector<std::any> StagesControl::getValues()
 {
-	vector<boost::any> res;
+	vector<std::any> res;
 	for (auto& s : values)
 		res.push_back(s);
 	return res;
@@ -23,5 +23,5 @@ vector<boost::any> StagesControl::getValues()
 
 int StagesControl::getStages()
 {
-    return stoi(boost::any_cast<string>(getValue()));
+    return stoi(std::any_cast<string>(getValue()));
 }

@@ -7,6 +7,8 @@
 #include <synth/modules/envelope/EnvelopeControlIds.hpp>
 #include <synth/modules/envelope/EnvelopeIds.hpp>
 
+#include <cmath>
+
 using namespace ctoot::synth::modules::envelope;
 using namespace std;
 

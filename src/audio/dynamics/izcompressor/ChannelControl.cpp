@@ -12,7 +12,7 @@ ChannelControl::ChannelControl(int32_t id, std::string name)
 ChannelControl::~ChannelControl() {
 }
 
-vector<boost::any> ChannelControl::getValues() {
-	vector<boost::any> res{ string("M"), string("S"), string("L"), string("R"), string("LR") };
+vector<std::any> ChannelControl::getValues() {
+	vector<std::any> res{ string("M"), string("S"), string("L"), string("R"), string("LR") };
 	return res;
 }

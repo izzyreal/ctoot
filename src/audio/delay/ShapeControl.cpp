@@ -10,9 +10,9 @@ ShapeControl::ShapeControl(int id)
 {
 }
 
-vector<boost::any> ShapeControl::getValues()
+vector<std::any> ShapeControl::getValues()
 {
-	vector<boost::any> res;
+	vector<std::any> res;
 	for (auto& s : values)
 		res.push_back(s);
     return res;

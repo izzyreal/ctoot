@@ -4,6 +4,8 @@
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioProcess.hpp>
 
+#include <cmath>
+
 using namespace ctoot::synth;
 
 MonophonicSynthChannel::MonophonicSynthChannel(std::string name)

@@ -17,6 +17,8 @@
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
 
+#include <cmath>
+
 using namespace ctoot::audio::dynamics;
 using namespace ctoot::control;
 using namespace std;
@@ -231,7 +233,7 @@ void DynamicsControls::deriveDetectionChannelMode()
 	if (!detectionChannelControl.lock())
 		return;
 
-	detectionChannelMode = boost::any_cast<string>(detectionChannelControl.lock()->getValue());
+	detectionChannelMode = std::any_cast<string>(detectionChannelControl.lock()->getValue());
 }
 
 void DynamicsControls::deriveAttenuationChannelMode()
@@ -239,7 +241,7 @@ void DynamicsControls::deriveAttenuationChannelMode()
 	if (!attenuationChannelControl.lock())
 		return;
 
-	attenuationChannelMode = boost::any_cast<string>(attenuationChannelControl.lock()->getValue());
+	attenuationChannelMode = std::any_cast<string>(attenuationChannelControl.lock()->getValue());
 }
 
 void DynamicsControls::deriveRatio()

@@ -2,7 +2,7 @@
 
 #include <control/EnumControl.hpp>
 
-#include <boost/any.hpp>
+#include <any>
 
 #include <vector>
 #include <string>
@@ -32,7 +32,7 @@ namespace ctoot {
 				virtual void reference(std::string name, int32_t ref);
 
 			public:
-				std::vector<boost::any> getValues() override;
+				std::vector<std::any> getValues() override;
 				void setIntValue(int32_t value) override;
 				int32_t getIntValue() override;
 				bool hasLabel() override;

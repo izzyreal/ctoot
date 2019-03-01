@@ -12,7 +12,7 @@ namespace ctoot {
 			{
 
 			public:
-				void update(moduru::observer::Observable* obs, boost::any arg1) override;
+				void update(moduru::observer::Observable* obs, std::any arg1) override;
 
 			public:
 				DefaultAudioSystem* das;

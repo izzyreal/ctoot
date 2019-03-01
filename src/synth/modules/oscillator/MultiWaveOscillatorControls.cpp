@@ -128,7 +128,7 @@ void MultiWaveOscillatorControls::deriveSampleRateDependentVariables()
 weak_ptr<MultiWave> MultiWaveOscillatorControls::deriveMultiWave()
 {
 	MLOG("deriveMultiWave");
-	auto name = boost::any_cast<string>(waveControl.lock()->getValue());
+	auto name = std::any_cast<string>(waveControl.lock()->getValue());
 	return MultiWaves::get(name);
 }
 
@@ -150,7 +150,7 @@ float MultiWaveOscillatorControls::deriveDetuneFactor()
 
 int32_t MultiWaveOscillatorControls::deriveOctave()
 {
-	return stoi(boost::any_cast<string>(octaveControl.lock()->getValue()));
+	return stoi(std::any_cast<string>(octaveControl.lock()->getValue()));
 }
 
 weak_ptr<MultiWave> MultiWaveOscillatorControls::getMultiWave()

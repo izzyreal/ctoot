@@ -12,10 +12,10 @@ namespace ctoot {
 				{
 
 				public:
-					std::vector<boost::any> getValues() override;
+					std::vector<std::any> getValues() override;
 
 				public:
-					MultiWaveOscillatorOctaveControl(int id, std::string name, boost::any value);
+					MultiWaveOscillatorOctaveControl(int id, std::string name, std::any value);
 
 				};
 
