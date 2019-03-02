@@ -12,7 +12,7 @@ using namespace std;
 
 LogLaw::LogLaw(float min, float max, string units) : AbstractLaw(min, max, units)
 {
-	assert(min != 0.f);
+    assert(min != 0.f);
 	assert(max != 0.f);
 	logMin = log10(min);
 	logMax = log10(max);

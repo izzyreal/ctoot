@@ -90,12 +90,12 @@ float MpcEnvelopeControls::deriveDecay()
 }
 
 weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::ATTACK_LAW() {
-	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0f, 3000.0f * 4.7f, "ms");
+	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0000001f, 3000.0f * 4.7f, "ms");
 	return res;
 }
 
 weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::DECAY_LAW() {
-	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0f, 2600.0f * 4.7f, "ms");
+	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0000001f, 2600.0f * 4.7f, "ms");
 	return res;
 }
 
