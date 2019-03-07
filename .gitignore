@@ -1,3 +1,2 @@
-build/
-
-build64/
+/build
+/test_package/build
