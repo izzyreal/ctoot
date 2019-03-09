@@ -12,6 +12,7 @@
 
 using namespace ctoot::audio::system;
 using namespace ctoot::synth;
+using namespace ctoot::midi::core;
 using namespace std;
 
 BasicMidiSynth::BasicMidiSynth(string name)

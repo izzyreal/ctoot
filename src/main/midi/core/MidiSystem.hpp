@@ -6,9 +6,9 @@ namespace ctoot {
 	namespace midi {
 		namespace core {
 
-			class MidiDevice;
-			class MidiInput;
-			class MidiOutput;
+			struct MidiDevice;
+			struct MidiInput;
+			struct MidiOutput;
 
 			class MidiSystem
 				: public moduru::observer::Observable

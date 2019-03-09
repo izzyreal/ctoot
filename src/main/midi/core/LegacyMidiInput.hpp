@@ -11,7 +11,7 @@ namespace ctoot {
 		namespace core {
 
 			class MidiMessage;
-			class MidiDevice;
+			struct MidiDevice;
 			class LegacyDeviceAdaptor;
 
 			class LegacyMidiInput

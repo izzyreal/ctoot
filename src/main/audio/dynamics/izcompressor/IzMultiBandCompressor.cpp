@@ -18,6 +18,9 @@
 
 using namespace ctoot::audio::dynamics::izcompressor;
 using namespace ctoot::audio::dynamics;
+using namespace ctoot::audio::core;
+using namespace ctoot::audio::filter;
+using namespace ctoot::dsp::filter;
 using namespace std;
 
 IzMultiBandCompressor::IzMultiBandCompressor(IzMultiBandControls* c)
@@ -25,7 +28,7 @@ IzMultiBandCompressor::IzMultiBandCompressor(IzMultiBandControls* c)
 	multiBandControls = c;
 	wasBypassed = !c->isBypassed();
 	auto controls = c->getControls();
-	nbands = (controls.size() + 1) / 2;
+	nbands = static_cast<int32_t>((controls.size() + 1) / 2);
 	if (nbands > 2) {
 		nbands = 4;
 		
@@ -74,7 +77,7 @@ void IzMultiBandCompressor::clear()
 	}
 }
 
-int32_t IzMultiBandCompressor::processAudio(ctoot::audio::core::AudioBuffer* buffer)
+int32_t IzMultiBandCompressor::processAudio(AudioBuffer* buffer)
 {
 	const auto controls = multiBandControls->getControls();
 	const auto key = dynamic_cast<IzBandCompressorControls*>(controls[1 + (0 * 2)].lock().get())->getKeyBuffer();
@@ -167,7 +170,7 @@ int32_t IzMultiBandCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 
 			for (auto i = 0; i < ns; i++) {
 				out = (*bandsamples)[i];
-				if (ctoot::audio::core::FloatDenormals::isDenormalOrZero(out))
+				if (FloatDenormals::isDenormalOrZero(out))
 					continue;
 
 				(*samples)[i] += ((b & 1) == 1) ? -out : out;
@@ -187,19 +190,19 @@ int32_t IzMultiBandCompressor::processAudio(ctoot::audio::core::AudioBuffer* buf
 	return AUDIO_OK;
 }
 
-void IzMultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* buf)
+void IzMultiBandCompressor::conformBandBuffers(AudioBuffer* buf)
 {
 	auto nc = buf->getChannelCount();
 	auto ns = buf->getSampleCount();
-	auto sr = static_cast<int32_t>(buf->getSampleRate());
+	auto sr = static_cast<float>(buf->getSampleRate());
 	if (bandBuffers.size() == 0) {
-		bandBuffers = vector<ctoot::audio::core::AudioBuffer*>(nbands);
-		keyBuffers = vector<ctoot::audio::core::AudioBuffer*>(nbands);
+		bandBuffers = vector<AudioBuffer*>(nbands);
+		keyBuffers = vector<AudioBuffer*>(nbands);
 		for (auto b = 0; b < nbands; b++) {
-			bandBuffers[b] = new ctoot::audio::core::AudioBuffer("IzMultiBandCompressor band " + to_string(1 + b), nc, ns, sr);
-			keyBuffers[b] = new ctoot::audio::core::AudioBuffer("IzMultiBandCompressor key " + to_string(1 + b), nc, ns, sr);
+			bandBuffers[b] = new AudioBuffer("IzMultiBandCompressor band " + to_string(1 + b), nc, ns, sr);
+			keyBuffers[b] = new AudioBuffer("IzMultiBandCompressor key " + to_string(1 + b), nc, ns, sr);
 		}
-		updateSampleRate(sr);
+		updateSampleRate(static_cast<int32_t>(sr));
 	}
 	else {
 		if (nchans >= nc && nsamples == ns && sampleRate == sr)
@@ -221,28 +224,28 @@ void IzMultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* 
 			if (sampleRate != sr) {
 				bbuf->setSampleRate(sr);
 				kbuf->setSampleRate(sr);
-				updateSampleRate(sr);
+				updateSampleRate(static_cast<int32_t>(sr));
 			}
 		}
 	}
 
 	nchans = nc;
 	nsamples = ns;
-	sampleRate = sr;
+	sampleRate = static_cast<int32_t>(sr);
 }
 
-void IzMultiBandCompressor::split(ctoot::audio::filter::Crossover* xo, ctoot::audio::core::AudioBuffer* source, ctoot::audio::core::AudioBuffer* low, ctoot::audio::core::AudioBuffer* high)
+void IzMultiBandCompressor::split(Crossover* xo, AudioBuffer* source, AudioBuffer* low, AudioBuffer* high)
 {
     for (auto c = 0; c < source->getChannelCount(); c++) {
         xo->filter(source->getChannel(c), low->getChannel(c), high->getChannel(c), source->getSampleCount(), c);
     }
 }
 
-ctoot::audio::filter::Crossover* IzMultiBandCompressor::createCrossover(CrossoverControl* c)
+Crossover* IzMultiBandCompressor::createCrossover(CrossoverControl* c)
 {
-	auto cs1 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::LPF);
-	auto cs2 = new CrossoverSection(c, ctoot::dsp::filter::FilterShape::HPF);
-	return new ctoot::audio::filter::IIRCrossover(cs1, cs2);
+	auto cs1 = new CrossoverSection(c, FilterShape::LPF);
+	auto cs2 = new CrossoverSection(c, FilterShape::HPF);
+	return new IIRCrossover(cs1, cs2);
 }
 
 void IzMultiBandCompressor::updateSampleRate(int32_t rate)

@@ -18,8 +18,8 @@ MixerInputConnection::MixerInputConnection(MixerConnectedAudioSystem* mca, std::
 	try {
 		to->setInputProcess(from);
 	}
-	catch (exception* e) {
-		e->what();
+	catch (const exception& e) {
+		printf(e.what());
 		return;
 	}
 }
@@ -29,8 +29,8 @@ void MixerInputConnection::close()
 	try {
 		to->setInputProcess(std::weak_ptr<ctoot::audio::core::AudioProcess>());
 	}
-	catch (exception* e) {
-		e->what();
+	catch (const exception& e) {
+		printf(e.what());
 	}
 	from.reset();
 	to = nullptr;

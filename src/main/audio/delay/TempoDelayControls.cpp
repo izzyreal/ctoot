@@ -29,13 +29,13 @@ std::vector<NamedFactor*> TempoDelayControls::factors() {
 
 weak_ptr<LinearLaw> TempoDelayControls::DUCKING_LAW()
 {
-	static auto res = make_shared<LinearLaw>(int(0), int(20), "dB");
+	static auto res = make_shared<LinearLaw>(0.f, 20.f, "dB");
 	return res;
 }
 
 weak_ptr<LogLaw> TempoDelayControls::CUTOFF_LAW()
 {
-	static auto res = make_shared<LogLaw>(int(200), int(20000), "Hz");
+	static auto res = make_shared<LogLaw>(200.f, 20000.f, "Hz");
 	return res;
 }
 
@@ -48,8 +48,8 @@ TempoDelayControls::TempoDelayControls()
 	delayFactor = 0.75f;
 	auto col = make_shared<ControlColumn>();
     col->add(make_shared<DelayFactorControl>(this));
-    col->add((createFeedbackControl()));
-    col->add((createMixControl()));
+    col->add(createFeedbackControl());
+    col->add(createMixControl());
     add(col);
     auto col2 = make_shared<ControlColumn>();
 	auto duckingControlS = createDuckingControl();
@@ -68,11 +68,11 @@ void TempoDelayControls::derive(Control* c)
 	float freq;
 	switch (c->getId()) {
 	case DUCKING_ID:
-		ducking = ctoot::dsp::VolumeUtils::log2lin(-duckingControl.lock()->getValue());
+		ducking = static_cast<float>(ctoot::dsp::VolumeUtils::log2lin(-duckingControl.lock()->getValue()));
 		break;
 	case LOWPASS_ID:
 		freq = lowpassControl.lock()->getValue();
-		lowpassCoeff = 1.0f - exp(-2.0 * M_PI * freq / 44100.0);
+		lowpassCoeff = static_cast<float>(1.0f - exp(-2.0 * M_PI * freq / 44100.0));
 		break;
 	default:
 		super::derive(c);

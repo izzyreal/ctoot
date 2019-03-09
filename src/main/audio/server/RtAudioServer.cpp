@@ -51,7 +51,7 @@ void RtAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, i
 }
 
 void RtAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
-	int channelsToProcess = activeInputs.size() < (inputChannels / 2) ? activeInputs.size() : (inputChannels / 2);
+	int channelsToProcess = static_cast<int>(activeInputs.size() < (inputChannels / 2) ? activeInputs.size() : (inputChannels / 2));
 	if (activeInputs.size() != 0 && inputChannels >= 2) {
 		float* inputBufferL = (float*)InAudio[0];
 		float* inputBufferR = (float*)InAudio[1];
@@ -65,7 +65,7 @@ void RtAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inp
 	}
 	
 	client->work(nFrames);
-	channelsToProcess = activeOutputs.size() < (outputChannels / 2) ? activeOutputs.size() : (outputChannels / 2);
+	channelsToProcess = static_cast<int>(activeOutputs.size() < (outputChannels / 2) ? activeOutputs.size() : (outputChannels / 2));
 	for (int output = 0; output < channelsToProcess; output++) {
 		int counter = 0;
 		for (int i = 0; i < nFrames; i++) {
@@ -90,7 +90,7 @@ void RtAudioServer::work(double** InAudio, double** OutAudio, int nFrames, int o
 			activeInputs[0]->localBuffer[i + 1] = inputBufferR[frameCounter++];
 		}
 	}
-	int channelsToProcess = activeOutputs.size() < (outputChannels / 2) ? activeOutputs.size() : (outputChannels / 2);
+	int channelsToProcess = static_cast<int>(activeOutputs.size() < (outputChannels / 2) ? activeOutputs.size() : (outputChannels / 2));
 	client->work(nFrames);
 	for (int output = 0; output < channelsToProcess; output++) {
 		int counter = 0;

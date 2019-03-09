@@ -46,7 +46,7 @@ int FrequencyModulationProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	auto sr = static_cast<int>(buffer->getSampleRate());
 	if (sampleRate != sr) {
 		sampleRate = sr;
-		delayBuffer = new DelayBuffer(buffer->getChannelCount(), msToSamples(maxDelayMillis, sampleRate), sampleRate);
+		delayBuffer = new DelayBuffer(buffer->getChannelCount(), msToSamples(maxDelayMillis, static_cast<float>(sampleRate)), static_cast<float>(sampleRate));
 		staticDelay = static_cast<int>((delayBuffer->msToSamples(maxDelayMillis / 2.0f)));
 		sampleRateChanged();
 	}
@@ -75,5 +75,5 @@ void FrequencyModulationProcess::close()
 
 int FrequencyModulationProcess::msToSamples(float ms, float sr)
 {
-    return round((ms * sr) / int(1000));
+    return static_cast<int>(round((ms * sr) / 1000));
 }

@@ -8,8 +8,8 @@ namespace ctoot {
 	namespace midi {
 		namespace core {
 
-			class MidiOutput;
-			class MidiInput;
+			struct MidiOutput;
+			struct MidiInput;
 			class MidiConnection;
 
 			class ConnectedMidiSystem

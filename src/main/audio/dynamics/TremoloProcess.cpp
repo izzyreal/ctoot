@@ -11,38 +11,38 @@ using namespace std;
 
 void TremoloProcess::init()
 {
-    samples = vector<vector<float>*>(8);
-    lfoPhase = 0.0f;
+	samples = vector<vector<float>*>(8);
+	lfoPhase = 0.0f;
 }
 
 TremoloProcess::TremoloProcess(TremoloProcessVariables* variables)
 {
-    init();
-    vars = variables;
+	init();
+	vars = variables;
 }
 
 int32_t TremoloProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
-    if(vars->isBypassed())
-        return AUDIO_OK;
+	if (vars->isBypassed())
+		return AUDIO_OK;
 
-    auto ns = buffer->getSampleCount();
-    auto nc = buffer->getChannelCount();
-    for (auto c = int32_t(0); c < nc; c++) {
+	int ns = buffer->getSampleCount();
+	int nc = buffer->getChannelCount();
+	for (int c = 0; c < nc; c++) {
 		samples[c] = buffer->getChannel(c);
-    }
-    auto _lfoInc = int32_t(2) * static_cast< float >(M_PI) * (vars->getRate() / buffer->getSampleRate());
-    auto depth = vars->getDepth();
-    float mod;
-    for (auto s = int32_t(0); s < ns; s++) {
-        mod = int32_t(1) - depth * ((ctoot::dsp::FastMath::sin(lfoPhase) + 1.0f) * 0.5f);
-        lfoPhase += _lfoInc;
-        if(lfoPhase >= M_PI)
-            lfoPhase -= M_PI * int32_t(2);
+	}
+	auto lfoInc = static_cast<float>(2 * M_PI * (vars->getRate() / buffer->getSampleRate()));
+	auto depth = vars->getDepth();
+	float mod;
+	for (int s = 0; s < ns; s++) {
+		mod = 1 - depth * ((ctoot::dsp::FastMath::sin(lfoPhase) + 1.0f) * 0.5f);
+		lfoPhase += lfoInc;
+		if (lfoPhase >= M_PI)
+			lfoPhase -= static_cast<float>(M_PI * 2);
 
-        for (auto c = int32_t(0); c < nc; c++) {
-            (*samples[c])[s] *= mod;
-        }
-    }
-    return AUDIO_OK;
+		for (int c = 0; c < nc; c++) {
+			(*samples[c])[s] *= mod;
+		}
+	}
+	return AUDIO_OK;
 }

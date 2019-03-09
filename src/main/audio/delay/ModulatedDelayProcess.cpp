@@ -104,24 +104,24 @@ void ModulatedDelayProcess::buildModulatorMap(ctoot::audio::core::AudioBuffer* b
 
 void ModulatedDelayProcess::incrementModulators(float timeDelta)
 {
-	auto phaseDelta = timeDelta * vars->getRate() * int(2)* M_PI;
+	auto phaseDelta = static_cast<float>(timeDelta * vars->getRate() * 2 * M_PI);
 	modulatorPhase += phaseDelta;
 	if (modulatorPhase > M_PI) {
-		modulatorPhase -= int(2) * M_PI;
+		modulatorPhase -= static_cast<float>(2 * M_PI);
 	}
 	if (!phaseQuad)
 		return;
 
 	modulatorPhaseQuad = modulatorPhase + 0.5f * static_cast<float>(M_PI);
 	if (modulatorPhaseQuad > M_PI) {
-		modulatorPhaseQuad -= int(2) * M_PI;
+		modulatorPhaseQuad -= static_cast<float>(2 * M_PI);
 	}
 }
 
-#define TWODIVPI (float)(2 / M_PI);
+#define TWODIVPI static_cast<float>(2 / M_PI);
 
 static inline float triangle(float x) {
-	x += M_PI;
+	x += static_cast<float>(M_PI);
 	x *= TWODIVPI;
 	x -= 1;
 	if (x > 1) x -= 4.0f;
@@ -146,5 +146,5 @@ float ModulatedDelayProcess::modulation(int chan)
 
 int ModulatedDelayProcess::msToSamples(float ms, float sr)
 {
-	return round((ms * sr) / int(1000));
+	return static_cast<int>(round((ms * sr) / 1000));
 }

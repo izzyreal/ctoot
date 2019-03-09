@@ -60,12 +60,12 @@ int32_t ClassicDynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	auto sr = static_cast<int32_t>(buffer->getSampleRate());
 	if (sr != sampleRate) {
 		sampleRate = sr;
-		vars->update(sr);
+		vars->update(static_cast<float>(sr));
 	}
 	cacheProcessVariables();
 	auto len = buffer->getSampleCount();
 	auto nc = buffer->getChannelCount();
-	for (auto c = int32_t(0); c < nc; c++) {
+	for (int32_t c = 0; c < nc; c++) {
 		samples[c] = buffer->getChannel(c);
 	}
 	if (vars->isRMS()) {

@@ -14,10 +14,11 @@ namespace ctoot {
 				static bool isSysex(ctoot::midi::core::MidiMessage* msg);
 				static bool isSysex(int status);
 				static ctoot::midi::core::MidiMessage* createSysex(const std::vector<char>& data, int length);
-				static constexpr int32_t SYSTEM_EXCLUSIVE{ int32_t(240) };
-				static constexpr int32_t SPECIAL_SYSTEM_EXCLUSIVE{ int32_t(247) };
-				static constexpr int32_t END_OF_EXCLUSIVE{ int32_t(247) };
-				static constexpr int32_t ID_NON_COMMERCIAL{ int32_t(125) };
+
+				static const unsigned char SYSTEM_EXCLUSIVE{ 240 };
+				static const unsigned char SPECIAL_SYSTEM_EXCLUSIVE{ 247 };
+				static const unsigned char END_OF_EXCLUSIVE{ 247 };
+				static const unsigned char ID_NON_COMMERCIAL{ 125 };
 
 			public:
 				SysexMsg();

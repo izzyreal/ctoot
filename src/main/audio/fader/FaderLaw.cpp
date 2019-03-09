@@ -57,16 +57,19 @@ int FaderLaw::intValue(float v)
 int FaderLaw::binarySearch(vector<float> buf, float key, int min, int max)
 {
 	float mid;
-	while (max >= min) {
-		mid = (min + max) / 2;
+	float fMax = static_cast<float>(max);
+	float fMin = static_cast<float>(min);
 
-		if (buf[mid] < key)
-			min = mid + 1;
-		else if (buf[mid] > key)
-			max = mid - 1;
+	while (fMax >= fMin) {
+		mid = (fMin + fMax) / 2;
+
+		if (buf[static_cast<int>(mid)] < key)
+			fMin = mid + 1;
+		else if (buf[static_cast<int>(mid)] > key)
+			fMax = mid - 1;
 
 		else
-			return mid;
+			return static_cast<int>(mid);
 
 	}
 	return std::min(min, max);

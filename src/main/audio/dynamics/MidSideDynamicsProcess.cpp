@@ -48,7 +48,7 @@ int32_t MidSideDynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	}
 	auto sr = buffer->getSampleRate();
 	if (sr != sampleRate) {
-		sampleRate = sr;
+		sampleRate = static_cast<int32_t>(sr);
 		vars->update(sr);
 	}
 	cacheProcessVariables();

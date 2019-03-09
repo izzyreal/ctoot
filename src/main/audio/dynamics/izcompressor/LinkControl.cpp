@@ -16,7 +16,7 @@ LinkControl::LinkControl(int idOffset, string name, weak_ptr<ctoot::control::Int
 
 void LinkControl::setValue(float value) {
 	IntegerControl::setValue(value);
-	int linkIndex = value - 1;
+	int linkIndex = static_cast<int>(value) - 1;
 	if (linkIndex == -1) {
 		for (auto& c : controls)
 			c.lock()->setLink({});

@@ -41,12 +41,12 @@ int PhaserProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	auto n = vars->getStages();
 	auto depth = vars->getDepth();
 	auto fb = vars->getFeedback();
-	auto _lfoInc = (float)(2) * M_PI * (vars->getRate() / sampleRate);
+	auto lfoInc = static_cast<float>(2 * M_PI * (vars->getRate() / sampleRate));
 	for (auto i = int(0); i < ns; i++) {
 		auto d = dmin + (dmax - dmin) * ((sin(lfoPhase) + 1.0f) * 0.5f);
-		lfoPhase += _lfoInc;
+		lfoPhase += lfoInc;
 		if (lfoPhase >= M_PI)
-			lfoPhase -= M_PI * int(2);
+			lfoPhase -= static_cast<float>(M_PI * 2);
 
 		a1 = (1.0f - d) / (1.0f + d);
 		auto y = (*samples)[i] + zm1 * fb;

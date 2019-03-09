@@ -10,10 +10,9 @@ float AudioServer::getSampleRate() {
 }
 
 void AudioServer::setSampleRate(int rate) {
-	sampleRate = rate;
-	for (auto& b : buffers) {
+	sampleRate = static_cast<float>(rate);
+	for (auto& b : buffers)
 		b->setSampleRate(sampleRate);
-	}
 }
 
 const std::vector<IOAudioProcess*>& AudioServer::getActiveInputs() {

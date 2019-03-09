@@ -23,91 +23,91 @@ using namespace ctoot::audio::dynamics;
 using namespace ctoot::control;
 using namespace std;
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::THRESH_LAW()
+weak_ptr<ControlLaw> DynamicsControls::THRESH_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-40.0f, 20.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::RATIO_LAW()
+weak_ptr<ControlLaw> DynamicsControls::RATIO_LAW()
 {
 	static auto res = make_shared<LogLaw>(1.5f, 10.0f, "");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::INVERSE_RATIO_LAW()
+weak_ptr<ControlLaw> DynamicsControls::INVERSE_RATIO_LAW()
 {
-	static auto res = make_shared<LinearLaw>(1, -1, "");
+	static auto res = make_shared<LinearLaw>(1.f, -1.f, "");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::KNEE_LAW()
+weak_ptr<ControlLaw> DynamicsControls::KNEE_LAW()
 {
 	static auto res = make_shared<LinearLaw>(0.1f, 20.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::ATTACK_LAW()
+weak_ptr<ControlLaw> DynamicsControls::ATTACK_LAW()
 {
 	static auto res = make_shared<LogLaw>(0.1f, 100.0f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
+weak_ptr<ControlLaw> DynamicsControls::LOOK_AHEAD_LAW()
 {
 	static auto res = make_shared<LinearLaw>(0.0f, 15.0f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::HOLD_LAW()
+weak_ptr<ControlLaw> DynamicsControls::HOLD_LAW()
 {
 	static auto res = make_shared<LogLaw>(1.0f, 1000.0f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::RELEASE_LAW()
+weak_ptr<ControlLaw> DynamicsControls::RELEASE_LAW()
 {
 	static auto res = make_shared<LogLaw>(10.0f, 2000.0f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::DRY_GAIN_LAW()
+weak_ptr<ControlLaw> DynamicsControls::DRY_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-80.0f, 20.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::WET_GAIN_LAW()
+weak_ptr<ControlLaw> DynamicsControls::WET_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-80.0f, 20.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::GAIN_LAW()
+weak_ptr<ControlLaw> DynamicsControls::GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(0.0f, 20.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::INPUT_GAIN_LAW()
+weak_ptr<ControlLaw> DynamicsControls::INPUT_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::OUTPUT_GAIN_LAW()
+weak_ptr<ControlLaw> DynamicsControls::OUTPUT_GAIN_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-24.0f, 24.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::DEPTH_LAW()
+weak_ptr<ControlLaw> DynamicsControls::DEPTH_LAW()
 {
 	static auto res = make_shared<LinearLaw>(-80.0f, 0.0f, "dB");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> DynamicsControls::HYSTERESIS_LAW()
+weak_ptr<ControlLaw> DynamicsControls::HYSTERESIS_LAW()
 {
 	static auto res = make_shared<LinearLaw>(0.0f, 20.0f, "dB");
 	return res;
@@ -133,7 +133,7 @@ void DynamicsControls::update(float sampleRate)
 	deriveLookAhead();
 }
 
-void DynamicsControls::derive(ctoot::control::Control* c)
+void DynamicsControls::derive(Control* c)
 {
     switch (c->getId() - idOffset) {
     case DynamicsControlIds::THRESHOLD:
@@ -268,7 +268,7 @@ void DynamicsControls::deriveRMS()
 
 float& DynamicsControls::LOG_0_01()
 {
-	static float res = log(0.01);
+	static auto res = static_cast<float>(log(0.01));
 	return res;
 }
 
@@ -347,7 +347,7 @@ void DynamicsControls::deriveKey()
 	key = keyControl.lock()->getBuffer();
 }
 
-void DynamicsControls::setParent(ctoot::control::CompoundControl* parent)
+void DynamicsControls::setParent(CompoundControl* parent)
 {
 	AudioControls::setParent(parent);
 	if (parent == nullptr && keyControl.lock()) {
@@ -381,9 +381,9 @@ weak_ptr<ControlLaw> DynamicsControls::getThresholdLaw()
 	return THRESH_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createThresholdControl()
+shared_ptr<FloatControl> DynamicsControls::createThresholdControl()
 {
-    auto control = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::THRESHOLD + idOffset, "Threshold", getThresholdLaw(), 0.1f, 0.0f);
+    auto control = make_shared<FloatControl>(DynamicsControlIds::THRESHOLD + idOffset, "Threshold", getThresholdLaw(), 0.1f, 0.0f);
     return control;
 }
 
@@ -397,9 +397,9 @@ bool DynamicsControls::hasRatio()
     return false;
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createRatioControl()
+shared_ptr<FloatControl> DynamicsControls::createRatioControl()
 {
-    auto ratio = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::RATIO + idOffset, "Ratio", RATIO_LAW(), 0.1f, 2.0f);
+    auto ratio = make_shared<FloatControl>(DynamicsControlIds::RATIO + idOffset, "Ratio", RATIO_LAW(), 0.1f, 2.0f);
     return ratio;
 }
 
@@ -408,9 +408,9 @@ bool DynamicsControls::hasKnee()
     return false;
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createKneeControl()
+shared_ptr<FloatControl> DynamicsControls::createKneeControl()
 {
-    auto ratio = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::KNEE + idOffset, "Knee", KNEE_LAW(), 0.1f, 10.0f);
+    auto ratio = make_shared<FloatControl>(DynamicsControlIds::KNEE + idOffset, "Knee", KNEE_LAW(), 0.1f, 10.0f);
     return ratio;
 }
 
@@ -419,9 +419,9 @@ bool DynamicsControls::hasRMS()
     return false;
 }
 
-shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createRMSControl()
+shared_ptr<BooleanControl> DynamicsControls::createRMSControl()
 {
-    auto c = make_shared<ctoot::control::BooleanControl>(DynamicsControlIds::RMS + idOffset, "RMS", false);
+    auto c = make_shared<BooleanControl>(DynamicsControlIds::RMS + idOffset, "RMS", false);
     return c;
 }
 
@@ -435,14 +435,14 @@ weak_ptr<ControlLaw> DynamicsControls::getLookAheadLaw()
 	return LOOK_AHEAD_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createAttackControl()
+shared_ptr<FloatControl> DynamicsControls::createAttackControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", getAttackLaw(), 0.1f, getAttackLaw().lock()->getMinimum());
+    return make_shared<FloatControl>(DynamicsControlIds::ATTACK + idOffset, "Attack", getAttackLaw(), 0.1f, getAttackLaw().lock()->getMinimum());
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createLookAheadControl()
+shared_ptr<FloatControl> DynamicsControls::createLookAheadControl()
 {
-	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::LOOK_AHEAD + idOffset, "Look Ahead", getLookAheadLaw(), 0.1f, getLookAheadLaw().lock()->getMinimum());
+	return make_shared<FloatControl>(DynamicsControlIds::LOOK_AHEAD + idOffset, "Look Ahead", getLookAheadLaw(), 0.1f, getLookAheadLaw().lock()->getMinimum());
 }
 
 bool DynamicsControls::hasLookAhead()
@@ -460,9 +460,9 @@ weak_ptr<ControlLaw> DynamicsControls::getHoldLaw()
 	return HOLD_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createHoldControl()
+shared_ptr<FloatControl> DynamicsControls::createHoldControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HOLD + idOffset, "Hold", getHoldLaw(), 1.0f, 10.0f);
+    return make_shared<FloatControl>(DynamicsControlIds::HOLD + idOffset, "Hold", getHoldLaw(), 1.0f, 10.0f);
 }
 
 weak_ptr<ControlLaw> DynamicsControls::getReleaseLaw()
@@ -470,9 +470,9 @@ weak_ptr<ControlLaw> DynamicsControls::getReleaseLaw()
 	return RELEASE_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createReleaseControl()
+shared_ptr<FloatControl> DynamicsControls::createReleaseControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::RELEASE + idOffset, "Release", getReleaseLaw(), 1.0f, getReleaseLaw().lock()->getMinimum());
+    return make_shared<FloatControl>(DynamicsControlIds::RELEASE + idOffset, "Release", getReleaseLaw(), 1.0f, getReleaseLaw().lock()->getMinimum());
 }
 
 bool DynamicsControls::hasDryGain()
@@ -495,14 +495,14 @@ weak_ptr<ControlLaw> DynamicsControls::getDryGainLaw()
     return DRY_GAIN_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDryGainControl()
+shared_ptr<FloatControl> DynamicsControls::createDryGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry Gain", getDryGainLaw(), 1.0f, getDryGainLaw().lock()->getMinimum());
+    return make_shared<FloatControl>(DynamicsControlIds::DRY_GAIN + idOffset, "Dry Gain", getDryGainLaw(), 1.f, getDryGainLaw().lock()->getMinimum());
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createWetGainControl()
+shared_ptr<FloatControl> DynamicsControls::createWetGainControl()
 {
-	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::WET_GAIN + idOffset, "Wet Gain", getWetGainLaw(), 1.0f, 0);
+	return make_shared<FloatControl>(DynamicsControlIds::WET_GAIN + idOffset, "Wet Gain", getWetGainLaw(), 1.f, 0.f);
 }
 
 bool DynamicsControls::hasGain()
@@ -515,29 +515,29 @@ weak_ptr<ControlLaw> DynamicsControls::getGainLaw()
     return GAIN_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createGainControl()
+shared_ptr<FloatControl> DynamicsControls::createGainControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::GAIN + idOffset, "Gain", getGainLaw(), 1.0f, 0);
+    return make_shared<FloatControl>(DynamicsControlIds::GAIN + idOffset, "Gain", getGainLaw(), 1.f, 0.f);
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createInputGainControl()
+shared_ptr<FloatControl> DynamicsControls::createInputGainControl()
 {
-	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::INPUT_GAIN + idOffset, "Input Gain", INPUT_GAIN_LAW(), 1.0f, 0);
+	return make_shared<FloatControl>(DynamicsControlIds::INPUT_GAIN + idOffset, "Input Gain", INPUT_GAIN_LAW(), 1.f, 0.f);
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createOutputGainControl()
+shared_ptr<FloatControl> DynamicsControls::createOutputGainControl()
 {
-	return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::OUTPUT_GAIN + idOffset, "Output Gain", OUTPUT_GAIN_LAW(), 1.0f, 0);
+	return make_shared<FloatControl>(DynamicsControlIds::OUTPUT_GAIN + idOffset, "Output Gain", OUTPUT_GAIN_LAW(), 1.0f, 0.f);
 }
 
-shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createMuteControl()
+shared_ptr<BooleanControl> DynamicsControls::createMuteControl()
 {
-	return make_shared<ctoot::control::BooleanControl>(DynamicsControlIds::MUTE + idOffset, "Mute", false);
+	return make_shared<BooleanControl>(DynamicsControlIds::MUTE + idOffset, "Mute", false);
 }
 
-shared_ptr<ctoot::control::BooleanControl> DynamicsControls::createSoloControl()
+shared_ptr<BooleanControl> DynamicsControls::createSoloControl()
 {
-	return make_shared<ctoot::control::BooleanControl>(DynamicsControlIds::SOLO + idOffset, "Solo", false);
+	return make_shared<BooleanControl>(DynamicsControlIds::SOLO + idOffset, "Solo", false);
 }
 
 bool DynamicsControls::hasDepth()
@@ -550,9 +550,9 @@ weak_ptr<ControlLaw> DynamicsControls::getDepthLaw()
     return DEPTH_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createDepthControl()
+shared_ptr<FloatControl> DynamicsControls::createDepthControl()
 {
-    return make_shared<ctoot::control::FloatControl>(DynamicsControlIds::DEPTH + idOffset, "Depth", getDepthLaw(), 1.0f, -40);
+    return make_shared<FloatControl>(DynamicsControlIds::DEPTH + idOffset, "Depth", getDepthLaw(), 1.f, -40.f);
 }
 
 bool DynamicsControls::hasHysteresis()
@@ -565,9 +565,9 @@ weak_ptr<ControlLaw> DynamicsControls::getHysteresisLaw()
     return HYSTERESIS_LAW();
 }
 
-shared_ptr<ctoot::control::FloatControl> DynamicsControls::createHysteresisControl()
+shared_ptr<FloatControl> DynamicsControls::createHysteresisControl()
 {
-    auto hystC = make_shared<ctoot::control::FloatControl>(DynamicsControlIds::HYSTERESIS + idOffset, "Hysteresis", getHysteresisLaw(), 1.0f, 0.0f);
+    auto hystC = make_shared<FloatControl>(DynamicsControlIds::HYSTERESIS + idOffset, "Hysteresis", getHysteresisLaw(), 1.0f, 0.0f);
     return hystC;
 }
 
@@ -585,12 +585,12 @@ bool DynamicsControls::hasChannelMode() {
 	return false;
 }
 
-shared_ptr<ctoot::control::EnumControl> DynamicsControls::createDetectionChannelControl() {
-	return make_shared<ctoot::audio::dynamics::izcompressor::ChannelControl>(DynamicsControlIds::DETECTION_CHANNEL_MODE + idOffset, "Detection Channel Control");
+shared_ptr<EnumControl> DynamicsControls::createDetectionChannelControl() {
+	return make_shared<izcompressor::ChannelControl>(DynamicsControlIds::DETECTION_CHANNEL_MODE + idOffset, "Detection Channel Control");
 }
 
-shared_ptr<ctoot::control::EnumControl> DynamicsControls::createAttenuationChannelControl() {
-	return make_shared<ctoot::audio::dynamics::izcompressor::ChannelControl>(DynamicsControlIds::ATTENUATION_CHANNEL_MODE + idOffset, "Attenuation Channel Control");
+shared_ptr<EnumControl> DynamicsControls::createAttenuationChannelControl() {
+	return make_shared<izcompressor::ChannelControl>(DynamicsControlIds::ATTENUATION_CHANNEL_MODE + idOffset, "Attenuation Channel Control");
 }
 
 float DynamicsControls::getThreshold()
@@ -767,7 +767,7 @@ void DynamicsControls::init() {
 		gainReductionIndicator = gri;
 		add(std::move(gri));
 	}
-	auto g1 = make_shared<ctoot::control::ControlColumn>();
+	auto g1 = make_shared<ControlColumn>();
 	if (hasKey()) {
 		auto kc = createKeyControl();
 		keyControl = kc;
@@ -809,7 +809,7 @@ void DynamicsControls::init() {
 	derive(tc.get());
 	g1->add(std::move(tc));
 	add(std::move(g1));
-	auto g2 = make_shared<ctoot::control::ControlColumn>();
+	auto g2 = make_shared<ControlColumn>();
 	if (hasRMS()) {
 		auto rc = createRMSControl();
 		rmsControl = rc;
@@ -832,7 +832,7 @@ void DynamicsControls::init() {
 	g2->add(std::move(rc));
 	add(std::move(g2));
 
-	auto g3 = make_shared<ctoot::control::ControlColumn>();
+	auto g3 = make_shared<ControlColumn>();
 	auto useg3 = false;
 	if (hasWetGain()) {
 		auto wgc = createWetGainControl();

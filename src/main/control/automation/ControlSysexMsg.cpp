@@ -15,7 +15,7 @@ constexpr int32_t ControlSysexMsg::LENGTH;
 
 bool ControlSysexMsg::isControl(const vector<char>& data)
 {
-    return (data[0] == static_cast< int8_t >(SYSTEM_EXCLUSIVE)) && (data[1] == ID_NON_COMMERCIAL) && data.size() == LENGTH;
+    return (data[0] == SYSTEM_EXCLUSIVE) && (data[1] == ID_NON_COMMERCIAL) && data.size() == LENGTH;
 }
 
 const vector<char> ControlSysexMsg::createControl(int32_t providerId, int32_t moduleId, int32_t instanceIndex, int32_t controlId, int32_t value)
@@ -30,14 +30,14 @@ const vector<char> ControlSysexMsg::createControl(int32_t providerId, int32_t mo
 	}
 
 	auto data = vector<char>(LENGTH);
-    data[0] = static_cast< int8_t >(SYSTEM_EXCLUSIVE);
+    data[0] = static_cast<char>(SYSTEM_EXCLUSIVE);
     data[1] = ID_NON_COMMERCIAL;
-    data[2] = static_cast< int8_t >((providerId & int32_t(127)));
-    data[3] = static_cast< int8_t >((moduleId & int32_t(127)));
-    data[4] = static_cast< int8_t >((instanceIndex & int32_t(7)));
-    data[5] = static_cast< int8_t >((controlId & int32_t(127)));
-    data[6] = static_cast< int8_t >((value & int32_t(127)));
-    data[7] = static_cast< int8_t >(((value >> int32_t(7)) & int32_t(127)));
+    data[2] = static_cast<int8_t>(providerId & 127);
+    data[3] = static_cast<int8_t>(moduleId & 127);
+    data[4] = static_cast<int8_t>(instanceIndex & 7);
+    data[5] = static_cast<int8_t>(controlId & 127);
+    data[6] = static_cast<int8_t>(value & 127);
+    data[7] = static_cast<int8_t>((value >> 7) & 127);
 	return data;
 }
 

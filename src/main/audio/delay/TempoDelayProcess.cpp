@@ -79,7 +79,7 @@ int TempoDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	}
 	smoothedMix += 0.05f * (mix - smoothedMix);
 	tappedBuffer->makeSilence();
-	auto delay = static_cast<int>(msToSamples(60000.0 * vars->getDelayFactor() / bpm, sampleRate));
+	auto delay = static_cast<int>(msToSamples(60000.f * vars->getDelayFactor() / bpm, sampleRate));
 	//MLOG("delay: " + to_string(delay));
 	for (int c = 0; c < nc; c++) {
 		if (delay < ns)

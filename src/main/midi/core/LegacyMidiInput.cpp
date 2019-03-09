@@ -5,6 +5,8 @@
 
 //#include <RtMidi.h>
 
+#include <stdio.h>
+
 using namespace ctoot::midi::core;
 using namespace std;
 
@@ -29,7 +31,8 @@ void LegacyMidiInput::transport(ctoot::midi::core::MidiMessage* message, int tim
 		try {
 			adaptor->open();
 		}
-		catch (const std::exception &mua) {
+		catch (const std::exception &e) {
+			printf(e.what());
 		}
 	}
 	vector<unsigned char> msgData;

@@ -3,6 +3,8 @@
 #include <audio/core/ChannelFormat.hpp>
 #include <control/BooleanControl.hpp>
 
+#include <stdio.h>
+
 using namespace ctoot::audio::core;
 using namespace ctoot::control;
 using namespace ctoot::audio::mixer;
@@ -38,8 +40,8 @@ void BusControls::update(moduru::observer::Observable* o, std::any a)
 			soloIndicator->setValue(hasSolo());
 		}
 	}
-	catch (std::bad_any_cast e) {
-		e.what();
+	catch (const std::bad_any_cast& e) {
+		printf(e.what());
 	}
 }
 

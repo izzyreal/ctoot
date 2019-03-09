@@ -23,7 +23,7 @@ MultiBandCompressor::MultiBandCompressor(MultiBandControls* c)
 	multiBandControls = c;
 	wasBypassed = !c->isBypassed();
 	auto controls = c->getControls();
-	nbands = (controls.size() + 1) / 2;
+	nbands = (static_cast<int>(controls.size()) + 1) / 2;
 	if (nbands > 2) {
 		nbands = 4;
 		loXO = createCrossover(dynamic_cast<CrossoverControl*>(controls[1 + 1].lock().get()));
@@ -106,13 +106,13 @@ void MultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* bu
 {
 	auto nc = buf->getChannelCount();
 	auto ns = buf->getSampleCount();
-	auto sr = static_cast<int32_t>(buf->getSampleRate());
+	auto sr = static_cast<float>(buf->getSampleRate());
 	if (bandBuffers.size() == 0) {
 		bandBuffers = vector<ctoot::audio::core::AudioBuffer*>(nbands);
 		for (auto b = 0; b < nbands; b++) {
 			bandBuffers[b] = new ctoot::audio::core::AudioBuffer("MultiBandCompressor band " + to_string(1 + b), nc, ns, sr);
 		}
-		updateSampleRate(sr);
+		updateSampleRate(static_cast<int32_t>(sr));
 	}
 	else {
 		if (nchans >= nc && nsamples == ns && sampleRate == sr)
@@ -130,13 +130,13 @@ void MultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* bu
 			}
 			if (sampleRate != sr) {
 				bbuf->setSampleRate(sr);
-				updateSampleRate(sr);
+				updateSampleRate(static_cast<int32_t>(sr));
 			}
 		}
 	}
 	nchans = nc;
 	nsamples = ns;
-	sampleRate = sr;
+	sampleRate = static_cast<int32_t>(sr);
 }
 
 void MultiBandCompressor::split(ctoot::audio::filter::Crossover* xo, ctoot::audio::core::AudioBuffer* source, ctoot::audio::core::AudioBuffer* low, ctoot::audio::core::AudioBuffer* high)

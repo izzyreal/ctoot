@@ -27,13 +27,15 @@ void MixerConnectedAudioSystem::notifyObservers(std::any obj)
 	try {
 		deviceCandidate = std::any_cast<std::weak_ptr<AudioDevice>>(obj);
 	}
-	catch (const std::bad_any_cast const &e) {
+	catch (const std::bad_any_cast &e) {
 		MLOG("cast to AudioDevice failed, trying to cast to AudioOutput");
+		std::string error = e.what();
+		MLOG(error);
 		try {
 			outputCandidate = std::any_cast<std::weak_ptr<AudioOutput>>(obj);
-			MLOG("outputCandidate is AudioOutput" + outputCandidate.lock()->getName());
+			//MLOG("outputCandidate is AudioOutput" + outputCandidate.lock()->getName());
 		}
-		catch (const std::bad_any_cast const &e1) {
+		catch (const std::bad_any_cast &e1) {
 			string msg = e1.what();
 			MLOG("cast error: " + msg);
 			return;
@@ -149,8 +151,8 @@ void MixerConnectedAudioSystem::createConnectionFrom(std::weak_ptr<AudioOutput> 
 		}
 		createConnection(output, strip.get(), 0);
 	}
-	catch (exception* e) {
-		e->what();
+	catch (const exception& e) {
+		printf(e.what());
 	}
 }
 

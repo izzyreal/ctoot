@@ -3,9 +3,10 @@
 #include <observer/Observable.hpp>
 #include <control/ChainMutation.hpp>
 
-#include <Logger.hpp>
+#include <stdio.h>
 
 using namespace ctoot::audio::core;
+using namespace ctoot::control;
 
 ControlChainObserver::ControlChainObserver(AudioProcessChain* apc) {
 	this->apc = apc;
@@ -13,18 +14,16 @@ ControlChainObserver::ControlChainObserver(AudioProcessChain* apc) {
 
 void ControlChainObserver::update(moduru::observer::Observable* o, std::any arg)
 {
-	ctoot::control::ChainMutation* candidate = nullptr;
+	ChainMutation* candidate = nullptr;
 	try {
-		candidate = std::any_cast<ctoot::control::ChainMutation*>(arg);
+		candidate = std::any_cast<ChainMutation*>(arg);
 	}
-	catch (std::bad_any_cast e) {
-		std::string msg = e.what();
-		//MLOG("Couldn't cast to chain mutation " + msg);
+	catch (const std::bad_any_cast& e) {
+		printf(e.what());
 		return;
 	}
 	apc->mutationQueue.try_enqueue(candidate);
 }
 
 ControlChainObserver::~ControlChainObserver() {
-	apc = nullptr;
 }

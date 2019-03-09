@@ -42,8 +42,8 @@ void UnrealAudioServer::work(float* OutAudio, int NumSamples) {
 		for (int i = 0; i < NumSamples; i+=2) {
 			auto sampleL = activeOutputs[0]->localBuffer[counter++];
 			auto sampleR = activeOutputs[0]->localBuffer[counter++];
-			OutAudio[i] = sampleL;
-			OutAudio[i + 1] = sampleR;
+			OutAudio[i] = static_cast<float>(sampleL);
+			OutAudio[i + 1] = static_cast<float>(sampleR);
 		}
 	}
 }

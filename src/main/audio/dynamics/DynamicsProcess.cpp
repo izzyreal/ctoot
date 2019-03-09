@@ -63,7 +63,7 @@ int32_t DynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	auto sr = static_cast<int32_t>(buffer->getSampleRate());
 	if (sr != sampleRate) {
 		sampleRate = sr;
-		vars->update(sr);
+		vars->update(static_cast<float>(sr));
 	}
 	cacheProcessVariables();
 	auto targetGain = 1.0f;

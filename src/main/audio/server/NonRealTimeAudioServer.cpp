@@ -5,6 +5,8 @@
 #include <audio/server/AudioServer.hpp>
 #include <audio/server/IOAudioProcess.hpp>
 
+#include <stdio.h>
+
 using namespace ctoot::audio::server;
 using namespace std;
 
@@ -31,6 +33,7 @@ void NonRealTimeAudioServer::setRealTime(bool rt)
 			stop();
 		}
 		catch (const exception& e) {
+			printf(e.what());
 		}
 		realTime = rt;
 		for (auto& buffer : server.lock()->getBuffers()) {
@@ -39,7 +42,8 @@ void NonRealTimeAudioServer::setRealTime(bool rt)
 		try {
 			start();
 		}
-		catch (exception* e) {
+		catch (const exception& e) {
+			printf(e.what());
 		}
 	}
 }

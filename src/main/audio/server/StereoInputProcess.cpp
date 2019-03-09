@@ -19,8 +19,8 @@ int StereoInputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer) {
 	auto ns = buffer->getSampleCount() < localBuffer.size() ? buffer->getSampleCount() : localBuffer.size();
 	int sampleCounter = 0;
 	for (int i = 0; i < ns; i++) {
-		(*left)[i] = localBuffer[sampleCounter++];
-		(*right)[i] = localBuffer[sampleCounter++];
+		(*left)[i] = static_cast<float>(localBuffer[sampleCounter++]);
+		(*right)[i] = static_cast<float>(localBuffer[sampleCounter++]);
 	}
 	return AUDIO_OK;
 }

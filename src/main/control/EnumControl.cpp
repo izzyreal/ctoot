@@ -1,6 +1,7 @@
 #include <control/EnumControl.hpp>
 
 #include <string>
+#include <stdio.h>
 
 using namespace std;
 using namespace ctoot::control;
@@ -52,7 +53,7 @@ void EnumControl::setValue(std::any value)
 
 std::any EnumControl::getValue()
 {
-    return value;
+	return value;
 }
 
 bool EnumControl::isValueSupported(std::any value)
@@ -98,12 +99,15 @@ string EnumControl::getValueString()
 		int i = std::any_cast<int>(getValue());
 		return to_string(i);
 	}
-	catch (std::bad_any_cast& e) {
+	catch (std::bad_any_cast& e1) {
+		printf("Bad anycast, but will try cast to string\n");
+		printf(e1.what());
 		try {
 			string s = std::any_cast<string>(getValue());
 			return s;
 		}
-		catch (std::bad_any_cast& e) {
+		catch (std::bad_any_cast& e2) {
+			printf(e2.what());
 		}
 	}
 	return nullptr;
@@ -113,11 +117,12 @@ void EnumControl::setIntValue(int value)
 {
 	auto values = getValues();
 	if (value >= values.size()) return;
-    try {
+	try {
 		setValue(getValues()[value]);
-    } catch (const exception& e) {
+	}
+	catch (const exception& e) {
 		printf(e.what());
-    }
+	}
 }
 
 int EnumControl::getIntValue()
@@ -139,10 +144,10 @@ int EnumControl::getIntValue()
 
 int EnumControl::getWidthLimit()
 {
-    return 40;
+	return 40;
 }
 
 bool EnumControl::hasLabel()
 {
-    return false;
+	return false;
 }

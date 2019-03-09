@@ -24,7 +24,7 @@ namespace ctoot {
 
 			private:
 				friend class MeterControls;
-				friend class ChannelState;
+				friend struct ChannelState;
 				friend class TypeControl;
 				friend class OverIndicator;
 				friend class MindBControl;

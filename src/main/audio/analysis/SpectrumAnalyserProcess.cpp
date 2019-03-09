@@ -30,7 +30,7 @@ void applyWindow(vector<float>& data) {
 	auto ns = data.size();
 	for (int i = 0; i < ns; i++) {
 		double multiplier = 0.5 * (1.0 - cos(2.0 * M_PI * i / (ns - 1.0)));
-		data[i] = multiplier * data[i];
+		data[i] = static_cast<float>(multiplier * data[i]);
 	}
 }
 
@@ -68,7 +68,7 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 	}
 
 	if (sampleRate != buffer->getSampleRate()) {
-		this->sampleRate = buffer->getSampleRate();
+		this->sampleRate = static_cast<int>(buffer->getSampleRate());
 		c->setSampleRate(buffer->getSampleRate());
 	}
 
@@ -104,7 +104,7 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 		}
 
 		const double f_abs = sqrt(real * real + img * img);
-		float v = abs(f_abs / (FFT_SIZE / 2));
+		float v = static_cast<float>(abs(f_abs / (FFT_SIZE / 2)));
 		c->setValue(vCounter++, v);
 
 	}

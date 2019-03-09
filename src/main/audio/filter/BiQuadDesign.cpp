@@ -11,5 +11,10 @@ BiQuadDesign::BiQuadDesign(FilterSpecification* spec)
 
 void BiQuadDesign::design(int32_t sampleRate)
 {
-    a = ctoot::dsp::filter::BiQuadDesigner::design(spec->getShape(), spec->getLeveldB(), spec->getFrequency(), static_cast< float >(sampleRate), spec->getResonance());
+    a = ctoot::dsp::filter::BiQuadDesigner::design(
+		spec->getShape(), 
+		spec->getLeveldB(), 
+		static_cast<float>(spec->getFrequency()),
+		static_cast<float>(sampleRate), 
+		spec->getResonance());
 }

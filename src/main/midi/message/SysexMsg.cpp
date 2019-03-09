@@ -27,7 +27,7 @@ MidiMessage* SysexMsg::createSysex(const vector<char>& data, int32_t length)
     return sysex;
 }
 
-constexpr int32_t SysexMsg::SYSTEM_EXCLUSIVE;
-constexpr int32_t SysexMsg::SPECIAL_SYSTEM_EXCLUSIVE;
-constexpr int32_t SysexMsg::END_OF_EXCLUSIVE;
-constexpr int32_t SysexMsg::ID_NON_COMMERCIAL;
+const unsigned char SysexMsg::SYSTEM_EXCLUSIVE;
+const unsigned char SysexMsg::SPECIAL_SYSTEM_EXCLUSIVE;
+const unsigned char SysexMsg::END_OF_EXCLUSIVE;
+const unsigned char SysexMsg::ID_NON_COMMERCIAL;

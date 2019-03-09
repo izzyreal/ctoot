@@ -10,6 +10,7 @@
 #include <math.h>
 
 using namespace ctoot::synth::modules::oscillator;
+using namespace  ctoot::dsp;
 
 LFO::LFO(LFOVariables* vars, float initPhase)
 	: LFO(vars)
@@ -21,13 +22,13 @@ LFO::LFO(LFOVariables* vars)
 {
     this->vars = vars;
     auto spread = vars->getDeviation();
-    rateDelta = spread * static_cast< float >(rand()) - spread / int32_t(2);
+    rateDelta = spread * static_cast<float>(rand()) - spread / 2;
     setSampleRate(44100);
 }
 
 void LFO::setSampleRate(int32_t sampleRate)
 {
-    xDelta = static_cast< float >((int32_t(2) * M_PI / sampleRate));
+    xDelta = static_cast<float>(2 * M_PI / sampleRate);
 }
 
 void LFO::update()
@@ -38,9 +39,9 @@ void LFO::update()
 
 float ctoot::synth::modules::oscillator::LFO::getSample()
 {
-	modulatorPhase += phaseDelta;
+	modulatorPhase += static_cast<float>(phaseDelta);
 	if (modulatorPhase > M_PI) {
-		modulatorPhase -= int32_t(2) * M_PI;
+		modulatorPhase -= static_cast<float>(2 * M_PI);
 	}
-	return (shape == 0) ? ctoot::dsp::FastMath::sin(modulatorPhase) : ctoot::dsp::FastMath::triangle(modulatorPhase);
+	return (shape == 0) ? FastMath::sin(modulatorPhase) : FastMath::triangle(modulatorPhase);
 }

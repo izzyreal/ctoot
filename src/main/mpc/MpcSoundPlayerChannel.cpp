@@ -136,11 +136,13 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	auto sc = lMixer->getMixerControls().lock()->getStripControls(to_string(voice.lock()->getStripNumber())).lock();
 	
 	// We set the FX send level.
-	dynamic_pointer_cast<MpcFaderControl>(dynamic_pointer_cast<CompoundControl>(sc->find("FX#1").lock())->find("Level").lock())->setValue(ifmc->getFxSendLevel());
+	dynamic_pointer_cast<MpcFaderControl>(
+		dynamic_pointer_cast<CompoundControl>(sc->find("FX#1").lock())->find("Level").lock())->setValue(static_cast<float>(ifmc->getFxSendLevel())
+		);
 	
 	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
-	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan").lock())->setValue((smc->getPanning()) / 100.0);
-	dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock())->setValue(smc->getLevel());
+	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan").lock())->setValue(static_cast<float>(smc->getPanning() / 100.0));
+	dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock())->setValue(static_cast<float>(smc->getLevel()));
 
 	sc = lMixer->getMixerControls().lock()->getStripControls(to_string(voice.lock()->getStripNumber() + 32)).lock();
 	mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
@@ -171,12 +173,12 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	* We silence the aux buses that are not in use by this voice.
 	* We set the level for the MIX OUT that is in use, if any.
 	*/
-	int selectedAssignableMixOutPair = (int)(ceil((ifmc->getOutput() - 2) / 2.0));
+	int selectedAssignableMixOutPair = static_cast<int>(ceil((ifmc->getOutput() - 2) / 2.0));
 	for (int i = 0; i < 4; i++) {
 		auto auxControl = dynamic_pointer_cast<ctoot::control::CompoundControl>(sc->find("AUX#" + to_string(i + 1)).lock());
 		auto auxLevel = dynamic_pointer_cast<MpcFaderControl>(auxControl->find("Level").lock());
 		if (i == selectedAssignableMixOutPair) {
-			auxLevel->setValue(ifmc->getVolumeIndividualOut());
+			auxLevel->setValue(static_cast<float>(ifmc->getVolumeIndividualOut()));
 		}
 		else {
 			auxLevel->setValue(0);

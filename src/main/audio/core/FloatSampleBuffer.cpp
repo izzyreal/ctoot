@@ -204,7 +204,7 @@ void FloatSampleBuffer::insertChannel(int index, bool silent)
 
 void FloatSampleBuffer::insertChannel(int index, bool silent, bool lazy)
 {
-	int physSize = channels.size();
+	int physSize = static_cast<int>(channels.size());
 	int virtSize = getChannelCount();
 	vector<float> newChannel;
 	if (physSize > virtSize) {

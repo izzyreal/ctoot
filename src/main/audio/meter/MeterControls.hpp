@@ -18,11 +18,11 @@ namespace ctoot {
 			class MindBControl;
 
 			struct ChannelState {
-				int overs{};
-				float maxPeak{};
-				float peak{};
-				float maxAverage{};
-				float average{};
+				int overs;
+				float maxPeak;
+				float peak;
+				float maxAverage;
+				float average;
 			};
 
 			class MeterControls
@@ -42,9 +42,9 @@ namespace ctoot {
 			
 			private:
 				std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
-				std::vector<ChannelState> channelState{  };
-				std::weak_ptr<TypeControl> typeControl{  };
-				std::weak_ptr<MindBControl> mindBControl{  };
+				std::vector<ChannelState> channelState;
+				std::weak_ptr<TypeControl> typeControl;
+				std::weak_ptr<MindBControl> mindBControl;
 				float peakRelease{ 0.005f };
 				float averageSmooth{ 0.038f };
 				float maxdB{ 20.0f }, mindB{ -80.0f };

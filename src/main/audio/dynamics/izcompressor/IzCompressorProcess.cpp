@@ -66,7 +66,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	}
 	auto sr = buffer->getSampleRate();
 	if (sr != sampleRate) {
-		sampleRate = sr;
+		sampleRate = static_cast<int32_t>(sr);
 		vars->update(sr);
 	}
 	cacheProcessVariables();
@@ -116,7 +116,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	vector<float> factorsL(len);
 	vector<float> factorsR(len);
 
-	const int lookAheadLenSamples = lookAhead * mslen;
+	const auto lookAheadLenSamples = static_cast<int>(lookAhead * mslen);
 
 	if (dcm.compare("M") == 0 || dcm.compare("S") == 0) {
 		buffer->encodeMidSide();
@@ -183,7 +183,7 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 		}
 	}
 
-	const int correctiveLenSamples = (MAX_LOOK_AHEAD * mslen);
+	const auto correctiveLenSamples = static_cast<int>(MAX_LOOK_AHEAD * mslen);
 
 	lab->read(aBuffer0, aBuffer1, -correctiveLenSamples, len);
 	lab->moveReadPos(len);

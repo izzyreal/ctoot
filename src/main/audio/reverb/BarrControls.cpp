@@ -27,12 +27,12 @@ BarrControls::BarrControls()
 int MAX_PRE_DELAY_MS = 200;
 
 weak_ptr<ControlLaw> BarrControls::PRE_DELAY_LAW() {
-	static shared_ptr<ControlLaw> res = make_shared<LinearLaw>(0, MAX_PRE_DELAY_MS, "ms");
+	static shared_ptr<ControlLaw> res = make_shared<LinearLaw>(0.f, static_cast<float>(MAX_PRE_DELAY_MS), "ms");
 	return res;
 }
 
 weak_ptr<ControlLaw> BarrControls::DIFFUSION_LAW() {
-	static shared_ptr<ControlLaw> res = make_shared<LinearLaw>(0, 0.99f, "");
+	static shared_ptr<ControlLaw> res = make_shared<LinearLaw>(0.f, 0.99f, "");
 	return res;
 }
 weak_ptr<ControlLaw> BarrControls::SIZE_LAW() {

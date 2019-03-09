@@ -8,16 +8,15 @@ MidiMessage::MidiMessage() {
 
 MidiMessage::MidiMessage(vector<char> data) {
 	this->data = data;
-	this->length = data.size();
+	length = static_cast<int>(data.size());
 }
 
 MidiMessage* MidiMessage::clone() {
-	MidiMessage* result;
-	return result;
+	return {};
 }
 
 int MidiMessage::getLength() {
-	return (int)(data.size());
+	return static_cast<int>(data.size());
 }
 
 vector<char>* MidiMessage::getMessage() {

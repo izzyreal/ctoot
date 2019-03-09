@@ -589,7 +589,7 @@ public:
         PreviousRightTank = 0.;
         PreDelayTime = 100 * (SampleRate / 1000);
         MixSmooth = EarlyLateSmooth = BandwidthSmooth = DampingSmooth = PredelaySmooth = SizeSmooth = DecaySmooth = DensitySmooth = 0.;
-        ControlRate = SampleRate / 1000;
+        ControlRate = static_cast<int>(SampleRate / 1000);
         ControlRateCounter = 0;
         reset();
 		setParameter(MVerb<float>::DAMPINGFREQ, 0.5);
@@ -870,7 +870,7 @@ public:
     void setParameter(int index, T value){
         switch(index){
             case DAMPINGFREQ:
-                    DampingFreq =  1. - value;
+                    DampingFreq =  static_cast<T>(1 - value);
                     break;
             case DENSITY:
                     Density1 = value;
@@ -882,7 +882,7 @@ public:
                     PreDelayTime = value;
                     break;
             case SIZE:
-                    Size = (0.95 * value) + 0.05;
+                    Size = static_cast<T>((0.95 * value) + 0.05);
 					allpassFourTap[0].Clear();
 					allpassFourTap[1].Clear();
 					allpassFourTap[2].Clear();

@@ -7,9 +7,8 @@
 #define _USE_MATH_DEFINES
 #include <math.h>
 
-#include <Logger.hpp>
-
 using namespace ctoot::synth::modules::oscillator;
+using namespace ctoot::synth;
 using namespace std;
 
 vector<int> MultiWave::index;
@@ -31,8 +30,8 @@ void MultiWave::createIndex()
 	index = vector<int>(25088);
 	int prevIx = 0;
 	for (int n = 0; n < 128; n++) {
-		float f = ctoot::synth::SynthChannel::midiFreq(n);
-		int ix = 2 * f;
+		float f = SynthChannel::midiFreq(static_cast<float>(n));
+		int ix = static_cast<int>(2 * f);
 		for (int j = prevIx; j <= ix; j++) {
 			index[j] = n;
 		}
@@ -44,26 +43,26 @@ void MultiWave::createWaves(int32_t size, float fNyquist)
 {
 	sinetable = vector<float>(size);
 	for (int i = 0; i < size; i++) {
-		sinetable[i] = sin(2.0 * M_PI * double(i) / size);
+		sinetable[i] = static_cast<float>(sin(2.0 * M_PI * i / size));
 	}
 	float max = 0.0f;
 	for (int n = 0; n < 128; n++) {
 		auto data = vector<float>(size + 1);
-		float f = ctoot::synth::SynthChannel::midiFreq(n);
-		int npartials = fNyquist / f;
+		float f = SynthChannel::midiFreq(static_cast<float>(n));
+		int npartials = static_cast<int>(fNyquist / f);
 		int sign = 1;
 		float comp = 0.0f;
 		for (int p = 0; p < npartials; p++) {
 			comp = static_cast<float>(cos(p * M_PI / 2 / npartials));
 			comp *= comp;
-			sign = partial(&data, data.size() - 1, p + 1, sign, comp);
+			sign = partial(&data, static_cast<int32_t>(data.size()) - 1, p + 1, sign, comp);
 			data[data.size() - 1] = data[0];
 		}
 		if (n == 0)
 			max = getMax(&data);
 
 		normalise(&data, max);
-		wave[n] = make_shared<SingleWave>(data, data.size() - 1);
+		wave[n] = make_shared<SingleWave>(data, static_cast<float>(data.size() - 1));
 	}
 	sinetable.clear();
 }

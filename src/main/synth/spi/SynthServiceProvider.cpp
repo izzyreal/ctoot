@@ -41,8 +41,8 @@ shared_ptr<ctoot::synth::SynthControls> SynthServiceProvider::createControls(int
 		if (d->getModuleId() == moduleId) {
 			return createControls(d);
 		}
-		return {};
 	}
+	return {};
 }
 
 void SynthServiceProvider::addControls

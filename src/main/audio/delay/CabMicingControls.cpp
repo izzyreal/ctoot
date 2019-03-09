@@ -21,7 +21,7 @@ constexpr float CabMicingControls::DRIVE_UNIT_SEPARATION;
 
 weak_ptr<ControlLaw> CabMicingControls::NEAR_DISTANCE_LAW()
 {
-	static auto res = make_shared<LinearLaw>(1, 12, "inches");
+	static auto res = make_shared<LinearLaw>(1.f, 12.f, "inches");
     return res;
 }
 

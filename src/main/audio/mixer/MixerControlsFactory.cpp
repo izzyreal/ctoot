@@ -43,13 +43,13 @@ void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls
 	auto lMixerControls = mixerControls.lock();
 	lMixerControls->createStripControls(MixerControlsIds::MAIN_STRIP, 0, mainStripName, mainFormat);
 	auto auxControls = lMixerControls->getAuxBusControls();
-	int naux = auxControls.size();
+	auto naux = static_cast<int>(auxControls.size());
 	for (int i = 0; i < naux; i++) {
 		auto busControls = auxControls[i];
 		lMixerControls->createStripControls(MixerControlsIds::AUX_STRIP, i, busControls->getName(), false, busControls->getChannelFormat());
 	}
 	auto fxControlsList = lMixerControls->getFxBusControls();
-	int nsends = fxControlsList.size();
+	auto nsends = static_cast<int>(fxControlsList.size());
 	for (int i = 0; i < nsends; i++) {
 		auto busControls = fxControlsList[i];
 		lMixerControls->createStripControls(MixerControlsIds::FX_STRIP, i, busControls->getName(), i < nreturns, busControls->getChannelFormat());
