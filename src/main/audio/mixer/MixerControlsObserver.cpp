@@ -16,7 +16,7 @@ void MixerControlsObserver::update(std::any a)
 		m = std::any_cast<Mutation*>(a);
 	}
 	catch (const std::bad_any_cast& e) {
-		printf(e.what());
+		//printf(e.what());
 		return;
 	}
 	if (m != nullptr) {

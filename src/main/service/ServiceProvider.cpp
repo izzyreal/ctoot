@@ -63,7 +63,7 @@ weak_ptr<vector<shared_ptr<ServiceDescriptor>>> ServiceProvider::service(const s
 
 void ServiceProvider::add(shared_ptr<ServiceDescriptor> d)
 {
-	MLOG("ServiceProvider trying to add: " + d->getDescription());
+	MLOG("ServiceProvider trying to add desc. " + d->getDescription() + ", parent class " + d->getParentClass());
 	auto candidate = services.find(d->getParentClass());
 	if (candidate != services.end()) {
 		MLOG("ServiceProvider added: " + d->getDescription());

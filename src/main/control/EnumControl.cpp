@@ -100,14 +100,14 @@ string EnumControl::getValueString()
 		return to_string(i);
 	}
 	catch (std::bad_any_cast& e1) {
-		printf("Bad anycast, but will try cast to string\n");
-		printf(e1.what());
+		//printf("Bad anycast, but will try cast to string\n");
+		//printf(e1.what());
 		try {
 			string s = std::any_cast<string>(getValue());
 			return s;
 		}
 		catch (std::bad_any_cast& e2) {
-			printf(e2.what());
+			//printf(e2.what());
 		}
 	}
 	return nullptr;

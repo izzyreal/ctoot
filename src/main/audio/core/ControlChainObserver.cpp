@@ -19,7 +19,7 @@ void ControlChainObserver::update(moduru::observer::Observable* o, std::any arg)
 		candidate = std::any_cast<ChainMutation*>(arg);
 	}
 	catch (const std::bad_any_cast& e) {
-		printf(e.what());
+		//printf(e.what());
 		return;
 	}
 	apc->mutationQueue.try_enqueue(candidate);

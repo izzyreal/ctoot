@@ -29,9 +29,9 @@ AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
 {
 	std::string name;
     name = ctoot::synth::channels::valor::ValorSynthControls::NAME;
-    addControls("ctoot::synth::channel::SynthChannelControls", ctoot::synth::id::TootSynthControlsId::VALOR_CHANNEL_ID, "ctoot::synth::channels::valor::ValorSynthControls", "Virtual Analog Polyphonic", "0.2");
-	addControls("ctoot::synth::channel::SynthChannelControls", ctoot::mpc::MpcBasicSoundPlayerControls::MPC_BASIC_SOUND_PLAYER_CHANNEL_ID, "ctoot::mpc::MpcBasicSoundPlayerControls", "MPC Basic", "0.2");
-	addControls("ctoot::synth::channel::SynthChannelControls", ctoot::mpc::MpcSoundPlayerControls::MPC_SOUND_PLAYER_CHANNEL_ID, "ctoot::mpc::MpcSoundPlayerControls", "MPC", "0.2");
+    addControls("ctoot::synth::SynthChannelControls", ctoot::synth::id::TootSynthControlsId::VALOR_CHANNEL_ID, "ctoot::synth::channels::valor::ValorSynthControls", "Virtual Analog Polyphonic", "0.2");
+	addControls("ctoot::synth::SynthChannelControls", ctoot::mpc::MpcBasicSoundPlayerControls::MPC_BASIC_SOUND_PLAYER_CHANNEL_ID, "ctoot::mpc::MpcBasicSoundPlayerControls", "MPC Basic", "0.2");
+	addControls("ctoot::synth::SynthChannelControls", ctoot::mpc::MpcSoundPlayerControls::MPC_SOUND_PLAYER_CHANNEL_ID, "ctoot::mpc::MpcSoundPlayerControls", "MPC", "0.2");
 
 	//add(ctoot::synth::channels::valor::ValorSynthChannel::class_(), name, u"Valor", u"0.2");
 

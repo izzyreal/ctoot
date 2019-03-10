@@ -41,7 +41,7 @@ void BusControls::update(moduru::observer::Observable* o, std::any a)
 		}
 	}
 	catch (const std::bad_any_cast& e) {
-		printf(e.what());
+		//printf(e.what());
 	}
 }
 

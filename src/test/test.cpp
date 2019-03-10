@@ -4,6 +4,8 @@
 #include "audio/core/AudioFormat.hpp"
 #include "audio/core/AudioServices.hpp"
 
+#include <Logger.hpp>
+
 using namespace ctoot::audio::core;
 
 TEST_CASE("AudioFormat is instantiated", "[audioformat]") {
@@ -15,6 +17,7 @@ TEST_CASE("AudioFormat is instantiated", "[audioformat]") {
 }
 
 TEST_CASE("AudioServices are scanned", "[audioservices-scan]") {
+	moduru::Logger::l.setPath("ctoot.log");
 	std::string testControlName = "ctoot::audio::analysis::SpectrumAnalyserControls";
 	AudioServices::scan();
 	auto ac = AudioServices::getAvailableControls();
