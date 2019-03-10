@@ -3,7 +3,7 @@ import os
 from conans import ConanFile, CMake, tools
 
 
-class PkgTestConan(ConanFile):
+class CtootTestConan(ConanFile):
     settings = "os", "compiler", "build_type", "arch", "cppstd"
     generators = "cmake"
 
