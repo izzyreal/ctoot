@@ -1,8 +1,8 @@
 #define CATCH_CONFIG_MAIN
 #include <catch2/catch.hpp>
 
-#include "../main/audio/core/AudioFormat.hpp"
-#include "../main/audio/core/AudioServices.hpp"
+#include "audio/core/AudioFormat.hpp"
+#include "audio/core/AudioServices.hpp"
 
 using namespace ctoot::audio::core;
 
