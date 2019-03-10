@@ -12,7 +12,7 @@ ServiceDescriptor::ServiceDescriptor(const string& parentClass, const string& ch
 	this->description = description;
 	this->version = version;
     
-    printf("\nServiceDescriptor constructor %s, %s", parentClass.c_str(), childClass.c_str());
+    //printf("\nServiceDescriptor constructor %s, %s", parentClass.c_str(), childClass.c_str());
     
 	/*
 	MLOG("\nServiceDescriptor parentClass: " + parentClass);

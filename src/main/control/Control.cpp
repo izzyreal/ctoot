@@ -23,7 +23,6 @@ void Control::registerType(const std::string& name, ControlFactory *factory)
 
 shared_ptr<Control> Control::create(const std::string &name)
 {
-    printf("\n\ncreate %s\n", name.c_str());
     MLOG("Registry size: " + to_string(getRegistry()->size()));
     MLOG("Registry contains: ");
 	for (auto& s : *getRegistry()) {

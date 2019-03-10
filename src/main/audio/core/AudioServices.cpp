@@ -7,6 +7,7 @@
 #include <service/ServiceProvider.hpp>
 
 using namespace ctoot::audio::core;
+using namespace ctoot::audio::spi;
 using namespace std;
 
 AudioServices::AudioServices()
@@ -14,7 +15,7 @@ AudioServices::AudioServices()
 {
 }
 
-vector<weak_ptr<ctoot::audio::spi::AudioServiceProvider>> AudioServices::providers;
+vector<weak_ptr<AudioServiceProvider>> AudioServices::providers;
 
 string AudioServices::lookupModuleName(int providerId, int moduleId)
 {
@@ -83,10 +84,10 @@ shared_ptr<AudioProcess> AudioServices::createProcess(weak_ptr<AudioControls> co
 
 void AudioServices::scan()
 {
-	auto prov = lookup(ctoot::audio::spi::AudioServiceProvider("dummy"));
+	auto prov = lookup(AudioServiceProvider("dummy"));
 	providers.clear();
 	for (auto& p : prov) {
-		auto candidate = dynamic_pointer_cast<ctoot::audio::spi::AudioServiceProvider>(p.lock());
+		auto candidate = dynamic_pointer_cast<AudioServiceProvider>(p.lock());
 		if (candidate) {
 			providers.push_back(candidate);
 		}
