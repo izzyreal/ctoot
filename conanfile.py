@@ -6,7 +6,7 @@ class Pkg(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
     exports_sources = "src/*"
-    requires = ("moduru/0.1@izmar/testing", "Catch2/2.7.0@catchorg/stable")
+    requires = ("moduru/0.1@izmar/dev", "Catch2/2.7.0@catchorg/stable")
 
     def build(self):
         cmake = CMake(self)
