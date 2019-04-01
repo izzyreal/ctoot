@@ -2,6 +2,8 @@
 
 #include <midi/message/SysexMsg.hpp>
 
+#include <stdint.h>
+
 namespace ctoot {
 	namespace control {
 		namespace automation {

@@ -6,6 +6,9 @@
 #include <midi/core/MidiOutput.hpp>
 #include <midi/core/MidiPort.hpp>
 
+// For find on armv7hf
+#include <algorithm>
+
 using namespace ctoot::midi::core;
 using namespace std;
 

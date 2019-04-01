@@ -19,8 +19,7 @@
 
 #include <cmath>
 
-#include <Logger.hpp>
-
+#include <string.h>
 
 template<typename T, int maxLength>
 class Allpass
