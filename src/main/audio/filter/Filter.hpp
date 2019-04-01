@@ -1,5 +1,8 @@
 #pragma once
-#include <cstdint>
+
+// For armv7hf int32_t
+#include <stdint.h>
+
 #include <vector>
 
 namespace ctoot {
