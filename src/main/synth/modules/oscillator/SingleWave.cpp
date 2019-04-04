@@ -1,5 +1,7 @@
 #include <synth/modules/oscillator/SingleWave.hpp>
 
+#include <stdint.h>
+
 using namespace ctoot::synth::modules::oscillator;
 using namespace std;
 
@@ -21,7 +23,7 @@ float ctoot::synth::modules::oscillator::SingleWave::getPeriod()
 
 float ctoot::synth::modules::oscillator::SingleWave::get(float index)
 {
-    auto ix = static_cast< int32_t >(index);
+    auto ix = static_cast<int32_t>(index);
     auto frac = index - ix;
-    return (1.0f - frac) * data[ix] + frac * data[ix + int32_t(1)];
+    return (1.0f - frac) * data[ix] + frac * data[ix + 1];
 }

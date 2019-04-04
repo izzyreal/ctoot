@@ -2,6 +2,8 @@
 
 #include "MidiMessage.hpp"
 
+#include <stdint.h>
+
 namespace ctoot {
 
 	namespace midi {
