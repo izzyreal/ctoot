@@ -37,6 +37,7 @@ void RtAudioServer::work() {
 	client->work(buffers[0]->getSampleCount());
 }
 
+/*
 void RtAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
 	std::vector<float> tempInL(nFrames);
 	std::vector<float> tempInR(nFrames);
@@ -49,6 +50,7 @@ void RtAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, i
 	}
 	work(&tempInLR[0], OutAudio, nFrames, inputChannels, outputChannels);
 }
+*/
 
 void RtAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
 	int channelsToProcess = static_cast<int>(activeInputs.size() < (inputChannels / 2) ? activeInputs.size() : (inputChannels / 2));
