@@ -1,4 +1,4 @@
-#include "RtAudioServer.hpp"
+#include "ExternalAudioServer.hpp"
 #include "StereoInputProcess.hpp"
 #include "StereoOutputProcess.hpp"
 #include "../core/ChannelFormat.hpp"
@@ -10,35 +10,35 @@
 using namespace ctoot::audio::server;
 using namespace std;
 
-RtAudioServer::RtAudioServer() {
+ExternalAudioServer::ExternalAudioServer() {
 }
 
-void RtAudioServer::start() {
+void ExternalAudioServer::start() {
 	if (running) return;
 	client->setEnabled(true);
 	running = true;
 }
 
-void RtAudioServer::stop() {
+void ExternalAudioServer::stop() {
 	running = false;
 }
 
-bool RtAudioServer::isRunning() {
+bool ExternalAudioServer::isRunning() {
 	return running;
 }
 
-void RtAudioServer::close() {
+void ExternalAudioServer::close() {
 	activeInputs.clear();
 	activeOutputs.clear();
 }
 
-void RtAudioServer::work() {
+void ExternalAudioServer::work() {
 	if (buffers.size() < 1) return;
 	client->work(buffers[0]->getSampleCount());
 }
 
 /*
-void RtAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
+void ExternalAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
 	std::vector<float> tempInL(nFrames);
 	std::vector<float> tempInR(nFrames);
 	std::vector<float*> tempInLR = { &tempInL[0], &tempInR[0] };
@@ -52,7 +52,7 @@ void RtAudioServer::work(const float** InAudio, float** OutAudio, int nFrames, i
 }
 */
 
-void RtAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
+void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
 	int channelsToProcess = static_cast<int>(activeInputs.size() < (inputChannels / 2) ? activeInputs.size() : (inputChannels / 2));
 	if (activeInputs.size() != 0 && inputChannels >= 2) {
 		float* inputBufferL = (float*)InAudio[0];
@@ -79,7 +79,7 @@ void RtAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inp
 	}
 }
 
-void RtAudioServer::work(double** InAudio, double** OutAudio, int nFrames, int outputChannels) {
+void ExternalAudioServer::work(double** InAudio, double** OutAudio, int nFrames, int outputChannels) {
 	auto activeInputs = getActiveInputs();
 	if (activeInputs.size() != 0) {
 		double* inputBufferL = (double*)InAudio[0];
@@ -105,32 +105,32 @@ void RtAudioServer::work(double** InAudio, double** OutAudio, int nFrames, int o
 	}
 }
 
-void RtAudioServer::setClient(weak_ptr<AudioClient> client) {
+void ExternalAudioServer::setClient(weak_ptr<AudioClient> client) {
 	auto lClient = client.lock();
 	this->client = lClient.get();
 }
 
-vector<string> RtAudioServer::getAvailableOutputNames() {
+vector<string> ExternalAudioServer::getAvailableOutputNames() {
 	vector<string> res{ "STEREO OUT", "ASSIGNABLE MIX OUT 1/2", "ASSIGNABLE MIX OUT 3/4", "ASSIGNABLE MIX OUT 5/6", "ASSIGNABLE MIX OUT 7/8" };
 	return res;
 }
 
-vector<string> RtAudioServer::getAvailableInputNames() {
+vector<string> ExternalAudioServer::getAvailableInputNames() {
 	vector<string> res{ "RECORD IN" };
 	return res;
 }
 
-IOAudioProcess* RtAudioServer::openAudioOutput(string name, string label) {
-	activeOutputs.push_back(new StereoOutputProcess(name, false, "RtAudioServer"));
+IOAudioProcess* ExternalAudioServer::openAudioOutput(string name, string label) {
+	activeOutputs.push_back(new StereoOutputProcess(name, false, "ExternalAudioServer"));
 	return activeOutputs.back();
 }
 
-IOAudioProcess* RtAudioServer::openAudioInput(string name, string label) {
-	activeInputs.push_back(new StereoInputProcess(name, false, "RtAudioServer"));
+IOAudioProcess* ExternalAudioServer::openAudioInput(string name, string label) {
+	activeInputs.push_back(new StereoInputProcess(name, false, "ExternalAudioServer"));
 	return activeInputs.back();
 }
 
-void RtAudioServer::closeAudioOutput(ctoot::audio::server::IOAudioProcess* output) {
+void ExternalAudioServer::closeAudioOutput(ctoot::audio::server::IOAudioProcess* output) {
 	output->close();
 	for (int i = 0; i < activeOutputs.size(); i++) {
 		if (activeOutputs[i] == output) {
@@ -140,7 +140,7 @@ void RtAudioServer::closeAudioOutput(ctoot::audio::server::IOAudioProcess* outpu
 	}
 }
 
-void RtAudioServer::closeAudioInput(ctoot::audio::server::IOAudioProcess* input) {
+void ExternalAudioServer::closeAudioInput(ctoot::audio::server::IOAudioProcess* input) {
 	input->close();
 	for (int i = 0; i < activeInputs.size(); i++) {
 		if (activeInputs[i] == input) {
@@ -150,18 +150,18 @@ void RtAudioServer::closeAudioInput(ctoot::audio::server::IOAudioProcess* input)
 	}
 }
 
-float RtAudioServer::getLoad() {
+float ExternalAudioServer::getLoad() {
 	return 0;
 }
 
-int RtAudioServer::getInputLatencyFrames() {
+int ExternalAudioServer::getInputLatencyFrames() {
 	return bufferSize;
 }
 
-int RtAudioServer::getOutputLatencyFrames() {
+int ExternalAudioServer::getOutputLatencyFrames() {
 	return bufferSize;
 }
 
-int RtAudioServer::getTotalLatencyFrames() {
+int ExternalAudioServer::getTotalLatencyFrames() {
 	return getInputLatencyFrames() + getOutputLatencyFrames();
 }

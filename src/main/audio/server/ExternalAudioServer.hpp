@@ -1,3 +1,12 @@
+/**
+* The ExternalAudioServer expects someone else to talk to the host OS audio API's.
+* 
+* After instantiating an ExternalAudioServer and starting it, we can make it work(),
+* optionally providing it with input and output buffers. After calling work, the input data
+* has been processed and consumed by ctoot, and ctoot will have filled the output data with
+* AudioMixer's main output data.
+**/
+
 #pragma once
 #include <audio/server/AudioServer.hpp>
 
@@ -12,7 +21,7 @@ namespace ctoot {
 	namespace audio {
 		namespace server {
 
-			class RtAudioServer
+			class ExternalAudioServer
 				: public AudioServer {
 
 			public:
@@ -39,7 +48,7 @@ namespace ctoot {
 				void work(double** InAudio, double** OutAudio, int nFrames, int outputChannels);
 
 			public:
-				RtAudioServer();
+				ExternalAudioServer();
 
 			};
 		}
