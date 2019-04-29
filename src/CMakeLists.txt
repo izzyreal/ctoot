@@ -33,6 +33,9 @@ foreach(_source IN ITEMS ${_source_list_main})
     source_group("${_source_path_msvc}" FILES "${_source}")
 endforeach()
 
+ADD_DEFINITIONS(-DUNICODE)
+ADD_DEFINITIONS(-D_UNICODE)
+
 add_library(ctoot ${_source_list_main})
 conan_target_link_libraries(ctoot)
 

@@ -7,6 +7,8 @@
 
 #include <memory>
 
+#include <log4cplus/log4cplus.h>
+
 namespace ctoot {
 	namespace audio {
 
@@ -23,6 +25,9 @@ namespace ctoot {
 				std::vector<IOAudioProcess*> activeInputs;
 				std::vector<IOAudioProcess*> activeOutputs;
 				std::vector<ctoot::audio::core::AudioBuffer*> buffers{};
+
+			protected:
+				log4cplus::Logger logger;
 
 			public:
 				virtual void resizeBuffers(int newSize);
@@ -58,6 +63,7 @@ namespace ctoot {
 				virtual void removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer);
 
 			public:
+				AudioServer();
 				virtual ~AudioServer();
 
 			private:

@@ -79,6 +79,36 @@ void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, i
 	}
 }
 
+void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
+	for (auto& i : activeInputs) {
+		if (i->localBuffer.size() != nFrames * 2) {
+			i->localBuffer.resize(nFrames * 2);
+		}
+	}
+	if (activeInputs.size() == inputChannelCount / 2) {
+		for (int frame = 0; frame < nFrames; frame++) {
+			for (int input = 0; input < inputChannelCount / 2; input++) {
+				activeInputs[input]->localBuffer[frame] = inputBuffer[inputChannelCount * frame];
+				activeInputs[input]->localBuffer[frame + 1] = inputBuffer[(inputChannelCount * frame) + 1];
+			}
+		}
+	}
+
+	client->work(nFrames);
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));;
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size ") << (int)activeOutputs.size());
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount ") << (int)outputChannelCount);
+	//	if (activeOutputs.size() == outputChannelCount / 2) {
+		for (int frame = 0; frame < nFrames; frame += outputChannelCount) {
+			for (int output = 0; output < outputChannelCount / 2; output++) {
+				outputBuffer[outputChannelCount * frame] = activeOutputs[output]->localBuffer[frame];
+				outputBuffer[(outputChannelCount * frame) + 1] = activeOutputs[output]->localBuffer[frame + 1];
+			}
+		}
+//	}
+
+}
+
 void ExternalAudioServer::work(double** InAudio, double** OutAudio, int nFrames, int outputChannels) {
 	auto activeInputs = getActiveInputs();
 	if (activeInputs.size() != 0) {
