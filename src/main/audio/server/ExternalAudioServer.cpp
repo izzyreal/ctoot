@@ -65,7 +65,7 @@ void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, i
 			activeInputs[0]->localBuffer[i + 1] = inputBufferR[frameCounter++];
 		}
 	}
-	
+
 	client->work(nFrames);
 	channelsToProcess = static_cast<int>(activeOutputs.size() < (outputChannels / 2) ? activeOutputs.size() : (outputChannels / 2));
 	for (int output = 0; output < channelsToProcess; output++) {
@@ -95,20 +95,15 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	}
 
 	client->work(nFrames);
-	LOG4CPLUS_INFO(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));;
-	/*
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));;
 	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size ") << (int)activeOutputs.size());
 	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount ") << (int)outputChannelCount);
-	*/
-	//	if (activeOutputs.size() == outputChannelCount / 2) {
-		for (int frame = 0; frame < nFrames; frame += outputChannelCount) {
-			for (int output = 0; output < outputChannelCount / 2; output++) {
-				outputBuffer[outputChannelCount * frame] = activeOutputs[output]->localBuffer[frame];
-				outputBuffer[(outputChannelCount * frame) + 1] = activeOutputs[output]->localBuffer[frame + 1];
-			}
+	for (int frame = 0; frame < nFrames; frame += outputChannelCount) {
+		for (int output = 0; output < outputChannelCount / 2; output++) {
+			outputBuffer[outputChannelCount * frame] = activeOutputs[output]->localBuffer[frame];
+			outputBuffer[(outputChannelCount * frame) + 1] = activeOutputs[output]->localBuffer[frame + 1];
 		}
-//	}
-
+	}
 }
 
 void ExternalAudioServer::work(double** InAudio, double** OutAudio, int nFrames, int outputChannels) {
@@ -131,8 +126,8 @@ void ExternalAudioServer::work(double** InAudio, double** OutAudio, int nFrames,
 		for (int i = 0; i < nFrames; i++) {
 			auto sampleL = activeOutputs[output]->localBuffer[counter++];
 			auto sampleR = activeOutputs[output]->localBuffer[counter++];
-			OutAudio[ (output * 2) ][i] = sampleL;
-			OutAudio[ (output * 2) + 1][i] = sampleR;
+			OutAudio[(output * 2)][i] = sampleL;
+			OutAudio[(output * 2) + 1][i] = sampleR;
 		}
 	}
 }
