@@ -95,9 +95,11 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	}
 
 	client->work(nFrames);
-	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));;
+	LOG4CPLUS_INFO(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));;
+	/*
 	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size ") << (int)activeOutputs.size());
 	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount ") << (int)outputChannelCount);
+	*/
 	//	if (activeOutputs.size() == outputChannelCount / 2) {
 		for (int frame = 0; frame < nFrames; frame += outputChannelCount) {
 			for (int output = 0; output < outputChannelCount / 2; output++) {

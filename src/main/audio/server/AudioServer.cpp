@@ -6,9 +6,6 @@ using namespace ctoot::audio::server;
 using namespace std;
 
 AudioServer::AudioServer() {
-	log4cplus::Initializer initializer;
-	log4cplus::BasicConfigurator config;
-	config.configure();
 	logger = log4cplus::Logger::getRoot();
 }
 
