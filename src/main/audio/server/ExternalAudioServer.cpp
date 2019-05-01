@@ -53,6 +53,7 @@ void ExternalAudioServer::work(const float** InAudio, float** OutAudio, int nFra
 */
 
 void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work1"));
 	int channelsToProcess = static_cast<int>(activeInputs.size() < (inputChannels / 2) ? activeInputs.size() : (inputChannels / 2));
 	if (activeInputs.size() != 0 && inputChannels >= 2) {
 		float* inputBufferL = (float*)InAudio[0];
@@ -80,6 +81,7 @@ void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, i
 }
 
 void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
+	
 	for (auto& i : activeInputs) {
 		if (i->localBuffer.size() != nFrames * 2) {
 			i->localBuffer.resize(nFrames * 2);
@@ -88,20 +90,22 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	if (activeInputs.size() == inputChannelCount / 2) {
 		for (int frame = 0; frame < nFrames; frame++) {
 			for (int input = 0; input < inputChannelCount / 2; input++) {
-				activeInputs[input]->localBuffer[frame] = inputBuffer[inputChannelCount * frame];
-				activeInputs[input]->localBuffer[frame + 1] = inputBuffer[(inputChannelCount * frame) + 1];
+				//activeInputs[input]->localBuffer[frame] = inputBuffer[frame];
+				//activeInputs[input]->localBuffer[frame + 1] = inputBuffer[frame + 1];
 			}
 		}
 	}
 
 	client->work(nFrames);
-	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));;
-	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size ") << (int)activeOutputs.size());
-	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount ") << (int)outputChannelCount);
-	for (int frame = 0; frame < nFrames; frame += outputChannelCount) {
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));
+	//LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("nFrames           : ") << nFrames);
+	//LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size: ") << (int)activeOutputs.size());
+	//LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount: ") << (int)outputChannelCount);
+	int sampleCounter = 0;
+	for (int frame = 0; frame < nFrames; frame++) {
 		for (int output = 0; output < outputChannelCount / 2; output++) {
-			outputBuffer[outputChannelCount * frame] = activeOutputs[output]->localBuffer[frame];
-			outputBuffer[(outputChannelCount * frame) + 1] = activeOutputs[output]->localBuffer[frame + 1];
+			outputBuffer[sampleCounter] = activeOutputs[output]->localBuffer[sampleCounter++];
+			outputBuffer[sampleCounter] = activeOutputs[output]->localBuffer[sampleCounter++];
 		}
 	}
 }
