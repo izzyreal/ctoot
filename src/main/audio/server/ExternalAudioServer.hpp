@@ -44,7 +44,7 @@ namespace ctoot {
 			public:
 				void work() override;
 				//void work(const float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels);
-				void work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels);
+				//void work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels);
 				void work(double** InAudio, double** OutAudio, int nFrames, int outputChannels);
 				void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 

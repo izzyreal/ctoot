@@ -50,7 +50,7 @@ void ExternalAudioServer::work(const float** InAudio, float** OutAudio, int nFra
 	}
 	work(&tempInLR[0], OutAudio, nFrames, inputChannels, outputChannels);
 }
-*/
+
 
 void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
 	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work1"));
@@ -79,6 +79,7 @@ void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, i
 		}
 	}
 }
+*/
 
 void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
 	
@@ -104,8 +105,8 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	int sampleCounter = 0;
 	for (int frame = 0; frame < nFrames; frame++) {
 		for (int output = 0; output < outputChannelCount / 2; output++) {
-			outputBuffer[sampleCounter] = activeOutputs[output]->localBuffer[sampleCounter++];
-			outputBuffer[sampleCounter] = activeOutputs[output]->localBuffer[sampleCounter++];
+			*outputBuffer++ = activeOutputs[output]->localBuffer[sampleCounter++];
+			*outputBuffer++ = activeOutputs[output]->localBuffer[sampleCounter++];
 		}
 	}
 }
