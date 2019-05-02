@@ -82,29 +82,34 @@ void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, i
 */
 
 void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
-	
+
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("nFrames           : ") << nFrames);
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeInputs.size : ") << (int)activeInputs.size());
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size: ") << (int)activeOutputs.size());
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("inputChannelCount : ") << (int)inputChannelCount);
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount: ") << (int)outputChannelCount);
+
 	for (auto& i : activeInputs) {
 		if (i->localBuffer.size() != nFrames * 2) {
 			i->localBuffer.resize(nFrames * 2);
 		}
 	}
-	if (activeInputs.size() == inputChannelCount / 2) {
-		for (int frame = 0; frame < nFrames; frame++) {
-			for (int input = 0; input < inputChannelCount / 2; input++) {
-				//activeInputs[input]->localBuffer[frame] = inputBuffer[frame];
-				//activeInputs[input]->localBuffer[frame + 1] = inputBuffer[frame + 1];
-			}
+	
+	int sampleCounter = 0;
+	const int inputsToProcess = min(inputChannelCount / 2, (int)activeInputs.size());
+	for (int frame = 0; frame < nFrames; frame++) {
+		for (int input = 0; input < inputChannelCount / 2; input++) {
+			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
+			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 		}
 	}
 
 	client->work(nFrames);
-	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("ExternalAudioServer::work"));
-	//LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("nFrames           : ") << nFrames);
-	//LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("activeOutputs.size: ") << (int)activeOutputs.size());
-	//LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputChannelCount: ") << (int)outputChannelCount);
-	int sampleCounter = 0;
+	sampleCounter = 0;
+	const int outputsToProcess = min(outputChannelCount / 2, (int) activeOutputs.size());
 	for (int frame = 0; frame < nFrames; frame++) {
-		for (int output = 0; output < outputChannelCount / 2; output++) {
+		for (int output = 0; output < outputsToProcess / 2; output++) {
 			*outputBuffer++ = activeOutputs[output]->localBuffer[sampleCounter++];
 			*outputBuffer++ = activeOutputs[output]->localBuffer[sampleCounter++];
 		}
