@@ -15,7 +15,7 @@ constexpr int32_t ControlSysexMsg::LENGTH;
 
 bool ControlSysexMsg::isControl(const vector<char>& data)
 {
-    return (data[0] == SYSTEM_EXCLUSIVE) && (data[1] == ID_NON_COMMERCIAL) && data.size() == LENGTH;
+    return (static_cast<unsigned char>(data[0]) == SYSTEM_EXCLUSIVE) && (data[1] == ID_NON_COMMERCIAL) && data.size() == LENGTH;
 }
 
 const vector<char> ControlSysexMsg::createControl(int32_t providerId, int32_t moduleId, int32_t instanceIndex, int32_t controlId, int32_t value)

@@ -21,14 +21,13 @@ Services::Services()
 vector<weak_ptr<ServiceProvider>> Services::getServiceProviders() {
 	if (serviceProviders.size() == 0) {
 		MLOG("making serviceproviders");
-		serviceProviders.push_back(move(make_shared<ctoot::audio::reverb::ReverbServiceProvider>()));
-		serviceProviders.push_back(move(make_shared<ctoot::audio::delay::DelayServiceProvider>()));
-		serviceProviders.push_back(move(make_shared<ctoot::audio::dynamics::DynamicsServiceProvider>()));
-		serviceProviders.push_back(move(make_shared<ctoot::audio::basic::BasicServiceProvider>()));
-		//static auto p5 = make_shared<ctoot::synth::spi::SynthServiceProvider>();
-		serviceProviders.push_back(move(make_shared<ctoot::synth::spi::SynthChannelServiceProvider>()));
-		serviceProviders.push_back(move(make_shared<ctoot::synth::channels::AllTootSynthChannelsServiceProvider>()));
-		serviceProviders.push_back(move(make_shared<ctoot::synth::synths::multi::MultiSynthServiceProvider>()));
+		serviceProviders.push_back(make_shared<ctoot::audio::reverb::ReverbServiceProvider>());
+		serviceProviders.push_back(make_shared<ctoot::audio::delay::DelayServiceProvider>());
+		serviceProviders.push_back(make_shared<ctoot::audio::dynamics::DynamicsServiceProvider>());
+		serviceProviders.push_back(make_shared<ctoot::audio::basic::BasicServiceProvider>());
+		serviceProviders.push_back(make_shared<ctoot::synth::spi::SynthChannelServiceProvider>());
+        serviceProviders.push_back(make_shared<ctoot::synth::channels::AllTootSynthChannelsServiceProvider>());
+		serviceProviders.push_back(make_shared<ctoot::synth::synths::multi::MultiSynthServiceProvider>());
 	}
 	MLOG("Service providers:");
 	for (auto& sp : serviceProviders)

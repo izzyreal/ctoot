@@ -12,7 +12,7 @@ namespace ctoot {
 		class MpcBasicSoundPlayerControls;
 		class MpcVoice;
 
-		class MpcBasicSoundPlayerChannel
+		class MpcBasicSoundPlayerChannel final
 			: public ctoot::synth::SynthChannel
 		{
 
@@ -42,7 +42,7 @@ namespace ctoot {
 			~MpcBasicSoundPlayerChannel();
 
 		public:
-			void noteOff(int pitch, int velocity);
+			void noteOff(int pitch, int velocity) override;
 
 		};
 

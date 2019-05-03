@@ -43,9 +43,9 @@ namespace ctoot {
 					~StateVariableFilterControls();
 
 				public:
-					virtual float getCutoff();
-					virtual float getResonance();
-					virtual void setSampleRate(int rate);
+					virtual float getCutoff() override;
+					virtual float getResonance() override;
+					virtual void setSampleRate(int rate) override;
 
 				};
 

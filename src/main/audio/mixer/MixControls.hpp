@@ -25,12 +25,12 @@ namespace ctoot {
 				static float HALF_ROOT_TWO_;
 
 			private:
-				std::shared_ptr<ctoot::control::BooleanControl> soloControl{ nullptr };
-				std::shared_ptr<ctoot::control::BooleanControl> muteControl{ nullptr };
-				std::shared_ptr<ctoot::audio::fader::FaderControl> gainControl{ nullptr };
-				std::shared_ptr<LCRControl> lcrControl { nullptr } ;
-				std::shared_ptr<FrontRearControl> frontRearControl{ nullptr };
-				std::weak_ptr<BusControls> busControls{ };
+				std::shared_ptr<ctoot::control::BooleanControl> soloControl;
+				std::shared_ptr<ctoot::control::BooleanControl> muteControl;
+				std::shared_ptr<ctoot::audio::fader::FaderControl> gainControl;
+				std::shared_ptr<LCRControl> lcrControl;
+				std::shared_ptr<FrontRearControl> frontRearControl;
+				std::weak_ptr<BusControls> busControls;
 
 			protected:
 				MixerControls* mixerControls{ nullptr };

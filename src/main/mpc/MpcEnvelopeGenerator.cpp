@@ -22,18 +22,18 @@ float MpcEnvelopeGenerator::getEnvelope(bool decay)
 
 	{
 		auto v = state;
-		if ((v == ATTACK)) {
+        if (v == ATTACK) {
 			envelope += vars->getAttackCoeff();
 			if (envelope > 0.99f) {
 				state = HOLD;
 			}
 			goto end_switch0;;
 		}
-		if ((v == HOLD)) {
+        if (v == HOLD) {
 			holdCounter++;
 			goto end_switch0;;
 		}
-		if ((v == DECAY)) {
+        if (v == DECAY) {
 			envelope -= vars->getDecayCoeff();
 			if (envelope < 0.001f) {
 				envelope = 0.0f;
@@ -41,7 +41,7 @@ float MpcEnvelopeGenerator::getEnvelope(bool decay)
 			}
 			goto end_switch0;;
 		}
-		if ((v == COMPLETE)) {
+        if (v == COMPLETE) {
 			goto end_switch0;;
 		}
 	end_switch0:;

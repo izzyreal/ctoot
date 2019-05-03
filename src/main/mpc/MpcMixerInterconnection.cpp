@@ -16,7 +16,7 @@ MpcMixerInterconnection::MpcMixerInterconnection(string name, ctoot::audio::serv
 {
 	auto const sharedBuffer = server->createAudioBuffer(name);
 	inputProcess = make_shared<InterconnectionInputProcess>(this, sharedBuffer);
-	outputProcess = make_shared<InterconnectionOutputProcess>(this, sharedBuffer);
+	outputProcess = make_shared<InterconnectionOutputProcess>(sharedBuffer);
 }
 
 weak_ptr<AudioProcess> MpcMixerInterconnection::getInputProcess()

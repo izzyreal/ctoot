@@ -7,7 +7,7 @@ namespace ctoot {
 		namespace modules {
 			namespace oscillator {
 
-				class ParabolaMultiWave
+				class ParabolaMultiWave final
 					: public MultiWave
 				{
 

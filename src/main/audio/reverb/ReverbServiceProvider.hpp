@@ -12,7 +12,7 @@ namespace ctoot {
 	namespace audio {
 		namespace reverb {
 
-			class ReverbServiceProvider
+			class ReverbServiceProvider final
 				: public ctoot::audio::spi::TootAudioServiceProvider
 			{
 

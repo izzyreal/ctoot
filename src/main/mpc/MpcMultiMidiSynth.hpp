@@ -10,7 +10,7 @@ namespace ctoot {
 
 		class MpcVoice;
 
-		class MpcMultiMidiSynth
+		class MpcMultiMidiSynth final
 			: public ctoot::synth::synths::multi::MultiMidiSynth
 		{
 

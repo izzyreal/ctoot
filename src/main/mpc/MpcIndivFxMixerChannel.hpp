@@ -30,6 +30,7 @@ namespace ctoot {
 
 		public:
 			MpcIndivFxMixerChannel();
+            virtual ~MpcIndivFxMixerChannel() {}
 
 		};
 	}

@@ -24,7 +24,8 @@ namespace ctoot {
 
 		public:
 			MpcStereoMixerChannel();
-
+            virtual ~MpcStereoMixerChannel() {}
+            
 		};
 	}
 }

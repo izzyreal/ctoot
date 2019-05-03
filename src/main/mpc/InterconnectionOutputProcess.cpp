@@ -7,9 +7,8 @@
 
 using namespace ctoot::mpc;
 
-InterconnectionOutputProcess::InterconnectionOutputProcess(MpcMixerInterconnection* mmi, ctoot::audio::core::AudioBuffer* sharedBuffer)
-    : mmi(mmi)
-    , sharedBuffer(sharedBuffer)
+InterconnectionOutputProcess::InterconnectionOutputProcess(ctoot::audio::core::AudioBuffer* sharedBuffer)
+    : sharedBuffer(sharedBuffer)
 {
 }
 

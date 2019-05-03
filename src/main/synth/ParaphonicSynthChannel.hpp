@@ -22,10 +22,10 @@ namespace ctoot {
 			ParaphonicSynthChannel(std::string name);
 
 		public:
-			virtual void close();
-			virtual void open();
-			virtual std::string getLocation();
-			virtual std::string getName();
+			virtual void close() override;
+			virtual void open() override;
+            virtual std::string getLocation() override;
+			virtual std::string getName() override;
 
 		};
 

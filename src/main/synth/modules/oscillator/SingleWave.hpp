@@ -8,7 +8,7 @@ namespace ctoot {
 		namespace modules {
 			namespace oscillator {
 
-				class SingleWave
+				class SingleWave final
 					: public virtual Wave
 				{
 

@@ -27,6 +27,3 @@ string Mutation::toString()
 {
 	return MixerControls::opNames()[operation] + " " + control.lock()->getName();
 }
-
-Mutation::~Mutation() {
-}

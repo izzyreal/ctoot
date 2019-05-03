@@ -22,7 +22,7 @@ namespace ctoot {
 				std::string toString();
 
 				Mutation(int operation, std::weak_ptr<control::CompoundControl> control);
-				~Mutation();
+                virtual ~Mutation() {}
 
 			private:
 				friend class MixerControls;

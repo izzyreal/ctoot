@@ -2,7 +2,6 @@
 #include <midi/core/MidiInput.hpp>
 #include <midi/core/MidiOutput.hpp>
 #include <observer/Observable.hpp>
-//#include <misc/IObservable.hpp>
 
 #include <string>
 #include <vector>

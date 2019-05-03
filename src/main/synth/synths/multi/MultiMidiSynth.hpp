@@ -23,7 +23,7 @@ namespace ctoot {
 
 				public:
 					MultiMidiSynth(std::shared_ptr<MultiSynthControls> controls);
-					~MultiMidiSynth();
+					virtual ~MultiMidiSynth();
 
 				};
 

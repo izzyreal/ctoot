@@ -31,7 +31,7 @@ namespace ctoot {
 
 		public:
 			MpcMixerInterconnection(std::string name, ctoot::audio::server::AudioServer* server);
-			~MpcMixerInterconnection();
+			virtual ~MpcMixerInterconnection();
 
 		};
 	}

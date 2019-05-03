@@ -74,7 +74,7 @@ namespace ctoot {
 			SynthChannel();
 
 		public:
-			virtual void noteOff(int noteNumber) = 0;
+			virtual void noteOff(int noteNumber) override = 0;
 
 		};
 	}

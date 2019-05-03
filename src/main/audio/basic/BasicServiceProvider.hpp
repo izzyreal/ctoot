@@ -14,7 +14,7 @@ namespace ctoot {
 
 		namespace basic {
 
-			class BasicServiceProvider
+			class BasicServiceProvider final
 				: public ctoot::audio::spi::TootAudioServiceProvider
 			{
 

@@ -5,7 +5,7 @@ namespace ctoot {
 	namespace midi {
 		namespace core {
 
-			class MidiDevice;
+			struct MidiDevice;
 			class MidiSystem;
 
 			class LegacyDevices

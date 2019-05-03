@@ -96,8 +96,8 @@ void CompoundControlMidiPersistence::loadPreset(weak_ptr<CompoundControl> c, con
 {
 	auto cl = c.lock();
 	if (!cl) return;
-	auto providerId = cl->getProviderId();
-	auto moduleId = cl->getId();
+//    auto providerId = cl->getProviderId();
+//    auto moduleId = cl->getId();
 
 	Directory rootDir(rootPath, nullptr);
 	auto finalName = rootDir.getPath() + name + ".mbc";

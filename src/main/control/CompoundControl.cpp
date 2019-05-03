@@ -111,20 +111,20 @@ vector<weak_ptr<Control>> CompoundControl::getControls()
 
 string CompoundControl::toString()
 {
-	vector<string>* builder;
+	vector<string> builder;
 	for (auto i = 0; i < controls.size(); i++) {
 		if (i != 0) {
-			builder->push_back(", ");
-			if ((i + 1) == controls.size()) {
-				builder->push_back("and ");
+			builder.push_back(", ");
+			if (controls.size() == i + 1) {
+				builder.push_back("and ");
 			}
 		}
-		builder->push_back(controls[i]->getName());
+		builder.push_back(controls[i]->getName());
 	}
 
 	string result;
-	for (int i = 0; i < builder->size(); i++)
-		result += (*builder)[i];
+	for (int i = 0; i < builder.size(); i++)
+		result += builder[i];
 
 	result = " Control containing " + result + " Controls.";
 	return result;
@@ -163,9 +163,11 @@ int CompoundControl::getInstanceIndex()
 weak_ptr<Control> CompoundControl::findByTypeIdName(string typeIdName)
 {
 	for (int i = 0; i < controls.size(); i++) {
-		string currentTypeIdName = moduru::System::demangle(typeid(*controls[i].get()).name());
+        auto control = controls[i].get();
+        auto currentTypeIdName = typeid(*control).name();
+		string currentDemangledTypeIdName = moduru::System::demangle(currentTypeIdName);
 		
-		if (currentTypeIdName.compare(typeIdName) == 0) {
+        if (currentDemangledTypeIdName.compare(typeIdName) == 0) {
 			return controls[i];
 		}
 	}

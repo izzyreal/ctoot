@@ -7,7 +7,7 @@ namespace ctoot {
 		namespace synths {
 			namespace multi {
 
-				class MultiSynthServiceProvider
+				class MultiSynthServiceProvider final
 					: public ctoot::synth::spi::SynthServiceProvider
 				{
 

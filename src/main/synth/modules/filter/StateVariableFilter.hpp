@@ -12,9 +12,9 @@ namespace ctoot {
 				class StateVariableFilter
 					: AbstractFilter
 				{
-
-				public:
-					typedef AbstractFilter super;
+                public:
+                    StateVariableFilter(StateVariableFilterVariables* variables);
+                    virtual ~StateVariableFilter();
 
 				private:
 					StateVariableFilterElement* element{ nullptr };
@@ -23,9 +23,6 @@ namespace ctoot {
 				public:
 					virtual float update();
 					virtual float filter(float sample, float f);
-
-					StateVariableFilter(StateVariableFilterVariables* variables);
-					~StateVariableFilter();
 
 				};
 			}

@@ -90,7 +90,6 @@ namespace ctoot {
 
 		private:
 			ctoot::synth::modules::filter::StateVariableFilter* svf1{ nullptr };
-			ctoot::mpc::MpcSoundPlayerChannel* parent{ nullptr };
 			ctoot::mpc::MpcMuteInfo* muteInfo{ nullptr };
 			int track{ 0 };
 			int frameOffset{ 0 };
@@ -125,15 +124,16 @@ namespace ctoot {
 			int j{ 0 };
 			std::vector<float> frame;
 
+        public:
+            void open() override;
+            int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
+            void close() override;
+            
 		public:
 			bool isFinished();
 			void init(int track, int velocity, int padNumber, std::weak_ptr<ctoot::mpc::MpcSound> oscVars, ctoot::mpc::MpcNoteParameters* np, int varType, int varValue, int muteNote, int muteDrum, int frameOffset, bool enableEnvs);
 			std::vector<float> getFrame();
-
 			int getPadNumber();
-			void open();
-			int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
-			void close();
 			void startDecay();
 			int getVoiceOverlap();
 			int getStripNumber();

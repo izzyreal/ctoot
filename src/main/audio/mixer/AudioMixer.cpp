@@ -66,7 +66,7 @@ void AudioMixer::removeBuffer(ctoot::audio::core::AudioBuffer* buffer)
 
 bool AudioMixer::isMutating()
 {
-	return !mutationQueue.size_approx() == 0;
+    return !(mutationQueue.size_approx() == 0);
 }
 
 void AudioMixer::waitForMutations()

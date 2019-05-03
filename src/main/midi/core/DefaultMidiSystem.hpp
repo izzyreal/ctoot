@@ -11,8 +11,8 @@ namespace ctoot {
 				, public ctoot::audio::server::AudioClient
 			{
 			public:
-				void work(int nFrames);
-				void setEnabled(bool enabled);
+				void work(int nFrames) override;
+				void setEnabled(bool enabled) override;
 
 			private:
 				std::vector<MidiDevice*> devices{};

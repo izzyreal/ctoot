@@ -44,7 +44,7 @@ namespace ctoot {
 			PolyphonicSynthChannel(std::string name);
 
 		public:
-			void noteOff(int32_t pitch, int32_t velocity);
+			void noteOff(int32_t pitch, int32_t velocity) override;
 
 		};
 

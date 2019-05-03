@@ -41,7 +41,7 @@ void StateVariableFilterControls::createControls()
 
 void StateVariableFilterControls::deriveSampleRateIndependentVariables()
 {
-    deriveSampleRateIndependentVariables();
+    FilterControls::deriveSampleRateIndependentVariables();
     modeMix = deriveModeMix();
     bandMode = deriveBandMode();
 }

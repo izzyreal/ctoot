@@ -13,7 +13,7 @@ namespace ctoot {
 
 		namespace dynamics {
 
-			class DynamicsServiceProvider
+			class DynamicsServiceProvider final
 				: public ctoot::audio::spi::TootAudioServiceProvider
 			{
 

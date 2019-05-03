@@ -4,8 +4,6 @@
 
 #include <string>
 
-class RtMidiOut;
-
 namespace ctoot {
 	namespace midi {
 		namespace core {
@@ -19,7 +17,7 @@ namespace ctoot {
 			{
 
 			private:
-				RtMidiOut* receiver;
+//                RtMidiOut* receiver;
 				std::string name;
 
 			public:

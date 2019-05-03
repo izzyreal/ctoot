@@ -38,9 +38,9 @@ namespace ctoot {
 					DualStateVariableFilterControls(int32_t instanceIndex, std::string name, int32_t idOffset);
 
 				public:
-					virtual float getCutoff();
-					virtual float getResonance();
-					virtual void setSampleRate(int32_t rate);
+					virtual float getCutoff() override;
+					virtual float getResonance() override;
+					virtual void setSampleRate(int32_t rate) override;
 
 				};
 

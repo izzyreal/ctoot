@@ -16,6 +16,18 @@ namespace ctoot {
 				: public ctoot::service::ServiceProvider
 			{
 
+            public:
+                SynthChannelServiceProvider
+                (
+                 int32_t providerId,
+                 const std::string& providerName,
+                 const std::string& description,
+                 const std::string& version
+                 );
+                virtual ~SynthChannelServiceProvider() {}
+                
+                SynthChannelServiceProvider() { providerName = "SynthChannelServiceProvider dummy"; }
+                
 			private:
 				std::weak_ptr<std::vector<std::shared_ptr<ctoot::service::ServiceDescriptor>>> controls;
 
@@ -38,17 +50,7 @@ namespace ctoot {
 				virtual std::shared_ptr<ctoot::synth::SynthChannel> createSynthChannel(std::weak_ptr<ctoot::synth::SynthChannelControls> controls) {
 					return {};
 				}
-
-				SynthChannelServiceProvider
-				(
-					int32_t providerId, 
-					const std::string& providerName, 
-					const std::string& description, 
-					const std::string& version
-				);
-				
-				SynthChannelServiceProvider() { providerName = "SynthChannelServiceProvider dummy"; }
-
+                
 			};
 
 		}

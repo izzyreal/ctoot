@@ -25,19 +25,19 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 		auto bwHz = ctoot::audio::filter::FilterTools::getHzBandwidth(freq, resonance);
 		{
 			auto v = type;
-			if ((v == FilterShape::PEQ)) {
+			if (v == FilterShape::PEQ) {
 				if (abs(dbGain) > 0.1) {
 					return OrfanidisBiQuadDesigner::designPeak(srate, freq, bwHz, static_cast<float>(A));
 				}
 				goto end_switch0;;
 			}
-			if ((v == FilterShape::NOTCH)) {
+			if (v == FilterShape::NOTCH) {
 				return OrfanidisBiQuadDesigner::designNotch(srate, freq, bwHz);
 			}
-			if ((v == FilterShape::RESONATOR)) {
+			if (v == FilterShape::RESONATOR) {
 				return OrfanidisBiQuadDesigner::designResonator(srate, freq, bwHz);
 			}
-			if ((((v != FilterShape::PEQ) && (v != FilterShape::NOTCH) && (v != FilterShape::RESONATOR)))) {
+			if ((v != FilterShape::PEQ) && (v != FilterShape::NOTCH) && (v != FilterShape::RESONATOR)) {
 				goto end_switch0;;
 			}
 		end_switch0:;

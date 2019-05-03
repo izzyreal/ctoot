@@ -11,7 +11,7 @@ namespace ctoot {
 	namespace audio {
 		namespace system {
 
-			class AudioInput;
+			struct AudioInput;
 			class AudioOutput;
 			class AudioDevice
 				: public virtual moduru::observer::Observable

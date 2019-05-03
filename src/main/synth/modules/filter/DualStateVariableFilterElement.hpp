@@ -7,7 +7,7 @@ namespace ctoot {
 
 				class DualStateVariableFilterConfig;
 
-				class DualStateVariableFilterElement
+				class DualStateVariableFilterElement final
 				{
 
 				private:

@@ -7,7 +7,7 @@ namespace ctoot {
 	namespace audio {
 		namespace delay {
 
-			class DelayServiceProvider
+			class DelayServiceProvider final
 				: public ctoot::audio::spi::TootAudioServiceProvider
 			{
 

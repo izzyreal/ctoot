@@ -39,7 +39,7 @@ namespace ctoot {
 		class MpcSoundPlayerControls;
 		class MpcFaderControl;
 		class MpcMixerInterconnection;
-		class MpcSoundPlayerChannel
+		class MpcSoundPlayerChannel final
 			: public ctoot::synth::SynthChannel
 		{
 

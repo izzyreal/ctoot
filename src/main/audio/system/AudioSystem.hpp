@@ -8,7 +8,7 @@ namespace ctoot {
 	namespace audio {
 		namespace system {
 			class AudioDevice;
-			class AudioInput;
+			struct AudioInput;
 			class AudioOutput;
 			class AudioSystem
 				: public moduru::observer::Observable

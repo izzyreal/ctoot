@@ -10,6 +10,10 @@ namespace ctoot {
 
 			{
 
+            public:
+                AudioConnection(int flags);
+                virtual ~AudioConnection() {}
+
 			public:
 				static const int PLAYBACK{ 1 };
 				static const int SYSTEM{ 2 };
@@ -26,9 +30,7 @@ namespace ctoot {
 				virtual std::string getInputName() = 0;
 				virtual bool isSystem();
 				virtual bool isPlayback();
-
-				AudioConnection(int flags);
-
+                
 			};
 
 		}

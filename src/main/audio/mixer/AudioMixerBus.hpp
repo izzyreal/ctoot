@@ -32,7 +32,7 @@ namespace ctoot {
 
 			public:
 				AudioMixerBus(AudioMixer* mixer, std::weak_ptr<BusControls> busControls);
-				~AudioMixerBus();
+				virtual ~AudioMixerBus();
 			};
 		}
 	}

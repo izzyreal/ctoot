@@ -172,7 +172,7 @@ bool MixControls::hasPresets()
 
 bool MixControls::isSolo()
 {
-    return &soloControl == nullptr ? hasSolo() : solo;
+    return soloControl ? hasSolo() : solo;
 }
 
 bool MixControls::isMute()
