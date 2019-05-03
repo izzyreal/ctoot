@@ -18,7 +18,7 @@ set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/main")
 include_directories(${_src_root_path_main})
 
 file(
-    GLOB_RECURSE _source_list_main 
+    GLOB_RECURSE _source_list_main
     LIST_DIRECTORIES false
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${_src_root_path_main}/*.c*"
@@ -33,8 +33,10 @@ foreach(_source IN ITEMS ${_source_list_main})
     source_group("${_source_path_msvc}" FILES "${_source}")
 endforeach()
 
-ADD_DEFINITIONS(-DUNICODE)
-ADD_DEFINITIONS(-D_UNICODE)
+if(MSVC)
+  ADD_DEFINITIONS(-DUNICODE)
+  ADD_DEFINITIONS(-D_UNICODE)
+endif(MSVC)
 
 add_library(ctoot ${_source_list_main})
 conan_target_link_libraries(ctoot)
@@ -46,7 +48,7 @@ set(_src_root_path_test "${CMAKE_CURRENT_SOURCE_DIR}/test")
 include_directories(${_src_root_path_test})
 
 file(
-    GLOB_RECURSE _source_list_test 
+    GLOB_RECURSE _source_list_test
     LIST_DIRECTORIES false
     RELATIVE "${CMAKE_CURRENT_SOURCE_DIR}"
     "${_src_root_path_test}/*.c*"
