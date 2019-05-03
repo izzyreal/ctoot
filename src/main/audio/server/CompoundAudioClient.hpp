@@ -8,7 +8,7 @@ namespace ctoot {
 	namespace audio {
 		namespace server {
 
-			class CompoundAudioClient
+			class CompoundAudioClient final
 				: public virtual AudioClient
 			{
 

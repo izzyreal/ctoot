@@ -14,7 +14,7 @@ namespace ctoot {
             class Mutation;
 			class AudioMixerStrip;
 			class AudioMixerBus;
-			class AudioMixer
+            class AudioMixer final
 				: public ctoot::audio::server::AudioClient
 			{
 

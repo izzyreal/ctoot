@@ -7,7 +7,7 @@ namespace ctoot {
 	namespace midi {
 		namespace core {
 
-			class ShortMessage
+			class ShortMessage final
 				: public MidiMessage
 			{
 

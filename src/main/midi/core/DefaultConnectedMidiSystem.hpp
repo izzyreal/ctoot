@@ -8,7 +8,7 @@ namespace ctoot {
 
 			class MidiPort;
 
-			class DefaultConnectedMidiSystem
+			class DefaultConnectedMidiSystem final
 				: public DefaultMidiSystem
 				, public virtual ConnectedMidiSystem
 			{

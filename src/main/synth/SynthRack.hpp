@@ -25,7 +25,7 @@ namespace ctoot {
 		class SynthRackControls;
 		class SynthRackObserver;
 
-		class SynthRack
+		class SynthRack final
 		{
 
 		private:
