@@ -99,7 +99,7 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	int sampleCounter = 0;
 	const int inputsToProcess = min(inputChannelCount / 2, (int)activeInputs.size());
 	for (int frame = 0; frame < nFrames; frame++) {
-		for (int input = 0; input < inputChannelCount / 2; input++) {
+		for (int input = 0; input < inputsToProcess / 2; input++) {
 			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 		}
