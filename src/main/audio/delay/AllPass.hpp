@@ -17,10 +17,11 @@ namespace ctoot {
 			public:
 				virtual float update(float in);
 				
-				AllPass(PhaserProcess *PhaserProcess_this);				
-
+				AllPass(const PhaserProcess*);
+                virtual ~AllPass() {}
+                
 			private:
-				PhaserProcess *PhaserProcess_this;
+				const PhaserProcess* phaserProcess;
 			};
 
 		}

@@ -5,7 +5,6 @@
 #include <algorithm>
 
 using namespace ctoot::control;
-using namespace std;
 
 CompoundControlChain::CompoundControlChain(int id, string name)
 	: CompoundControl(id, name)
@@ -17,15 +16,15 @@ CompoundControlChain::CompoundControlChain(int id, int index, string name)
 {
 }
 
-void CompoundControlChain::add(shared_ptr<CompoundControl> control)
+void CompoundControlChain::add(shared_ptr<Control> control)
 {
 	if (find(control->getName()).lock()) {
-		disambiguate(control);
+		disambiguate(dynamic_pointer_cast<CompoundControl>(control));
 	}
 	CompoundControl::add(control);
 }
 
-void CompoundControlChain::add(int index, shared_ptr<CompoundControl> control)
+void CompoundControlChain::add(int index, shared_ptr<Control> control)
 {
 	control->setParent(this);
 	controls.insert(controls.begin() + index, std::move(control));

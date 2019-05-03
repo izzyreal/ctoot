@@ -152,7 +152,7 @@ void MixerConnectedAudioSystem::createConnectionFrom(std::weak_ptr<AudioOutput> 
 		createConnection(output, strip.get(), 0);
 	}
 	catch (const exception& e) {
-		printf(e.what());
+        printf("%s", e.what());
 	}
 }
 

@@ -87,10 +87,10 @@ int AudioProcessChain::debugProcessAudio(ctoot::audio::core::AudioBuffer* buffer
 		t[i] = chrono::high_resolution_clock::now().time_since_epoch().count();
 	}
 	auto load = static_cast<int>(100 * (t[len - 1] - tstart) / elapsed);
-	//    npc(::java::lang::System::out())->print(stringBuilder().append(load)->append("%: "->toString());
+    printf("debugProcessAudio load: %i\n", load);
 	auto prevt = tstart;
 	for (auto i = 0; i < len; i++) {
-		///        npc(::java::lang::System::out())->print(stringBuilder().append(((*t)[i] - prevt))->append(", "->toString());
+        printf("debugProcessAudio t[i]: %lld\n", t[i]);
 		prevt = t[i];
 	}
 	return AUDIO_OK;
@@ -120,6 +120,7 @@ shared_ptr<AudioProcess> AudioProcessChain::createProcess(weak_ptr<AudioControls
 void AudioProcessChain::processMutations()
 {
 	ChainMutation* m = nullptr;
+    
 	if (!mutationQueue.try_dequeue(m)) return;
 
 	switch (m->getType()) {

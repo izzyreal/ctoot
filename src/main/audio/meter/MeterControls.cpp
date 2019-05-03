@@ -40,13 +40,13 @@ MeterControls::MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> fo
 	channelState = vector<ChannelState>(nchannels);
 
 	if (full) {
-		add(std::move(make_shared<ResetControl>(this)));
-		add(std::move(make_shared<OverIndicator>()));
+		add(make_shared<ResetControl>(this));
+		add(make_shared<OverIndicator>());
 		auto tc = make_shared<TypeControl>();
 		typeControl = tc;
 		add(std::move(tc));
 	}
-	add(std::move(make_shared<MeterIndicator>(name)));
+	add(make_shared<MeterIndicator>(name));
 	if (full) {
 		auto mdbc = make_shared<MindBControl>();
 		mindBControl = mdbc;

@@ -7,7 +7,7 @@ namespace ctoot {
 
 			class DelayBuffer;
 
-			class DelayBuffer_Filter
+			class DelayBufferFilter
 			{
 
 
@@ -17,10 +17,11 @@ namespace ctoot {
 			public:
 				virtual float filter(float sample);
 				
-				DelayBuffer_Filter(DelayBuffer *DelayBuffer_this);
-				
+				DelayBufferFilter(DelayBuffer*);
+                virtual ~DelayBufferFilter() {}
+                
 			private:
-				DelayBuffer *DelayBuffer_this;
+                const DelayBuffer* delayBuffer;
 				
 			};
 

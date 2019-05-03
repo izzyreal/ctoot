@@ -1,7 +1,7 @@
 #include <audio/delay/DelayBuffer.hpp>
 
 #include <audio/core/FloatSampleBuffer.hpp>
-#include <audio/delay/DelayBuffer_Filter.hpp>
+#include <audio/delay/DelayBufferFilter.hpp>
 
 #include <VecUtil.hpp>
 
@@ -13,7 +13,7 @@ DelayBuffer::DelayBuffer(int channelCount, int sampleCount, float sampleRate)
 {
 	apzm1 = vector<float>(6);
 	for (int i = 0; i < 8; i++) {
-        lowpass.push_back(new DelayBuffer_Filter(this));
+        lowpass.push_back(new DelayBufferFilter(this));
     }
 }
 

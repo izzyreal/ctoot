@@ -42,7 +42,7 @@ namespace ctoot {
 				TremoloControls();
 
 			public:
-				virtual bool isBypassed();
+				virtual bool isBypassed() override;
 
 			};
 			REGISTER_TYPE(ctoot::audio::dynamics::, TremoloControls)

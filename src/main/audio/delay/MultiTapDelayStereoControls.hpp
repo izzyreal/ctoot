@@ -36,9 +36,9 @@ namespace ctoot {
 				MultiTapDelayStereoControls(int ntaps, float ms);
 
 			public:
-				virtual bool isBypassed();
-				virtual float getFeedback();
-				virtual float getMix();
+				virtual bool isBypassed() override;
+				virtual float getFeedback() override;
+				virtual float getMix() override;
 
 			};
 			REGISTER_TYPE(ctoot::audio::delay::, MultiTapDelayStereoControls)

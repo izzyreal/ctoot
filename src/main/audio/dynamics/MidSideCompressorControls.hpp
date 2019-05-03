@@ -58,7 +58,7 @@ namespace ctoot {
 				MidSideCompressorControls(std::string band);
 
 			public:
-				virtual bool isBypassed();
+				virtual bool isBypassed() override;
 
 			};
 			REGISTER_TYPE(ctoot::audio::dynamics::, MidSideCompressorControls)

@@ -211,7 +211,7 @@ namespace ctoot {
 				DynamicsControls(int32_t id, std::string name, int32_t idOffset);
 
 			public:
-				virtual bool isBypassed();
+				virtual bool isBypassed() override;
 
 			private:
 				friend class InverseRatioControl;

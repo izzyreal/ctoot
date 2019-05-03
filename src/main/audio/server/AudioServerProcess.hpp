@@ -21,15 +21,14 @@ namespace ctoot {
 				std::string name{ "" };
 			
 			protected:
-				//shared_ptr<ctoot::audio::core::MetaInfo> metaInfo{ nullptr };
 				std::weak_ptr<ctoot::audio::core::ChannelFormat> format;
 
 			public:
 				std::string getName() override;
-				std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
+				std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 
-				virtual void open() = 0;
-				virtual void close() = 0;
+				virtual void open() override = 0;
+				virtual void close() override = 0;
 
 				AudioServerProcess(std::string name, bool mono);
 			};

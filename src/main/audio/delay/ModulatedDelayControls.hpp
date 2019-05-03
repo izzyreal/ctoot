@@ -63,8 +63,8 @@ namespace ctoot {
 				ModulatedDelayControls(int id, std::string name);
 
 			public:				
-				virtual bool isBypassed();
-				virtual float getFeedback();
+				virtual bool isBypassed() override;
+				virtual float getFeedback() override;
 			};
 			REGISTER_TYPE(ctoot::audio::delay::, ModulatedDelayControls)
 		}

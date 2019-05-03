@@ -32,7 +32,7 @@ namespace ctoot {
 				virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
 				virtual void update(moduru::observer::Observable* o, std::any a) override;
 				bool canBypass() override;
-				std::string toString();
+				std::string toString() override;
 
 			public:
 				BusControls(int id, std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);

@@ -29,7 +29,9 @@ namespace ctoot {
 				moodycamel::ConcurrentQueue<ctoot::control::ChainMutation*> mutationQueue {};
 				moduru::observer::Observer* controlChainObserver{ nullptr };
 				bool debugTimes{ false };
-				std::vector <int64_t> t{};
+                
+            private:
+				std::vector<int64_t> t; // for debugging
 
 			public:
 				void open() override;

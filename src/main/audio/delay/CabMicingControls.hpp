@@ -62,7 +62,7 @@ namespace ctoot {
 				CabMicingControls();
 
 			public:
-				virtual bool isBypassed();
+				virtual bool isBypassed() override;
 
 			private:
 				static std::weak_ptr<ctoot::control::ControlLaw> NEAR_DISTANCE_LAW();

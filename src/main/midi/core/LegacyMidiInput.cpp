@@ -32,7 +32,7 @@ void LegacyMidiInput::transport(ctoot::midi::core::MidiMessage* message, int tim
 			adaptor->open();
 		}
 		catch (const std::exception &e) {
-			printf(e.what());
+            printf("%s", e.what());
 		}
 	}
 	vector<unsigned char> msgData;

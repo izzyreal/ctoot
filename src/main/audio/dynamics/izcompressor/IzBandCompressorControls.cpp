@@ -61,7 +61,6 @@ void IzBandCompressorControls::deriveDependentVariables()
 void IzBandCompressorControls::derive(ctoot::control::Control* c)
 {
 	auto id = c->getId() - idOffset;
- 	auto n = 0;
 	auto cc = compressorControls;
 	switch (id) {
 	case DynamicsControlIds::THRESHOLD:

@@ -45,7 +45,7 @@ namespace ctoot {
 
 		public:
 			ChainMutation(int type, int index0, int index1);
-
+            virtual ~ChainMutation(){}
 
 		public:
 			static ChainMutation*& COMMENCE_INSTANCE();

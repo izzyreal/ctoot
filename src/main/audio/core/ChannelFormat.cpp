@@ -47,21 +47,21 @@ int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio
 }
 
 weak_ptr<ChannelFormat> ChannelFormat::MONO() {
-	static shared_ptr<ChannelFormat> monoChannelFormat = make_shared<ChannelFormat1>();
+	static auto monoChannelFormat = make_shared<ChannelFormat1>();
 	return monoChannelFormat;
 }
 
 weak_ptr<ChannelFormat> ChannelFormat::STEREO() {
-	static shared_ptr<ChannelFormat> stereoChannelFormat = make_shared<ChannelFormat2>();
+	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
 	return stereoChannelFormat;
 }
 
 weak_ptr<ChannelFormat> ChannelFormat::QUAD() {
-	static shared_ptr<ChannelFormat> stereoChannelFormat = make_shared<ChannelFormat2>();
+	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
 	return stereoChannelFormat;
 }
 
 weak_ptr<ChannelFormat> ChannelFormat::FIVE_1() {
-	static shared_ptr<ChannelFormat> stereoChannelFormat = make_shared<ChannelFormat2>();
+	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
 	return stereoChannelFormat;
 }

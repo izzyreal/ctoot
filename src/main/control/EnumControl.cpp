@@ -121,7 +121,7 @@ void EnumControl::setIntValue(int value)
 		setValue(getValues()[value]);
 	}
 	catch (const exception& e) {
-		printf(e.what());
+        printf("%s", e.what());
 	}
 }
 

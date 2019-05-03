@@ -35,7 +35,7 @@ int ctoot::audio::delay::CabMicingProcess::processAudio(AudioBuffer* buffer)
 	auto sampleRate = buffer->getSampleRate();
 	auto samplesPerMilli = sampleRate * 0.001f;
 	if (delayBuffer == nullptr) {
-		delayBuffer = new DelayBuffer(1, static_cast<int>((30 * samplesPerMilli)), sampleRate);
+		delayBuffer = new DelayBuffer(1, static_cast<int>(30 * samplesPerMilli), sampleRate);
 	}
 	else {
 		delayBuffer->conform(buffer);

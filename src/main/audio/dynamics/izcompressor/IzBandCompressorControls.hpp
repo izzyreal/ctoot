@@ -83,7 +83,7 @@ namespace ctoot {
 					IzBandCompressorControls(std::string band, int idOffset);
 
 				public:
-					virtual bool isBypassed();
+					virtual bool isBypassed() override;
 
 				private:
 					friend class LinkControl;

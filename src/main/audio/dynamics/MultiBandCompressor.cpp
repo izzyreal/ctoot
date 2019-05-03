@@ -142,8 +142,6 @@ void MultiBandCompressor::conformBandBuffers(ctoot::audio::core::AudioBuffer* bu
 void MultiBandCompressor::split(ctoot::audio::filter::Crossover* xo, ctoot::audio::core::AudioBuffer* source, ctoot::audio::core::AudioBuffer* low, ctoot::audio::core::AudioBuffer* high)
 {
     for (auto c = 0; c < source->getChannelCount(); c++) {
-		auto lowC = low != nullptr ? low->getChannel(c) : nullptr;
-		auto highC = high != nullptr ? high->getChannel(c) : nullptr;
         xo->filter(source->getChannel(c), low->getChannel(c), high->getChannel(c), source->getSampleCount(), c);
     }
 }

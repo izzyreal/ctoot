@@ -17,9 +17,6 @@ AbstractFilter::AbstractFilter(FilterSpecification* spec, bool relative)
 
 void AbstractFilter::open()
 {
-	auto des = getDesign();
-	auto fspec = des->getFilterSpecification();
-	auto freq = fspec->getFrequency();
 	getDesign()->getFilterSpecification()->addObserver(specObserver);
 }
 
@@ -64,12 +61,5 @@ void AbstractFilter::setSampleRate(int32_t rate)
 	design->design(rate);
 	doUpdate = true;
 }
-
-/*
-void AbstractFilter::init()
-{
-	specObserver = new AbstractFilterObserver(this);
-}
-*/
 
 constexpr int32_t AbstractFilter::MAX_CHANNELS;

@@ -47,9 +47,9 @@ namespace ctoot {
 				TempoDelayControls();
 
 			public:
-				virtual bool isBypassed();
-				virtual float getFeedback();
-				virtual float getMix();
+				virtual bool isBypassed() override;
+				virtual float getFeedback() override;
+				virtual float getMix() override;
 
 			public:
 				static std::vector<NamedFactor*> factors();

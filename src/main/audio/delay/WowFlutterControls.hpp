@@ -56,7 +56,7 @@ namespace ctoot {
 				WowFlutterControls();
 
 			public:
-				virtual bool isBypassed();
+				virtual bool isBypassed() override;
 			};
 			REGISTER_TYPE(ctoot::audio::delay::, WowFlutterControls)
 		}

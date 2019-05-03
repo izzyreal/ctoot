@@ -15,8 +15,8 @@ InverseRatioControl::InverseRatioControl(DynamicsControls* dynamicsControls)
 
 string InverseRatioControl::getValueString()
 {
-    auto ratio = 1.0f / getValue();
-    auto dp = abs(ratio) >= 10.0f ? int32_t(0) : int32_t(1);
+    //auto ratio = 1.0f / getValue();
+    //auto dp = abs(ratio) >= 10.0f ? int32_t(0) : int32_t(1);
     //return format(("%1$." + dp +  "f", Float::valueOf(ratio))}));
 	return "InverseRatioControl temp value str";
 }

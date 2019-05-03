@@ -6,7 +6,7 @@ namespace ctoot {
 	namespace audio {
 		namespace core {
 
-			class ChannelFormat4
+			class ChannelFormat4 final
 				: public ChannelFormat
 			{
 

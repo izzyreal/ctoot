@@ -53,7 +53,7 @@ namespace ctoot {
 				PhaserControls();
 
 			public:
-				virtual bool isBypassed();
+				virtual bool isBypassed() override;
 
 			};
 			REGISTER_TYPE(ctoot::audio::delay::, PhaserControls)

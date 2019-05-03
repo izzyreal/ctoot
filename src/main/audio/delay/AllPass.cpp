@@ -4,15 +4,15 @@
 #include <audio/delay/PhaserProcess.hpp>
 
 using namespace ctoot::audio::delay;
+using namespace ctoot::audio::core;
 
-AllPass::AllPass(PhaserProcess *PhaserProcess_this)
+AllPass::AllPass(const PhaserProcess* _phaserProcess) : phaserProcess(_phaserProcess)
 {
-	this->PhaserProcess_this = PhaserProcess_this;
 }
 
 float AllPass::update(float in)
 {
-    auto y = in * -PhaserProcess_this->a1 + zm1;
-    zm1 = ctoot::audio::core::FloatDenormals::zeroDenorm(y * PhaserProcess_this->a1 + in);
+    auto y = in * -phaserProcess->a1 + zm1;
+    zm1 = FloatDenormals::zeroDenorm(y * phaserProcess->a1 + in);
     return y;
 }

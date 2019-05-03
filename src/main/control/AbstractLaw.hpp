@@ -5,7 +5,7 @@ namespace ctoot {
 	namespace control {
 
 		class AbstractLaw
-			: public virtual ControlLaw
+			: public ControlLaw
 		{
 
 		protected:
@@ -22,7 +22,7 @@ namespace ctoot {
 
 		public:
 			AbstractLaw(float min, float max, std::string units);
-
+            virtual ~AbstractLaw() {}
 		};
 
 	}

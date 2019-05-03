@@ -18,7 +18,8 @@ namespace ctoot {
 
 		public:
 			LogLaw(float min, float max, std::string units);
-
+            virtual ~LogLaw(){}
+            
 		};
 
 	}

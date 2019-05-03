@@ -11,7 +11,7 @@ namespace ctoot {
 			double b1{  };
 
 		public:
-			virtual float out();
+			float out();
 
 		public:
 			Phasor(double w, double theta);

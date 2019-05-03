@@ -76,7 +76,7 @@ namespace ctoot {
 				~MixControls();
 
 			public:
-				virtual std::string getName();
+				virtual std::string getName() override;
 
 			public:
 				static float& HALF_ROOT_TWO();

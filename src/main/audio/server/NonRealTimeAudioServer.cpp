@@ -33,7 +33,7 @@ void NonRealTimeAudioServer::setRealTime(bool rt)
 			stop();
 		}
 		catch (const exception& e) {
-			printf(e.what());
+            printf("%s", e.what());
 		}
 		realTime = rt;
 		for (auto& buffer : server.lock()->getBuffers()) {
@@ -43,7 +43,7 @@ void NonRealTimeAudioServer::setRealTime(bool rt)
 			start();
 		}
 		catch (const exception& e) {
-			printf(e.what());
+            printf("%s", e.what());
 		}
 	}
 }

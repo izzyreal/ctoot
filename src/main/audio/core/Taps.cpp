@@ -43,7 +43,7 @@ void Taps::remove(AudioBuffer* buffer)
 		}
 	}
 	string errormsg = "Taps failed to remove buffer";
-	printf(errormsg.c_str());
+    printf("%s", errormsg.c_str());
 }
 
 ctoot::audio::basic::tap::TapControls* Taps::getControls(string name)

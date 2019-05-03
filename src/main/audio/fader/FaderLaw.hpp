@@ -7,7 +7,7 @@ namespace ctoot {
 		namespace fader {
 
 			class FaderLaw
-				: public virtual ctoot::control::ControlLaw
+				: public ctoot::control::ControlLaw
 			{
 
 			private:
@@ -35,7 +35,8 @@ namespace ctoot {
 			public:
 				FaderLaw(int resolution, float halfdB, float maxdB, float attenuationCutoffFactor);
 				FaderLaw(int resolution);
-
+                virtual ~FaderLaw() {}
+                
 			};
 
 		}

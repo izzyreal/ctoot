@@ -53,7 +53,7 @@ void TapControls::reference(int32_t ref)
 	if (refCount < 0) {
 		refCount = 0;
 		string errormsg = "refCount < 0";
-		printf(errormsg.c_str());
+        printf("%s", errormsg.c_str());
 	}
 }
 

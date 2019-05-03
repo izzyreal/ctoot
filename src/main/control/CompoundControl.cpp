@@ -6,16 +6,16 @@ using namespace std;
 
 #include <System.hpp>
 
-std::shared_ptr<CompoundControlPersistence> CompoundControl::persistence;
+shared_ptr<CompoundControlPersistence> CompoundControl::persistence;
 
 CompoundControl::CompoundControl(int id, string name) 
 	: CompoundControl(id, deriveInstanceIndex(name), name) {
 
 }
 
-std::vector<std::string> CompoundControl::getControlNamesRecursive(int generation) {
-	std::vector<std::string> res;
-	std::string indent;
+vector<string> CompoundControl::getControlNamesRecursive(int generation) {
+	vector<string> res;
+	string indent;
 	for (int i = 0; i < generation; i++) {
 		indent += "     ";
 	}
@@ -75,7 +75,7 @@ void CompoundControl::add(shared_ptr<Control> control)
 	if (!control) return;
 	string name = control->getName();
 	control->setParent(this);
-	controls.push_back(std::move(control));
+	controls.push_back(move(control));
 }
 
 void CompoundControl::remove(weak_ptr<Control> c)
