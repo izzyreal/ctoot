@@ -34,8 +34,9 @@ foreach(_source IN ITEMS ${_source_list_main})
 endforeach()
 
 if(MSVC)
-  ADD_DEFINITIONS(-DUNICODE)
-  ADD_DEFINITIONS(-D_UNICODE)
+	ADD_DEFINITIONS(-DUNICODE)
+	ADD_DEFINITIONS(-D_UNICODE)
+	target_compile_options(ctoot PRIVATE "/MP")
 endif(MSVC)
 
 add_library(ctoot ${_source_list_main})
