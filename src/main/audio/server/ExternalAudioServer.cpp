@@ -99,19 +99,23 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	int sampleCounter = 0;
 	const int inputsToProcess = min(inputChannelCount / 2, (int)activeInputs.size());
 	for (int frame = 0; frame < nFrames; frame++) {
-		for (int input = 0; input < inputsToProcess / 2; input++) {
+		for (int input = 0; input < inputsToProcess; input++) {
 			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 		}
 	}
 
 	client->work(nFrames);
-	sampleCounter = 0;
-	const int outputsToProcess = min(outputChannelCount / 2, (int) activeOutputs.size());
+	const int outputsToProcess = outputChannelCount / 2;
+	LOG4CPLUS_TRACE(logger, LOG4CPLUS_TEXT("outputsToProcess: ") << outputsToProcess);
 	for (int frame = 0; frame < nFrames; frame++) {
-		for (int output = 0; output < outputsToProcess / 2; output++) {
-			*outputBuffer++ = activeOutputs[output]->localBuffer[sampleCounter++];
-			*outputBuffer++ = activeOutputs[output]->localBuffer[sampleCounter++];
+		for (int output = 0; output < outputsToProcess; output++) {
+			if (output >= activeOutputs.size()) {
+				*outputBuffer++ = 0.0f;
+				*outputBuffer++ = 0.0f;
+			}
+			*outputBuffer++ = activeOutputs[output]->localBuffer[(frame * 2)];
+			*outputBuffer++ = activeOutputs[output]->localBuffer[(frame * 2) + 1];
 		}
 	}
 }

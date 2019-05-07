@@ -36,11 +36,13 @@ endforeach()
 if(MSVC)
 	ADD_DEFINITIONS(-DUNICODE)
 	ADD_DEFINITIONS(-D_UNICODE)
-	target_compile_options(ctoot PRIVATE "/MP")
 endif(MSVC)
 
 add_library(ctoot ${_source_list_main})
 conan_target_link_libraries(ctoot)
+if(MSVC)
+	target_compile_options(ctoot PRIVATE "/MP")
+endif(MSVC)
 
 ## Configure test suite application ##
 
