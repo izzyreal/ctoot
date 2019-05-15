@@ -105,7 +105,7 @@ std::shared_ptr<ctoot::control::FloatControl> BarrControls::createDampingControl
 }
 
 std::shared_ptr<ctoot::control::FloatControl> BarrControls::createDecayControl() {
-	auto control = std::make_shared<ctoot::control::FloatControl>(DECAY, "Decay", LinearLaw::UNITY(), 0.01f, 0.8f);
+	auto control = std::make_shared<ctoot::control::FloatControl>(DECAY, "Decay", LinearLaw::UNITY(), 0.01f, 0.9f);
 	return control;
 }
 
@@ -115,7 +115,7 @@ std::shared_ptr<ctoot::control::FloatControl> BarrControls::createDecayDiffusion
 }
 
 std::shared_ptr<ctoot::control::FloatControl> BarrControls::createSizeControl() {
-	auto control = std::make_shared<ctoot::control::FloatControl>(SIZE, "Size", SIZE_LAW(), 0.01f, 1.f);
+	auto control = std::make_shared<ctoot::control::FloatControl>(SIZE, "Size", SIZE_LAW(), 0.01f, 0.6f);
 	return control;
 }
 
