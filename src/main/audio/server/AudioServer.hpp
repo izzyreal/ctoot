@@ -7,7 +7,9 @@
 
 #include <memory>
 
-#include <log4cplus/log4cplus.h>
+namespace log4cplus {
+	class Logger;
+}
 
 namespace ctoot {
 	namespace audio {
@@ -27,7 +29,7 @@ namespace ctoot {
 				std::vector<ctoot::audio::core::AudioBuffer*> buffers{};
 
 			protected:
-				log4cplus::Logger logger;
+				log4cplus::Logger* logger;
 
 			public:
 				virtual void resizeBuffers(int newSize);

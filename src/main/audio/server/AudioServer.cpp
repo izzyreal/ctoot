@@ -1,12 +1,12 @@
 #include <audio/server/AudioServer.hpp>
 
-#include <Logger.hpp>
+//#include <log4cplus/log4cplus.h>
 
 using namespace ctoot::audio::server;
 using namespace std;
 
 AudioServer::AudioServer() {
-	logger = log4cplus::Logger::getRoot();
+	//logger = &log4cplus::Logger::getRoot();
 }
 
 float AudioServer::getSampleRate() {
