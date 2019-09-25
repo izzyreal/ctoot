@@ -11,7 +11,7 @@ namespace ctoot {
 				: public virtual ctoot::audio::core::AudioProcess
 			{
 			public:
-				std::vector<double> localBuffer;
+				std::vector<float> localBuffer;
 				virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() = 0;
 				virtual std::string getName() = 0;
 

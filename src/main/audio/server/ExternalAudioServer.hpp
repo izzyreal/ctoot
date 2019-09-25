@@ -10,13 +10,9 @@
 #pragma once
 #include <audio/server/AudioServer.hpp>
 
-//#include <RtAudio.h>
-
 #include <string>
 #include <vector>
 #include <memory>
-#include <thread>
-#include <mutex>
 
 namespace ctoot {
 	namespace audio {
