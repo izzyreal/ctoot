@@ -40,49 +40,29 @@ void ExternalAudioServer::work() {
 }
 
 void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Entering ExternalAudioServer::work()..."));
 	if (!running) {
-		////LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("ExternalAudioServer is not running"));
 		return;
 	}
-	else {
-		//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("ExternalAudioServer is running, continuing work() routine..."));
-	}
-
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("nFrames            : ") << nFrames);
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("activeInputs.size  : ") << (int)activeInputs.size());
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("activeOutputs.size : ") << (int)activeOutputs.size());
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("inputChannelCount  : ") << (int)inputChannelCount);
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("outputChannelCount : ") << (int)outputChannelCount);
-
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Verifying if ctoot input buffers are correct size..."));
+	
 	for (auto& i : activeInputs) {
 		if (i->localBuffer.size() != nFrames * 2) {
-			//LOG4CPLUS_TRACE_STR(*logger, LOG4CPLUS_STRING_TO_TSTRING("Resizing buffer of input: " + i->getName()));
 			i->localBuffer.resize(nFrames * 2);
 		}
 	}
 	
 	int sampleCounter = 0;
 	const int inputsToProcess = min(inputChannelCount / 2, (int)activeInputs.size());
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Inputs to process: ") << inputsToProcess);
 	for (int frame = 0; frame < nFrames; frame++) {
 		for (int input = 0; input < inputsToProcess; input++) {
 			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 			activeInputs[input]->localBuffer[sampleCounter++] = *inputBuffer++;
 		}
 	}
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Finished processing inputs"));
 
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Calling client->work()..."));
 	client->work(nFrames);
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("client->work() finished"));
-
-	const int outputsToProcess = outputChannelCount / 2;
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("outputsToProcess: ") << outputsToProcess);
 
 	auto originalOutputBuffer = outputBuffer;
-
+	const int outputsToProcess = outputChannelCount / 2;
 	for (int frame = 0; frame < nFrames; frame++) {
 		for (int output = 0; output < outputsToProcess; output++) {
 			if (output >= activeOutputs.size()) {
@@ -94,24 +74,45 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 			*outputBuffer++ = activeOutputs[output]->localBuffer[(frame * 2) + 1];
 		}
 	}
-
 	outputBuffer = originalOutputBuffer;
-
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Finished processing outputs"));
-	//LOG4CPLUS_TRACE(*logger, LOG4CPLUS_TEXT("Leaving ExternalAudioServer::work()"));
 }
 
 void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
-	std::vector<float> tempInL(nFrames);
-	std::vector<float> tempInR(nFrames);
-	std::vector<float*> tempInLR = { &tempInL[0], &tempInR[0] };
-	if (inputChannelCount >= 2) {
-		for (int i = 0; i < nFrames; i++) {
-			tempInL[i] = inputBuffer[0][i];
-			tempInR[i] = inputBuffer[1][i];
+	if (!running) {
+		return;
+	}
+	
+	for (auto& i : activeInputs) {
+		if (i->localBuffer.size() != nFrames * 2) {
+			i->localBuffer.resize(nFrames * 2);
 		}
 	}
-	work(&tempInLR[0], outputBuffer, nFrames, inputChannelCount, outputChannelCount);
+	
+	int sampleCounter = 0;
+	const int inputsToProcess = min(inputChannelCount / 2, (int)activeInputs.size());
+	for (int frame = 0; frame < nFrames; frame++) {
+		for (int input = 0; input < inputsToProcess; input += 2) {
+			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[input][frame];
+			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[input + 1][frame];
+		}
+	}
+
+	client->work(nFrames);
+
+	auto originalOutputBuffer = outputBuffer;
+	const int outputsToProcess = outputChannelCount / 2;
+	for (int frame = 0; frame < nFrames; frame++) {
+		for (int output = 0; output < outputsToProcess; output += 2) {
+			if (output >= activeOutputs.size()) {
+				outputBuffer[output][frame] = 0.0f;
+				outputBuffer[output + 1][frame] = 0.0f;
+				continue;
+			}
+			outputBuffer[output][frame] = activeOutputs[output]->localBuffer[(frame * 2)];
+			outputBuffer[output + 1][frame] = activeOutputs[output]->localBuffer[(frame * 2) + 1];
+		}
+	}
+	outputBuffer = originalOutputBuffer;
 }
 
 void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
