@@ -108,38 +108,12 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 				outputBuffer[output + 1][frame] = 0.0f;
 				continue;
 			}
-			outputBuffer[output][frame] = activeOutputs[output]->localBuffer[(frame * 2)];
-			outputBuffer[output + 1][frame] = activeOutputs[output]->localBuffer[(frame * 2) + 1];
+			const auto frame_x2 = frame * 2;
+			outputBuffer[output][frame] = activeOutputs[output]->localBuffer[frame_x2];
+			outputBuffer[output + 1][frame] = activeOutputs[output]->localBuffer[frame_x2 + 1];
 		}
 	}
 	outputBuffer = originalOutputBuffer;
-}
-
-void ExternalAudioServer::work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels) {
-	int channelsToProcess = static_cast<int>(activeInputs.size() < (inputChannels / 2) ? activeInputs.size() : (inputChannels / 2));
-	if (activeInputs.size() != 0 && inputChannels >= 2) {
-		float* inputBufferL = (float*)InAudio[0];
-		float* inputBufferR = (float*)InAudio[1];
-		if (activeInputs[0]->localBuffer.size() != nFrames * 2)
-			activeInputs[0]->localBuffer.resize(nFrames * 2);
-		int frameCounter = 0;
-		for (int i = 0; i < nFrames * 2; i += 2) {
-			activeInputs[0]->localBuffer[i] = inputBufferL[frameCounter];
-			activeInputs[0]->localBuffer[i + 1] = inputBufferR[frameCounter++];
-		}
-	}
-
-	client->work(nFrames);
-	channelsToProcess = static_cast<int>(activeOutputs.size() < (outputChannels / 2) ? activeOutputs.size() : (outputChannels / 2));
-	for (int output = 0; output < channelsToProcess; output++) {
-		int counter = 0;
-		for (int i = 0; i < nFrames; i++) {
-			auto sampleL = activeOutputs[output]->localBuffer[counter++];
-			auto sampleR = activeOutputs[output]->localBuffer[counter++];
-			OutAudio[0][i] = (float)(sampleL);
-			OutAudio[1][i] = (float)(sampleR);
-		}
-	}
 }
 
 void ExternalAudioServer::setClient(weak_ptr<AudioClient> client) {

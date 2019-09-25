@@ -48,7 +48,6 @@ namespace ctoot {
 				
 				// For compatibility with JUCE
 				void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
-				void work(float** InAudio, float** OutAudio, int nFrames, int inputChannels, int outputChannels);
 
 			public:
 				ExternalAudioServer();
