@@ -4,6 +4,8 @@
 
 #include <Logger.hpp>
 
+#include <stdexcept>
+
 using namespace ctoot::audio::system;
 using namespace std;
 
