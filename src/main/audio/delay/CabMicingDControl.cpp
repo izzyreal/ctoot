@@ -12,9 +12,9 @@ CabMicingDControl::CabMicingDControl()
 }
 vector<string> CabMicingDControl::values{ "8\"", "10\"","12\"","15\"","18\"" };
 
-vector<std::any> CabMicingDControl::getValues()
+vector<nonstd::any> CabMicingDControl::getValues()
 {
-	vector<std::any> res;
+	vector<nonstd::any> res;
 	for (auto& v : values)
 		res.push_back(v);
 	return res;

@@ -34,7 +34,7 @@ void DualStateVariableFilterControlsTypeControl::createValues()
     values.push_back(new DualStateVariableFilterConfig("P2N2T", FilterType::PEAK, FilterType::NOTCH, 2));
 }
 
-std::vector<std::any> ctoot::synth::modules::filter::DualStateVariableFilterControlsTypeControl::getValues()
+std::vector<nonstd::any> ctoot::synth::modules::filter::DualStateVariableFilterControlsTypeControl::getValues()
 {
     return values;
 }

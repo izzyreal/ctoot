@@ -11,7 +11,7 @@ namespace ctoot {
 			{
 
 			public:
-				virtual void update(std::any a);
+				virtual void update(nonstd::any a);
 
 				MixerControlsObserver(AudioMixer* am);
 

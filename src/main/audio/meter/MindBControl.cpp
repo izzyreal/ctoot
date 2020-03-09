@@ -17,11 +17,11 @@ MindBControl::MindBControl()
     values.push_back(float(-120));
 	floatValues = vector<float>(values.size());
     for (int i = 0; i < values.size(); i++) {
-		floatValues[i] = std::any_cast<float>(values[i]);
+		floatValues[i] = nonstd::any_cast<float>(values[i]);
     }
 }
 
-vector<std::any> MindBControl::getValues()
+vector<nonstd::any> MindBControl::getValues()
 {
     return values;
 }
@@ -29,7 +29,7 @@ vector<std::any> MindBControl::getValues()
 float ctoot::audio::meter::MindBControl::getMindB()
 {
 	for (int j = 0; j < values.size(); j++) {
-		if (std::any_cast<float>(values[j]) == std::any_cast<float>(getValue())) return floatValues[j];
+		if (nonstd::any_cast<float>(values[j]) == nonstd::any_cast<float>(getValue())) return floatValues[j];
 	}
 	return {};
 }

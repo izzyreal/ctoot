@@ -93,7 +93,7 @@ void CabMicingControls::derive(ctoot::control::Control* c)
 
 int CabMicingControls::extract(weak_ptr<ctoot::control::EnumControl> c)
 {
-	auto s = std::any_cast<string>(c.lock()->getValue());
+	auto s = nonstd::any_cast<string>(c.lock()->getValue());
     s = s.substr(0, s.length() - 1);
     return stoi(s);
 }

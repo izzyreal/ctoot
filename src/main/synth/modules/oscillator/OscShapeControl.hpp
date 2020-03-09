@@ -12,9 +12,9 @@ namespace ctoot {
 				{
 
 				public:
-					std::vector<std::any> getValues() override;
+					std::vector<nonstd::any> getValues() override;
 
-					ShapeControl(int32_t id, std::string name, std::any value);
+					ShapeControl(int32_t id, std::string name, nonstd::any value);
 
 				};
 

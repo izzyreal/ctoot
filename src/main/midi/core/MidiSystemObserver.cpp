@@ -8,7 +8,7 @@ MidiSystemObserver::MidiSystemObserver(DefaultMidiSystem *dms) : dms(dms)
 {
 }
 
-void MidiSystemObserver::update(moduru::observer::Observable* o, std::any a)
+void MidiSystemObserver::update(moduru::observer::Observable* o, nonstd::any a)
 {
 	dms->setChanged();
 	dms->notifyObservers();

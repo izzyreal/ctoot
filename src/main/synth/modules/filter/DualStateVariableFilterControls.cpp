@@ -50,7 +50,7 @@ float DualStateVariableFilterControls::deriveResonance()
 
  DualStateVariableFilterConfig* ctoot::synth::modules::filter::DualStateVariableFilterControls::deriveType()
 {
-    return std::any_cast<DualStateVariableFilterConfig*>(typeControl.lock()->getValue());
+    return nonstd::any_cast<DualStateVariableFilterConfig*>(typeControl.lock()->getValue());
 }
 
 shared_ptr<ctoot::control::EnumControl> ctoot::synth::modules::filter::DualStateVariableFilterControls::createTypeControl()

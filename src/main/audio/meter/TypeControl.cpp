@@ -13,11 +13,11 @@ TypeControl::TypeControl()
 	values.push_back(string("K-12/RMS"));
 	floatValues = vector<float>(values.size());
 	for (int i = 0; i < values.size(); i++) {
-		floatValues[i] = stof(std::any_cast<string>(values[i]).substr(2, 4));
+		floatValues[i] = stof(nonstd::any_cast<string>(values[i]).substr(2, 4));
 	}
 }
 
-vector<std::any> ctoot::audio::meter::TypeControl::getValues()
+vector<nonstd::any> ctoot::audio::meter::TypeControl::getValues()
 {
     return values;
 }
@@ -25,7 +25,7 @@ vector<std::any> ctoot::audio::meter::TypeControl::getValues()
 float ctoot::audio::meter::TypeControl::getMaxdB()
 {
 	for (int j = 0; j < values.size(); j++) {
-		if (std::any_cast<string>(values[j]) == std::any_cast<string>(getValue())) return floatValues[j];
+		if (nonstd::any_cast<string>(values[j]) == nonstd::any_cast<string>(getValue())) return floatValues[j];
 	}
 	return {};
 }

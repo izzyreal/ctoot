@@ -9,7 +9,7 @@ AbstractFilterObserver::AbstractFilterObserver(AbstractFilter* af) {
 	this->af = af;
 }
 
-void AbstractFilterObserver::update(moduru::observer::Observable* obs, std::any arg)
+void AbstractFilterObserver::update(moduru::observer::Observable* obs, nonstd::any arg)
 {
     if (af->sampleRate < 1)
         return;

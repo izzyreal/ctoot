@@ -5,7 +5,7 @@
 #include <vector>
 #include <string>
 
-#include <any>
+#include <thirdp/any.hpp>
 
 namespace ctoot {
 	namespace audio {
@@ -22,7 +22,7 @@ namespace ctoot {
 				static std::vector<std::string> values;
 
 			public:
-				std::vector<std::any> getValues() override;
+				std::vector<nonstd::any> getValues() override;
 				virtual int getStages();
 
 			public:

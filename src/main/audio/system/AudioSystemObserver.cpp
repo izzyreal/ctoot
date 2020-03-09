@@ -10,7 +10,7 @@ AudioSystemObserver::AudioSystemObserver(DefaultAudioSystem* das)
 	this->das = das;
 }
 
-void AudioSystemObserver::update(moduru::observer::Observable* obs, std::any arg)
+void AudioSystemObserver::update(moduru::observer::Observable* obs, nonstd::any arg)
 {
 	MLOG("Update, observable " + std::string(typeid(obs).name()));
 	das->setChanged();

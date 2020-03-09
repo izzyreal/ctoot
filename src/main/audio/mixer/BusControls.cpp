@@ -31,16 +31,16 @@ weak_ptr<ChannelFormat> BusControls::getChannelFormat()
     return channelFormat;
 }
 
-void BusControls::update(moduru::observer::Observable* o, std::any a)
+void BusControls::update(moduru::observer::Observable* o, nonstd::any a)
 {
 	try {
-		auto c = std::any_cast<BooleanControl*>(a);
+		auto c = nonstd::any_cast<BooleanControl*>(a);
 		if (c->getName().compare("Solo") == 0) {
 			soloCount += c->getValue() ? 1 : -1;
 			soloIndicator->setValue(hasSolo());
 		}
 	}
-	catch (const std::bad_any_cast& e) {
+	catch (const std::exception& e) {
 		//printf(e.what());
 	}
 }

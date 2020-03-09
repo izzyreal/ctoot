@@ -12,13 +12,13 @@ ControlChainObserver::ControlChainObserver(AudioProcessChain* apc) {
 	this->apc = apc;
 }
 
-void ControlChainObserver::update(moduru::observer::Observable* o, std::any arg)
+void ControlChainObserver::update(moduru::observer::Observable* o, nonstd::any arg)
 {
 	ChainMutation* candidate = nullptr;
 	try {
-		candidate = std::any_cast<ChainMutation*>(arg);
+		candidate = nonstd::any_cast<ChainMutation*>(arg);
 	}
-	catch (const std::bad_any_cast& e) {
+	catch (const std::exception& e) {
 		//printf(e.what());
 		return;
 	}

@@ -13,7 +13,7 @@ namespace ctoot {
 			{
 
 			public:
-				void update(moduru::observer::Observable* obs, std::any arg) override;
+				void update(moduru::observer::Observable* obs, nonstd::any arg) override;
 
 			public:
 				AbstractFilterObserver(AbstractFilter* af);

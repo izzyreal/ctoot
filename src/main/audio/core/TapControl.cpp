@@ -26,12 +26,12 @@ ctoot::audio::core::AudioBuffer* TapControl::getBuffer()
 
 void TapControl::remove()
 {
-	reference(std::any_cast<string>(getValue()), -1);
+	reference(nonstd::any_cast<string>(getValue()), -1);
 }
 
 void TapControl::derive(ctoot::control::Control* obj)
 {
-	auto tapName = std::any_cast<string>(getValue());
+	auto tapName = nonstd::any_cast<string>(getValue());
 	reference(prevTapName, -1);
 	reference(tapName, 1);
 	prevTapName = tapName;
@@ -61,9 +61,9 @@ void TapControl::reference(string name, int32_t ref)
 	}
 }
 
-std::vector<std::any> TapControl::getValues()
+std::vector<nonstd::any> TapControl::getValues()
 {
-	auto values = std::vector<std::any>();
+	auto values = std::vector<nonstd::any>();
 	values.push_back(SELF_STR);
 	for (auto& t : Taps::taps) {
 		values.push_back(Taps::tapName(t));

@@ -3,7 +3,7 @@
 #include <cstdint>
 #include <string>
 
-#include <any>
+#include <thirdp/any.hpp>
 
 namespace ctoot {
 	namespace control {
@@ -11,13 +11,13 @@ namespace ctoot {
 			: public Control
 		{
 		private:
-			std::any value;
+			nonstd::any value;
 
 		public:
-			virtual void setValue(std::any value);
-			virtual std::any getValue();
-			virtual std::vector<std::any> getValues() = 0;
-			virtual bool isValueSupported(std::any value);
+			virtual void setValue(nonstd::any value);
+			virtual nonstd::any getValue();
+			virtual std::vector<nonstd::any> getValues() = 0;
+			virtual bool isValueSupported(nonstd::any value);
 
 		public:
 			std::string toString();
@@ -30,7 +30,7 @@ namespace ctoot {
 			int getIntValue() override;
 
 		public:
-			EnumControl(int id, std::string name, std::any value);
+			EnumControl(int id, std::string name, nonstd::any value);
 
 		};
 

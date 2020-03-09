@@ -4,7 +4,7 @@
 
 #include <vector>
 #include <string>
-#include <any>
+#include <thirdp/any.hpp>
 
 namespace ctoot {
 	namespace audio {
@@ -20,7 +20,7 @@ namespace ctoot {
 					~ChannelControl();
 
 				public:
-					std::vector<std::any> getValues() override;
+					std::vector<nonstd::any> getValues() override;
 
 				};
 				

@@ -30,7 +30,7 @@ namespace ctoot {
 				std::weak_ptr<ctoot::audio::meter::MeterControls> getMeterControls();
 				virtual bool hasSolo();
 				virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
-				virtual void update(moduru::observer::Observable* o, std::any a) override;
+				virtual void update(moduru::observer::Observable* o, nonstd::any a) override;
 				bool canBypass() override;
 				std::string toString() override;
 

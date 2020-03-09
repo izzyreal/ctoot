@@ -233,7 +233,7 @@ void DynamicsControls::deriveDetectionChannelMode()
 	if (!detectionChannelControl.lock())
 		return;
 
-	detectionChannelMode = std::any_cast<string>(detectionChannelControl.lock()->getValue());
+	detectionChannelMode = nonstd::any_cast<string>(detectionChannelControl.lock()->getValue());
 }
 
 void DynamicsControls::deriveAttenuationChannelMode()
@@ -241,7 +241,7 @@ void DynamicsControls::deriveAttenuationChannelMode()
 	if (!attenuationChannelControl.lock())
 		return;
 
-	attenuationChannelMode = std::any_cast<string>(attenuationChannelControl.lock()->getValue());
+	attenuationChannelMode = nonstd::any_cast<string>(attenuationChannelControl.lock()->getValue());
 }
 
 void DynamicsControls::deriveRatio()

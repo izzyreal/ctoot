@@ -9,13 +9,13 @@ MixerControlsObserver::MixerControlsObserver(AudioMixer* am)
 	this->am = am;
 }
 
-void MixerControlsObserver::update(std::any a)
+void MixerControlsObserver::update(nonstd::any a)
 {
 	Mutation* m = nullptr;
 	try {
-		m = std::any_cast<Mutation*>(a);
+		m = nonstd::any_cast<Mutation*>(a);
 	}
-	catch (const std::bad_any_cast& e) {
+	catch (const std::exception& e) {
 		//printf(e.what());
 		return;
 	}

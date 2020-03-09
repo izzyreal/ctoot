@@ -6,12 +6,14 @@
 using namespace std;
 using namespace ctoot::control;
 
-EnumControl::EnumControl(int id, string name, std::any value) : Control(id, name)
+using namespace nonstd;
+
+EnumControl::EnumControl(int id, string name, nonstd::any value) : Control(id, name)
 {
 	this->value = value;
 }
 
-void EnumControl::setValue(std::any value)
+void EnumControl::setValue(nonstd::any value)
 {
 	if (!isEnabled()) return;
 
@@ -22,56 +24,29 @@ void EnumControl::setValue(std::any value)
 	this->value = value;
 	notifyParent(this);
 	return;
-	/*
-	// Verify that this comparison does what it should do.
-	if (value.type() == this->value.type()) {
-		if (string(value.type().name()).find("int") != string::npos) {
-			int i1 = std::any_cast<int>(value);
-			int i2 = std::any_cast<int>(this->value);
-			if (i1 != i2) {
-				this->value = value;
-				notifyParent(this);
-			}
-		}
-		else {
-			try {
-				string s1 = std::any_cast<string>(value);
-				string s2 = std::any_cast<string>(this->value);
-				if (s1.compare(s2) != 0) {
-					this->value = value;
-					notifyParent(this);
-				}
-			}
-			catch (const std::bad_any_cast const &e) {
-				string msg = e.what();
-				MLOG("EnumControl setValue error, msg: " + msg);
-			}
-		}
-	}
-	*/
 }
 
-std::any EnumControl::getValue()
+nonstd::any EnumControl::getValue()
 {
 	return value;
 }
 
-bool EnumControl::isValueSupported(std::any value)
+bool EnumControl::isValueSupported(nonstd::any value)
 {
 	/*
 	try {
 		for (int i = 0; i < getValues().size(); i++) {
 			if (value.type() == this->value.type()) {
 				if (string(value.type().name()).find("int") != string::npos) {
-					int i1 = std::any_cast<int>(value);
-					int i2 = std::any_cast<int>(this->value);
+					int i1 = nonstd::any_cast<int>(value);
+					int i2 = nonstd::any_cast<int>(this->value);
 					if (i1 == i2) {
 						return true;
 					}
 				}
 				else {
-					string s1 = std::any_cast<string>(value);
-					string s2 = std::any_cast<string>(this->value);
+					string s1 = nonstd::any_cast<string>(value);
+					string s2 = nonstd::any_cast<string>(this->value);
 					if (s1.compare(s2) == 0) {
 						return true;
 					}
@@ -79,7 +54,7 @@ bool EnumControl::isValueSupported(std::any value)
 			}
 		}
 	}
-	catch (const std::bad_any_cast const &e) {
+	catch (const std::exception const &e) {
 		string msg = e.what();
 		MLOG("EnumControl value not supported, error msg: " + msg);
 	}
@@ -96,17 +71,17 @@ string EnumControl::toString()
 string EnumControl::getValueString()
 {
 	try {
-		int i = std::any_cast<int>(getValue());
+		int i = nonstd::any_cast<int>(getValue());
 		return to_string(i);
 	}
-	catch (std::bad_any_cast& e1) {
+	catch (std::exception& e1) {
 		//printf("Bad anycast, but will try cast to string\n");
 		//printf(e1.what());
 		try {
-			string s = std::any_cast<string>(getValue());
+			string s = nonstd::any_cast<string>(getValue());
 			return s;
 		}
-		catch (std::bad_any_cast& e2) {
+		catch (std::exception& e2) {
 			//printf(e2.what());
 		}
 	}
@@ -132,11 +107,11 @@ int EnumControl::getIntValue()
 	for (index = 0; index < getValues().size(); index++) {
 		auto v = getValues()[index];
 		try {
-			auto s1 = std::any_cast<string>(v);
-			auto s2 = std::any_cast<string>(getValue());
+			auto s1 = nonstd::any_cast<string>(v);
+			auto s2 = nonstd::any_cast<string>(getValue());
 			if (s1.compare(s2) == 0) return index;
 		}
-		catch (const std::bad_any_cast& e) {
+		catch (const std::exception& e) {
 		}
 	}
 	return -1;

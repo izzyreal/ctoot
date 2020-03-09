@@ -2,7 +2,7 @@
 
 #include <control/EnumControl.hpp>
 
-#include <any>
+#include <thirdp/any.hpp>
 
 namespace ctoot {
 	namespace audio {
@@ -18,8 +18,8 @@ namespace ctoot {
 				typedef ctoot::control::EnumControl super;
 
 			public:
-				std::vector<std::any> getValues() override;
-				void setValue(std::any value) override;
+				std::vector<nonstd::any> getValues() override;
+				void setValue(nonstd::any value) override;
 				bool hasLabel() override;
 
 			public:
