@@ -295,13 +295,13 @@ void FloatSampleTools::float2byteGeneric(vector<float> input, int inOffset, vect
 
 void FloatSampleTools::float2byteGeneric(vector<float> input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, int formatType, float ditherBits)
 {
-	if (inOffset < 0 || inOffset + sampleCount > sizeof input || sampleCount < 0) {
-		string description = "invalid input index: input.length=" + to_string(sizeof input) + " inOffset" + to_string(inOffset) + " sampleCount=" + to_string(sampleCount);
+	if (inOffset < 0 || inOffset + sampleCount > input.size() || sampleCount < 0) {
+		string description = "invalid input index: input.length=" + to_string(input.size()) + " inOffset" + to_string(inOffset) + " sampleCount=" + to_string(sampleCount);
 		// TO-DO Throw description
 		printf("ERROR: %s", description.c_str());
 	}
-	if (outByteOffset < 0 || outByteOffset + (sampleCount * outByteStep) >= (sizeof output + outByteStep) || outByteStep < getSampleSize(formatType)) {
-		string description = "invalid output index: output.length= " + to_string(sizeof output) + " outByteOffset=" + to_string(sizeof outByteOffset) + " outByteStep=" + to_string(sizeof outByteStep) + " sampleCount=" + to_string(sizeof sampleCount) + " format=" + formatType2Str(formatType);
+	if (outByteOffset < 0 || outByteOffset + (sampleCount * outByteStep) >= (output.size() + outByteStep) || outByteStep < getSampleSize(formatType)) {
+		string description = "invalid output index: output.length= " + to_string(output.size()) + " outByteOffset=" + to_string(outByteOffset) + " outByteStep=" + to_string(outByteStep) + " sampleCount=" + to_string(sampleCount) + " format=" + formatType2Str(formatType);
 	}
 
 	/*
