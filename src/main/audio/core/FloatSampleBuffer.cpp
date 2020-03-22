@@ -29,7 +29,7 @@ void FloatSampleBuffer::init(int channelCount, int sampleCount, float sampleRate
 {
 	if (channelCount < 0 || sampleCount < 0) {
 		string error = "invalid parameters in initialization of FloatSampleBuffer.";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
 	setSampleRate(sampleRate);
@@ -63,7 +63,7 @@ void FloatSampleBuffer::initFromByteArray_(vector<char> buffer, int offset, int 
 
 	if (offset + byteCount > buffer.size()) {
 		string error = "FloatSampleBuffer.initFromByteArray: buffer too small.";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
 	auto thisSampleCount = byteCount / format->getFrameSize();
@@ -112,17 +112,18 @@ int FloatSampleBuffer::convertToByteArray_(int readOffset, int lenInSamples, vec
 {
 	int byteCount = getByteArrayBufferSize(format, lenInSamples);
 	if (writeOffset + byteCount > buffer->size()) {
-		string error = "FloatSampleBuffer.convertToByteArray: buffer too small.\n";
-		printf("ERROR: %s", error.c_str());
+		string error = "FloatSampleBuffer.convertToByteArray: buffer too small.";
+		printf("ERROR: %s\n", error.c_str());
 		return -1;
 	}
 	if (format->getSampleRate() != getSampleRate()) {
-		string error = "FloatSampleBuffer.convertToByteArray: different samplerates.\n";
-		printf("ERROR: %s", error.c_str());
+		string error = "FloatSampleBuffer.convertToByteArray: different samplerates.";
+		printf("ERROR: %s\n", error.c_str());
 		return -1;
 	}
 	if (format->getChannels() != getChannelCount()) {
-		string error = "FloatSampleBuffer.convertToByteArray: different channel count.\n";
+		string error = "FloatSampleBuffer.convertToByteArray: different channel count.";
+		printf("ERROR: %s\n", error.c_str());
 		return -1;
 	}
 	FloatSampleTools::float2byte(channels, readOffset, buffer, writeOffset, lenInSamples, format, getConvertDitherBits(FloatSampleTools::getFormatType(format)));
@@ -265,7 +266,7 @@ void FloatSampleBuffer::copy(int channel, int sourceIndex, int destIndex, int le
 	auto bufferCount = getSampleCount();
 	if (sourceIndex + length > bufferCount || destIndex + length > bufferCount || sourceIndex < 0 || destIndex < 0 || length < 0) {
 		string error = "parameters exceed buffer size";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 	}
 	for (int i = 0; i < length; i++) {
 		data[destIndex + i] = data[sourceIndex + i];
@@ -276,7 +277,7 @@ void FloatSampleBuffer::expandChannel(int targetChannelCount)
 {
 	if (getChannelCount() != 1) {
 		string error = "FloatSampleBuffer: can only expand channels for mono signals.";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
 	for (auto ch = 1; ch < targetChannelCount; ch++) {
@@ -334,7 +335,7 @@ void FloatSampleBuffer::setSampleRate(float sampleRate)
 {
 	if (sampleRate <= 0) {
 		string error = "Invalid samplerate for FloatSampleBuffer.";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
 	this->sampleRate = sampleRate;
@@ -344,7 +345,7 @@ vector<float>* FloatSampleBuffer::getChannel(int channel)
 {
 	if (channel < 0 || channel >= getChannelCount()) {
 		string error = "FloatSampleBuffer: invalid channel number.";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return nullptr;
 	}
 	return &channels[channel];
@@ -359,7 +360,7 @@ void FloatSampleBuffer::setDitherBits(float ditherBits)
 {
 	if (ditherBits <= 0) {
 		string error = "DitherBits must be greater than 0";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
 	this->ditherBits = ditherBits;
@@ -374,7 +375,7 @@ void FloatSampleBuffer::setDitherMode(int mode)
 {
 	if (mode != DITHER_MODE_AUTOMATIC && mode != DITHER_MODE_ON && mode != DITHER_MODE_OFF) {
 		string error = "Illegal DitherMode";
-		printf("ERROR: %s", error.c_str());
+		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
 	this->ditherMode = mode;
