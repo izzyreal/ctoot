@@ -298,10 +298,11 @@ void FloatSampleTools::float2byteGeneric(vector<float> input, int inOffset, vect
 	if (inOffset < 0 || inOffset + sampleCount > input.size() || sampleCount < 0) {
 		string description = "invalid input index: input.length=" + to_string(input.size()) + " inOffset" + to_string(inOffset) + " sampleCount=" + to_string(sampleCount);
 		// TO-DO Throw description
-		printf("ERROR: %s", description.c_str());
+		printf("ERROR: %s\n", description.c_str());
 	}
 	if (outByteOffset < 0 || outByteOffset + (sampleCount * outByteStep) >= (output->size() + outByteStep) || outByteStep < getSampleSize(formatType)) {
 		string description = "invalid output index: output.length= " + to_string(output->size()) + " outByteOffset=" + to_string(outByteOffset) + " outByteStep=" + to_string(outByteStep) + " sampleCount=" + to_string(sampleCount) + " format=" + formatType2Str(formatType);
+		printf("ERROR: %s\n", description.c_str());
 	}
 
 	/*
