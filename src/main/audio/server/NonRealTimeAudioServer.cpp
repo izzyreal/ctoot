@@ -5,6 +5,8 @@
 #include <audio/server/AudioServer.hpp>
 #include <audio/server/IOAudioProcess.hpp>
 
+#include <Logger.hpp>
+
 #include <stdio.h>
 
 using namespace ctoot::audio::server;
@@ -140,13 +142,12 @@ void NonRealTimeAudioServer::work(int nFrames)
 
 void NonRealTimeAudioServer::run()
 {
-    isRunning_ = true;
+	isRunning_ = true;
     while (isRunning_) {
-        //work(server.lock()->getBuffers().at(0)->getSampleCount());
-		work(512);
-		//std::this_thread::yield();
+		work(server.lock()->getBufferSize());
     }
 }
+
 void NonRealTimeAudioServer::removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer) {
 	auto lServer = server.lock();
 	lServer->removeAudioBuffer(buffer);

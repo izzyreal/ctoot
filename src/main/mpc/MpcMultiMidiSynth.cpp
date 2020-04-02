@@ -17,9 +17,8 @@ using namespace std;
 MpcMultiMidiSynth::MpcMultiMidiSynth(shared_ptr<ctoot::synth::synths::multi::MultiSynthControls> controls)
 	: MultiMidiSynth(controls)
 {
-	auto sr = dynamic_pointer_cast<MpcMultiSynthControls>(controls)->getSampleRate();
 	for (int i = 0; i < 32; i++) {
-		auto voice = make_shared<MpcVoice>(i + 1, false, sr);
+		auto voice = make_shared<MpcVoice>(i + 1, false);
 		voices.push_back(std::move(voice));
 	}
 }

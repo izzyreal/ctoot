@@ -100,7 +100,7 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 	client->work(nFrames);
 
 	auto originalOutputBuffer = outputBuffer;
-	const int outputsToProcess = outputChannelCount / 2;
+	const int outputsToProcess = outputChannelCount * 0.5;
 	for (int frame = 0; frame < nFrames; frame++) {
 		for (int output = 0; output < outputsToProcess; output += 2) {
 			if (output >= activeOutputs.size()) {

@@ -26,33 +26,31 @@
 
 using namespace ctoot::mpc;
 
-MpcVoice::MpcVoice(int stripNumber, bool basic, int hostSampleRate)
+MpcVoice::MpcVoice(int stripNumber, bool basic)
 {
-	this->hostSampleRate = hostSampleRate;
-	inverseNyquist = 2.f / hostSampleRate;
 	EMPTY_FRAME = std::vector<float>{ 0.f, 0.f };
 	tempFrame = std::vector<float>{ 0.f, 0.f };
 	muteInfo = new MpcMuteInfo();
 	this->stripNumber = stripNumber;
 	this->basic = basic;
 	staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
-	staticEnvControls->setSampleRate(hostSampleRate);
+	staticEnvControls->setSampleRate(sampleRate);
 	staticEnv = new ctoot::mpc::MpcEnvelopeGenerator(staticEnvControls);
 	sattack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[ATTACK_INDEX].lock()).get();
 	shold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[HOLD_INDEX].lock()).get();
 	sdecay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[DECAY_INDEX].lock()).get();
 
-	timeRatio = 5.46f * (44100.0 / hostSampleRate);
+	timeRatio = 5.46f * (44100.0 / sampleRate);
 
 	if (!basic) {
 		ampEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "AmpEnv", AMPENV_OFFSET);
-		ampEnvControls->setSampleRate(hostSampleRate);
+		ampEnvControls->setSampleRate(sampleRate);
 		filterEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
-		filterEnvControls->setSampleRate(hostSampleRate);
+		filterEnvControls->setSampleRate(sampleRate);
 		ampEnv = new ctoot::mpc::MpcEnvelopeGenerator(ampEnvControls);
 		filterEnv = new ctoot::mpc::MpcEnvelopeGenerator(filterEnvControls);
 		svfControls = new ctoot::synth::modules::filter::StateVariableFilterControls(0, "Filter", SVF_OFFSET);
-		svfControls->setSampleRate(hostSampleRate);
+		svfControls->setSampleRate(sampleRate);
 		svfControls->createControls();
 		svf0 = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
 		svf1 = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
@@ -140,7 +138,7 @@ void MpcVoice::init(
         break;
     }
 
-	increment = pow(2.0, ((double)(tune) / 120.0)) * (44100.0 / hostSampleRate);
+	increment = pow(2.0, ((double)(tune) / 120.0)) * (44100.0 / sampleRate);
 
 	start = lOscVars->getStart() + (veloFactor * (veloToStart / 100.0) * lOscVars->getLastFrameIndex());
     end = lOscVars->getEnd();
@@ -151,8 +149,8 @@ void MpcVoice::init(
     attackMs += (float)((veloToAttack / 100.0) * MAX_ATTACK_LENGTH_MS * veloFactor);
     finalDecayValue = decayValue < 2 ? 2 : decayValue;
     decayMs = (float)((finalDecayValue / 100.0) * MAX_DECAY_LENGTH_MS);
-    attackLengthSamples = (int)(attackMs * (hostSampleRate/1000.0));
-    decayLengthSamples = (int)(decayMs * (hostSampleRate/1000.0));
+    attackLengthSamples = (int)(attackMs * (sampleRate/1000.0));
+    decayLengthSamples = (int)(decayMs * (sampleRate/1000.0));
 	if (attackLengthSamples > MAX_ATTACK_LENGTH_SAMPLES) {
 		attackLengthSamples = (int)(MAX_ATTACK_LENGTH_SAMPLES);
 	}
@@ -162,15 +160,15 @@ void MpcVoice::init(
 	}
 
     holdLengthSamples = playableSampleLength - attackLengthSamples - decayLengthSamples;
-    staticEnvHoldSamples = (int)(playableSampleLength - (((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (hostSampleRate/1000.0)));
     staticEnv->reset();
     sattack->setValue(STATIC_ATTACK_LENGTH);
+	auto staticEnvHoldSamples = (int)(playableSampleLength - (((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate / 1000.0)));
     shold->setValue(staticEnvHoldSamples);
     sdecay->setValue(STATIC_DECAY_LENGTH);
     veloToLevelFactor = (float)((veloToLevel / 100.0));
     amplitude = (float)(((veloFactor * veloToLevelFactor) + 1.0f - veloToLevelFactor));
     amplitude *= (lOscVars->getSndLevel() / 100.0);
-    if(!basic) {
+    if (!basic) {
         ampEnv->reset();
         attack->setValue(decayMode == 1 ? (float)(0) : attackMs * timeRatio);
         hold->setValue(decayMode == 1 ? 0 : holdLengthSamples);
@@ -271,12 +269,28 @@ void MpcVoice::open()
 
 int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
+	if (buffer->getSampleRate() != sampleRate) {
+		sampleRate = buffer->getSampleRate();
+		
+		inverseNyquist = 2.f / sampleRate;
+		timeRatio = 5.46f * (44100.0 / sampleRate);
+		staticEnvControls->setSampleRate(sampleRate);
+
+		if (!basic) {
+			ampEnvControls->setSampleRate(sampleRate);
+			filterEnvControls->setSampleRate(sampleRate);
+			svfControls->setSampleRate(sampleRate);
+			attackLengthSamples = (int)(attackMs * (sampleRate / 1000.0));
+			decayLengthSamples = (int)(decayMs * (sampleRate / 1000.0));
+			auto staticEnvHoldSamples = (int)(playableSampleLength - (((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate / 1000.0)));
+			shold->setValue(staticEnvHoldSamples);
+		}
+	}
 	//if (stripNumber == 65)
 		//MLOG("strip number " + std::to_string(stripNumber) + " processing " + std::to_string(nFrames));
 	if (finished) {
 		buffer->makeSilence();
 		return AUDIO_SILENCE;
-		// maybe should be AUDIO_SILENCE
 	}
 	auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);

@@ -30,7 +30,7 @@ namespace ctoot {
 		{
 
 		private:
-			float hostSampleRate = 44100.0;
+			float sampleRate = 44100.0;
 			float timeRatio;
 			
 			static const float STATIC_ATTACK_LENGTH;
@@ -83,7 +83,7 @@ namespace ctoot {
 			int stripNumber{ -1 };
 
 		public:
-			float inverseNyquist{ 2.f / 44100.f };
+			float inverseNyquist{ 2.f / sampleRate };
 
 		private:
 			void readFrame();
@@ -114,7 +114,6 @@ namespace ctoot {
 			int attackLengthSamples{ 0 };
 			int decayLengthSamples{ 0 };
 			int holdLengthSamples{ 0 };
-			int staticEnvHoldSamples{ 0 };
 			float veloToLevelFactor{ 0 };
 			int filtParam{ 0 };
 			float envAmplitude{ 0 };
@@ -143,7 +142,7 @@ namespace ctoot {
 			void finish();
 
 		public:
-			MpcVoice(int stripNumber, bool basic, int sampleRate);
+			MpcVoice(int stripNumber, bool basic);
 			~MpcVoice();
 		};
 
