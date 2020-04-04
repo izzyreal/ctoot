@@ -26,6 +26,12 @@ void NonRealTimeAudioServer::setWeakPtr(shared_ptr<NonRealTimeAudioServer> share
 
 void NonRealTimeAudioServer::setRealTime(bool rt)
 {
+	if (rt) {
+		MLOG("Setting to realtime");
+	}
+	else {
+		MLOG("Setting to offline");
+	}
 	if (!isRunning()) {
 		realTime = rt;
 		return;
@@ -71,7 +77,9 @@ void NonRealTimeAudioServer::start()
 
 void NonRealTimeAudioServer::startNRT()
 {
+	MLOG("startNRT")
 	if (!client.lock()) {
+		MLOG("can't lock client!")
 		startASAP = true;
 		return;
 	}
@@ -142,8 +150,10 @@ void NonRealTimeAudioServer::work(int nFrames)
 
 void NonRealTimeAudioServer::run()
 {
+	MLOG("starting nrt with buffersize " + to_string(server.lock()->getBufferSize()) + " and sampleRate " + to_string(server.lock()->getSampleRate()));
 	isRunning_ = true;
     while (isRunning_) {
+		MLOG("work");
 		work(server.lock()->getBufferSize());
     }
 }

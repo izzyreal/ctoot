@@ -7,8 +7,6 @@
 
 #include <System.hpp>
 
-//#include <log4cplus/log4cplus.h>
-
 using namespace ctoot::audio::server;
 using namespace std;
 
@@ -43,7 +41,7 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	if (!running) {
 		return;
 	}
-	
+
 	for (auto& i : activeInputs) {
 		if (i->localBuffer.size() != nFrames * 2) {
 			i->localBuffer.resize(nFrames * 2);
@@ -81,7 +79,7 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 	if (!running) {
 		return;
 	}
-	
+
 	for (auto& i : activeInputs) {
 		if (i->localBuffer.size() != nFrames * 2) {
 			i->localBuffer.resize(nFrames * 2);
