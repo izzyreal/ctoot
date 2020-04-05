@@ -32,7 +32,7 @@ namespace ctoot {
 		private:
 			float sampleRate = 44100.0;
 			float timeRatio;
-			
+
 			static const float STATIC_ATTACK_LENGTH;
 			static const float STATIC_DECAY_LENGTH;
 			static const int MAX_ATTACK_LENGTH_MS{ 3000 };
@@ -87,6 +87,7 @@ namespace ctoot {
 
 		private:
 			void readFrame();
+			void setSampleRate(int sampleRate);
 
 		private:
 			ctoot::synth::modules::filter::StateVariableFilter* svf1{ nullptr };
@@ -100,6 +101,8 @@ namespace ctoot {
 			static const int AMPENV_OFFSET{ 64 };
 			std::vector<float> EMPTY_FRAME;
 			std::vector<float> tempFrame;
+			int varType{ 0 };
+			int varValue{ 0 };
 			float veloFactor{ 0 };
 			int veloToStart{ 0 };
 			int attackValue{ 0 };
@@ -123,11 +126,11 @@ namespace ctoot {
 			int j{ 0 };
 			std::vector<float> frame;
 
-        public:
-            void open() override;
-            int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
-            void close() override;
-            
+		public:
+			void open() override;
+			int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
+			void close() override;
+
 		public:
 			bool isFinished();
 			void init(int track, int velocity, int padNumber, std::weak_ptr<ctoot::mpc::MpcSound> oscVars, ctoot::mpc::MpcNoteParameters* np, int varType, int varValue, int muteNote, int muteDrum, int frameOffset, bool enableEnvs);
