@@ -27,6 +27,7 @@ AudioMixerStrip* MixProcess::getRoutedStrip()
 
 int MixProcess::processAudio(AudioBuffer* buffer)
 {
+	auto wasSilent = buffer->isSilent();
 	if (!vars.lock()->isEnabled() && vars.lock()->isMaster()) {
 		buffer->makeSilence();
 	}

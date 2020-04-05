@@ -11,6 +11,16 @@ AudioBuffer::AudioBuffer(string name, int channelCount, int sampleCount, float s
 	channelFormat = guessFormat();
 }
 
+const bool AudioBuffer::isSilent() {
+    for (int c = 0; c < getChannelCount(); c++) {
+        auto data = *getChannel(c);
+        for (int s = 0; s < getSampleCount(); s++) {
+            if (data[s] != 0) return false;
+        }
+    }
+    return true;
+}
+
 string AudioBuffer::getName()
 {
    return name;

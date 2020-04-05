@@ -286,8 +286,7 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 			shold->setValue(staticEnvHoldSamples);
 		}
 	}
-	//if (stripNumber == 65)
-		//MLOG("strip number " + std::to_string(stripNumber) + " processing " + std::to_string(nFrames));
+
 	if (finished) {
 		buffer->makeSilence();
 		return AUDIO_SILENCE;

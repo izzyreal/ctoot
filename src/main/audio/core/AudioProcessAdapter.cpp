@@ -1,11 +1,12 @@
 #include <audio/core/AudioProcessAdapter.hpp>
 #include <audio/core/AudioProcess.hpp>
 
+#include <stdexcept>
+
 ctoot::audio::core::AudioProcessAdapter::AudioProcessAdapter(AudioProcess* process)
 {
 	if (process == nullptr) {
-		//        throw new ::java::lang::IllegalArgumentException("null AudioProcess";
-		return;
+		throw new std::exception("AudioProcessAdapter process == nullptr");
 	}
 	this->process = process;
 }

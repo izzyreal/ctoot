@@ -158,8 +158,9 @@ void AudioMixer::processMutation(Mutation* m)
 
 void AudioMixer::evaluateStrips(vector<weak_ptr<AudioMixerStrip>>* strips)
 {
-	for (auto& strip : (*strips))
+	for (auto& strip : (*strips)) {
 		strip.lock()->processBuffer();
+	}
 }
 
 void AudioMixer::silenceStrips(vector<weak_ptr<AudioMixerStrip>>* strips)

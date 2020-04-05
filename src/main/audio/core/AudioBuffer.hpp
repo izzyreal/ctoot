@@ -47,6 +47,7 @@ namespace ctoot {
 				bool encodeMidSide();
 				bool decodeMidSide();
 				void copyFrom(AudioBuffer* src);
+				const bool isSilent();
 
 			public:
 				AudioBuffer(std::string name, int channelCount, int sampleCount, float sampleRate);
