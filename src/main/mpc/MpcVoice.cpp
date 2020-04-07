@@ -344,8 +344,6 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	auto right = buffer->getChannel(1);
 	auto ns = buffer->getSampleCount();
 
-	MLOG("Sample rate " + to_string(buffer->getSampleRate()));
-
 	for (int i = 0; i < ns; i++) {
 		frame = getFrame();
 		(*left)[i] = frame[0];
