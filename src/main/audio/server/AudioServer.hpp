@@ -1,79 +1,67 @@
 #pragma once
-#include <string>
-#include <vector>
 #include <audio/server/AudioClient.hpp>
 #include <audio/server/IOAudioProcess.hpp>
 #include <audio/core/AudioBuffer.hpp>
 
+#include <string>
+#include <vector>
 #include <memory>
+#include <cstdint>
 
-namespace log4cplus {
-	class Logger;
-}
+namespace ctoot::audio::server {
 
-namespace ctoot {
-	namespace audio {
+	class AudioServer
+	{
 
-		namespace server {
+	protected:
+		float sampleRate{ 44100.0 };
+		unsigned int bufferSize{ 512 };
+		AudioClient* client{ nullptr };
+		bool running{ false };
+		std::vector<IOAudioProcess*> activeInputs;
+		std::vector<IOAudioProcess*> activeOutputs;
+		std::vector<ctoot::audio::core::AudioBuffer*> buffers{};
 
-			class AudioServer
-			{
+	public:
+		virtual void resizeBuffers(int newSize);
 
-			protected:
-				float sampleRate{ 44100.0 };
-				unsigned int bufferSize{ 512 };
-				AudioClient* client{ nullptr };
-				bool running{ false };
-				std::vector<IOAudioProcess*> activeInputs;
-				std::vector<IOAudioProcess*> activeOutputs;
-				std::vector<ctoot::audio::core::AudioBuffer*> buffers{};
+	public:
+		const std::vector<IOAudioProcess*>& getActiveInputs();
+		const std::vector<IOAudioProcess*>& getActiveOutputs();
+		const std::vector<ctoot::audio::core::AudioBuffer*>& getBuffers();
+		const unsigned int getBufferSize();
 
-			protected:
-				log4cplus::Logger* logger;
+	public:
+		virtual void start() = 0;
+		virtual void stop() = 0;
+		virtual bool isRunning() = 0;
+		virtual void close() = 0;
+		virtual void setClient(std::weak_ptr<AudioClient> client) = 0;
+		virtual std::vector<std::string> getAvailableOutputNames() = 0;
+		virtual std::vector<std::string> getAvailableInputNames() = 0;
+		virtual IOAudioProcess* openAudioOutput(std::string name, std::string label) = 0;
+		virtual IOAudioProcess* openAudioInput(std::string name, std::string label) = 0;
+		virtual void closeAudioOutput(IOAudioProcess* output) = 0;
+		virtual void closeAudioInput(IOAudioProcess* input) = 0;
+		virtual float getSampleRate();
+		virtual void setSampleRate(int rate);
+		virtual float getLoad() = 0;
+		virtual int getInputLatencyFrames() = 0;
+		virtual int getOutputLatencyFrames() = 0;
+		virtual int getTotalLatencyFrames() = 0;
+		virtual void work() = 0;
 
-			public:
-				virtual void resizeBuffers(int newSize);
+	public:
+		virtual ctoot::audio::core::AudioBuffer* createAudioBuffer(std::string name);
+		virtual void removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer);
 
-			public:
-				const std::vector<IOAudioProcess*>& getActiveInputs();
-				const std::vector<IOAudioProcess*>& getActiveOutputs();
-				const std::vector<ctoot::audio::core::AudioBuffer*>& getBuffers();
-				const unsigned int getBufferSize();
+	public:
+		AudioServer();
+		virtual ~AudioServer();
 
-			public:
-				virtual void start() = 0;
-				virtual void stop() = 0;
-				virtual bool isRunning() = 0;
-				virtual void close() = 0;
-				virtual void setClient(std::weak_ptr<AudioClient> client) = 0;
-				virtual std::vector<std::string> getAvailableOutputNames() = 0;
-				virtual std::vector<std::string> getAvailableInputNames() = 0;
-				virtual IOAudioProcess* openAudioOutput(std::string name, std::string label) = 0;
-				virtual IOAudioProcess* openAudioInput(std::string name, std::string label) = 0;
-				virtual void closeAudioOutput(IOAudioProcess* output) = 0;
-				virtual void closeAudioInput(IOAudioProcess* input) = 0;
-				virtual float getSampleRate();
-				virtual void setSampleRate(int rate);
-				virtual float getLoad() = 0;
-				virtual int getInputLatencyFrames() = 0;
-				virtual int getOutputLatencyFrames() = 0;
-				virtual int getTotalLatencyFrames() = 0;
-				virtual void work() = 0;
+	private:
+		friend class StereoInputProcess;
+		friend class StereoOutputProcess;
 
-			public:
-				virtual ctoot::audio::core::AudioBuffer* createAudioBuffer(std::string name);
-				virtual void removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer);
-
-			public:
-				AudioServer();
-				virtual ~AudioServer();
-
-			private:
-				friend class StereoInputProcess;
-				friend class StereoOutputProcess;
-
-			};
-
-		}
-	}
+	};
 }

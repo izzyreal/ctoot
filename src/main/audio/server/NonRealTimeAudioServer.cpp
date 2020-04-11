@@ -4,6 +4,7 @@
 #include <audio/server/AudioClient.hpp>
 #include <audio/server/AudioServer.hpp>
 #include <audio/server/IOAudioProcess.hpp>
+#include <audio/server/ExternalAudioServer.hpp>
 
 #include <Logger.hpp>
 
@@ -18,6 +19,11 @@ NonRealTimeAudioServer::NonRealTimeAudioServer(weak_ptr<AudioServer> server)
 	realTime = true;
 	isRunning_ = false;
 	startASAP = false;
+}
+
+void NonRealTimeAudioServer::setSampleRate(int rate)
+{
+	server.lock()->setSampleRate(rate);
 }
 
 void NonRealTimeAudioServer::setWeakPtr(shared_ptr<NonRealTimeAudioServer> sharedPtr) {
@@ -133,6 +139,13 @@ float NonRealTimeAudioServer::getLoad()
 
 void NonRealTimeAudioServer::setEnabled(bool enable)
 {
+}
+
+void NonRealTimeAudioServer::work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
+	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server.lock());
+	if (externalAudioServer) {
+		externalAudioServer->work(inputBuffer, outputBuffer, nFrames, inputChannelCount, outputChannelCount);
+	}
 }
 
 void NonRealTimeAudioServer::work(int nFrames)

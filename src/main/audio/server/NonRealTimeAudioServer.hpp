@@ -61,6 +61,7 @@ namespace ctoot {
 				void closeAudioOutput(IOAudioProcess* output) override;
 				void closeAudioInput(IOAudioProcess* input) override;
 				float getSampleRate() override;
+				void setSampleRate(int rate) override;
 				int getInputLatencyFrames() override;
 				int getOutputLatencyFrames() override;
 				int getTotalLatencyFrames() override;
@@ -68,6 +69,10 @@ namespace ctoot {
 
 			public:
 				void work(int nFrames) override;
+
+			public:
+				// For compatibility with JUCE
+				void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 
 			public:
 				NonRealTimeAudioServer(std::weak_ptr<AudioServer> server);

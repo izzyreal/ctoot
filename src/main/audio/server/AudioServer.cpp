@@ -1,19 +1,16 @@
 #include <audio/server/AudioServer.hpp>
 
-//#include <log4cplus/log4cplus.h>
-
 using namespace ctoot::audio::server;
 using namespace std;
 
 AudioServer::AudioServer() {
-	//logger = &log4cplus::Logger::getRoot();
 }
 
 float AudioServer::getSampleRate() {
 	return sampleRate;
 }
 
-void AudioServer::setSampleRate(int rate) {
+void ctoot::audio::server::AudioServer::setSampleRate(int rate) {
 	sampleRate = static_cast<float>(rate);
 	for (auto& b : buffers)
 		b->setSampleRate(sampleRate);
