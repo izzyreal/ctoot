@@ -23,7 +23,7 @@ float PanControl::getRight()
 
 void PanControl::setValue(float value)
 {
-    left = static_cast< float >(cos(M_PI / 2 * value));
-    right = static_cast< float >(sin(M_PI / 2 * value));
+    left = static_cast< float >(cos(M_PI * 0.5 * value));
+    right = static_cast< float >(sin(M_PI * 0.5 * value));
 	LCRControl::setValue(value);
 }

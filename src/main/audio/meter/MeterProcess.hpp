@@ -20,10 +20,10 @@ namespace ctoot {
 				float bufferTime{ -1.0f };
 
 			public:
-				int processAudio(::ctoot::audio::core::AudioBuffer* buffer) override;
+				int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
 
 			private:
-				void check(::ctoot::audio::core::AudioBuffer* buffer);
+				void check(ctoot::audio::core::AudioBuffer* buffer);
 
 			protected:
 				void detectOvers(int chan, std::vector<float>* samples, int len);

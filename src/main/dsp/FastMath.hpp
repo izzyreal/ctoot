@@ -20,10 +20,6 @@ namespace ctoot {
 			static float triangle(float x);
 			static float min(float a, float b);
 			static float max(float a, float b);
-			//static double sqrt(double a);
-			//static double pow(double a, double b);
-			//static double exp(double val);
-			//static double ln(double val);
 			static float tanh(float x);
 
 		};

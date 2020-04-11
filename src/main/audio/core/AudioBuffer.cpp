@@ -84,14 +84,19 @@ weak_ptr<ChannelFormat> AudioBuffer::getChannelFormat()
     return channelFormat;
 }
 
-void AudioBuffer::setChannelFormat(weak_ptr<ChannelFormat> format)
+void AudioBuffer::setChannelFormat(weak_ptr<ChannelFormat> newFormat)
 {
-	if (channelFormat.lock() == format.lock())
-		return;
+    auto l_newFormat = newFormat.lock();
+    auto l_channelFormat = channelFormat.lock();
 
-	channelFormat = format;
-	if (channelFormat.lock()) {
-		setChannelCount(channelFormat.lock()->getCount());
+    if (l_newFormat == l_channelFormat) {
+        return;
+    }
+
+	channelFormat = l_newFormat;
+
+	if (l_newFormat) {
+		setChannelCount(l_newFormat->getCount());
 	}
 }
 

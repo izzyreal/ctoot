@@ -17,7 +17,7 @@ SpectrumAnalyserProcess::SpectrumAnalyserProcess(weak_ptr<SpectrumAnalyserContro
 	this->controls = controls;
 	circBuf = make_unique<moduru::io::StereoCircularTBuffer>(48000);
 	fft = make_unique<FFTReal>(FFT_SIZE);
-	controls.lock()->setValues(vector<float>(FFT_SIZE/2));
+	controls.lock()->setValues(vector<float>(FFT_SIZE * 0.5));
 }
 
 SpectrumAnalyserProcess::~SpectrumAnalyserProcess()
@@ -33,32 +33,6 @@ void applyWindow(vector<float>& data) {
 		data[i] = static_cast<float>(multiplier * data[i]);
 	}
 }
-
-// 4-term Blackman-Harris
-/*
-void applyWindow(vector<float>& samples)
-{
-	auto numSamples = samples.size();
-	const float a0 = 0.35875f;
-	const float a1 = 0.48829f;
-	const float a2 = 0.14128f;
-	const float a3 = 0.01168f;
-
-	const double oneOverSize = (1.0 / numSamples);
-	const double oneOverSizeMinusOne = 1.0 / (numSamples - 1.0);
-	float windowFactor = 0.0f;
-
-	for (int i = 0; i < numSamples; i++)
-	{
-		// Blackman-Harris window equation
-		float window = a0 - a1 * (float)(std::cos((M_PI * 2) * i * oneOverSizeMinusOne))
-			+ a2 * (float)(std::cos((M_PI * 4) * i * oneOverSizeMinusOne))
-			- a3 * (float)(std::cos((M_PI * 6) * i * oneOverSizeMinusOne));
-		samples[i] *= window;
-		windowFactor += window;
-	}
-}
-*/
 
 int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 	auto c = controls.lock();
@@ -96,15 +70,15 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 		double img;
 
 		const double real = resultL[i];
-		if (i > 0 && i < FFT_SIZE / 2) {
-			img = resultL[i + FFT_SIZE / 2];
+		if (i > 0 && i < FFT_SIZE * 0.5) {
+			img = resultL[i + FFT_SIZE * 0.5];
 		}
 		else {
 			img = 0;
 		}
 
 		const double f_abs = sqrt(real * real + img * img);
-		float v = static_cast<float>(abs(f_abs / (FFT_SIZE / 2)));
+		float v = static_cast<float>(abs(f_abs / (FFT_SIZE * 0.5)));
 		c->setValue(vCounter++, v);
 
 	}

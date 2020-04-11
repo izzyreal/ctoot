@@ -17,7 +17,7 @@ void TapProcess::open()
     tap = controls->getBuffer();
 }
 
-int32_t TapProcess::processAudio(::ctoot::audio::core::AudioBuffer* buffer)
+int32_t TapProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
 	if (controls->isInactive())
 		return AUDIO_OK;

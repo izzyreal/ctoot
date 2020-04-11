@@ -173,15 +173,20 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	* We silence the aux buses that are not in use by this voice.
 	* We set the level for the MIX OUT that is in use, if any.
 	*/
-	int selectedAssignableMixOutPair = static_cast<int>(ceil((ifmc->getOutput() - 2) / 2.0));
+	int selectedAssignableMixOutPair = static_cast<int>(ceil((ifmc->getOutput() - 2) * 0.5));
 	for (int i = 0; i < 4; i++) {
 		auto auxControl = dynamic_pointer_cast<ctoot::control::CompoundControl>(sc->find("AUX#" + to_string(i + 1)).lock());
 		auto auxLevel = dynamic_pointer_cast<MpcFaderControl>(auxControl->find("Level").lock());
 		if (i == selectedAssignableMixOutPair) {
-			auxLevel->setValue(static_cast<float>(ifmc->getVolumeIndividualOut()));
+			auto value = static_cast<float>(ifmc->getVolumeIndividualOut());
+			if (value != auxLevel->getValue()) {
+				auxLevel->setValue(value);
+			}
 		}
 		else {
-			auxLevel->setValue(0);
+			if (auxLevel->getValue() != 0) {
+				auxLevel->setValue(0);
+			}
 		}
 	}
 	stopPad(padNumber, 1);

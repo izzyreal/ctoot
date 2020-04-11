@@ -11,14 +11,26 @@ StereoOutputProcess::StereoOutputProcess(string name, bool mono, string location
 }
 
 int StereoOutputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer) {
-	if (!buffer->isRealTime()) return AudioProcess::AUDIO_OK;
-	buffer->setChannelFormat(format);
+	
+	if (!buffer->isRealTime()) {
+		return AudioProcess::AUDIO_OK;
+	}
+
+	if (buffer->getChannelFormat().lock() != format.lock()) {
+		buffer->setChannelFormat(format);
+	}
+	
 	auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);
+	
 	auto ns = buffer->getSampleCount();
-	if (localBuffer.size() != ns * 2)
+	
+	if (localBuffer.size() != ns * 2) {
 		localBuffer.resize(ns * 2);
+	}
+
 	int frameCounter = 0;
+	
 	for (int i = 0; i < ns * 2; i += 2) {
 		localBuffer[i] = (*left)[frameCounter];
 		localBuffer[i+1] = (*right)[frameCounter++];

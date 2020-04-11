@@ -110,7 +110,7 @@ void MpcSoundOscillatorControls::setLoopTo(int i)
 
 int MpcSoundOscillatorControls::getLastFrameIndex()
 {
-    return (isMono() ? sampleData.size() : (sampleData.size() / 2)) - 1;
+    return (isMono() ? sampleData.size() : (sampleData.size() * 0.5)) - 1;
 }
 
 int MpcSoundOscillatorControls::getTune()

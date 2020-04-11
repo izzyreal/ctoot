@@ -61,7 +61,7 @@ int FaderLaw::binarySearch(vector<float> buf, float key, int min, int max)
 	float fMin = static_cast<float>(min);
 
 	while (fMax >= fMin) {
-		mid = (fMin + fMax) / 2;
+		mid = (fMin + fMax) * 0.5;
 
 		if (buf[static_cast<int>(mid)] < key)
 			fMin = mid + 1;

@@ -181,10 +181,10 @@ void MpcVoice::init(
 		initialFilterValue = (float)(((filtParam + (veloFactor * np->getVelocityToFilterFrequency()))));
 		initialFilterValue = (float)((17.0 + (initialFilterValue * 0.75)));
 		filterEnv->reset();
-		fattack->setValue((float)((np->getFilterAttack() / 500.0) * MAX_ATTACK_LENGTH_SAMPLES));
+		fattack->setValue((float)((np->getFilterAttack() * 0.002) * MAX_ATTACK_LENGTH_SAMPLES));
 		fhold->setValue(0);
-		fdecay->setValue((float)((np->getFilterDecay() / 500.0) * MAX_DECAY_LENGTH_SAMPLES));
-		reso->setValue((float)((1.0 / 16.0) + (np->getFilterResonance() / 26.0)));
+		fdecay->setValue((float)((np->getFilterDecay() * 0.002) * MAX_DECAY_LENGTH_SAMPLES));
+		reso->setValue((float)(0.0625 + (np->getFilterResonance() / 26.0)));
 		mix->setValue(0.0f);
 		bandpass->setValue(false);
 		svf0->update();
@@ -203,7 +203,7 @@ void MpcVoice::setSampleRate(int sampleRate) {
 
 	auto lOscVars = oscVars.lock();
 
-	start = lOscVars->getStart() + (veloFactor * (veloToStart / 100.0) * lOscVars->getLastFrameIndex());
+	start = lOscVars->getStart() + (veloFactor * (veloToStart * 0.01) * lOscVars->getLastFrameIndex());
 	end = lOscVars->getEnd();
 
 	sampleData = lOscVars->getSampleData();
@@ -211,8 +211,8 @@ void MpcVoice::setSampleRate(int sampleRate) {
 	increment = pow(2.0, ((double)(tune) / 120.0)) * (44100.0 / sampleRate);
 	playableSampleLength = lOscVars->isLoopEnabled() ? INT_MAX : (int)((end - start) / increment);
 
-	attackLengthSamples = (int)(attackMs * (sampleRate / 1000.0));
-	decayLengthSamples = (int)(decayMs * (sampleRate / 1000.0));
+	attackLengthSamples = (int)(attackMs * (sampleRate * 0.001));
+	decayLengthSamples = (int)(decayMs * (sampleRate * 0.001));
 
 	if (attackLengthSamples > MAX_ATTACK_LENGTH_SAMPLES) {
 		attackLengthSamples = (int)(MAX_ATTACK_LENGTH_SAMPLES);
@@ -226,12 +226,12 @@ void MpcVoice::setSampleRate(int sampleRate) {
 
 	staticEnv->reset();
 	sattack->setValue(STATIC_ATTACK_LENGTH);
-	auto staticEnvHoldSamples = (int)(playableSampleLength - (((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate / 1000.0)));
+	auto staticEnvHoldSamples = (int)(playableSampleLength - (((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate * 0.001)));
 	shold->setValue(staticEnvHoldSamples);
 	sdecay->setValue(STATIC_DECAY_LENGTH);
-	veloToLevelFactor = (float)((veloToLevel / 100.0));
+	veloToLevelFactor = (float)((veloToLevel * 0.01));
 	amplitude = (float)(((veloFactor * veloToLevelFactor) + 1.0f - veloToLevelFactor));
-	amplitude *= (lOscVars->getSndLevel() / 100.0);
+	amplitude *= (lOscVars->getSndLevel() * 0.01);
 	if (!basic) {
 		ampEnv->reset();
 		attack->setValue(decayMode == 1 ? (float)(0) : attackMs * timeRatio);
@@ -243,10 +243,10 @@ void MpcVoice::setSampleRate(int sampleRate) {
 		initialFilterValue = (float)(((filtParam + (veloFactor * np->getVelocityToFilterFrequency()))));
 		initialFilterValue = (float)((17.0 + (initialFilterValue * 0.75)));
 		filterEnv->reset();
-		fattack->setValue((float)((np->getFilterAttack() / 500.0) * MAX_ATTACK_LENGTH_SAMPLES));
+		fattack->setValue((float)((np->getFilterAttack() * 0.002) * MAX_ATTACK_LENGTH_SAMPLES));
 		fhold->setValue(0);
-		fdecay->setValue((float)((np->getFilterDecay() / 500.0) * MAX_DECAY_LENGTH_SAMPLES));
-		reso->setValue((float)((1.0 / 16.0) + (np->getFilterResonance() / 26.0)));
+		fdecay->setValue((float)((np->getFilterDecay() * 0.002) * MAX_DECAY_LENGTH_SAMPLES));
+		reso->setValue((float)(0.0625 + (np->getFilterResonance() / 26.0)));
 		mix->setValue(0.0f);
 		bandpass->setValue(false);
 		svf0->update();
@@ -349,7 +349,9 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 		(*left)[i] = frame[0];
 		(*right)[i] = frame[1];
 		if (decayCounter != 0) {
-			if (decayCounter == 1) startDecay();
+			if (decayCounter == 1) {
+				startDecay();
+			}
 			decayCounter--;
 		}
 	}

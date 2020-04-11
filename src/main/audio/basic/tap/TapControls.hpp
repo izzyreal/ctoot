@@ -17,15 +17,15 @@ namespace ctoot {
 				{
 
 				private:
-					int32_t refCount{ 0 };
-					ctoot::audio::core::AudioBuffer* buffer{  };
+					int32_t refCount = 0;
+					ctoot::audio::core::AudioBuffer* buffer = nullptr;
 
 				protected:
 					void setParent(ctoot::control::CompoundControl* parent) override;
 
 				public:
 					virtual void removeBuffer();
-					virtual ::ctoot::audio::core::AudioBuffer* getBuffer();
+					virtual ctoot::audio::core::AudioBuffer* getBuffer();
 					virtual void reference(int32_t ref);
 					bool canBeDeleted() override;
 

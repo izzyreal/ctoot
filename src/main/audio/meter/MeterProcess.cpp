@@ -13,7 +13,7 @@ MeterProcess::MeterProcess(weak_ptr<MeterControls> controls)
     this->controls = controls;
 }
 
-int MeterProcess::processAudio(::ctoot::audio::core::AudioBuffer* buffer)
+int MeterProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
     auto nc = buffer->getChannelCount();
     auto ns = buffer->getSampleCount();
@@ -27,7 +27,7 @@ int MeterProcess::processAudio(::ctoot::audio::core::AudioBuffer* buffer)
     return AUDIO_OK;
 }
 
-void MeterProcess::check(::ctoot::audio::core::AudioBuffer* buffer)
+void MeterProcess::check(ctoot::audio::core::AudioBuffer* buffer)
 {
 	auto ms = buffer->getSampleCount() / buffer->getSampleRate() * 1000;
 	if (bufferTime != ms) {

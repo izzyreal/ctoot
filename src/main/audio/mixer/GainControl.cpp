@@ -21,7 +21,7 @@ void GainControl::setValue(float value)
 		gain = 0.0f;
 	}
 	else {
-		gain = (float)(pow(10.0, value / 20.0));
+		gain = (float)(pow(10.0, value * 0.05));
 	}
 	FaderControl::setValue(value);
 }

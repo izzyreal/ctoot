@@ -38,34 +38,6 @@ float FastMath::max(float a, float b)
     return a > b ? a : b;
 }
 
-/*
-double FastMath::sqrt(double a)
-{
-    return ::java::lang::Double::longBitsToDouble(((::java::lang::Double::doubleToLongBits(a) >> int32_t(32)) + int32_t(1072632448)) << int32_t(31));
-}
-
-double FastMath::pow(double a, double b)
-{
-    auto const x = static_cast< int32_t >((::java::lang::Double::doubleToLongBits(a) >> int32_t(32)));
-    auto const y = static_cast< int32_t >((b * (x - int32_t(1072632447)) + int32_t(1072632447)));
-    return ::java::lang::Double::longBitsToDouble((static_cast< int64_t >(y)) << int32_t(32));
-}
-
-double FastMath::exp(double val)
-{
-    clinit();
-    auto const tmp = static_cast< int64_t >((int32_t(1512775) * val)) + int32_t(1072632447);
-    return ::java::lang::Double::longBitsToDouble(tmp << int32_t(32));
-}
-
-double FastMath::ln(double val)
-{
-    clinit();
-    double const x = ::java::lang::Double::doubleToLongBits(val) >> int32_t(32);
-    return (x - int32_t(1072632447)) / int32_t(1512775);
-}
-*/
-
 float FastMath::tanh(float x)
 {
 	if (x < -3.0f)

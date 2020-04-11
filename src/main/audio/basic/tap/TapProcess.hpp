@@ -19,7 +19,7 @@ namespace ctoot {
 
 				public:
 					void open() override;
-					int32_t processAudio(::ctoot::audio::core::AudioBuffer* buffer) override;
+					int32_t processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
 					void close() override;
 
 					TapProcess(TapControls* controls);

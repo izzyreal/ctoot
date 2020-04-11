@@ -10,8 +10,6 @@ AudioControls::AudioControls(int id, string name) : AudioControls(id, name, 127)
 
 AudioControls::AudioControls(int id, string name, int bypassId) : CompoundControl(id, name)
 {
-	// can't call derived class virtual function in ctor, so we do a bypassId check instead
-	//if (canBypass()) {
 	if (bypassId != -1) {
 		auto bpc = make_shared<BypassControl>(bypassId);
 		add(bpc);
