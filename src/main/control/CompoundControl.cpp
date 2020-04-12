@@ -55,13 +55,14 @@ const int CompoundControl::USE_PARENT_PROVIDER_ID;
 
 void CompoundControl::checkInstanceIndex(int index)
 {
+	// toot2 for Java was checking this based on a subclass (AudioControlsChain) call from the constructor. C++ can't do this. For now we don't check.
 	if (index < 0) {
-		string desc = getName() + " instance " + to_string(index) + " < 0\n";
-		MLOG(desc);
+		//string desc = getName() + " instance " + to_string(index) + " < 0\n";
+		//MLOG(desc);
 	}
 	if (index > getMaxInstance()) {
-		string desc = getName() + " instance " + to_string(index) + " > " + to_string(getMaxInstance()) + "\n";
-		MLOG(desc);
+		//string desc = getName() + " instance " + to_string(index) + " > " + to_string(getMaxInstance()) + "\n";
+		//MLOG(desc);
 	}
 }
 

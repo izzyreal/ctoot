@@ -19,10 +19,10 @@ AudioServiceProvider::AudioServiceProvider
 	: ServiceProvider(providerId, providerName, description, version)
 {
     string info = moduru::System::demangle(typeid(AudioControls).name());
-	MLOG("setting controls for " + description);
-	MLOG("info (typeid name) " + info);
+	//MLOG("setting controls for " + description);
+	//MLOG("info (typeid name) " + info);
 	controls = service(info);
-    MLOG("controls size is now " + to_string(controls.lock()->size()));
+    //MLOG("controls size is now " + to_string(controls.lock()->size()));
 }
 
 string AudioServiceProvider::getAvailableControls() {
@@ -90,13 +90,13 @@ shared_ptr<AudioControls> AudioServiceProvider::createControls(int moduleId)
 
 shared_ptr<AudioControls> AudioServiceProvider::createControls(const string& name)
 {
-    MLOG("AudioServiceProvider::createControls name " + name);
-    MLOG("AudioServiceProvider::createControls controls size " + to_string(controls.lock()->size()));
+    //MLOG("AudioServiceProvider::createControls name " + name);
+    //MLOG("AudioServiceProvider::createControls controls size " + to_string(controls.lock()->size()));
     
 	auto c = controls.lock();
 	for (int i = 0; i < c->size(); i++) {
 		auto d = c->at(i);
-        MLOG("AudioServiceProvider::createControls control descriptor child class " + d->getChildClass());
+        //MLOG("AudioServiceProvider::createControls control descriptor child class " + d->getChildClass());
 		if (d->getChildClass().compare(name) == 0) {
 			return createControls(d);
 		}

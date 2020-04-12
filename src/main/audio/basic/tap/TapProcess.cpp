@@ -19,8 +19,11 @@ void TapProcess::open()
 
 int32_t TapProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
-	if (controls->isInactive())
+	MLOG("TapProcess::processAudio");
+	if (controls->isInactive()) {
+		MLOG("TapProcess is inactive");
 		return AUDIO_OK;
+	}
 
 	tap->setChannelFormat(buffer->getChannelFormat());
 	auto ns = buffer->getSampleCount();

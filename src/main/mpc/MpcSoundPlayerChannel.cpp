@@ -136,9 +136,8 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	auto sc = lMixer->getMixerControls().lock()->getStripControls(to_string(voice.lock()->getStripNumber())).lock();
 	
 	// We set the FX send level.
-	dynamic_pointer_cast<MpcFaderControl>(
-		dynamic_pointer_cast<CompoundControl>(sc->find("FX#1").lock())->find("Level").lock())->setValue(static_cast<float>(ifmc->getFxSendLevel())
-		);
+	dynamic_pointer_cast<MpcFaderControl>(dynamic_pointer_cast<CompoundControl>(sc->find("FX#1").lock())
+		->find("Level").lock())->setValue(static_cast<float>(ifmc->getFxSendLevel()));
 	
 	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
 	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan").lock())->setValue(static_cast<float>(smc->getPanning() / 100.0));
@@ -147,7 +146,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	sc = lMixer->getMixerControls().lock()->getStripControls(to_string(voice.lock()->getStripNumber() + 32)).lock();
 	mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
 
-	//We make sure the voice strip duplicages that are used for mixing to ASSIGNALE MIX OUT are not mixed into Main.
+	//We make sure the voice strip duplicages that are used for mixing to ASSIGNABLE MIX OUT are not mixed into Main.
 	auto faderControl = dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock());
 	if (faderControl->getValue() != 0) faderControl->setValue(0);
 

@@ -32,7 +32,6 @@ void CompoundControlChain::add(int index, shared_ptr<Control> control)
 
 void CompoundControlChain::insert(string insertName, string insertBeforeName)
 {
-//	MLOG("CompoundControlChain::insert " + insertName + " before " + insertBeforeName);
 	auto controlToInsert = createControl(insertName);
 	if (!controlToInsert) {
 		string error = getName() + ": insert failed to create " + insertName;
@@ -66,11 +65,10 @@ void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string in
 		}
 	}
 	controlToInsert->setParent(this);
-	//MLOG("		Creating chainmutation for " + controlToInsert->getName());
-	ChainMutation* newccccm = new InsertMutation((int)(insertionIndex), controlToInsert);
+	ChainMutation* insertMutation = new InsertMutation((int)(insertionIndex), controlToInsert);
 	controls.insert(controls.begin() + insertionIndex, std::move(controlToInsert));
 	setChanged();
-	notifyObservers(newccccm);
+	notifyObservers(insertMutation);
 }
 
 shared_ptr<CompoundControl> CompoundControlChain::createControl(string name)

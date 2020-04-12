@@ -14,7 +14,7 @@ namespace ctoot {
 			int sampleRate{ 0 };
 			int sndLevel{ 0 }, tune{ 0 };
 			int start{ 0 }, end{ 0 }, loopTo{ 0 };
-			std::vector<float> sampleData{};
+			std::vector<float> sampleData;
 
 		public:
 			void setSndLevel(int i);
@@ -36,6 +36,7 @@ namespace ctoot {
 			void setSampleRate(int sr);
 			int getSndLevel();
 			void insertFrame(std::vector<float> frame, unsigned int index);
+			void insertFrames(std::vector<float>& frames, unsigned int index);
 
 		public:
 			MpcSoundOscillatorControls(int id, int instanceIndex);

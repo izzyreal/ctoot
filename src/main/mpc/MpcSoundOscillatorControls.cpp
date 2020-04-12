@@ -168,14 +168,25 @@ string MpcSoundOscillatorControls::getName()
 }
 
 void MpcSoundOscillatorControls::insertFrame(std::vector<float> frame, unsigned int index) {
-	if (index > getLastFrameIndex() + 1) return;
+	if (index > getLastFrameIndex() + 1) {
+		return;
+	}
+	
 	if (!mono) {
 		if (frame.size() < 2) return;
-		const unsigned int rightIndex = index + getLastFrameIndex();
+		const unsigned int rightIndex = index + getLastFrameIndex() + 1;
 		sampleData.insert(sampleData.begin() + rightIndex, frame[1]);
 	}
-	if (frame.size() < 1) return;
+	
+	if (frame.size() < 1) {
+		return;
+	}
+	
 	sampleData.insert(sampleData.begin() + index, frame[0]);
+}
+
+void MpcSoundOscillatorControls::insertFrames(std::vector<float>& frames, unsigned int index) {
+	sampleData.insert(sampleData.begin() + index, frames.begin(), frames.end());
 }
 
 MpcSoundOscillatorControls::~MpcSoundOscillatorControls() {
