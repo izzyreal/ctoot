@@ -45,11 +45,11 @@ void MpcSoundOscillatorControls::setStart(int i)
 			return;
 		value = 0;
 	}
-	else if (value >= getLastFrameIndex() + 1) {
-		if (start == getLastFrameIndex() + 1)
+	else if (value >= getFrameCount()) {
+		if (start == getFrameCount())
 			return;
 
-		value = getLastFrameIndex() + 1;
+		value = getFrameCount();
 	}
 
 	start = value;
@@ -65,17 +65,27 @@ void MpcSoundOscillatorControls::setEnd(int i)
 {
     auto value = i;
 	if (value < 0) {
-		if (end == 0) return;
+		if (end == 0) {
+			return;
+		}
 		value = 0;
 	}
-	else if (value > getLastFrameIndex() + 1) {
-		if (end == getLastFrameIndex() + 1) return;
-		value = getLastFrameIndex() + 1;
+	else if (value > getFrameCount()) {
+		if (end == getFrameCount()) {
+			return;
+		}
+		value = getFrameCount();
 	}
 
     end = value;
-    if (end < loopTo) setLoopTo(end);
-    if (end < start) setStart(end);
+
+	if (end < loopTo) {
+		setLoopTo(end);
+	}
+    
+	if (end < start) {
+		setStart(end);
+	}
 
     setChanged();
     notifyObservers(string("end"));
@@ -84,7 +94,7 @@ void MpcSoundOscillatorControls::setEnd(int i)
 void MpcSoundOscillatorControls::setMono(bool b)
 {
 	mono = b;
-	end = getLastFrameIndex() + 1;
+	end = getFrameCount();
 	loopTo = end;
 }
 
@@ -95,9 +105,9 @@ void MpcSoundOscillatorControls::setLoopTo(int i)
 		if (loopTo == 0) return;
 		value = 0;
 	}
-	else if (value > getLastFrameIndex() + 1) {
-		if (loopTo == getLastFrameIndex() + 1) return;
-		value = getLastFrameIndex() + 1;
+	else if (value > getFrameCount()) {
+		if (loopTo == getFrameCount()) return;
+		value = getFrameCount();
 	}
 
 	loopTo = value;
@@ -111,6 +121,11 @@ void MpcSoundOscillatorControls::setLoopTo(int i)
 int MpcSoundOscillatorControls::getLastFrameIndex()
 {
     return (isMono() ? sampleData.size() : (sampleData.size() * 0.5)) - 1;
+}
+
+int MpcSoundOscillatorControls::getFrameCount()
+{
+	return getLastFrameIndex() + 1;
 }
 
 int MpcSoundOscillatorControls::getTune()
@@ -153,7 +168,8 @@ int MpcSoundOscillatorControls::getSampleRate()
     return sampleRate;
 }
 
-void MpcSoundOscillatorControls::setSampleRate(int sr) {
+void MpcSoundOscillatorControls::setSampleRate(int sr)
+{
 	sampleRate = sr;
 }
 
@@ -167,14 +183,15 @@ string MpcSoundOscillatorControls::getName()
     return Control::getName();
 }
 
-void MpcSoundOscillatorControls::insertFrame(std::vector<float> frame, unsigned int index) {
-	if (index > getLastFrameIndex() + 1) {
+void MpcSoundOscillatorControls::insertFrame(std::vector<float> frame, unsigned int index)
+{
+	if (index > getFrameCount()) {
 		return;
 	}
 	
 	if (!mono) {
 		if (frame.size() < 2) return;
-		const unsigned int rightIndex = index + getLastFrameIndex() + 1;
+		const unsigned int rightIndex = index + getFrameCount();
 		sampleData.insert(sampleData.begin() + rightIndex, frame[1]);
 	}
 	
@@ -185,9 +202,17 @@ void MpcSoundOscillatorControls::insertFrame(std::vector<float> frame, unsigned 
 	sampleData.insert(sampleData.begin() + index, frame[0]);
 }
 
-void MpcSoundOscillatorControls::insertFrames(std::vector<float>& frames, unsigned int index) {
+void MpcSoundOscillatorControls::insertFrames(std::vector<float>& frames, unsigned int index)
+{
 	sampleData.insert(sampleData.begin() + index, frames.begin(), frames.end());
 }
 
-MpcSoundOscillatorControls::~MpcSoundOscillatorControls() {
+void MpcSoundOscillatorControls::insertFrames(vector<float>& left, vector<float>& right, unsigned int index)
+{
+	sampleData.insert(sampleData.begin() + index + getFrameCount(), right.begin(), right.end());
+	sampleData.insert(sampleData.begin() + index, left.begin(), left.end());
+}
+
+MpcSoundOscillatorControls::~MpcSoundOscillatorControls()
+{
 }
