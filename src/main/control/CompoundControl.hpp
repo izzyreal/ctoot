@@ -33,7 +33,7 @@ namespace ctoot {
 			int providerId = USE_PARENT_PROVIDER_ID;
 
 		public:
-			vector<string> getControlNamesRecursive(int generation);
+			vector<string> getControlNamesRecursive(int generation = 0);
 
 		public:
 			virtual void checkInstanceIndex(int index);

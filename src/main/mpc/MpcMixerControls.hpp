@@ -4,23 +4,20 @@
 
 #include <string>
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
 
-		class MpcMixerControls
-			: public ctoot::audio::mixer::MixerControls
-		{
+	class MpcMixerControls
+		: public ctoot::audio::mixer::MixerControls
+	{
 
-		public:
-			typedef ctoot::audio::mixer::MixerControls super;
+	public:
+		typedef ctoot::audio::mixer::MixerControls super;
 
-		public:
-			ctoot::audio::fader::FaderControl* createFaderControl(bool muted) override;
+	public:
+		ctoot::audio::fader::FaderControl* createFaderControl(bool muted) override;
 
-			MpcMixerControls(std::string name, float smoothingFactor);
-			~MpcMixerControls();
+		MpcMixerControls(std::string name, float smoothingFactor);
+		~MpcMixerControls();
 
-		};
-
-	}
+	};
 }
