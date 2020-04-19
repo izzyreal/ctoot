@@ -2,34 +2,29 @@
 #include <string>
 #include <cstdint>
 
-namespace ctoot {
-	namespace audio {
-		namespace core {
+namespace ctoot::audio::core {
 
-			class Encoding
-			{
+	class Encoding
+	{
 
-			private:
-				static Encoding* ALAW_;
-				static Encoding* PCM_SIGNED_;
-				static Encoding* PCM_UNSIGNED_;
-				static Encoding* ULAW_;
-				std::string name = "" ;
+	private:
+		static Encoding* ALAW_;
+		static Encoding* PCM_SIGNED_;
+		static Encoding* PCM_UNSIGNED_;
+		static Encoding* ULAW_;
+		std::string name = "";
 
 
-			public:
-				std::string toString();
+	public:
+		std::string toString();
 
-				Encoding(std::string name);
+		Encoding(std::string name);
 
-			public:
-				static Encoding*& ALAW();
-				static Encoding*& PCM_SIGNED();
-				static Encoding*& PCM_UNSIGNED();
-				static Encoding*& ULAW();
+	public:
+		static Encoding*& ALAW();
+		static Encoding*& PCM_SIGNED();
+		static Encoding*& PCM_UNSIGNED();
+		static Encoding*& ULAW();
 
-			};
-
-		}
-	}
+	};
 }
