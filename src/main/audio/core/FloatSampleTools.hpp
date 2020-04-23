@@ -1,79 +1,77 @@
 #pragma once
+#include <audio/core/AudioFormat.hpp>
+
 #include <cstdint>
 #include <string>
-#include <audio/core/AudioFormat.hpp>
 #include <vector>
 
-namespace ctoot {
-	namespace audio {
-		namespace core {
+using namespace std;
 
-			static float DEFAULT_DITHER_BITS = 0.7f;
+namespace ctoot::audio::core {
 
-			class FloatSampleTools
-			{
+	static float DEFAULT_DITHER_BITS = 0.7f;
 
-			public: 
-				static const int F_8 = { int(1) };
-				static const int F_16 = { int(2) };
-				static const int F_24 = { int(3) };
-				static const int F_32 = { int(4) };
-				static const int F_SAMPLE_WIDTH_MASK = { int(7) };
-				static const int F_SIGNED = { int(8) };
-				static const int F_BIGENDIAN = { int(16) };
-				static const int CT_8S = { int(9) };
-				static const int CT_8U = { int(1) };
-				static const int CT_16SB = { int(26) };
-				static const int CT_16SL = { int(10) };
-				static const int CT_24SB = { int(27) };
-				static const int CT_24SL = { int(11) };
-				static const int CT_32SB = { int(28) };
-				static const int CT_32SL = { int(12) };
+	class FloatSampleTools
+	{
 
-			public: 
-				static void checkSupportedSampleSize(int ssib, int channels, int frameSize);
-				static int getFormatType(AudioFormat* format);
-				static int getFormatType(int ssib, bool signed_, bool bigEndian);
-				static int getSampleSize(int formatType);
-				static std::string formatType2Str(int formatType);
+	public:
+		static const int F_8 = { int(1) };
+		static const int F_16 = { int(2) };
+		static const int F_24 = { int(3) };
+		static const int F_32 = { int(4) };
+		static const int F_SAMPLE_WIDTH_MASK = { int(7) };
+		static const int F_SIGNED = { int(8) };
+		static const int F_BIGENDIAN = { int(16) };
+		static const int CT_8S = { int(9) };
+		static const int CT_8U = { int(1) };
+		static const int CT_16SB = { int(26) };
+		static const int CT_16SL = { int(10) };
+		static const int CT_24SB = { int(27) };
+		static const int CT_24SL = { int(11) };
+		static const int CT_32SB = { int(28) };
+		static const int CT_32SL = { int(12) };
 
-			private:
-				static const float twoPower7;
-				static const float twoPower15;
-				static const float twoPower23;
-				static const float twoPower31;
-				static const float invTwoPower7;
-				static const float invTwoPower15;
-				static const float invTwoPower23;
-				static const float invTwoPower31;
+	public:
+		static void checkSupportedSampleSize(int ssib, int channels, int frameSize);
+		static int getFormatType(AudioFormat* format);
+		static int getFormatType(int ssib, bool signed_, bool bigEndian);
+		static int getSampleSize(int formatType);
+		static string formatType2Str(int formatType);
 
-			public:
-                static void byte2float(std::vector<char> input, int inByteOffset, std::vector<std::vector<float> >* output, int outOffset, int frameCount, AudioFormat* format);
-				static void byte2floatInterleaved(std::vector<char> input, int inByteOffset, std::vector<float>* output, int outOffset, int frameCount, AudioFormat* format);
+	private:
+		static const float twoPower7;
+		static const float twoPower15;
+		static const float twoPower23;
+		static const float twoPower31;
+		static const float invTwoPower7;
+		static const float invTwoPower15;
+		static const float invTwoPower23;
+		static const float invTwoPower31;
 
-			public: 
-				static void byte2floatGeneric(std::vector<char> input, int inByteOffset, int inByteStep, std::vector<float>* output, int outOffset, int sampleCount, AudioFormat* format);
-				static void byte2floatGeneric(std::vector<char> input, int inByteOffset, int inByteStep, std::vector<float>* output, int outOffset, int sampleCount, int formatType);
+	public:
+		static void byte2float(vector<char>& input, int inByteOffset, vector<vector<float> >* output, int outOffset, int frameCount, AudioFormat* format);
+		static void byte2floatInterleaved(vector<char>& input, int inByteOffset, vector<float>* output, int outOffset, int frameCount, AudioFormat* format);
 
-			private:
-				static int8_t quantize8(float sample, float ditherBits);
-				static int quantize16(float sample, float ditherBits);
-				static int quantize24(float sample, float ditherBits);
-				static int quantize32(float sample, float ditherBits);
+	public:
+		static void byte2floatGeneric(vector<char>& input, int inByteOffset, int inByteStep, vector<float>* output, int outOffset, int sampleCount, AudioFormat* format);
+		static void byte2floatGeneric(vector<char>& input, int inByteOffset, int inByteStep, vector<float>* output, int outOffset, int sampleCount, int formatType);
 
-			public:
-                static void float2byte(std::vector<std::vector<float> > input, int inOffset, std::vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
-                static void float2byteNonInterleaved(std::vector<std::vector<float> > input, int inOffset, std::vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
-				static void float2byteInterleaved(std::vector<float> input, int inOffset, std::vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
+	private:
+		static int8_t quantize8(float sample, float ditherBits);
+		static int quantize16(float sample, float ditherBits);
+		static int quantize24(float sample, float ditherBits);
+		static int quantize32(float sample, float ditherBits);
 
-			public: 
-				static void float2byteGeneric(std::vector<float> input, int inOffset, std::vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, AudioFormat* format, float ditherBits);
-				static void float2byteGeneric(std::vector<float> input, int inOffset, std::vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, int formatType, float ditherBits);
+	public:
+		static void float2byte(vector<vector<float>>& input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
+		static void float2byteNonInterleaved(vector<vector<float>>& input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
+		static void float2byteInterleaved(vector<float>& input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
 
-			private:
-				FloatSampleTools();
-			};
+	public:
+		static void float2byteGeneric(vector<float>& input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, AudioFormat* format, float ditherBits);
+		static void float2byteGeneric(vector<float>& input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, int formatType, float ditherBits);
 
-		}
-	}
+	private:
+		FloatSampleTools();
+	};
 }

@@ -126,41 +126,34 @@ const float FloatSampleTools::invTwoPower15 = 1.f / twoPower15;
 const float FloatSampleTools::invTwoPower23 = 1.f / twoPower23;
 const float FloatSampleTools::invTwoPower31 = 1.f / twoPower31;
 
-void FloatSampleTools::byte2float(vector<char> input, int inByteOffset, vector<vector<float>>* output, int outOffset, int frameCount, AudioFormat* format)
+void FloatSampleTools::byte2float(vector<char>& input, int inByteOffset, vector<vector<float>>* output, int outOffset, int frameCount, AudioFormat* format)
 {
 	for (auto channel = 0; channel < format->getChannels(); channel++) {
-		vector<float> data;
 		if (output->size() < channel) {
-			for (int i = 0; i < frameCount + outOffset; i++)
-				data.push_back(0);
-			output->push_back(data);
+			output->push_back(vector<float>(frameCount));
 		}
 		else {
-			data = (*output)[channel];
-			if (data.size() < frameCount + outOffset) {
-				data.clear();
-				for (int i = 0; i < frameCount + outOffset; i++)
-					data.push_back(0);
-				(*output)[channel] = data;
+			for (int i = 0; i < frameCount; i++) {
+				(*output)[channel][i] = 0;
 			}
 		}
-		byte2floatGeneric(input, inByteOffset, format->getFrameSize(), &data, outOffset, frameCount, format);
+		byte2floatGeneric(input, inByteOffset, format->getFrameSize(), &(*output)[channel], outOffset, frameCount, format);
 		inByteOffset += format->getFrameSize() / format->getChannels();
 	}
 }
 
-void FloatSampleTools::byte2floatInterleaved(vector<char> input, int inByteOffset, vector<float>* output, int outOffset, int frameCount, AudioFormat* format)
+void FloatSampleTools::byte2floatInterleaved(vector<char>& input, int inByteOffset, vector<float>* output, int outOffset, int frameCount, AudioFormat* format)
 {
 	byte2floatGeneric(input, inByteOffset, format->getFrameSize() / format->getChannels(), output, outOffset, frameCount * format->getChannels(), format);
 }
 
-void FloatSampleTools::byte2floatGeneric(vector<char> input, int inByteOffset, int inByteStep, vector<float>* output, int outOffset, int sampleCount, AudioFormat* format)
+void FloatSampleTools::byte2floatGeneric(vector<char>& input, int inByteOffset, int inByteStep, vector<float>* output, int outOffset, int sampleCount, AudioFormat* format)
 {
 	auto formatType = getFormatType(format);
 	byte2floatGeneric(input, inByteOffset, inByteStep, output, outOffset, sampleCount, formatType);
 }
 
-void FloatSampleTools::byte2floatGeneric(vector<char> input, int inByteOffset, int inByteStep, vector<float>* output, int outOffset, int sampleCount, int formatType)
+void FloatSampleTools::byte2floatGeneric(vector<char>& input, int inByteOffset, int inByteStep, vector<float>* output, int outOffset, int sampleCount, int formatType)
 {
 	auto endCount = outOffset + sampleCount;
 	auto inIndex = inByteOffset;
@@ -261,7 +254,7 @@ int FloatSampleTools::quantize32(float sample, float ditherBits)
 	}
 }
 
-void FloatSampleTools::float2byte(vector<vector<float>> input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits)
+void FloatSampleTools::float2byte(vector<vector<float>>& input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits)
 {
 	for (auto channel = 0; channel < format->getChannels(); channel++) {
 		auto data = input[channel];
@@ -270,7 +263,7 @@ void FloatSampleTools::float2byte(vector<vector<float>> input, int inOffset, vec
 	}
 }
 
-void FloatSampleTools::float2byteNonInterleaved(vector<vector<float>> input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits)
+void FloatSampleTools::float2byteNonInterleaved(vector<vector<float>>& input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits)
 {
 	for (int channel = 0; channel < format->getChannels(); channel++) {
 		auto data = input[channel];
@@ -280,20 +273,20 @@ void FloatSampleTools::float2byteNonInterleaved(vector<vector<float>> input, int
 }
 
 
-void FloatSampleTools::float2byteInterleaved(vector<float> input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits)
+void FloatSampleTools::float2byteInterleaved(vector<float>& input, int inOffset, vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits)
 {
 	float2byteGeneric(input, inOffset, output, outByteOffset, format->getFrameSize() / format->getChannels(), frameCount * format->getChannels(), format, ditherBits);
 }
 
 
-void FloatSampleTools::float2byteGeneric(vector<float> input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, AudioFormat* format, float ditherBits)
+void FloatSampleTools::float2byteGeneric(vector<float>& input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, AudioFormat* format, float ditherBits)
 {
 	int formatType = getFormatType(format);
 	float2byteGeneric(input, inOffset, output, outByteOffset, outByteStep, sampleCount, formatType, ditherBits);
 }
 
 
-void FloatSampleTools::float2byteGeneric(vector<float> input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, int formatType, float ditherBits)
+void FloatSampleTools::float2byteGeneric(vector<float>& input, int inOffset, vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, int formatType, float ditherBits)
 {
 	if (inOffset < 0 || inOffset + sampleCount > input.size() || sampleCount < 0) {
 		string description = "invalid input index: input.length=" + to_string(input.size()) + " inOffset" + to_string(inOffset) + " sampleCount=" + to_string(sampleCount);
