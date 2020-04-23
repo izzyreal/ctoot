@@ -251,9 +251,7 @@ void FloatSampleBuffer::removeChannel(int channel, bool lazy)
 
 void FloatSampleBuffer::copyChannel(int sourceChannel, int targetChannel)
 {
-	vector<float> source = *getChannel(sourceChannel);
-	vector<float> target = *getChannel(targetChannel);
-	target = source;
+	*getChannel(targetChannel) = *getChannel(sourceChannel);
 }
 
 void FloatSampleBuffer::copy(int sourceIndex, int destIndex, int length)
