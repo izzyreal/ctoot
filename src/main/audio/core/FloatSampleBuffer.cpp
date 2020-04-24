@@ -147,28 +147,25 @@ void FloatSampleBuffer::changeSampleCount(int newSampleCount, bool keepOldSample
 		return;
 	}
 	vector<vector<float>> oldChannels;
+	
 	if (keepOldSamples) {
-		vector<vector<float>>* allChannels(getAllChannels());
-		for (int i = 0; i < getAllChannels()->size(); i++) {
-			vector<float> currentVector((*allChannels)[i]);
-			for (int j = 0; j < currentVector.size(); j++)
-				oldChannels[i][j] = currentVector[j];
+		for (auto c : channels) {
+			oldChannels.push_back(c);
 		}
 	}
 
 	init(getChannelCount(), newSampleCount, getSampleRate());
+
 	if (keepOldSamples) {
 		auto copyCount = newSampleCount < oldSampleCount ? newSampleCount : oldSampleCount;
 		for (auto ch = 0; ch < getChannelCount(); ch++) {
-			vector<float> oldSamples = oldChannels[ch];
-			vector<float> newSamples = *getChannel(ch);
-			if (oldSamples != newSamples) {
-				for (int i = 0; i < copyCount; i++)
-					newSamples[i] = oldSamples[i];
+			for (int i = 0; i < copyCount; i++) {
+				channels[ch][i] = oldChannels[ch][i];
 			}
+
 			if (oldSampleCount < newSampleCount) {
 				for (auto i = oldSampleCount; i < newSampleCount; i++) {
-					newSamples[i] = 0.0f;
+					channels[ch][i] = 0.0f;
 				}
 			}
 		}
