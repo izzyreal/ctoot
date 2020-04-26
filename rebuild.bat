@@ -1,4 +1,5 @@
-clearconan.bat
+CALL clearconan.bat
+
 rmdir C:\Users\Izmar\git\ctoot\build\32bit /s /q
 rmdir C:\Users\Izmar\git\ctoot\build\64bit /s /q
 
