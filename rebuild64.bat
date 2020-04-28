@@ -9,3 +9,5 @@ conan build ../../
 conan install -s build_type=Debug -g cmake_multi ../../ ctoot/0.1@izmar/dev
 conan build ../../
 conan create ../../ ctoot/0.1@izmar/dev
+
+cd ../../
