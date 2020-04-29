@@ -50,10 +50,10 @@ shared_ptr<AudioControls> AudioServices::createControls(int providerId, int modu
 
 shared_ptr<AudioControls> AudioServices::createControls(const string& name)
 {
-    MLOG("AudioServices::createControls " + name);
+    //MLOG("AudioServices::createControls " + name);
 	for (auto& p : providers) {
-        MLOG("Provider desc " + p.lock()->getDescription());
-        MLOG("Provider name " + p.lock()->getProviderName());
+        //MLOG("Provider desc " + p.lock()->getDescription());
+        //MLOG("Provider name " + p.lock()->getProviderName());
 		auto controls = p.lock()->createControls(name);
 		if (controls) {
 			controls->setProviderId(p.lock()->getProviderId());

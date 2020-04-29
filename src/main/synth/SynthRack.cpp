@@ -27,7 +27,7 @@ SynthRack::SynthRack(std::weak_ptr<SynthRackControls> controls, std::weak_ptr<ct
 
 void SynthRack::setMidiSynth(int i, std::shared_ptr<MidiSynth> synth)
 {
-	MLOG("setMidiSynth " + std::to_string(i) + " " + synth->getName());
+	//MLOG("setMidiSynth " + std::to_string(i) + " " + synth->getName());
 	auto lMidiSystem = midiSystem.lock();
 	auto lAudioSystem = audioSystem.lock();
 	auto old = synths[i];
@@ -40,7 +40,7 @@ void SynthRack::setMidiSynth(int i, std::shared_ptr<MidiSynth> synth)
 		MLOG("Synth == null");
 		return;
 	}
-	MLOG("Synth != null.");
+	//MLOG("Synth != null.");
 	lMidiSystem->addMidiDevice(synths[i].get());
 	lAudioSystem->addAudioDevice(synths[i]);
 }

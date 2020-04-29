@@ -53,9 +53,6 @@ void LawControl::setIntValue(int value)
 
 int LawControl::getIntValue()
 {
-	if (getName().find("Link") != string::npos) {
-		MLOG("Int value: " + to_string(law.lock()->intValue(getValue())));
-	}
     return law.lock()->intValue(getValue());
 }
 

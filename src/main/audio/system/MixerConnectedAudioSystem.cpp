@@ -21,7 +21,7 @@ MixerConnectedAudioSystem::MixerConnectedAudioSystem(shared_ptr<ctoot::audio::mi
 
 void MixerConnectedAudioSystem::notifyObservers(nonstd::any obj)
 {
-	MLOG("\n\nMixerConnectedAudioSystem::notifyObservers called\n\n");
+	//MLOG("\n\nMixerConnectedAudioSystem::notifyObservers called\n\n");
 	std::weak_ptr<AudioDevice> deviceCandidate;
 	std::weak_ptr<AudioOutput> outputCandidate;
 	try {
@@ -90,7 +90,7 @@ vector<AudioConnection*>* MixerConnectedAudioSystem::getConnections()
 
 void MixerConnectedAudioSystem::createConnection(string fromPortName, string fromPortLocation, string toPortName, int flags)
 {
-	MLOG("\nTrying to create connection from " + fromPortName + " to " + toPortName);
+	//MLOG("\nTrying to create connection from " + fromPortName + " to " + toPortName);
 	auto from = getOutputPort(fromPortName, fromPortLocation);
 	if (!from.lock()) {
 		MLOG(fromPortName + " @ " + fromPortLocation + " does not exist");
@@ -106,7 +106,7 @@ void MixerConnectedAudioSystem::createConnection(string fromPortName, string fro
 
 void MixerConnectedAudioSystem::createConnection(std::weak_ptr<AudioOutput> from, ctoot::audio::mixer::AudioMixerStrip* to, int flags)
 {
-	MLOG("\nTrying to create connection from " + from.lock()->getName() + " to " + to->getName());
+	//MLOG("\nTrying to create connection from " + from.lock()->getName() + " to " + to->getName());
 	if (getConnectionFrom(from.lock()->getName(), from.lock()->getLocation()) != nullptr) {
 		MLOG("Connection already exists");
 		return;

@@ -21,7 +21,7 @@ string MultiSynthControls::NAME_ = "MultiSynth";
 
 void MultiSynthControls::setChannelControls(int chan, shared_ptr<SynthChannelControls> c)
 {
-	MLOG("Setting channel controls to " + c->getName());
+	//MLOG("Setting channel controls to " + c->getName());
 	auto old = getChannelControls(chan).lock();
 
 	if (old) {

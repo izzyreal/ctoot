@@ -20,7 +20,7 @@ Services::Services()
 
 vector<weak_ptr<ServiceProvider>> Services::getServiceProviders() {
 	if (serviceProviders.size() == 0) {
-		MLOG("making serviceproviders");
+		//MLOG("making serviceproviders");
 		serviceProviders.push_back(make_shared<ctoot::audio::reverb::ReverbServiceProvider>());
 		serviceProviders.push_back(make_shared<ctoot::audio::delay::DelayServiceProvider>());
 		serviceProviders.push_back(make_shared<ctoot::audio::dynamics::DynamicsServiceProvider>());
@@ -29,9 +29,9 @@ vector<weak_ptr<ServiceProvider>> Services::getServiceProviders() {
         serviceProviders.push_back(make_shared<ctoot::synth::channels::AllTootSynthChannelsServiceProvider>());
 		serviceProviders.push_back(make_shared<ctoot::synth::synths::multi::MultiSynthServiceProvider>());
 	}
-	MLOG("Service providers:");
-	for (auto& sp : serviceProviders)
-		MLOG(sp->getDescription() + ", " + sp->getProviderName());
+	//MLOG("Service providers:");
+	//for (auto& sp : serviceProviders)
+	//	MLOG(sp->getDescription() + ", " + sp->getProviderName());
 	vector<weak_ptr<ServiceProvider>> res;
 	for (auto& sp : serviceProviders)
 		res.push_back(sp);

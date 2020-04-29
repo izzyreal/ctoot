@@ -47,15 +47,15 @@ string ServiceProvider::getDescription()
 
 weak_ptr<vector<shared_ptr<ServiceDescriptor>>> ServiceProvider::service(const string& typeIdName)
 {
-    MLOG("\nServiceProvider adding " + typeIdName + " to " + this->getProviderName() + ", " + this->getDescription());
-    MLOG("ServiceProvider services size " + to_string(services.size()));
+    //MLOG("\nServiceProvider adding " + typeIdName + " to " + this->getProviderName() + ", " + this->getDescription());
+    //MLOG("ServiceProvider services size " + to_string(services.size()));
 	if (services.find(typeIdName) == services.end()) {
-        MLOG("service not yet found, adding it");
+        //MLOG("service not yet found, adding it");
 		services[typeIdName] = make_shared<vector<shared_ptr<ServiceDescriptor>>>();
         if (services.find(typeIdName) == services.end()) {
-            MLOG("service still not found!");
+            //MLOG("service still not found!");
         } else {
-            MLOG("service is now found, services size: " + to_string(services.size()));
+            //MLOG("service is now found, services size: " + to_string(services.size()));
         }
 	}
 	return services[typeIdName];
@@ -63,15 +63,15 @@ weak_ptr<vector<shared_ptr<ServiceDescriptor>>> ServiceProvider::service(const s
 
 void ServiceProvider::add(shared_ptr<ServiceDescriptor> d)
 {
-	MLOG("ServiceProvider trying to add desc. " + d->getDescription() + ", parent class " + d->getParentClass());
+	//MLOG("ServiceProvider trying to add desc. " + d->getDescription() + ", parent class " + d->getParentClass());
 	auto candidate = services.find(d->getParentClass());
 	if (candidate != services.end()) {
-		MLOG("ServiceProvider added: " + d->getDescription());
-		MLOG("services vector size is now " + to_string(services[d->getParentClass()]->size()));
+		//MLOG("ServiceProvider added: " + d->getDescription());
+		//MLOG("services vector size is now " + to_string(services[d->getParentClass()]->size()));
 		services[d->getParentClass()]->push_back(std::move(d));
 	}
 	else {
-		MLOG("!!ServiceProvider not added!! " + d->getDescription());
+		//MLOG("!!ServiceProvider not added!! " + d->getDescription());
 	}
 }
 

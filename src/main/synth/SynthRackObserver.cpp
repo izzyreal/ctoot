@@ -29,7 +29,7 @@ SynthRackObserver::SynthRackObserver(SynthRack* sr, weak_ptr<SynthRackControls> 
 
 void SynthRackObserver::update(moduru::observer::Observable* obs, nonstd::any obj)
 {
-	MLOG("SynthRackObserver::update()");
+	//MLOG("SynthRackObserver::update()");
 	try {
 		int nsynth = nonstd::any_cast<int>(obj);
 		if (nsynth < 0 || nsynth >= sr->synths.size()) return;
@@ -43,7 +43,7 @@ void SynthRackObserver::update(moduru::observer::Observable* obs, nonstd::any ob
 				return;
 			}
 			else {
-				MLOG("Synth creation succeeded: " + synth->getName());
+				//MLOG("Synth creation succeeded: " + synth->getName());
 				char c = 'A' + nsynth;
 				string letterStr = "  ";
 				letterStr[0] = c;

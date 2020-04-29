@@ -119,7 +119,7 @@ void BasicMidiSynth::closeMidi()
 
 void BasicMidiSynth::addAudioOutput(std::weak_ptr<AudioOutput> output)
 {
-	MLOG("BasicMidiSynth::addAudioOutput " + output.lock()->getName());
+	//MLOG("BasicMidiSynth::addAudioOutput " + output.lock()->getName());
 	audioOutputs.push_back(output);
     setChanged();
     notifyObservers(output);

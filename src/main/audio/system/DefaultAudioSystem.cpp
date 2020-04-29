@@ -17,7 +17,7 @@ DefaultAudioSystem::DefaultAudioSystem()
 
 void DefaultAudioSystem::addAudioDevice(std::weak_ptr<AudioDevice> device)
 {
-	MLOG("Trying to add device " + device.lock()->getName());
+	//MLOG("Trying to add device " + device.lock()->getName());
 	checkUniqueDeviceName(device);
 	devices.push_back(device);
 	setChanged();

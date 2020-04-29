@@ -18,7 +18,7 @@ FloatSampleBuffer::FloatSampleBuffer(int channelCount, int sampleCount, float sa
 
 FloatSampleBuffer::FloatSampleBuffer(vector<char> buffer, int offset, int byteCount, AudioFormat* format)
 {
-	MLOG("This crap constructor is called!");
+	MLOG("This crap constructor of FloatSampleBuffer is called! It doesn't work...");
 	FloatSampleBuffer(format->getChannels(), byteCount / (format->getSampleSizeInBits() / 8 * format->getChannels()), format->getSampleRate());
 	initFromByteArray_(buffer, offset, byteCount, format);
 }
@@ -66,7 +66,7 @@ void FloatSampleBuffer::initFromByteArray_(vector<char> buffer, int offset, int 
 	if (offset + byteCount > buffer.size()) {
 		string error = "FloatSampleBuffer.initFromByteArray: buffer too small.";
 		printf("ERROR: %s\n", error.c_str());
-		MLOG("initfrombytearray2 " + error);
+		MLOG("initfrombytearray_ " + error);
 		return;
 	}
 	auto thisSampleCount = byteCount / format->getFrameSize();

@@ -23,14 +23,14 @@ void MultiMidiSynth::setChannel(int chan, shared_ptr<ctoot::synth::SynthChannel>
 	}
 	BasicMidiSynth::setChannel(chan, synthChannel);
 	if (synthChannel) {
-		MLOG("MultiMidiSynth setChannel synthChannel is not null.");
+		//MLOG("MultiMidiSynth setChannel synthChannel is not null.");
 		auto newChannel = dynamic_pointer_cast<ctoot::audio::system::AudioOutput>(synthChannel);
 		if (newChannel) {
-			MLOG("SynthChannel is also audiooutput");
+			//MLOG("SynthChannel is also audiooutput");
 			addAudioOutput(newChannel);
 		}
 		else {
-			MLOG("SynthChannel is NO audiooutput");
+			//MLOG("SynthChannel is NO audiooutput");
 		}
 
 	}

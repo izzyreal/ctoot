@@ -19,9 +19,9 @@ void TapProcess::open()
 
 int32_t TapProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 {
-	MLOG("TapProcess::processAudio");
+	//MLOG("TapProcess::processAudio");
 	if (controls->isInactive()) {
-		MLOG("TapProcess is inactive");
+		//MLOG("TapProcess is inactive");
 		return AUDIO_OK;
 	}
 

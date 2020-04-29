@@ -59,7 +59,7 @@ AllTootSynthChannelsServiceProvider::AllTootSynthChannelsServiceProvider()
 shared_ptr<ctoot::synth::SynthChannel> AllTootSynthChannelsServiceProvider::createSynthChannel(weak_ptr<ctoot::synth::SynthChannelControls> c)
 {
 	auto name = c.lock()->getName();
-	MLOG("AllTootSynthChannelServiceProvider::createSynthChannel c name: " + name);
+	//MLOG("AllTootSynthChannelServiceProvider::createSynthChannel c name: " + name);
 	if (name.compare("Valor") == 0) {
 		return make_shared<ctoot::synth::channels::valor::ValorSynthChannel>(dynamic_pointer_cast<ctoot::synth::channels::valor::ValorSynthControls>(c.lock()).get());
 	}

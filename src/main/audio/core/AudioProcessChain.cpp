@@ -36,7 +36,7 @@ void AudioProcessChain::open()
 				p->open();
 			}
 			else {
-				MLOG("No process created from control " + candidate->getName());
+				//MLOG("No process created from control " + candidate->getName());
 			}
 		}
 	}

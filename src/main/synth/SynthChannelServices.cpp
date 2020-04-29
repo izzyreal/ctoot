@@ -37,9 +37,9 @@ shared_ptr<SynthChannelControls> SynthChannelServices::createControls(const stri
 
 shared_ptr<SynthChannel> SynthChannelServices::createSynthChannel(weak_ptr<SynthChannelControls> controls)
 {
-	MLOG("Trying to create synth channel");
+	//MLOG("Trying to create synth channel");
 	for (auto& p : providers) {
-		MLOG("SynthChannelProvider " + p.lock()->getProviderName() + " / " + p.lock()->getDescription());
+		//MLOG("SynthChannelProvider " + p.lock()->getProviderName() + " / " + p.lock()->getDescription());
 		auto process = p.lock()->createSynthChannel(controls);
 		if (process) {
 			return process;

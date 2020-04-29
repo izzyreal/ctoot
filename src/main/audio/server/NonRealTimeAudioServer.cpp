@@ -76,7 +76,7 @@ void NonRealTimeAudioServer::start()
 
 void NonRealTimeAudioServer::startNRT()
 {
-	MLOG("startNRT")
+	//MLOG("startNRT");
 	if (!client.lock()) {
 		MLOG("can't lock client!")
 		startASAP = true;
@@ -157,7 +157,7 @@ void NonRealTimeAudioServer::work(int nFrames)
 
 void NonRealTimeAudioServer::run()
 {
-	MLOG("starting nrt with buffersize " + to_string(server.lock()->getBufferSize()) + " and sampleRate " + to_string(server.lock()->getSampleRate()));
+	//MLOG("starting nrt with buffersize " + to_string(server.lock()->getBufferSize()) + " and sampleRate " + to_string(server.lock()->getSampleRate()));
 	isRunning_ = true;
     while (isRunning_) {
 		work(server.lock()->getBufferSize());
