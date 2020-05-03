@@ -2,7 +2,7 @@
 #include <midi/message/ShortMsg.hpp>
 
 #ifdef __linux__
-#include <cstdint>>
+#include <cstdint>
 #endif // __linux__
 
 namespace ctoot {
