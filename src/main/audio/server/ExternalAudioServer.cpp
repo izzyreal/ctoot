@@ -3,10 +3,6 @@
 #include "StereoOutputProcess.hpp"
 #include "../core/ChannelFormat.hpp"
 
-#include <iostream>
-
-#include <System.hpp>
-
 using namespace ctoot::audio::server;
 using namespace std;
 
@@ -89,29 +85,32 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 	int sampleCounter = 0;
 	const int inputsToProcess = min((int) (inputChannelCount * 0.5), (int)activeInputs.size());
 	for (int frame = 0; frame < nFrames; frame++) {
-		for (int input = 0; input < inputsToProcess; input += 2) {
-			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[input][frame];
-			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[input + 1][frame];
+		int channelCounter = 0;
+		for (int input = 0; input < inputsToProcess; input ++) {
+			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[channelCounter][frame];
+			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[channelCounter + 1][frame];
+			channelCounter += 2;
 		}
 	}
 
 	client->work(nFrames);
 
-	auto originalOutputBuffer = outputBuffer;
 	const int outputsToProcess = outputChannelCount * 0.5;
 	for (int frame = 0; frame < nFrames; frame++) {
-		for (int output = 0; output < outputsToProcess; output += 2) {
+		int channelCounter = 0;
+		for (int output = 0; output < outputsToProcess; output++) {
 			if (output >= activeOutputs.size()) {
-				outputBuffer[output][frame] = 0.0f;
-				outputBuffer[output + 1][frame] = 0.0f;
+				outputBuffer[channelCounter][frame] = 0.0f;
+				outputBuffer[channelCounter + 1][frame] = 0.0f;
+				channelCounter += 2;
 				continue;
 			}
 			const auto frame_x2 = frame * 2;
-			outputBuffer[output][frame] = activeOutputs[output]->localBuffer[frame_x2];
-			outputBuffer[output + 1][frame] = activeOutputs[output]->localBuffer[frame_x2 + 1];
+			outputBuffer[channelCounter][frame] = activeOutputs[output]->localBuffer[frame_x2];
+			outputBuffer[channelCounter + 1][frame] = activeOutputs[output]->localBuffer[frame_x2 + 1];
+			channelCounter += 2;
 		}
 	}
-	outputBuffer = originalOutputBuffer;
 }
 
 void ExternalAudioServer::setClient(weak_ptr<AudioClient> client) {
