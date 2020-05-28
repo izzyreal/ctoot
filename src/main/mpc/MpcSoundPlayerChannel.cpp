@@ -105,7 +105,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	auto lSampler = sampler.lock();
 	auto program = lSampler->getProgram(programNumber);
 	auto lProgram = program.lock();
-	auto padNumber = lProgram->getPadNumberFromNote(note);
+	auto padNumber = lProgram->getPadIndexFromNote(note);
 	auto np = lProgram->getNoteParameters(note);
 	checkForMutes(np);
 	auto soundNumber = np->getSndNumber();
@@ -308,15 +308,15 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	if (note < 35 || note > 98) {
 		return;
 	}
-	stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadNumberFromNote(note), 2, frameOffset);
+	stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadIndexFromNote(note), 2, frameOffset);
 	std::map<int, int>::iterator it = simultA.find(note);
 	if (it != simultA.end()) {
-		stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadNumberFromNote(simultA[note]), 2);
+		stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadIndexFromNote(simultA[note]), 2);
 		simultA.erase(it);
 	}
 	it = simultB.find(note);
 	if (it != simultB.end()) {
-		stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadNumberFromNote(simultB[note]), 2);
+		stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadIndexFromNote(simultB[note]), 2);
 		simultB.erase(it);
 	}
 }
