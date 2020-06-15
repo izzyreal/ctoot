@@ -28,7 +28,7 @@ void DefaultMidiSystem::work(int nFrames) {
 void DefaultMidiSystem::addMidiDevice(MidiDevice* device)
 {
     devices.push_back(device);
-    setChanged();
+    
     notifyObservers();
     device->addObserver(observer);
 }
@@ -42,7 +42,7 @@ void DefaultMidiSystem::removeMidiDevice(MidiDevice* device)
 			break;
 		}
 	}
-	setChanged();
+	
 	notifyObservers();
 }
 

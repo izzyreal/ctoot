@@ -39,7 +39,7 @@ string AbstractAudioDevice::toString()
 void AbstractAudioDevice::addAudioInput(std::shared_ptr<AudioInput> input)
 {
 	inputs.push_back(std::move(input));
-	setChanged();
+	
 	notifyObservers(input);
 }
 
@@ -54,14 +54,14 @@ void AbstractAudioDevice::removeAudioInput(std::weak_ptr<AudioInput> input)
 	}
 	if (counter >= inputs.size()) return;
 	inputs.erase(inputs.begin() + counter);
-	setChanged();
+	
 	notifyObservers(input);
 }
 
 void AbstractAudioDevice::addAudioOutput(std::shared_ptr<AudioOutput> output)
 {
 	outputs.push_back(std::move(output));
-	setChanged();
+	
 	notifyObservers(output);
 }
 
@@ -76,7 +76,7 @@ void AbstractAudioDevice::removeAudioOutput(std::weak_ptr<AudioOutput> output)
 	}
 	if (counter >= outputs.size()) return;
 	outputs.erase(outputs.begin() + counter);
-	setChanged();
+	
 	notifyObservers(output);
 }
 

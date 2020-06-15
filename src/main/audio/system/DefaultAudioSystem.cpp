@@ -20,7 +20,7 @@ void DefaultAudioSystem::addAudioDevice(std::weak_ptr<AudioDevice> device)
 	//MLOG("Trying to add device " + device.lock()->getName());
 	checkUniqueDeviceName(device);
 	devices.push_back(device);
-	setChanged();
+	
 	notifyObservers(device);
 	device.lock()->addObserver(observer);
 }
@@ -45,7 +45,7 @@ void DefaultAudioSystem::removeAudioDevice(std::weak_ptr<AudioDevice> device)
 	}
 	if (index >= devices.size()) return;
 	devices.erase(devices.begin() + index);
-	setChanged();
+	
 	notifyObservers(device);
 }
 

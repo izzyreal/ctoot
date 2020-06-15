@@ -116,6 +116,6 @@ void MixerControlsFactory::addMixControls(MixerControls* mixerControls, weak_ptr
 	}
 
 	if (hasMixControls) {
-		lControls->add(mainMixControls);
+		lControls->add(move(mainMixControls));
 	}
 }

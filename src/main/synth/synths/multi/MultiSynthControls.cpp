@@ -36,7 +36,7 @@ void MultiSynthControls::setChannelControls(int chan, shared_ptr<SynthChannelCon
 		}
 	}
 	ChannelledSynthControls::setChannelControls(chan, c);
-	setChanged();
+	
 	notifyObservers(chan);
 }
 

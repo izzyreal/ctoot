@@ -69,7 +69,7 @@ void SynthChannel::controlChange(int arg0, int arg1)
 	controller[arg0] = static_cast<int8_t>(arg1);
 	if (arg0 < 32) controller[arg0 + 32] = 0;
 
-	setChanged();
+	
 	notifyObservers(new ctoot::synth::ControlChange(arg0, arg1));
 }
 

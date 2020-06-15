@@ -4,13 +4,13 @@
 
 using namespace ctoot::midi::core;
 
-MidiSystemObserver::MidiSystemObserver(DefaultMidiSystem *dms) : dms(dms)
+MidiSystemObserver::MidiSystemObserver(DefaultMidiSystem *dms)
+	: dms(dms)
 {
 }
 
 void MidiSystemObserver::update(moduru::observer::Observable* o, nonstd::any a)
 {
-	dms->setChanged();
 	dms->notifyObservers();
 }
 

@@ -26,7 +26,7 @@ void MpcStereoMixerChannel::setPanning(int i)
 		return;
 
 	panning = i;
-	setChanged();
+	
 	notifyObservers(string("panning"));
 }
 
@@ -41,7 +41,7 @@ void MpcStereoMixerChannel::setLevel(int i)
 		return;
 
 	level = i;
-	setChanged();
+	
 	notifyObservers(string("volume"));
 }
 

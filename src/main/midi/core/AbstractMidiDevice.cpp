@@ -34,7 +34,7 @@ string AbstractMidiDevice::toString()
 void AbstractMidiDevice::addMidiInput(MidiInput* input)
 {
 	inputs.push_back(input);
-	setChanged();
+	
 	notifyObservers();
 }
 
@@ -49,21 +49,21 @@ void AbstractMidiDevice::removeMidiInput(MidiInput* input)
 	}
 	if (counter >= inputs.size()) return;
 	inputs.erase(inputs.begin() + counter);
-	setChanged();
+	
 	notifyObservers();
 }
 
 void AbstractMidiDevice::removeAllMidiInputs()
 {
 	inputs.clear();
-	setChanged();
+	
 	notifyObservers();
 }
 
 void AbstractMidiDevice::addMidiOutput(MidiOutput* output)
 {
     outputs.push_back(output);
-    setChanged();
+    
     notifyObservers();
 }
 
@@ -78,14 +78,14 @@ void AbstractMidiDevice::removeMidiOutput(MidiOutput* output)
 	}
 	if (counter >= outputs.size()) return;
 	outputs.erase(outputs.begin() + counter);
-    setChanged();
+    
     notifyObservers();
 }
 
 void AbstractMidiDevice::removeAllMidiOutputs()
 {
     outputs.clear();
-    setChanged();
+    
     notifyObservers();
 }
 

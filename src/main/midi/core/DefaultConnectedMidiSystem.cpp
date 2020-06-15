@@ -47,7 +47,7 @@ void DefaultConnectedMidiSystem::createMidiConnection(MidiOutput* from, MidiInpu
 {
     auto connection = new MidiConnection(from, to, flags);
 	connections.push_back(connection);
-    setChanged();
+    
     notifyObservers();
 }
 
@@ -62,7 +62,7 @@ void DefaultConnectedMidiSystem::closeMidiConnection(MidiOutput* from, MidiInput
 	if (i >= connections.size()) return;
 	connections.erase(connections.begin() + i);
     connection->close();
-    setChanged();
+    
     notifyObservers();
 }
 

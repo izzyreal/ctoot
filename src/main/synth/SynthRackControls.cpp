@@ -41,7 +41,7 @@ void SynthRackControls::setSynthControls(int synth, shared_ptr<SynthControls> co
 		add(std::move(controls));
 	}
 	synthControls[synth] = weakRef;
-	setChanged();
+	
 	notifyObservers(synth);
 }
 

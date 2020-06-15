@@ -67,7 +67,7 @@ void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string in
 	controlToInsert->setParent(this);
 	ChainMutation* insertMutation = new InsertMutation((int)(insertionIndex), controlToInsert);
 	controls.insert(controls.begin() + insertionIndex, std::move(controlToInsert));
-	setChanged();
+	
 	notifyObservers(insertMutation);
 }
 
@@ -89,7 +89,7 @@ void CompoundControlChain::delete_(string deleteName)
 	}
 	remove(controlToDelete);
 	ChainMutation* m = new DeleteMutation(index);
-	setChanged();
+	
 	notifyObservers(m);
 }
 
@@ -97,7 +97,7 @@ void CompoundControlChain::delete_(int indexToDelete)
 {
 	remove(controls[indexToDelete]);
 	ChainMutation* m = new DeleteMutation(indexToDelete);
-	setChanged();
+	
 	notifyObservers(m);
 }
 
@@ -121,13 +121,13 @@ void CompoundControlChain::move(string moveName, string moveBeforeName)
 	}
 	controls.insert(controls.begin() + insertionIndex, controlToMove);
 	ChainMutation* m = new MoveMutation(indexToMove, insertionIndex);
-	setChanged();
+	
 	notifyObservers(m);
 }
 
 void CompoundControlChain::setMutating(bool mutating)
 {
-	setChanged();
+	
 	notifyObservers(mutating ? ChainMutation::COMMENCE_INSTANCE() : ChainMutation::COMPLETE_INSTANCE());
 }
 

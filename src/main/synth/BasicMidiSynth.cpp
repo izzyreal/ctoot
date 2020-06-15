@@ -121,7 +121,7 @@ void BasicMidiSynth::addAudioOutput(std::weak_ptr<AudioOutput> output)
 {
 	//MLOG("BasicMidiSynth::addAudioOutput " + output.lock()->getName());
 	audioOutputs.push_back(output);
-    setChanged();
+    
     notifyObservers(output);
 }
 
@@ -133,7 +133,7 @@ void BasicMidiSynth::removeAudioOutput(std::weak_ptr<AudioOutput> output)
 			break;
 		}
 	}
-	setChanged();
+	
 	notifyObservers(output);
 }
 

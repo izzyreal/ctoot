@@ -56,7 +56,7 @@ void MpcSoundPlayerChannel::setProgram(int i)
 	if (i < 0) return;
 	if (!sampler.lock()->getProgram(i).lock()) return;
 	programNumber = i;
-	setChanged();
+	
 	notifyObservers(string("pgm"));
 }
 
@@ -73,7 +73,7 @@ bool MpcSoundPlayerChannel::receivesPgmChange()
 void MpcSoundPlayerChannel::setReceivePgmChange(bool b)
 {
 	receivePgmChange = b;
-	setChanged();
+	
 	notifyObservers(string("receivepgmchange"));
 }
 
@@ -85,7 +85,7 @@ bool MpcSoundPlayerChannel::receivesMidiVolume()
 void MpcSoundPlayerChannel::setReceiveMidiVolume(bool b)
 {
 	receiveMidiVolume = b;
-	setChanged();
+	
 	notifyObservers(string("receivemidivolume"));
 }
 

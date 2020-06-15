@@ -132,14 +132,14 @@ void MixerControls::addStripControls(shared_ptr<CompoundControl> cc)
 	canAddBusses = false;
 	add(cc);
 	//auto mcm = new Mutation(Mutation::ADD, cc);
-	//setChanged();
+	//
 	//notifyObservers(mcm);
 }
 
 void MixerControls::removeStripControls(weak_ptr<CompoundControl> cc)
 {
     remove(cc);
-    setChanged();
+    
     notifyObservers(new Mutation(Mutation::REMOVE, cc));
 }
 
@@ -165,7 +165,7 @@ void MixerControls::moveStripControls(string name, string beforeName)
 			}
 		}
 		controls.insert(controls.begin() + i, cc);
-		setChanged();
+		
 		notifyObservers(cc);
 	}
 }

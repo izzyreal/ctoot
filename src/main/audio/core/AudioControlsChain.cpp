@@ -59,7 +59,7 @@ void AudioControlsChain::setMetaInfo(weak_ptr<MetaInfo> wMetaInfo)
 		sourceLabel = "";
         sourceLocation = "";
     }
-    setChanged();
+    
 	notifyObservers();
 	*/
 }

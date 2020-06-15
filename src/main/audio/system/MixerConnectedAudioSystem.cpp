@@ -113,7 +113,7 @@ void MixerConnectedAudioSystem::createConnection(std::weak_ptr<AudioOutput> from
 	}
 	AudioConnection* connection = new MixerInputConnection(this, from, to, flags);
 	connections.push_back(connection);
-	setChanged();
+	
 	moduru::observer::Observable::notifyObservers();
 }
 
@@ -179,7 +179,7 @@ void MixerConnectedAudioSystem::closeConnection(AudioConnection* connection)
 	}
 	if (index >= connections.size()) return;
 	connections.erase(connections.begin() + index);
-	setChanged();
+	
 	moduru::observer::Observable::notifyObservers();
 }
 

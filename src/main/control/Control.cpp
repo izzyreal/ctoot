@@ -66,7 +66,7 @@ void Control::notifyParent(Control* c)
 {
 
 	derive(c);
-	setChanged();
+	
 	notifyObservers(c);
 	if (c->isIndicator()) return;
 
