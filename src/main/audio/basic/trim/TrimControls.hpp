@@ -7,7 +7,6 @@
 
 using namespace ctoot::audio::core;
 using namespace ctoot::control;
-using namespace std;
 
 namespace ctoot::audio::basic::trim {
 
@@ -16,8 +15,8 @@ namespace ctoot::audio::basic::trim {
 
 	private:
 		
-		static weak_ptr<LinearLaw> TRIM_LAW() { 
-			static shared_ptr<LinearLaw> trimLaw = make_shared<LinearLaw>(-20.f, 20.f, "dB");
+		static std::weak_ptr<LinearLaw> TRIM_LAW() { 
+			static std::shared_ptr<LinearLaw> trimLaw = std::make_shared<LinearLaw>(-20.f, 20.f, "dB");
 			return trimLaw;
 		};
 
@@ -28,7 +27,6 @@ namespace ctoot::audio::basic::trim {
 
 	public:
 		TrimControls();
-		~TrimControls();
 
 	};
 

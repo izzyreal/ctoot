@@ -8,21 +8,19 @@
 
 using namespace ctoot::audio::core;
 
-using namespace std;
-
 namespace ctoot::audio::basic::trim {
 
 	class TrimProcess
 		: public SimpleAudioProcess {
 
 	private:
-		weak_ptr<TrimControls> controls;
+		std::weak_ptr<TrimControls> controls;
 
 	public:
 		int processAudio(AudioBuffer* buffer) override;
 
 	public:
-		TrimProcess(weak_ptr<TrimControls> controls);
+		TrimProcess(std::weak_ptr<TrimControls> controls);
 		~TrimProcess();
 
 	};

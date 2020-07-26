@@ -5,6 +5,7 @@
 #include <audio/basic/BasicIds.hpp>
 
 using namespace ctoot::audio::basic::trim;
+using namespace std;
 
 TrimControls::TrimControls()
 	: AudioControls(BasicIds::TRIM, "Trim")
@@ -13,10 +14,7 @@ TrimControls::TrimControls()
 	add(move(trimControl));
 }
 
-float TrimControls::getTrim() {
+float TrimControls::getTrim()
+{
 	return trim;
-}
-
-TrimControls::~TrimControls() {
-
 }

@@ -5,6 +5,7 @@
 #include <algorithm>
 
 using namespace ctoot::control;
+using namespace std;
 
 CompoundControlChain::CompoundControlChain(int id, string name)
 	: CompoundControl(id, name)

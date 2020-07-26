@@ -8,8 +8,6 @@
 
 using namespace ctoot::control;
 
-using namespace std;
-
 namespace ctoot::audio::basic::trim {
 
 	class TrimControl
@@ -22,7 +20,7 @@ namespace ctoot::audio::basic::trim {
 		void derive(Control* control) override;
 
 	public:
-		TrimControl(int id, string name, weak_ptr<ControlLaw> law, float precision, float initialValue, float* trimToSet);
+		TrimControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue, float* trimToSet);
 		~TrimControl();
 
 	};
