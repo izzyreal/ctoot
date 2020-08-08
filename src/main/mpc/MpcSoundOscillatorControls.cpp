@@ -101,18 +101,20 @@ void MpcSoundOscillatorControls::setMono(bool b)
 void MpcSoundOscillatorControls::setLoopTo(int i)
 {
 	auto value = i;
+	
 	if (value < 0) {
-		if (loopTo == 0) return;
 		value = 0;
 	}
-	else if (value > getFrameCount()) {
-		if (loopTo == getFrameCount()) return;
+	else if (value > getFrameCount())
+	{
 		value = getFrameCount();
+	}
+	else if (value > end)
+	{
+		value = end;
 	}
 
 	loopTo = value;
-	if (loopTo > end) setEnd(loopTo);
-
 	
 	notifyObservers(string("loopto"));
 }

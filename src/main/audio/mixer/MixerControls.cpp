@@ -13,6 +13,7 @@
 #include <control/Control.hpp>
 
 #include <iostream>
+#include <algorithm>
 
 using namespace ctoot::audio::mixer;
 using namespace ctoot::audio::core;

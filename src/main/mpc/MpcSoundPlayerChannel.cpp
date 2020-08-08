@@ -89,6 +89,19 @@ void MpcSoundPlayerChannel::setReceiveMidiVolume(bool b)
 	notifyObservers(string("receivemidivolume"));
 }
 
+int MpcSoundPlayerChannel::getLastReceivedMidiVolume()
+{
+	return lastReceivedMidiVolume;
+}
+
+void MpcSoundPlayerChannel::setLastReceivedMidiVolume(int volume)
+{
+	if (volume < 0 || volume > 127 || lastReceivedMidiVolume == volume)
+		return;
+
+	lastReceivedMidiVolume = volume;
+}
+
 void MpcSoundPlayerChannel::setLocation(string location)
 {
 }
