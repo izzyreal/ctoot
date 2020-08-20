@@ -64,30 +64,30 @@ void MpcSoundOscillatorControls::setStart(int i)
 void MpcSoundOscillatorControls::setEnd(int i)
 {
     auto value = i;
+
 	if (value < 0) {
-		if (end == 0) {
+		
+		if (end == 0)
 			return;
-		}
+
 		value = 0;
 	}
-	else if (value > getFrameCount()) {
-		if (end == getFrameCount()) {
+	else if (value > getFrameCount())
+	{
+		if (end == getFrameCount())
 			return;
-		}
+	
 		value = getFrameCount();
 	}
 
     end = value;
 
-	if (end < loopTo) {
+	if (end < loopTo)
 		setLoopTo(end);
-	}
     
-	if (end < start) {
+	if (end < start)
 		setStart(end);
-	}
 
-    
     notifyObservers(string("end"));
 }
 
@@ -102,17 +102,10 @@ void MpcSoundOscillatorControls::setLoopTo(int i)
 {
 	auto value = i;
 	
-	if (value < 0) {
+	if (value < 0)
 		value = 0;
-	}
 	else if (value > getFrameCount())
-	{
 		value = getFrameCount();
-	}
-	else if (value > end)
-	{
-		value = end;
-	}
 
 	loopTo = value;
 	
