@@ -41,7 +41,7 @@ MpcSoundPlayerChannel::MpcSoundPlayerChannel(weak_ptr<MpcSoundPlayerControls> co
 	receivePgmChange = true;
 	receiveMidiVolume = true;
 	auto lControls = controls.lock();
-	index = lControls->getDrumNumber();
+	drumIndex = lControls->getDrumIndex();
 	sampler = lControls->getSampler();
 	mixer = lControls->getMixer();
 	server = lControls->getServer();
@@ -125,7 +125,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	auto np = lProgram->getNoteParameters(note);
 
 	checkForMutes(np);
-	auto soundNumber = np->getSndNumber();
+	auto soundNumber = np->getSoundIndex();
 
 	weak_ptr<MpcVoice> voice;
 	auto lControls = controls.lock();
@@ -223,7 +223,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	}
 
 	stopPad(padIndex, 1);
-	voice.lock()->init(track, velo, padIndex, sound, np, varType, varValue, note, index, frameOffset, true);
+	voice.lock()->init(track, velo, padIndex, sound, np, varType, varValue, note, drumIndex, frameOffset, true);
 
 	if (firstGeneration)
 	{
@@ -256,8 +256,8 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 			if (v.lock()->isFinished() || v.lock()->getMuteInfo() == nullptr)
 				continue;
 			
-			if (v.lock()->getMuteInfo()->muteMe(np->getMuteAssignA(), index)
-				|| v.lock()->getMuteInfo()->muteMe(np->getMuteAssignB(), index))
+			if (v.lock()->getMuteInfo()->muteMe(np->getMuteAssignA(), drumIndex)
+				|| v.lock()->getMuteInfo()->muteMe(np->getMuteAssignB(), drumIndex))
 			{
 				v.lock()->startDecay();
 			}
@@ -272,7 +272,7 @@ void MpcSoundPlayerChannel::stopPad(int p, int o)
 		if (v.lock()->getPadNumber() == p
 			&& v.lock()->getVoiceOverlap() == o
 			&& !v.lock()->isDecaying()
-			&& index == v.lock()->getMuteInfo()->getDrum())
+			&& drumIndex == v.lock()->getMuteInfo()->getDrum())
 		{
 			v.lock()->startDecay();
 			break;
@@ -354,7 +354,7 @@ vector<weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> MpcSoundPlayerChannel::getI
 
 int MpcSoundPlayerChannel::getDrumNumber()
 {
-	return index;
+	return drumIndex;
 }
 
 void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
@@ -387,7 +387,7 @@ void MpcSoundPlayerChannel::stopPad(int pad, int overlap, int offset)
 		if (v.lock()->getPadNumber() == pad
 			&& v.lock()->getVoiceOverlap() == overlap
 			&& !v.lock()->isDecaying()
-			&& index == v.lock()->getMuteInfo()->getDrum())
+			&& drumIndex == v.lock()->getMuteInfo()->getDrum())
 		{
 			v.lock()->startDecay(offset);
 			break;

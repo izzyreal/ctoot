@@ -26,8 +26,6 @@ void MpcSoundOscillatorControls::setTune(int i)
 	if (i < -120 || i > 120) return;
 
 	tune = i;
-	
-	notifyObservers(string("tune"));
 }
 
 void MpcSoundOscillatorControls::setLoopEnabled(bool b)

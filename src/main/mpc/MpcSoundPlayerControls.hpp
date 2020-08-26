@@ -37,7 +37,7 @@ namespace ctoot {
 		public:
 			std::weak_ptr<MpcMultiMidiSynth> getMms();
 			std::weak_ptr<ctoot::mpc::MpcSampler> getSampler();
-			int getDrumNumber();
+			int getDrumIndex();
 			std::weak_ptr<ctoot::audio::mixer::AudioMixer> getMixer();
 			ctoot::audio::server::AudioServer* getServer();
 			ctoot::mpc::MpcMixerSetupGui* getMixerSetupGui();

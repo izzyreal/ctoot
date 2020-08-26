@@ -45,7 +45,7 @@ weak_ptr<ctoot::mpc::MpcSampler> MpcSoundPlayerControls::getSampler()
     return sampler;
 }
 
-int MpcSoundPlayerControls::getDrumNumber()
+int MpcSoundPlayerControls::getDrumIndex()
 {
     return drumNumber;
 }

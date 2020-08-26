@@ -4,10 +4,10 @@
 
 namespace ctoot::mpc
 {
-	class MpcNoteParameters {
-
+	class MpcNoteParameters
+	{
 	public:
-		virtual int getSndNumber() = 0;
+		virtual int getSoundIndex() = 0;
 		virtual int getSoundGenerationMode() = 0;
 		virtual int getOptionalNoteA() = 0;
 		virtual int getOptionalNoteB() = 0;

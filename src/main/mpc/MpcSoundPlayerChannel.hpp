@@ -49,7 +49,7 @@ namespace ctoot::mpc
 		ctoot::audio::server::AudioServer* server = nullptr;
 
 	private:
-		int index = 0;
+		int drumIndex = 0;
 		int programNumber = 0;
 		bool receivePgmChange = false;
 		bool receiveMidiVolume = false;
