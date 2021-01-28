@@ -41,7 +41,7 @@ namespace ctoot {
 				int silenceCountdown{};
 
 			public:
-				virtual bool processBuffer();
+				virtual bool processBuffer(int nFrames);
 				virtual void checkMetaInfo(std::weak_ptr<ctoot::audio::core::MetaInfo> info);
 				virtual int mix(ctoot::audio::core::AudioBuffer* bufferToMix, std::vector<float> gain);
 

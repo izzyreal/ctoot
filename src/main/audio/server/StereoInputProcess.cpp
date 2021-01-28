@@ -11,7 +11,7 @@ StereoInputProcess::StereoInputProcess(string name, bool mono, string location)
 	: AudioServerProcess(name, mono) {
 }
 
-int StereoInputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer) {
+int StereoInputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) {
 	if (!buffer->isRealTime()) {
 		return AUDIO_DISCONNECT;
 	}
@@ -22,7 +22,7 @@ int StereoInputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer) {
 	
 	auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);
-	auto ns = buffer->getSampleCount() < localBuffer.size() ? buffer->getSampleCount() : localBuffer.size();
+	auto ns = nFrames <= localBuffer.size() ? nFrames : localBuffer.size();
 	
 	int sampleCounter = 0;
 	

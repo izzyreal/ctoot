@@ -43,7 +43,7 @@ namespace ctoot {
 				int64_t elapsed{};
 
 			public:
-				int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
+				int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
 				virtual int debugProcessAudio(ctoot::audio::core::AudioBuffer* buffer);
 				void close() override;
 				virtual std::string getName();

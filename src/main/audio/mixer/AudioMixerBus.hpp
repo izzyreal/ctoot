@@ -27,7 +27,7 @@ namespace ctoot {
 				virtual ctoot::audio::core::AudioBuffer* getBuffer();
 				virtual std::string getName();
 				virtual void silence();
-				virtual void write();
+				virtual void write(int nFrames);
 				virtual void close();
 
 			public:

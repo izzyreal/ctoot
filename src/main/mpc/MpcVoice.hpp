@@ -128,7 +128,7 @@ namespace ctoot {
 
 		public:
 			void open() override;
-			int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
+			int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
 			void close() override;
 
 		public:

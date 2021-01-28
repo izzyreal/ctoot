@@ -45,12 +45,12 @@ void AudioMixerBus::silence()
     buffer->makeSilence();
 }
 
-void AudioMixerBus::write()
+void AudioMixerBus::write(int nFrames)
 {
 	if (!output.lock() && !isFx) return;
 
 	if (output.lock()) {
-		output.lock()->processAudio(buffer);
+		output.lock()->processAudio(buffer, nFrames);
 	}
 	if (meter != nullptr) {
 		meter->processAudio(buffer);

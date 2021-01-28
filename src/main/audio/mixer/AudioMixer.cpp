@@ -120,17 +120,18 @@ weak_ptr<AudioMixerStrip> AudioMixer::getUnusedChannelStrip()
 void AudioMixer::work(int nFrames)
 {
 	if (!enabled) return;
+
 	processMutations();
 	silenceStrips(&groupStrips);
 	silenceStrips(&fxStrips);
 	silenceStrips(&auxStrips);
 	mainStrip.lock()->silence();
-	evaluateStrips(&channelStrips);
-	evaluateStrips(&groupStrips);
-	evaluateStrips(&fxStrips);
-	evaluateStrips(&auxStrips);
-	mainStrip.lock()->processBuffer();
-	writeBusBuffers();
+	evaluateStrips(&channelStrips, nFrames);
+	evaluateStrips(&groupStrips, nFrames);
+	evaluateStrips(&fxStrips, nFrames);
+	evaluateStrips(&auxStrips, nFrames);
+	mainStrip.lock()->processBuffer(nFrames);
+	writeBusBuffers(nFrames);
 }
 
 void AudioMixer::processMutations()
@@ -156,10 +157,10 @@ void AudioMixer::processMutation(Mutation* m)
 	delete m;
 }
 
-void AudioMixer::evaluateStrips(vector<weak_ptr<AudioMixerStrip>>* strips)
+void AudioMixer::evaluateStrips(vector<weak_ptr<AudioMixerStrip>>* strips, int nFrames)
 {
 	for (auto& strip : (*strips)) {
-		strip.lock()->processBuffer();
+		strip.lock()->processBuffer(nFrames);
 	}
 }
 
@@ -169,10 +170,10 @@ void AudioMixer::silenceStrips(vector<weak_ptr<AudioMixerStrip>>* strips)
 		strip.lock()->silence();
 }
 
-void AudioMixer::writeBusBuffers()
+void AudioMixer::writeBusBuffers(int nFrames)
 {
 	for (auto& bus : busses)
-		bus->write();
+		bus->write(nFrames);
 }
 
 void AudioMixer::createBusses(weak_ptr<MixerControls> mixerControls)

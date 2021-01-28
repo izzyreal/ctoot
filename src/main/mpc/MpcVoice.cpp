@@ -330,7 +330,7 @@ void MpcVoice::open()
 {
 }
 
-int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer)
+int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 {
 	if (buffer->getSampleRate() != sampleRate) {
 		setSampleRate(buffer->getSampleRate());
@@ -342,9 +342,8 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	}
 	auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);
-	auto ns = buffer->getSampleCount();
 
-	for (int i = 0; i < ns; i++) {
+	for (int i = 0; i < nFrames; i++) {
 		frame = getFrame();
 		(*left)[i] = frame[0];
 		(*right)[i] = frame[1];

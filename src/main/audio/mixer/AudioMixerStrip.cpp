@@ -95,12 +95,12 @@ AudioBuffer* AudioMixerStrip::createBuffer()
 
 const int AudioMixerStrip::silenceCount;
 
-bool AudioMixerStrip::processBuffer()
+bool AudioMixerStrip::processBuffer(int nFrames)
 {
 	auto ret = AUDIO_OK;
 	if (isChannel) {
 		if (input.lock()) {
-			ret = input.lock()->processAudio(buffer);
+			ret = input.lock()->processAudio(buffer, nFrames);
 			buffer->getMetaInfo();
 			checkMetaInfo(buffer->getMetaInfo());
 			if (ret == AUDIO_DISCONNECT) {
@@ -116,7 +116,9 @@ bool AudioMixerStrip::processBuffer()
 			return false;
 		}
 	}
-	processAudio(buffer);
+
+	processAudio(buffer, nFrames);
+
 	if (isChannel) {
 		if (ret == AUDIO_SILENCE) {
 			if (buffer->square() > 0.00000001f)

@@ -62,9 +62,9 @@ namespace ctoot {
 
 			private:
 				void processMutations();
-				void evaluateStrips(std::vector<std::weak_ptr<AudioMixerStrip>>* evalStrips);
+				void evaluateStrips(std::vector<std::weak_ptr<AudioMixerStrip>>* evalStrips, int nFrames);
 				void silenceStrips(std::vector<std::weak_ptr<AudioMixerStrip>>* evalStrips);
-				void writeBusBuffers();
+				void writeBusBuffers(int nFrames);
 				void createBusses(std::weak_ptr<MixerControls> mixerControls);
 				std::shared_ptr<AudioMixerBus> createBus(std::weak_ptr<BusControls> busControls);
 

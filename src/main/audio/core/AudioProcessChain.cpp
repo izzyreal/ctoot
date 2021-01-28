@@ -46,7 +46,7 @@ void AudioProcessChain::open()
 	}
 }
 
-int AudioProcessChain::processAudio(ctoot::audio::core::AudioBuffer* buffer)
+int AudioProcessChain::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 {
 	processMutations();
 	if (debugTimes) {
@@ -62,7 +62,7 @@ int AudioProcessChain::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	for (auto& p : processes) {
 		try {
 			if (p) {
-				p->processAudio(buffer);
+				p->processAudio(buffer, nFrames);
 			}
 		}
 		catch (const exception& e) {
