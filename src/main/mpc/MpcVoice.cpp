@@ -401,7 +401,7 @@ void MpcVoice::startDecay()
 
 int MpcVoice::getVoiceOverlap()
 {
-	return np->getVoiceOverlap();
+	return oscVars.lock()->isLoopEnabled() ? 2 : np->getVoiceOverlap();
 }
 
 int MpcVoice::getStripNumber()
