@@ -295,29 +295,39 @@ std::vector<float> MpcVoice::getFrame()
 	return tempFrame;
 }
 
-void MpcVoice::readFrame() {
+void MpcVoice::readFrame()
+{
 	if (oscVars.lock()->isLoopEnabled() && position > end - 1)
-		position = start;
+	{
+		position = oscVars.lock()->getLoopTo();
+	}
 
-	if (position > end - 1 || (staticEnv != nullptr && staticEnv->isComplete()) || (ampEnv != nullptr && ampEnv->isComplete())) {
+	if (position > end - 1 || (staticEnv != nullptr && staticEnv->isComplete()) || (ampEnv != nullptr && ampEnv->isComplete()))
+	{
 		tempFrame = EMPTY_FRAME;
 		finished = true;
 		return;
 	}
+	
 	k = (int)(ceil(position));
 	j = k - 1;
-	if (j == -1) j = 0;
+	
+	if (j == -1)
+		j = 0;
 
 	frac = position - (double)(j);
 
-	if (oscVars.lock()->isMono()) {
+	if (oscVars.lock()->isMono())
+	{
 		tempFrame[0] = ((*sampleData)[j] * (1.0f - frac)) + ((*sampleData)[k] * frac);
 	}
-	else {
+	else
+	{
 		auto rOffset = sampleData->size() * 0.5;
 		tempFrame[0] = ((*sampleData)[j] * (1.0f - frac)) + ((*sampleData)[k] * frac);
 		tempFrame[1] = ((*sampleData)[j + rOffset] * (1.0f - frac)) + ((*sampleData)[k + rOffset] * frac);
 	}
+
 	position += increment;
 }
 
@@ -332,35 +342,46 @@ void MpcVoice::open()
 
 int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 {
-	if (buffer->getSampleRate() != sampleRate) {
+	if (buffer->getSampleRate() != sampleRate)
+	{
 		setSampleRate(buffer->getSampleRate());
 	}
 
-	if (finished) {
+	if (finished)
+	{
 		buffer->makeSilence();
 		return AUDIO_SILENCE;
 	}
+	
 	auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);
 
-	for (int i = 0; i < nFrames; i++) {
+	for (int i = 0; i < nFrames; i++)
+	{
 		frame = getFrame();
+	
 		(*left)[i] = frame[0];
 		(*right)[i] = frame[1];
-		if (decayCounter != 0) {
-			if (decayCounter == 1) {
+		
+		if (decayCounter != 0)
+		{
+			if (decayCounter == 1)
 				startDecay();
-			}
+
 			decayCounter--;
 		}
 	}
-	if (finished) {
+
+	if (finished)
+	{
 		padNumber = -1;
 	}
+	
 	return AUDIO_OK;
 }
 
-bool MpcVoice::isFinished() {
+bool MpcVoice::isFinished()
+{
 	return finished;
 }
 
@@ -368,7 +389,8 @@ void MpcVoice::close()
 {
 }
 
-void MpcVoice::finish() {
+void MpcVoice::finish()
+{
 	finished = true;
 }
 
@@ -399,20 +421,20 @@ MpcMuteInfo* MpcVoice::getMuteInfo()
 
 void MpcVoice::startDecay(int offset)
 {
-	if (offset > 0) {
+	if (offset > 0)
 		decayCounter = offset;
-	}
-	else {
+	else
 		startDecay();
-	}
 }
 
-MpcVoice::~MpcVoice() {
+MpcVoice::~MpcVoice()
+{
 	delete muteInfo;
 	delete staticEnvControls;
 	delete staticEnv;
 
-	if (!basic) {
+	if (!basic)
+	{
 		delete ampEnvControls;
 		delete filterEnvControls;
 		delete ampEnv;
