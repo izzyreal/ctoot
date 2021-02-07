@@ -174,21 +174,15 @@ void FloatSampleBuffer::changeSampleCount(int newSampleCount, bool keepOldSample
 
 void FloatSampleBuffer::makeSilence()
 {
-	if (getChannelCount() > 0) {
-		makeSilence(0);
-		for (int ch = 1; ch < getChannelCount(); ch++) {
-			//copyChannel(0, ch);
-			makeSilence(ch);
-		}
-	}
+    for (int ch = 0; ch < getChannelCount(); ch++)
+        makeSilence(ch);
 }
 
 void FloatSampleBuffer::makeSilence(int channel)
 {
 	auto samples = getChannel(channel);
-	for (int i = 0; i < getSampleCount(); i++) {
+	for (int i = 0; i < getSampleCount(); i++)
 		(*samples)[i] = 0;
-	}
 }
 
 void FloatSampleBuffer::addChannel(bool silent)
@@ -207,25 +201,33 @@ void FloatSampleBuffer::insertChannel(int index, bool silent, bool lazy)
 	int physSize = static_cast<int>(channels.size());
 	int virtSize = getChannelCount();
 	vector<float> newChannel;
-	if (physSize > virtSize) {
-		for (int ch = virtSize; ch < physSize; ch++) {
+    
+	if (physSize > virtSize)
+    {
+		for (int ch = virtSize; ch < physSize; ch++)
+        {
 			auto thisChannel = channels[ch];
-			if ((lazy && thisChannel.size() >= getSampleCount()) || (!lazy && thisChannel.size() == getSampleCount())) {
+		
+            if ((lazy && thisChannel.size() >= getSampleCount()) || (!lazy && thisChannel.size() == getSampleCount()))
+            {
 				newChannel = thisChannel;
 				channels.erase(channels.begin() + ch);
 				break;
 			}
 		}
 	}
-	if (newChannel.size() == 0) {
+    
+	if (newChannel.size() == 0)
+    {
 		for (int i = 0; i < getSampleCount(); i++)
 			newChannel.push_back(0);
 	}
-	channels.push_back(newChannel);
-	this->channelCount++;
-	if (silent) {
+	
+    channels.push_back(newChannel);
+	channelCount++;
+	
+    if (silent)
 		makeSilence(index);
-	}
 }
 
 void FloatSampleBuffer::removeChannel(int channel)
@@ -235,15 +237,18 @@ void FloatSampleBuffer::removeChannel(int channel)
 
 void FloatSampleBuffer::removeChannel(int channel, bool lazy)
 {
-	if (!lazy) {
+	if (!lazy)
+    {
 		channels.erase(channels.begin() + channel);
 	}
-	else if (channel < getChannelCount() - 1) {
+	else if (channel < getChannelCount() - 1)
+    {
 		vector<float> candidate = channels[channel];
 		channels.erase(channels.begin() + channel);
 		channels.push_back(candidate);
 	}
-	channelCount--;
+	
+    channelCount--;
 }
 
 void FloatSampleBuffer::copyChannel(int sourceChannel, int targetChannel)
@@ -253,32 +258,36 @@ void FloatSampleBuffer::copyChannel(int sourceChannel, int targetChannel)
 
 void FloatSampleBuffer::copy(int sourceIndex, int destIndex, int length)
 {
-	for (auto i = 0; i < getChannelCount(); i++) {
+	for (auto i = 0; i < getChannelCount(); i++)
 		copy(i, sourceIndex, destIndex, length);
-	}
 }
 
 void FloatSampleBuffer::copy(int channel, int sourceIndex, int destIndex, int length)
 {
 	auto data = getChannel(channel);
 	auto bufferCount = getSampleCount();
-	if (sourceIndex + length > bufferCount || destIndex + length > bufferCount || sourceIndex < 0 || destIndex < 0 || length < 0) {
+    
+	if (sourceIndex + length > bufferCount || destIndex + length > bufferCount || sourceIndex < 0 || destIndex < 0 || length < 0)
+    {
 		string error = "parameters exceed buffer size";
 		printf("ERROR: %s\n", error.c_str());
 	}
-	for (int i = 0; i < length; i++) {
+	
+    for (int i = 0; i < length; i++)
 		data[destIndex + i] = data[sourceIndex + i];
-	}
 }
 
 void FloatSampleBuffer::expandChannel(int targetChannelCount)
 {
-	if (getChannelCount() != 1) {
+	if (getChannelCount() != 1)
+    {
 		string error = "FloatSampleBuffer: can only expand channels for mono signals.";
 		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
-	for (auto ch = 1; ch < targetChannelCount; ch++) {
+	
+    for (auto ch = 1; ch < targetChannelCount; ch++)
+    {
 		addChannel(false);
 		copyChannel(0, ch);
 	}
@@ -289,12 +298,15 @@ void FloatSampleBuffer::mixDownChannels()
 	auto firstChannel = getChannel(0);
 	auto sampleCount = getSampleCount();
 	auto channelCount = getChannelCount();
-	for (auto ch = channelCount - 1; ch > 0; ch--) {
+    
+	for (auto ch = channelCount - 1; ch > 0; ch--)
+    {
 		auto thisChannel = getChannel(ch);
-		for (auto i = 0; i < sampleCount; i++) {
+        
+		for (auto i = 0; i < sampleCount; i++)
 			(*firstChannel)[i] += (*thisChannel)[i];
-		}
-		removeChannel(ch);
+		
+        removeChannel(ch);
 	}
 }
 
@@ -331,22 +343,26 @@ float FloatSampleBuffer::getSampleRate()
 }
 void FloatSampleBuffer::setSampleRate(float sampleRate)
 {
-	if (sampleRate <= 0) {
+	if (sampleRate <= 0)
+    {
 		string error = "Invalid samplerate for FloatSampleBuffer.";
 		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
-	this->sampleRate = sampleRate;
+	
+    this->sampleRate = sampleRate;
 }
 
 vector<float>* FloatSampleBuffer::getChannel(int channel)
 {
-	if (channel < 0 || channel >= getChannelCount()) {
+	if (channel < 0 || channel >= getChannelCount())
+    {
 		string error = "FloatSampleBuffer: invalid channel number.";
 		printf("ERROR: %s\n", error.c_str());
 		return nullptr;
 	}
-	return &channels[channel];
+	
+    return &channels[channel];
 }
 
 vector<vector<float>>* FloatSampleBuffer::getAllChannels()
@@ -356,12 +372,14 @@ vector<vector<float>>* FloatSampleBuffer::getAllChannels()
 
 void FloatSampleBuffer::setDitherBits(float ditherBits)
 {
-	if (ditherBits <= 0) {
+	if (ditherBits <= 0)
+    {
 		string error = "DitherBits must be greater than 0";
 		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
-	this->ditherBits = ditherBits;
+	
+    this->ditherBits = ditherBits;
 }
 
 float FloatSampleBuffer::getDitherBits()
@@ -371,12 +389,14 @@ float FloatSampleBuffer::getDitherBits()
 
 void FloatSampleBuffer::setDitherMode(int mode)
 {
-	if (mode != DITHER_MODE_AUTOMATIC && mode != DITHER_MODE_ON && mode != DITHER_MODE_OFF) {
+	if (mode != DITHER_MODE_AUTOMATIC && mode != DITHER_MODE_ON && mode != DITHER_MODE_OFF)
+    {
 		string error = "Illegal DitherMode";
 		printf("ERROR: %s\n", error.c_str());
 		return;
 	}
-	this->ditherMode = mode;
+	
+    this->ditherMode = mode;
 }
 
 int FloatSampleBuffer::getDitherMode()
@@ -387,7 +407,9 @@ int FloatSampleBuffer::getDitherMode()
 float FloatSampleBuffer::getConvertDitherBits(int newFormatType)
 {
 	auto doDither = false;
-	switch (ditherMode) {
+    
+	switch (ditherMode)
+    {
 	case DITHER_MODE_AUTOMATIC:
 		doDither = (originalFormatType & FloatSampleTools::F_SAMPLE_WIDTH_MASK) > (newFormatType & FloatSampleTools::F_SAMPLE_WIDTH_MASK);
 		break;
@@ -398,8 +420,6 @@ float FloatSampleBuffer::getConvertDitherBits(int newFormatType)
 		doDither = false;
 		break;
 	}
+    
 	return doDither ? ditherBits : 0.0f;
-}
-
-FloatSampleBuffer::~FloatSampleBuffer() {
 }

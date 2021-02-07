@@ -25,20 +25,20 @@
 #endif
 
 using namespace ctoot::mpc;
+using namespace std;
 
-MpcVoice::MpcVoice(int stripNumber, bool basic)
+MpcVoice::MpcVoice(int _stripNumber, bool _basic)
+: stripNumber (_stripNumber), basic (_basic), frame (EMPTY_FRAME)
 {
-	EMPTY_FRAME = std::vector<float>{ 0.f, 0.f };
-	tempFrame = std::vector<float>{ 0.f, 0.f };
+	EMPTY_FRAME = vector<float>{ 0.f, 0.f };
+	tempFrame = vector<float>{ 0.f, 0.f };
 	muteInfo = new MpcMuteInfo();
-	this->stripNumber = stripNumber;
-	this->basic = basic;
 	staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
 	staticEnvControls->setSampleRate(sampleRate);
 	staticEnv = new ctoot::mpc::MpcEnvelopeGenerator(staticEnvControls);
-	sattack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[ATTACK_INDEX].lock()).get();
-	shold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[HOLD_INDEX].lock()).get();
-	sdecay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[DECAY_INDEX].lock()).get();
+	sattack = dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[ATTACK_INDEX].lock()).get();
+	shold = dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[HOLD_INDEX].lock()).get();
+	sdecay = dynamic_pointer_cast<ctoot::control::FloatControl>(staticEnvControls->getControls()[DECAY_INDEX].lock()).get();
 
 	timeRatio = 5.46f * (44100.0 / sampleRate);
 
@@ -54,15 +54,15 @@ MpcVoice::MpcVoice(int stripNumber, bool basic)
 		svfControls->createControls();
 		svf0 = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
 		svf1 = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
-		fattack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(filterEnvControls->getControls()[ATTACK_INDEX].lock()).get();
-		fhold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(filterEnvControls->getControls()[HOLD_INDEX].lock()).get();
-		fdecay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(filterEnvControls->getControls()[DECAY_INDEX].lock()).get();
-		attack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(ampEnvControls->getControls()[ATTACK_INDEX].lock()).get();
-		hold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(ampEnvControls->getControls()[HOLD_INDEX].lock()).get();
-		decay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(ampEnvControls->getControls()[DECAY_INDEX].lock()).get();
-		reso = std::dynamic_pointer_cast<ctoot::control::FloatControl>(svfControls->getControls()[RESO_INDEX].lock()).get();
-		mix = std::dynamic_pointer_cast<ctoot::control::FloatControl>(svfControls->getControls()[MIX_INDEX].lock()).get();
-		bandpass = std::dynamic_pointer_cast<ctoot::control::BooleanControl>(svfControls->getControls()[BANDPASS_INDEX].lock()).get();
+		fattack = dynamic_pointer_cast<ctoot::control::FloatControl>(filterEnvControls->getControls()[ATTACK_INDEX].lock()).get();
+		fhold = dynamic_pointer_cast<ctoot::control::FloatControl>(filterEnvControls->getControls()[HOLD_INDEX].lock()).get();
+		fdecay = dynamic_pointer_cast<ctoot::control::FloatControl>(filterEnvControls->getControls()[DECAY_INDEX].lock()).get();
+		attack = dynamic_pointer_cast<ctoot::control::FloatControl>(ampEnvControls->getControls()[ATTACK_INDEX].lock()).get();
+		hold = dynamic_pointer_cast<ctoot::control::FloatControl>(ampEnvControls->getControls()[HOLD_INDEX].lock()).get();
+		decay = dynamic_pointer_cast<ctoot::control::FloatControl>(ampEnvControls->getControls()[DECAY_INDEX].lock()).get();
+		reso = dynamic_pointer_cast<ctoot::control::FloatControl>(svfControls->getControls()[RESO_INDEX].lock()).get();
+		mix = dynamic_pointer_cast<ctoot::control::FloatControl>(svfControls->getControls()[MIX_INDEX].lock()).get();
+		bandpass = dynamic_pointer_cast<ctoot::control::BooleanControl>(svfControls->getControls()[BANDPASS_INDEX].lock()).get();
 	}
 }
 
@@ -85,7 +85,7 @@ void MpcVoice::init(
 	int track,
 	int velocity,
 	int padNumber,
-	std::weak_ptr<ctoot::mpc::MpcSound> oscVars,
+	weak_ptr<ctoot::mpc::MpcSound> oscVars,
 	ctoot::mpc::MpcNoteParameters* np,
 	int varType,
 	int varValue,
@@ -226,50 +226,58 @@ void MpcVoice::setSampleRate(int sampleRate) {
 
 	staticEnv->reset();
 	sattack->setValue(STATIC_ATTACK_LENGTH);
-	auto staticEnvHoldSamples = (int)(playableSampleLength - (((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate * 0.001)));
+	auto staticEnvHoldSamples = (int)(playableSampleLength - ((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * sampleRate * 0.001);
 	shold->setValue(staticEnvHoldSamples);
 	sdecay->setValue(STATIC_DECAY_LENGTH);
 	veloToLevelFactor = (float)((veloToLevel * 0.01));
-	amplitude = (float)(((veloFactor * veloToLevelFactor) + 1.0f - veloToLevelFactor));
+	amplitude = (float)((veloFactor * veloToLevelFactor) + 1.0f - veloToLevelFactor);
 	amplitude *= (lOscVars->getSndLevel() * 0.01);
-	if (!basic) {
+	
+    if (!basic)
+    {
 		ampEnv->reset();
 		attack->setValue(decayMode == 1 ? (float)(0) : attackMs * timeRatio);
 		hold->setValue(decayMode == 1 ? 0 : holdLengthSamples);
 		decay->setValue(decayMs * timeRatio);
 		filtParam = np->getFilterFrequency();
-		if (varType == 3) filtParam = varValue;
+	
+        if (varType == 3)
+            filtParam = varValue;
 
-		initialFilterValue = (float)(((filtParam + (veloFactor * np->getVelocityToFilterFrequency()))));
-		initialFilterValue = (float)((17.0 + (initialFilterValue * 0.75)));
+		initialFilterValue = (float)(filtParam + (veloFactor * np->getVelocityToFilterFrequency()));
+		initialFilterValue = (float)(17.0 + (initialFilterValue * 0.75));
 		filterEnv->reset();
-		fattack->setValue((float)((np->getFilterAttack() * 0.002) * MAX_ATTACK_LENGTH_SAMPLES));
+		fattack->setValue((float)(np->getFilterAttack() * 0.002 * MAX_ATTACK_LENGTH_SAMPLES));
 		fhold->setValue(0);
-		fdecay->setValue((float)((np->getFilterDecay() * 0.002) * MAX_DECAY_LENGTH_SAMPLES));
+		fdecay->setValue((float)(np->getFilterDecay() * 0.002 * MAX_DECAY_LENGTH_SAMPLES));
 		reso->setValue((float)(0.0625 + (np->getFilterResonance() / 26.0)));
 		mix->setValue(0.0f);
 		bandpass->setValue(false);
 		svf0->update();
 		svf1->update();
 	}
-
 }
 
-std::vector<float> MpcVoice::getFrame()
+vector<float>& MpcVoice::getFrame()
 {
-	if (!readyToPlay || finished) return EMPTY_FRAME;
+	if (!readyToPlay || finished)
+        return EMPTY_FRAME;
 
-	if (frameOffset > 0) {
+	if (frameOffset > 0)
+    {
 		frameOffset--;
 		return EMPTY_FRAME;
 	}
-	envAmplitude = basic ? 1.0f : ampEnv->getEnvelope(false);
+	
+    envAmplitude = basic ? 1.0f : ampEnv->getEnvelope(false);
 	staticEnvAmp = enableEnvs ? staticEnv->getEnvelope(staticDecay) : 1.0f;
 	envAmplitude *= staticEnvAmp;
 
 	float filterEnvFactor = 0;
 	float filterFreq = 0;
-	if (!basic) {
+	
+    if (!basic)
+    {
 		filterFreq = ctoot::mpc::MpcSoundPlayerChannel::midiFreq(initialFilterValue * 1.44f) * inverseNyquist;
 		filterEnvFactor = (float)(filterEnv->getEnvelope(false) * (np->getFilterEnvelopeAmount() * 0.01));
 		filterFreq += ctoot::mpc::MpcSoundPlayerChannel::midiFreq(144) * inverseNyquist * filterEnvFactor;
@@ -277,30 +285,34 @@ std::vector<float> MpcVoice::getFrame()
 
 	readFrame();
 
-	if (oscVars.lock()->isMono()) {
+	if (oscVars.lock()->isMono())
+    {
 		tempFrame[0] *= envAmplitude * amplitude;
-		if (!basic) {
+	
+        if (!basic)
 			tempFrame[0] = svf0->filter(tempFrame[0], filterFreq);
-		}
+
 		tempFrame[1] = tempFrame[0];
 	}
-	else {
+	else
+    {
 		tempFrame[0] *= envAmplitude * amplitude;
 		tempFrame[1] *= envAmplitude * amplitude;
-		if (!basic) {
+	
+        if (!basic)
+        {
 			tempFrame[0] = svf0->filter(tempFrame[0], filterFreq);
 			tempFrame[1] = svf1->filter(tempFrame[1], filterFreq);
 		}
 	}
-	return tempFrame;
+	
+    return tempFrame;
 }
 
 void MpcVoice::readFrame()
 {
 	if (oscVars.lock()->isLoopEnabled() && position > end - 1)
-	{
 		position = oscVars.lock()->getLoopTo();
-	}
 
 	if (position > end - 1 || (staticEnv != nullptr && staticEnv->isComplete()) || (ampEnv != nullptr && ampEnv->isComplete()))
 	{
@@ -343,9 +355,7 @@ void MpcVoice::open()
 int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 {
 	if (buffer->getSampleRate() != sampleRate)
-	{
 		setSampleRate(buffer->getSampleRate());
-	}
 
 	if (finished)
 	{

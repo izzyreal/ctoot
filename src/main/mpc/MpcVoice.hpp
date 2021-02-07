@@ -124,7 +124,7 @@ namespace ctoot {
 			double frac{ 0 };
 			int k{ 0 };
 			int j{ 0 };
-			std::vector<float> frame;
+			std::vector<float>& frame;
 
 		public:
 			void open() override;
@@ -134,7 +134,7 @@ namespace ctoot {
 		public:
 			bool isFinished();
 			void init(int track, int velocity, int padNumber, std::weak_ptr<ctoot::mpc::MpcSound> oscVars, ctoot::mpc::MpcNoteParameters* np, int varType, int varValue, int muteNote, int muteDrum, int frameOffset, bool enableEnvs);
-			std::vector<float> getFrame();
+            std::vector<float>& getFrame();
 			int getPadNumber();
 			void startDecay();
 			int getVoiceOverlap();
