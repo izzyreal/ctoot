@@ -4,27 +4,20 @@
 
 using namespace ctoot::audio::mixer;
 
-MixerControlsObserver::MixerControlsObserver(AudioMixer* am)
+MixerControlsObserver::MixerControlsObserver(AudioMixer* _mixer)
+: mixer (_mixer)
 {
-	this->am = am;
 }
 
 void MixerControlsObserver::update(nonstd::any a)
 {
-	Mutation* m = nullptr;
-	try {
-		m = nonstd::any_cast<Mutation*>(a);
-	}
-	catch (const std::exception& e) {
-		//printf(e.what());
-		return;
-	}
-	if (m != nullptr) {
-		if (am->isEnabled() && am->getAudioServer().lock()->isRunning()) {
-			am->getMutationQueue().try_enqueue(m);
-		}
-		else {
-			am->processMutation(m);
-		}
+    if (a.has_value() && a.type() == typeid(Mutation*))
+    {
+        auto m = nonstd::any_cast<Mutation*>(a);
+		
+        if (mixer->isEnabled() && mixer->getAudioServer().lock()->isRunning())
+			mixer->getMutationQueue().try_enqueue(m);
+		else
+            mixer->processMutation(m);
 	}
 }

@@ -3,29 +3,22 @@
 
 #include <observer/Observer.hpp>
 
-namespace ctoot {
-	namespace synth {
-		namespace synths {
-			namespace multi {
+namespace ctoot::synth::synths::multi
+{
 
-				class MultiMidiSynthObserver
-					: public moduru::observer::Observer
-				{
-
-				public:
-					void update(moduru::observer::Observable* obs, nonstd::any a) override;
-
-				private:
-					MultiMidiSynth* mms{ nullptr };
-					std::weak_ptr<MultiSynthControls> controls{ };
-
-				public:
-					MultiMidiSynthObserver(MultiMidiSynth* mms, std::weak_ptr<MultiSynthControls> controls);
-					~MultiMidiSynthObserver();
-
-				};
-
-			}
-		}
-	}
+class MultiMidiSynthObserver
+: public moduru::observer::Observer
+{
+    
+public:
+    void update(moduru::observer::Observable* obs, nonstd::any a) override;
+    
+private:
+    MultiMidiSynth* mms = nullptr;
+    std::weak_ptr<MultiSynthControls> controls;
+    
+public:
+    MultiMidiSynthObserver(MultiMidiSynth*, std::weak_ptr<MultiSynthControls>);
+    
+};
 }

@@ -35,12 +35,15 @@ void TapControl::derive(ctoot::control::Control* obj)
 	reference(prevTapName, -1);
 	reference(tapName, 1);
 	prevTapName = tapName;
+    
 	if (tapName.compare(SELF_STR) == 0) {
 		buffer = nullptr;
 		return;
 	}
-	buffer = Taps::getBuffer(tapName);
-	if (buffer == nullptr) {
+	
+    buffer = Taps::getBuffer(tapName);
+	
+    if (buffer == nullptr) {
 		string errormsg = "Taps returned null buffer for Tap " + tapName;
 		MLOG(errormsg);
 	}

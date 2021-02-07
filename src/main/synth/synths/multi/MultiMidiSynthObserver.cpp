@@ -25,42 +25,34 @@ void MultiMidiSynthObserver::update(moduru::observer::Observable* obs, nonstd::a
 {
 	try {
 		auto chan = nonstd::any_cast<int>(a);
-		if (chan < 0 || chan > 15) return;
-
-		//temp limitation! remove once things are better.
-		//if (chan > 4) return;
+		
+        if (chan < 0 || chan > 15)
+            return;
 
 		auto channelControls = controls.lock()->getChannelControls(chan).lock();
 
 		if (channelControls) {
 			auto synthChannel = ctoot::synth::SynthChannelServices::createSynthChannel(channelControls);
-			/*
-			shared_ptr<SynthChannel> synthChannel;
-			if (chan < 4) {
-				synthChannel = make_shared<ctoot::mpc::MpcSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcSoundPlayerControls>(channelControls));
+		
+            if (!synthChannel)
+            {
+				MLOG("No SynthChannel for SynthControls " + channelControls->getName());
 			}
-			else {
-				synthChannel = make_shared<ctoot::mpc::MpcBasicSoundPlayerChannel>(dynamic_pointer_cast<ctoot::mpc::MpcBasicSoundPlayerControls>(channelControls));
-			}
-			*/
-			if (!synthChannel) {
-				string msg = "No SynthChannel for SynthControls " + channelControls->getName();
-				MLOG(msg);
-			}
-			else {
+			else
+            {
 				synthChannel->setLocation(mms->getLocation() + " Channel " + to_string(1 + chan));
 				synthChannel->addObserver(channelControls.get());
 			}
 			mms->setChannel(chan, synthChannel);
 		}
-		else {
+		else
+        {
 			mms->setChannel(chan, shared_ptr<SynthChannel>());
 		}
 	}
-	catch (const std::exception& e) {
-		e.what();
+	catch (const std::exception& e)
+    {
+		string msg = e.what();
+        MLOG("Could not update MultiMidiSynthObserver: " + msg);
 	}
-}
-
-MultiMidiSynthObserver::~MultiMidiSynthObserver() {
 }

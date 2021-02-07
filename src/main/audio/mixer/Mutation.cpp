@@ -4,10 +4,12 @@
 using namespace std;
 using namespace ctoot::audio::mixer;
 
-Mutation::Mutation(int operation, weak_ptr<ctoot::control::CompoundControl> control) 
+Mutation::Mutation
+(
+ int _operation,
+ weak_ptr<ctoot::control::CompoundControl> _control
+ ) : operation (_operation), control (_control)
 {
-	this->operation = operation;
-	this->control = control;
 }
 
 const int Mutation::ADD;
@@ -25,5 +27,5 @@ weak_ptr<ctoot::control::CompoundControl> Mutation::getControl()
 
 string Mutation::toString()
 {
-	return MixerControls::opNames()[operation] + " " + control.lock()->getName();
+    return MixerControls::opNames()[operation] + " " + control.lock()->getName();
 }

@@ -14,15 +14,11 @@ ControlChainObserver::ControlChainObserver(AudioProcessChain* apc) {
 
 void ControlChainObserver::update(moduru::observer::Observable* o, nonstd::any arg)
 {
-	ChainMutation* candidate = nullptr;
-	try {
-		candidate = nonstd::any_cast<ChainMutation*>(arg);
+    if (arg.has_value() && arg.type() == typeid(ChainMutation*))
+    {
+		auto mutation = nonstd::any_cast<ChainMutation*>(arg);
+        apc->mutationQueue.try_enqueue(mutation);
 	}
-	catch (const std::exception& e) {
-		//printf(e.what());
-		return;
-	}
-	apc->mutationQueue.try_enqueue(candidate);
 }
 
 ControlChainObserver::~ControlChainObserver() {
