@@ -43,7 +43,7 @@ namespace ctoot::mpc
 		std::map<int, int> simultA;
 		std::map<int, int> simultB;
 		std::weak_ptr<MpcSoundPlayerControls> controls;
-		std::weak_ptr<ctoot::mpc::MpcSampler> sampler;
+		std::weak_ptr<MpcSampler> sampler;
 		std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer;
 		std::vector<MpcMixerInterconnection*> mixerConnections;
 		ctoot::audio::server::AudioServer* server = nullptr;
@@ -54,8 +54,10 @@ namespace ctoot::mpc
 		bool receivePgmChange = false;
 		bool receiveMidiVolume = false;
 		int lastReceivedMidiVolume = 127;
-		std::vector<std::shared_ptr<ctoot::mpc::MpcStereoMixerChannel>> stereoMixerChannels;
-		std::vector<std::shared_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> indivFxMixerChannels;
+		std::vector<std::shared_ptr<MpcStereoMixerChannel>> stereoMixerChannels;
+        std::vector<std::weak_ptr<MpcStereoMixerChannel>> weakStereoMixerChannels;
+		std::vector<std::shared_ptr<MpcIndivFxMixerChannel>> indivFxMixerChannels;
+        std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> weakIndivFxMixerChannels;
 
 	public:
 		int getProgram() override;
@@ -76,15 +78,15 @@ namespace ctoot::mpc
 		void mpcNoteOn(int track, int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration);
 
 	private:
-		void checkForMutes(ctoot::mpc::MpcNoteParameters* np);
+		void checkForMutes(MpcNoteParameters* np);
 		void stopPad(int p, int o);
 
 	public:
 		void allSoundOff(int frameOffset);
 		void connectVoices();
 		std::weak_ptr<ctoot::audio::core::MetaInfo> getInfo();
-		std::vector<std::weak_ptr<ctoot::mpc::MpcStereoMixerChannel>> getStereoMixerChannels();
-		std::vector<std::weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
+		std::vector<std::weak_ptr<MpcStereoMixerChannel>> getStereoMixerChannels();
+		std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
 		int getDrumNumber();
 
 	public:

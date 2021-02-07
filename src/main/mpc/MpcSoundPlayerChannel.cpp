@@ -49,7 +49,10 @@ MpcSoundPlayerChannel::MpcSoundPlayerChannel(weak_ptr<MpcSoundPlayerControls> co
 	for (int i = 0; i < 64; i++)
 	{
 		stereoMixerChannels.push_back(make_shared<MpcStereoMixerChannel>());
-		indivFxMixerChannels.push_back(make_shared<MpcIndivFxMixerChannel>());
+        weakStereoMixerChannels.push_back(stereoMixerChannels.back());
+		
+        indivFxMixerChannels.push_back(make_shared<MpcIndivFxMixerChannel>());
+        weakIndivFxMixerChannels.push_back(indivFxMixerChannels.back());
 	}
 }
 
@@ -337,22 +340,12 @@ weak_ptr<ctoot::audio::core::MetaInfo> MpcSoundPlayerChannel::getInfo()
 
 vector<weak_ptr<ctoot::mpc::MpcStereoMixerChannel>> MpcSoundPlayerChannel::getStereoMixerChannels()
 {
-	vector<weak_ptr<ctoot::mpc::MpcStereoMixerChannel>> res;
-	
-	for (auto& m : stereoMixerChannels)
-		res.push_back(m);
-	
-	return res;
+    return weakStereoMixerChannels;
 }
 
 vector<weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> MpcSoundPlayerChannel::getIndivFxMixerChannels()
 {
-	vector<weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> res;
-	
-	for (auto& m : indivFxMixerChannels)
-		res.push_back(m);
-
-	return res;
+	return weakIndivFxMixerChannels;
 }
 
 int MpcSoundPlayerChannel::getDrumNumber()

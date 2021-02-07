@@ -9,30 +9,36 @@ using namespace std;
 shared_ptr<CompoundControlPersistence> CompoundControl::persistence;
 
 CompoundControl::CompoundControl(int id, string name) 
-	: CompoundControl(id, deriveInstanceIndex(name), name) {
-
+	: CompoundControl(id, deriveInstanceIndex(name), name)
+{
 }
 
-vector<string> CompoundControl::getControlNamesRecursive(int generation) {
+vector<string> CompoundControl::getControlNamesRecursive(int generation)
+{
 	vector<string> res;
 	string indent;
-	for (int i = 0; i < generation; i++) {
+
+    for (int i = 0; i < generation; i++)
 		indent += "     ";
-	}
-	res.push_back("\n" + indent + getName() + " has these controls:");
-	for (auto& c : controls) {
-		//string className = typeid(c.get()).name();
-		//res.push_back(indent + c->getName() + " (" + className + ")");
+
+    res.push_back("\n" + indent + getName() + " has these controls:");
+	
+    for (auto& c : controls)
 		res.push_back(indent + c->getName());
-	}
-	for (auto& c : controls) {
+
+    for (auto& c : controls)
+    {
 		auto cc = dynamic_pointer_cast<CompoundControl>(c);
-		if (cc) {
+	
+        if (cc)
+        {
 			auto strings = cc->getControlNamesRecursive(generation + 1);
-			for (auto& s : strings)
+		
+            for (auto& s : strings)
 				res.push_back(s);
 		}
 	}
+    
 	return res;
 }
 
@@ -44,7 +50,8 @@ CompoundControl::CompoundControl(int id, int instanceIndex, string name) : Contr
 	this->instanceIndex = instanceIndex;
 }
 
-int CompoundControl::deriveInstanceIndex(string name) {
+int CompoundControl::deriveInstanceIndex(string name)
+{
 	int result;
 	auto hash = name.find('#');
 	result = hash != string::npos ? stoi(name.substr(hash + 1)) - 1 : 0;
@@ -77,18 +84,24 @@ void CompoundControl::add(shared_ptr<Control> control)
 	string name = control->getName();
 	control->setParent(this);
 	controls.push_back(move(control));
+    weakControls.push_back(controls.back());
 }
 
 void CompoundControl::remove(weak_ptr<Control> c)
 {
 	auto control = c.lock();
-	if (!control) return;
-	for (int i = 0; i < controls.size(); i++) {
+	
+    if (!control)
+        return;
+	
+    for (int i = 0; i < controls.size(); i++)
+    {
 		auto currentControl = controls[i];
-		if (currentControl == control) {
-			controls.erase(controls.begin() + i);
-			control->setParent(nullptr);
-			control.reset();
+		
+        if (currentControl == control)
+        {
+			controls.erase(begin(controls) + i);
+            weakControls.erase(begin(weakControls) + i);
 			break;
 		}
 	}
@@ -96,34 +109,33 @@ void CompoundControl::remove(weak_ptr<Control> c)
 
 vector<weak_ptr<Control>> CompoundControl::getMemberControls()
 {
-	vector<weak_ptr<Control>> res;
-	for (auto& c : controls)
-		res.push_back(c);
-	return res;
+    return weakControls;
 }
 
 vector<weak_ptr<Control>> CompoundControl::getControls()
 {
-	vector<weak_ptr<Control>> res;
-	for (auto& c : controls)
-		res.push_back(c);
-	return res;
+    return weakControls;
 }
 
 string CompoundControl::toString()
 {
 	vector<string> builder;
-	for (auto i = 0; i < controls.size(); i++) {
-		if (i != 0) {
+	
+    for (auto i = 0; i < controls.size(); i++)
+    {
+		if (i != 0)
+        {
 			builder.push_back(", ");
-			if (controls.size() == i + 1) {
+		
+            if (controls.size() == i + 1)
 				builder.push_back("and ");
-			}
 		}
+        
 		builder.push_back(controls[i]->getName());
 	}
 
 	string result;
+    
 	for (int i = 0; i < builder.size(); i++)
 		result += builder[i];
 
