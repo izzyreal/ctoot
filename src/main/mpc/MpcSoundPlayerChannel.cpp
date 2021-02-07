@@ -55,10 +55,13 @@ MpcSoundPlayerChannel::MpcSoundPlayerChannel(weak_ptr<MpcSoundPlayerControls> co
 
 void MpcSoundPlayerChannel::setProgram(int i)
 {
-	if (i < 0) return;
-	if (!sampler.lock()->getProgram(i).lock()) return;
-	programNumber = i;
+	if (i < 0)
+        return;
 	
+    if (!sampler.lock()->getMpcProgram(i).lock())
+        return;
+	
+    programNumber = i;
 	notifyObservers(string("pgm"));
 }
 
@@ -119,7 +122,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 		return;
 	
 	auto lSampler = sampler.lock();
-	auto program = lSampler->getProgram(programNumber);
+	auto program = lSampler->getMpcProgram(programNumber);
 	auto lProgram = program.lock();
 	auto padIndex = lProgram->getPadIndexFromNote(note);
 	auto np = lProgram->getNoteParameters(note);
@@ -142,7 +145,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	if (soundNumber == -1 || !voice.lock())
 		return;
 
-	auto sound = lSampler->getSound(soundNumber);
+	auto sound = lSampler->getMpcSound(soundNumber);
 
 	auto smc = lProgram->getStereoMixerChannel(note - 35).lock();
 	auto ifmc = lProgram->getIndivFxMixerChannel(note - 35).lock();
@@ -362,12 +365,12 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	if (note < 35 || note > 98)
 		return;
 
-	stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadIndexFromNote(note), 2, frameOffset);
+	stopPad(sampler.lock()->getMpcProgram(programNumber).lock()->getPadIndexFromNote(note), 2, frameOffset);
 	std::map<int, int>::iterator it = simultA.find(note);
 
 	if (it != simultA.end())
 	{
-		stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadIndexFromNote(simultA[note]), 2);
+		stopPad(sampler.lock()->getMpcProgram(programNumber).lock()->getPadIndexFromNote(simultA[note]), 2);
 		simultA.erase(it);
 	}
 	
@@ -375,7 +378,7 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	
 	if (it != simultB.end())
 	{
-		stopPad(sampler.lock()->getProgram(programNumber).lock()->getPadIndexFromNote(simultB[note]), 2);
+		stopPad(sampler.lock()->getMpcProgram(programNumber).lock()->getPadIndexFromNote(simultB[note]), 2);
 		simultB.erase(it);
 	}
 }

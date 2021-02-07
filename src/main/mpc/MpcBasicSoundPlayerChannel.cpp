@@ -55,7 +55,7 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 		tempVars = lSampler->getPlayXSound();
 	}
 	else if (soundNumber == -3) {
-		tempVars = lSampler->getPreviewSound();
+		tempVars = lSampler->getMpcPreviewSound();
 	}
 	else if (soundNumber == -2) {
 		tempVars = lSampler->getClickSound();
@@ -64,7 +64,7 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 		tempVars = weak_ptr<ctoot::mpc::MpcSound>();
 	}
 	else if (soundNumber >= 0) {
-		tempVars = lSampler->getSound(soundNumber);
+		tempVars = lSampler->getMpcSound(soundNumber);
 	}
 	if (!tempVars.lock()) {
 		return;
