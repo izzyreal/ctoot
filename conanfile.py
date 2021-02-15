@@ -3,6 +3,7 @@ from conans import ConanFile, CMake
 class Pkg(ConanFile):
     name = "ctoot"
     version = "0.1"
+    license = "GPL-3.0"
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
     exports_sources = "src/*"
