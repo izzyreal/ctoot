@@ -53,7 +53,7 @@ void AudioMixerBus::write(int nFrames)
 		output.lock()->processAudio(buffer, nFrames);
 	}
 	if (meter != nullptr) {
-		meter->processAudio(buffer);
+		meter->processAudio(buffer, nFrames);
 	}
 }
 

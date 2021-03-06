@@ -3,29 +3,27 @@
 
 #include <stdexcept>
 
-ctoot::audio::core::AudioProcessAdapter::AudioProcessAdapter(AudioProcess* process)
+using namespace ctoot::audio::core;
+
+AudioProcessAdapter::AudioProcessAdapter(AudioProcess* process)
 {
-	if (process == nullptr) {
+	if (process == nullptr)
 		throw new std::invalid_argument("AudioProcessAdapter process == nullptr");
-	}
+    
 	this->process = process;
 }
 
-void ctoot::audio::core::AudioProcessAdapter::open()
+void AudioProcessAdapter::open()
 {
     process->open();
 }
 
-int ctoot::audio::core::AudioProcessAdapter::processAudio(ctoot::audio::core::AudioBuffer* buf)
+int AudioProcessAdapter::processAudio(AudioBuffer* buf, int nFrames)
 {
-	return process->processAudio(buf);
+	return process->processAudio(buf, nFrames);
 }
 
-void ctoot::audio::core::AudioProcessAdapter::close()
+void AudioProcessAdapter::close()
 {
 	process->close();
-}
-
-ctoot::audio::core::AudioProcessAdapter::~AudioProcessAdapter() {
-	process = nullptr;
 }

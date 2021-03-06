@@ -131,7 +131,7 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 		}
 	}
 	if (directOutput.lock()) {
-		directOutput.lock()->processAudio(buffer);
+		directOutput.lock()->processAudio(buffer, nFrames);
 	}
 	return true;
 }
