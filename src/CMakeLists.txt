@@ -70,8 +70,7 @@ foreach(_source IN ITEMS ${_source_list_test})
     source_group("${_source_path_msvc}" FILES "${_source}")
 endforeach()
 
-if(NOT DEFINED ENV{APPLE_M1})
-  add_executable(ctoot-tests ${_source_list_test})
-  target_link_libraries(ctoot-tests ctoot)
-endif()
+set (CMAKE_CXX_FLAGS "-DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
 
+add_executable(ctoot-tests ${_source_list_test})
+target_link_libraries(ctoot-tests ctoot)

@@ -72,7 +72,7 @@ bool AudioMixer::isMutating()
 void AudioMixer::waitForMutations()
 {
 	processMutations();
-	/* vMPC doesn't need dynamic mutations, only during init.
+	/* VMPC2000XL doesn't need dynamic mutations, only during init.
 	while (isMutating()) {
         if(isEnabled() && server->isRunning()) {
 			std::this_thread::sleep_for(std::chrono::milliseconds(5));
