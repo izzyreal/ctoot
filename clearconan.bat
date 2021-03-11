@@ -1,1 +1,0 @@
-rmdir C:\Users\Izmar\.conan\data\ctoot /s /q
