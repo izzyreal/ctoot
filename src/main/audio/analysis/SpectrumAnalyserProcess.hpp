@@ -1,6 +1,6 @@
 #include <audio/core/AudioProcess.hpp>
 
-#include <io/StereoCircularTBuffer.hpp>
+#include <collections/StereoCircularTBuffer.hpp>
 
 #include <thirdp/fftreal/FFTReal.h>
 

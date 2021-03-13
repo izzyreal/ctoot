@@ -2,7 +2,7 @@
 
 #include <audio/core/SimpleAudioProcess.hpp>
 
-#include <io/StereoCircularTBuffer.hpp>
+#include <collections/StereoCircularTBuffer.hpp>
 
 #include <string>
 #include <vector>
