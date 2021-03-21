@@ -82,8 +82,11 @@ void NonRealTimeAudioServer::startNRT()
 		startASAP = true;
 		return;
 	}
-	if (nrtThread.joinable()) nrtThread.join();
-	nrtThread = std::thread(&NonRealTimeAudioServer::static_nrts, this);
+	
+    if (nrtThread.joinable())
+        nrtThread.join();
+	
+    nrtThread = std::thread(&NonRealTimeAudioServer::static_nrts, this);
 }
 
 void NonRealTimeAudioServer::static_nrts(void * args)
@@ -107,6 +110,9 @@ void NonRealTimeAudioServer::stop()
 void NonRealTimeAudioServer::stopNRT()
 {
     isRunning_ = false;
+    
+    if (nrtThread.joinable())
+        nrtThread.join();
 }
 
 void NonRealTimeAudioServer::close()
