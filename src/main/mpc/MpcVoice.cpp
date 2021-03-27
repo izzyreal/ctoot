@@ -84,8 +84,8 @@ const int MpcVoice::AMPENV_OFFSET;
 void MpcVoice::init(
 	int track,
 	int velocity,
-	int padNumber,
 	weak_ptr<ctoot::mpc::MpcSound> oscVars,
+    int note,
 	ctoot::mpc::MpcNoteParameters* np,
 	int varType,
 	int varValue,
@@ -98,7 +98,7 @@ void MpcVoice::init(
 	this->frameOffset = frameOffset;
 	this->track = track;
 	this->np = np;
-	this->padNumber = padNumber;
+    this->note = note;
 	this->oscVars = oscVars;
 	this->varType = varType;
 	this->varValue = varValue;
@@ -343,11 +343,6 @@ void MpcVoice::readFrame()
 	position += increment;
 }
 
-int MpcVoice::getPadNumber()
-{
-	return padNumber;
-}
-
 void MpcVoice::open()
 {
 }
@@ -384,7 +379,7 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 
 	if (finished)
 	{
-		padNumber = -1;
+        note = -1;
 	}
 	
 	return AUDIO_OK;
@@ -435,6 +430,11 @@ void MpcVoice::startDecay(int offset)
 		decayCounter = offset;
 	else
 		startDecay();
+}
+
+int MpcVoice::getNote()
+{
+    return note;
 }
 
 MpcVoice::~MpcVoice()

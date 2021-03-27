@@ -4,7 +4,6 @@
 #include "MpcVoice.hpp"
 #include "MpcSampler.hpp"
 
-
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/fader/FaderControl.hpp>
 #include <audio/mixer/AudioMixer.hpp>
@@ -15,9 +14,9 @@
 
 #include <control/Control.hpp>
 
-//#include <Mpc.hpp>
-
 using namespace ctoot::mpc;
+using namespace ctoot::audio::mixer;
+using namespace ctoot::audio::fader;
 using namespace std;
 
 MpcBasicSoundPlayerChannel::MpcBasicSoundPlayerChannel(weak_ptr<MpcBasicSoundPlayerControls> controls)
@@ -29,13 +28,12 @@ MpcBasicSoundPlayerChannel::MpcBasicSoundPlayerChannel(weak_ptr<MpcBasicSoundPla
 	auto lMixer = mixer.lock();
 	mixerStrip = lMixer->getStrip("65");
 	auto sc = lMixer->getMixerControls().lock()->getStripControls("65").lock();
-	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
-	fader = dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock());
+	auto mmc = dynamic_pointer_cast<MainMixControls>(sc->find("Main").lock());
+	fader = dynamic_pointer_cast<FaderControl>(mmc->find("Level").lock());
 }
 
 void MpcBasicSoundPlayerChannel::setLocation(string location)
 {
-
 }
 
 void MpcBasicSoundPlayerChannel::noteOn(int soundNumber, int velocity)
@@ -66,12 +64,13 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 	else if (soundNumber >= 0) {
 		tempVars = lSampler->getMpcSound(soundNumber);
 	}
+    
 	if (!tempVars.lock()) {
 		return;
 	}
 
 	fader.lock()->setValue(soundNumber == -2 ? 200 : 100);
-	voice.lock()->init(-1, velocity, -1, tempVars, nullptr, 0, 64, -1, -1, frameOffset, soundNumber == -2 ? false : true);
+	voice.lock()->init(-1, velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber == -2 ? false : true);
 }
 
 void MpcBasicSoundPlayerChannel::noteOff(int note)
@@ -93,14 +92,10 @@ void MpcBasicSoundPlayerChannel::finishVoice() {
 
 void MpcBasicSoundPlayerChannel::connectVoice()
 {
-	auto lMixer = mixer.lock();
-	lMixer->getStrip("65").lock()->setInputProcess(voice);
+    mixer.lock()->getStrip("65").lock()->setInputProcess(voice);
 }
 
 void MpcBasicSoundPlayerChannel::noteOff(int pitch, int velocity)
 {
-	super::noteOff(pitch, velocity);
-}
-
-MpcBasicSoundPlayerChannel::~MpcBasicSoundPlayerChannel() {
+	SynthChannel::noteOff(pitch, velocity);
 }
