@@ -127,7 +127,6 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	auto lSampler = sampler.lock();
 	auto program = lSampler->getMpcProgram(programNumber);
 	auto lProgram = program.lock();
-	auto padIndex = lProgram->getPadIndexFromNote(note);
 	auto np = lProgram->getNoteParameters(note);
 
 	checkForMutes(np);
@@ -157,10 +156,10 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 	bool iSrcDrum = controls.lock()->getMixerSetupGui()->isIndivFxSourceDrum();
 
 	if (sSrcDrum)
-		smc = stereoMixerChannels[padIndex];
+		smc = stereoMixerChannels[note - 35];
 
 	if (iSrcDrum)
-		ifmc = indivFxMixerChannels[padIndex];
+		ifmc = indivFxMixerChannels[note - 35];
 
 	shared_ptr<ctoot::audio::mixer::AudioMixer> lMixer = mixer.lock();
 	auto sc = lMixer->getMixerControls().lock()->getStripControls(to_string(voice.lock()->getStripNumber())).lock();
@@ -228,8 +227,9 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 		}
 	}
 
-	stopPad(padIndex, 1);
-	voice.lock()->init(track, velo, padIndex, sound, np, varType, varValue, note, drumIndex, frameOffset, true);
+	startDecayForNote(note, 1);
+    
+	voice.lock()->init(track, velo, sound, note, np, varType, varValue, note, drumIndex, frameOffset, true);
 
 	if (firstGeneration)
 	{
@@ -271,19 +271,19 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 	}
 }
 
-void MpcSoundPlayerChannel::stopPad(int p, int o)
+void MpcSoundPlayerChannel::startDecayForNote(const int note, const int voiceOverlapMode)
 {
-	for (auto& v : controls.lock()->getMms().lock()->getVoices())
-	{
-		if (v.lock()->getPadNumber() == p
-			&& v.lock()->getVoiceOverlap() == o
-			&& !v.lock()->isDecaying()
-			&& drumIndex == v.lock()->getMuteInfo()->getDrum())
-		{
-			v.lock()->startDecay();
-			break;
-		}
-	}
+    for (auto& v : controls.lock()->getMms().lock()->getVoices())
+    {
+        if (v.lock()->getNote() == note
+            && v.lock()->getVoiceOverlap() == voiceOverlapMode
+            && !v.lock()->isDecaying()
+            && drumIndex == v.lock()->getMuteInfo()->getDrum())
+        {
+            v.lock()->startDecay();
+            break;
+        }
+    }
 }
 
 void MpcSoundPlayerChannel::noteOff(int note)
@@ -358,12 +358,13 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	if (note < 35 || note > 98)
 		return;
 
-	stopPad(sampler.lock()->getMpcProgram(programNumber).lock()->getPadIndexFromNote(note), 2, frameOffset);
+	startDecayForNote(note, 2, frameOffset);
+    
 	std::map<int, int>::iterator it = simultA.find(note);
 
 	if (it != simultA.end())
 	{
-		stopPad(sampler.lock()->getMpcProgram(programNumber).lock()->getPadIndexFromNote(simultA[note]), 2);
+		startDecayForNote(simultA[note], 2);
 		simultA.erase(it);
 	}
 	
@@ -371,21 +372,21 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	
 	if (it != simultB.end())
 	{
-		stopPad(sampler.lock()->getMpcProgram(programNumber).lock()->getPadIndexFromNote(simultB[note]), 2);
+		startDecayForNote(simultB[note], 2);
 		simultB.erase(it);
 	}
 }
 
-void MpcSoundPlayerChannel::stopPad(int pad, int overlap, int offset)
+void MpcSoundPlayerChannel::startDecayForNote(const int note, const int voiceOverlapMode, const int frameOffset)
 {
 	for (auto& v : controls.lock()->getMms().lock()->getVoices())
 	{
-		if (v.lock()->getPadNumber() == pad
-			&& v.lock()->getVoiceOverlap() == overlap
+		if (v.lock()->getNote() == note
+			&& v.lock()->getVoiceOverlap() == voiceOverlapMode
 			&& !v.lock()->isDecaying()
 			&& drumIndex == v.lock()->getMuteInfo()->getDrum())
 		{
-			v.lock()->startDecay(offset);
+			v.lock()->startDecay(frameOffset);
 			break;
 		}
 	}

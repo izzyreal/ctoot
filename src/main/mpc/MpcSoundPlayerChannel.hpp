@@ -76,11 +76,7 @@ namespace ctoot::mpc
 		void setLastReceivedMidiVolume(int volume);
 		int getLastReceivedMidiVolume();
 		void mpcNoteOn(int track, int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration);
-
-	private:
-		void checkForMutes(MpcNoteParameters* np);
-		void stopPad(int p, int o);
-
+        
 	public:
 		void allSoundOff(int frameOffset);
 		void connectVoices();
@@ -93,7 +89,12 @@ namespace ctoot::mpc
 		void mpcNoteOff(int note, int frameOffset);
 
 	private:
-		void stopPad(int p, int o, int offset);
+        void checkForMutes(MpcNoteParameters* np);
+        void startDecayForNote(const int note,
+                               const int voiceOverlapMode);
+        void startDecayForNote(const int note,
+                               const int voiceOverlapMode,
+                               const int frameOffset);
 
 	public:
 		MpcSoundPlayerChannel(std::weak_ptr<MpcSoundPlayerControls> controls);
