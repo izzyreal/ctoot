@@ -53,7 +53,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 	beta = sqrt(A + A);
 	{
 		auto v = type;
-		if ((v == FilterShape::LPF)) {
+		if (v == FilterShape::LPF) {
 			b0 = (int32_t(1) - cs) / int32_t(2);
 			b1 = int32_t(1) - cs;
 			b2 = (int32_t(1) - cs) / int32_t(2);
@@ -62,7 +62,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a2 = int32_t(1) - alpha;
 			goto end_switch1;;
 		}
-		if ((v == FilterShape::HPF)) {
+		if (v == FilterShape::HPF) {
 			b0 = (int32_t(1) + cs) / int32_t(2);
 			b1 = -(int32_t(1) + cs);
 			b2 = (int32_t(1) + cs) / int32_t(2);
@@ -71,7 +71,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a2 = int32_t(1) - alpha;
 			goto end_switch1;;
 		}
-		if ((v == FilterShape::BPF)) {
+		if (v == FilterShape::BPF) {
 			b0 = alpha;
 			b1 = 0;
 			b2 = -alpha;
@@ -80,7 +80,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a2 = int32_t(1) - alpha;
 			goto end_switch1;;
 		}
-		if ((v == FilterShape::NOTCH)) {
+		if (v == FilterShape::NOTCH) {
 			b0 = 1;
 			b1 = -int32_t(2) * cs;
 			b2 = 1;
@@ -89,7 +89,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a2 = int32_t(1) - alpha;
 			goto end_switch1;;
 		}
-		if ((v == FilterShape::PEQ)) {
+		if (v == FilterShape::PEQ) {
 			b0 = int32_t(1) + (alpha * A);
 			b1 = -int32_t(2) * cs;
 			b2 = int32_t(1) - (alpha * A);
@@ -98,7 +98,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a2 = int32_t(1) - (alpha / A);
 			goto end_switch1;;
 		}
-		if ((v == FilterShape::LSH)) {
+		if (v == FilterShape::LSH) {
 			b0 = A * ((A + int32_t(1)) - (A - int32_t(1)) * cs + beta * sn);
 			b1 = int32_t(2) * A * ((A - int32_t(1)) - (A + int32_t(1)) * cs);
 			b2 = A * ((A + int32_t(1)) - (A - int32_t(1)) * cs - beta * sn);
@@ -107,7 +107,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a2 = (A + int32_t(1)) + (A - int32_t(1)) * cs - beta * sn;
 			goto end_switch1;;
 		}
-		if ((v == FilterShape::HSH)) {
+		if (v == FilterShape::HSH) {
 			b0 = A * ((A + int32_t(1)) + (A - int32_t(1)) * cs + beta * sn);
 			b1 = -int32_t(2) * A * ((A - int32_t(1)) + (A + int32_t(1)) * cs);
 			b2 = A * ((A + int32_t(1)) + (A - int32_t(1)) * cs - beta * sn);
