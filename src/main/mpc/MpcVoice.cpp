@@ -27,11 +27,12 @@
 using namespace ctoot::mpc;
 using namespace std;
 
+std::vector<float> MpcVoice::EMPTY_FRAME = std::vector<float>{ 0.f, 0.f };
+
 MpcVoice::MpcVoice(int _stripNumber, bool _basic)
 : stripNumber (_stripNumber), basic (_basic), frame (EMPTY_FRAME)
 {
-	EMPTY_FRAME = vector<float>{ 0.f, 0.f };
-	tempFrame = vector<float>{ 0.f, 0.f };
+	tempFrame = EMPTY_FRAME;
 	muteInfo = new MpcMuteInfo();
 	staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
 	staticEnvControls->setSampleRate(sampleRate);
@@ -314,7 +315,7 @@ void MpcVoice::readFrame()
 	if (oscVars.lock()->isLoopEnabled() && position > end - 1)
 		position = oscVars.lock()->getLoopTo();
 
-	if (position > end - 1 || (staticEnv != nullptr && staticEnv->isComplete()) || (ampEnv != nullptr && ampEnv->isComplete()))
+	if (position >= (end - 1) || (staticEnv != nullptr && staticEnv->isComplete()) || (ampEnv != nullptr && ampEnv->isComplete()))
 	{
 		tempFrame = EMPTY_FRAME;
 		finished = true;

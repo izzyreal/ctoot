@@ -85,6 +85,8 @@ private:
     void setSampleRate(int sampleRate);
     
 private:
+    static std::vector<float> EMPTY_FRAME;
+
     ctoot::synth::modules::filter::StateVariableFilter* svf1 = nullptr;
     ctoot::mpc::MpcMuteInfo* muteInfo = nullptr;
     int track = 0;
@@ -94,7 +96,6 @@ private:
     bool enableEnvs = false;;
     static const int SVF_OFFSET = 48;
     static const int AMPENV_OFFSET = 64;
-    std::vector<float> EMPTY_FRAME;
     std::vector<float> tempFrame;
     int varType = 0;
     int varValue = 0;
@@ -119,7 +120,7 @@ private:
     double frac = 0;
     int k = 0;
     int j = 0;
-    std::vector<float>& frame;
+    std::vector<float> frame;
     
 public:
     void open() override;
