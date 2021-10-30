@@ -18,8 +18,6 @@
 
 #include <cmath>
 
-#include <file/File.hpp>
-
 #ifdef __linux__
 #include <climits>
 #endif
