@@ -16,7 +16,7 @@ namespace ctoot {
 			float userValue(int i) override;
 
 			LinearLaw(float min, float max, std::string units);
-            virtual ~LinearLaw() {}
+            virtual ~LinearLaw() override {}
             
 		public:
 			static std::weak_ptr<LinearLaw> UNITY();

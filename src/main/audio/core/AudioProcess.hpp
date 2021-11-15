@@ -15,10 +15,10 @@ namespace ctoot {
 				static const int AUDIO_SILENCE{ 2 };
 				virtual void open() = 0;
 				virtual int processAudio(ctoot::audio::core::AudioBuffer* buffer) { return processAudio(buffer, buffer->getSampleCount()); }
-				virtual int processAudio(ctoot::audio::core::AudioBuffer* buffer, int numFrames) { return processAudio(buffer); }
+				virtual int processAudio(ctoot::audio::core::AudioBuffer* buffer, int) { return processAudio(buffer); }
 				virtual void close() = 0;
 
-				virtual ~AudioProcess() {};
+				virtual ~AudioProcess() {}
 
 			};
 		}

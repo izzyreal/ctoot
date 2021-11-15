@@ -27,7 +27,7 @@ namespace ctoot::control
 	public:
 		CompoundControlChain(int id, std::string name);
 		CompoundControlChain(int id, int index, std::string name);
-		virtual ~CompoundControlChain();
+		virtual ~CompoundControlChain() override;
 
 	};
 }

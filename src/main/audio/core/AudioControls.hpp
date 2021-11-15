@@ -31,7 +31,7 @@ namespace ctoot {
 			public:
 				AudioControls(int id, std::string name, int bypassId);
 				AudioControls(int id, std::string name);
-				virtual ~AudioControls();
+				virtual ~AudioControls() override;
 
 			};
 		}

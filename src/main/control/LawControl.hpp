@@ -35,7 +35,7 @@ namespace ctoot {
 
 		public:
 			LawControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue);
-			virtual ~LawControl();
+			virtual ~LawControl() override;
 
 		};
 

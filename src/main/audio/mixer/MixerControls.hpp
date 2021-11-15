@@ -50,11 +50,11 @@ namespace ctoot {
 				MixerControls(std::string name, std::string mainBusName, std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat);
 				
 				MixerControls(std::string name)
-					: MixerControls(name, "Main", ctoot::audio::core::ChannelFormat::STEREO()) {};
+					: MixerControls(name, "Main", ctoot::audio::core::ChannelFormat::STEREO()) {}
 				
-				MixerControls(std::string name, float smoothingFactor) 
-					: MixerControls(name) { this->smoothingFactor = smoothingFactor; };
-				virtual ~MixerControls();
+				MixerControls(std::string name, float _smoothingFactor)
+					: MixerControls(name) { smoothingFactor = _smoothingFactor; };
+				virtual ~MixerControls() override;
 
 			};
 

@@ -73,7 +73,7 @@ namespace ctoot {
 
 			public:
 				MixControls(MixerControls* mixerControls, int stripId, std::weak_ptr<BusControls> busControls, bool isMaster);
-				~MixControls();
+				~MixControls() override;
 
 			public:
 				virtual std::string getName() override;

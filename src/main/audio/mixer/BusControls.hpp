@@ -36,7 +36,7 @@ namespace ctoot {
 
 			public:
 				BusControls(int id, std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);
-				virtual ~BusControls();
+				virtual ~BusControls() override;
 			};
 
 		}
