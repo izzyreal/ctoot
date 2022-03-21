@@ -7,7 +7,7 @@ class Pkg(ConanFile):
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
     exports_sources = "src/*"
-    requires = ("moduru/0.1@izmar/dev", "catch2/2.13.4")
+    requires = ("moduru/0.1@izmar/dev", "catch2/2.13.8")
     url = "https://github.com/izzyreal/ctoot.git"
 	
     def build(self):
