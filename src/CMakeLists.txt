@@ -2,7 +2,7 @@ cmake_minimum_required(VERSION 3.13)
 
 project(ctoot)
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-fPIC")
+set(CMAKE_CXX_FLAGS "-fPIC -DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
 
 if(DEFINED ENV{APPLE_M1})
     set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE INTERNAL "")
@@ -73,8 +73,6 @@ foreach(_source IN ITEMS ${_source_list_test})
     string(REPLACE "/" "\\" _source_path_msvc "${_source_path}")
     source_group("${_source_path_msvc}" FILES "${_source}")
 endforeach()
-
-set (CMAKE_CXX_FLAGS "-DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
 
 add_executable(ctoot-tests ${_source_list_test})
 target_link_libraries(ctoot-tests ctoot)
