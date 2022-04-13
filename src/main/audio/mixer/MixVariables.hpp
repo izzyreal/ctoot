@@ -19,7 +19,7 @@ namespace ctoot {
 				virtual bool isMaster() = 0;
 				virtual float getGain() = 0;
 				virtual void getChannelGains(std::vector<float>* dest) = 0;
-				virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() = 0;
+				virtual std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() = 0;
 				virtual float getSmoothingFactor() = 0;
 				virtual ctoot::control::EnumControl* getRouteControl() { return nullptr;  };
 			};

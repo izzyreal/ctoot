@@ -353,10 +353,13 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 
 	if (finished)
 	{
-		buffer->makeSilence();
+    if (!previousBufferWasSilent) {
+      buffer->makeSilence();
+      previousBufferWasSilent = true;
+    }
 		return AUDIO_SILENCE;
 	}
-	
+  previousBufferWasSilent = false;
 	auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);
 

@@ -23,7 +23,7 @@ using namespace std;
 MixerControls::MixerControls(string name, string mainBusName, weak_ptr<ChannelFormat> channelFormat)
 	: CompoundControl(1, name)
 {
-	mainBusControls = make_shared<BusControls>(MixerControlsIds::MAIN_BUS, mainBusName, channelFormat);
+	mainBusControls = make_shared<BusControls>(MixerControlsIds::MAIN_BUS, mainBusName, channelFormat.lock());
 }
 
 int MixerControls::getProviderId()
@@ -46,13 +46,13 @@ void MixerControls::createFxBusControls(string name, weak_ptr<ChannelFormat> for
 	if (!format.lock()) {
 		format = mainFormat;
 	}
-	else if (format.lock()->getCount() > mainFormat.lock()->getCount()) {
+	else if (format.lock()->getCount() > mainFormat->getCount()) {
 		format = mainFormat;
 
 		string error = name.append(" Bus limited to Main Bus channel format");
 		printf("ERROR: %s", error.c_str());
 	}
-	auto busControls = make_shared<BusControls>(MixerControlsIds::FX_BUS, name, format);
+	auto busControls = make_shared<BusControls>(MixerControlsIds::FX_BUS, name, format.lock());
 	fxBusControls.push_back(std::move(busControls));
 }
 
@@ -61,7 +61,7 @@ void MixerControls::createAuxBusControls(string name, weak_ptr<ChannelFormat> fo
 	if (!canAddBusses) {
 		return;
 	}
-	auto busControls = make_shared<BusControls>(MixerControlsIds::AUX_BUS, name, format);
+	auto busControls = make_shared<BusControls>(MixerControlsIds::AUX_BUS, name, format.lock());
 	auxBusControls.push_back(std::move(busControls));
 }
 

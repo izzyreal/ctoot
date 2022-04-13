@@ -5,7 +5,7 @@ using namespace std;
 using namespace ctoot::audio::mixer;
 
 PostFadeMixControls::PostFadeMixControls(MixerControls* mixerControls, int stripId, weak_ptr<BusControls> busControls, MainMixControls* mainMixControls)
-	: MixControls(mixerControls, stripId, busControls, false)
+	: MixControls(mixerControls, stripId, busControls.lock(), false)
 {
 	this->mainMixControls = mainMixControls;
 }

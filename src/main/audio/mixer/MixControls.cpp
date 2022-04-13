@@ -29,17 +29,17 @@ using namespace ctoot::control;
 
 using namespace std;
 
-MixControls::MixControls(MixerControls* mixerControls, int stripId, weak_ptr<BusControls> busControls, bool master)
-	: AudioControls(busControls.lock()->getId(), busControls.lock()->getName(), -1)
+MixControls::MixControls(MixerControls* mixerControls, int stripId, shared_ptr<BusControls> busControls, bool master)
+	: AudioControls(busControls->getId(), busControls->getName(), -1)
 {
 	this->mixerControls = mixerControls;
 	this->busControls = busControls;
 	this->master = master;
 	gainControl = shared_ptr<FaderControl>(mixerControls->createFaderControl(false));
-	auto busId = busControls.lock()->getId();
+	auto busId = busControls->getId();
 	auto format = getChannelFormat();
-	channelCount = format.lock()->getCount();
-	if (format.lock()->getLFE() >= 0) {
+	channelCount = format->getCount();
+	if (format->getLFE() >= 0) {
 	}
 
 	if (channelCount >= 4) {
@@ -48,7 +48,7 @@ MixControls::MixControls(MixerControls* mixerControls, int stripId, weak_ptr<Bus
 		derive(frontRearControl.get());
 	}
 
-	if (format.lock()->getCenter() >= 0 && channelCount > 1) {
+	if (format->getCenter() >= 0 && channelCount > 1) {
 	}
 
 	if (channelCount > 1) {
@@ -65,13 +65,13 @@ MixControls::MixControls(MixerControls* mixerControls, int stripId, weak_ptr<Bus
 
 	auto enables = make_shared<ControlRow>();
 	if (master) {
-		enables->add(shared_ptr<Control>(busControls.lock()->getSoloIndicator()));
+		enables->add(shared_ptr<Control>(busControls->getSoloIndicator()));
 	}
 	else {
 		soloControl = shared_ptr<BooleanControl>(createSoloControl());
 		enables->add(soloControl);
 		derive(soloControl.get());
-		soloControl->addObserver(busControls.lock().get());
+		soloControl->addObserver(busControls.get());
 	}
 
 	muteControl = shared_ptr<BooleanControl>(createMuteControl());
@@ -144,9 +144,9 @@ bool MixControls::isMaster()
 }
 
 
-weak_ptr<ChannelFormat> MixControls::getChannelFormat()
+shared_ptr<ChannelFormat> MixControls::getChannelFormat()
 {
-    return busControls.lock()->getChannelFormat();
+    return busControls->getChannelFormat();
 }
 
 bool MixControls::canBypass()
@@ -187,7 +187,7 @@ bool MixControls::isEnabled()
 
 bool MixControls::hasSolo()
 {
-    return busControls.lock()->hasSolo();
+    return busControls->hasSolo();
 }
 
 float MixControls::getGain()

@@ -30,7 +30,7 @@ namespace ctoot {
 				std::shared_ptr<ctoot::audio::fader::FaderControl> gainControl;
 				std::shared_ptr<LCRControl> lcrControl;
 				std::shared_ptr<FrontRearControl> frontRearControl;
-				std::weak_ptr<BusControls> busControls;
+				std::shared_ptr<BusControls> busControls;
 
 			protected:
 				MixerControls* mixerControls{ nullptr };
@@ -53,7 +53,7 @@ namespace ctoot {
 
 			public:
 				bool isMaster() override;
-                std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
+                std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 				bool canBypass() override;
 				bool isAlwaysVertical() override;
 				bool canBeDeleted() override;
@@ -72,7 +72,7 @@ namespace ctoot {
 				virtual ctoot::control::BooleanControl* createSoloControl();
 
 			public:
-				MixControls(MixerControls* mixerControls, int stripId, std::weak_ptr<BusControls> busControls, bool isMaster);
+				MixControls(MixerControls* mixerControls, int stripId, std::shared_ptr<BusControls> busControls, bool isMaster);
 				~MixControls() override;
 
 			public:

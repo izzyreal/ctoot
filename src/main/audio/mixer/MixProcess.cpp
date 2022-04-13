@@ -16,8 +16,8 @@ MixProcess::MixProcess(weak_ptr<AudioMixerStrip> strip, weak_ptr<MixVariables> v
 	this->vars = vars;
 	auto format = vars.lock()->getChannelFormat();
 	smoothingFactor = vars.lock()->getSmoothingFactor();
-	channelGains = vector<float>(format.lock()->getCount());
-	smoothedChannelGains = vector<float>(format.lock()->getCount());
+	channelGains = vector<float>(format->getCount());
+	smoothedChannelGains = vector<float>(format->getCount());
 }
 
 AudioMixerStrip* MixProcess::getRoutedStrip()
@@ -27,7 +27,6 @@ AudioMixerStrip* MixProcess::getRoutedStrip()
 
 int MixProcess::processAudio(AudioBuffer* buffer)
 {
-	auto wasSilent = buffer->isSilent();
 	if (!vars.lock()->isEnabled() && vars.lock()->isMaster()) {
 		buffer->makeSilence();
 	}

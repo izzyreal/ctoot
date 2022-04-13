@@ -10,12 +10,12 @@ using namespace ctoot::control;
 using namespace ctoot::audio::mixer;
 using namespace std;
 
-BusControls::BusControls(int id, string name, weak_ptr<ChannelFormat> format)
+BusControls::BusControls(int id, string name, shared_ptr<ChannelFormat> format)
 	: AudioControls(id, name, -1)
 {
 	soloCount = 0;
 	soloIndicator = new SoloIndicator();
-	channelFormat = format.lock();
+	channelFormat = format;
 	auto mc = make_shared<ctoot::audio::meter::MeterControls>(format, "Meter");
 	meterControls = mc;
 	add(std::move(mc));
@@ -26,7 +26,7 @@ bool BusControls::hasSolo()
     return soloCount > 0;
 }
 
-weak_ptr<ChannelFormat> BusControls::getChannelFormat()
+shared_ptr<ChannelFormat> BusControls::getChannelFormat()
 {
     return channelFormat;
 }
@@ -59,7 +59,7 @@ SoloIndicator* BusControls::getSoloIndicator() {
 	return soloIndicator;
 }
 
-weak_ptr<ctoot::audio::meter::MeterControls> BusControls::getMeterControls() {
+shared_ptr<ctoot::audio::meter::MeterControls> BusControls::getMeterControls() {
 	return meterControls;
 }
 
