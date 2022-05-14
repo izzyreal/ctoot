@@ -25,7 +25,6 @@ class MpcVoice
 {
     
 private:
-  bool previousBufferWasSilent = false;
     float sampleRate = 44100.0;
     float timeRatio;
     
