@@ -2,12 +2,12 @@ from conans import ConanFile, CMake
 
 class Pkg(ConanFile):
     name = "ctoot"
-    version = "0.1"
+    version = "0.2"
     license = "GPL-3.0"
     settings = "os", "compiler", "arch", "build_type"
     generators = "cmake"
     exports_sources = "src/*"
-    requires = ("moduru/0.1@izmar/dev", "catch2/2.13.8")
+    requires = ("moduru/0.2@izmar/dev", "catch2/2.13.8")
     url = "https://github.com/izzyreal/ctoot.git"
 	
     def build(self):
