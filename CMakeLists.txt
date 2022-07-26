@@ -1,18 +1,19 @@
 cmake_minimum_required(VERSION 3.13)
 
-include("${CMAKE_SOURCE_DIR}/CPM.cmake")
-include("${CMAKE_SOURCE_DIR}/catch2.cmake")
+set(CTOOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Setting CTOOT_SOURCE_DIR")
+set(CTOOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Setting CTOOT_BINARY_DIR")
+
+include("${CMAKE_CURRENT_SOURCE_DIR}/CPM.cmake")
 
 CPMAddPackage("gh:izzyreal/moduru#no-conan")
-
-message("\n\nmoduru source dir: ${MODURU_SOURCE_DIR}\n\n")
+CPMAddPackage("gh:catchorg/Catch2#v3.1.0")
 
 project(ctoot)
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fPIC -DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
 
 if(DEFINED ENV{APPLE_M1})
-    #set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE INTERNAL "")
+    set(CMAKE_OSX_ARCHITECTURES "arm64;x86_64" CACHE INTERNAL "")
 endif()
 
 if(APPLE)
@@ -24,8 +25,6 @@ endif()
 set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/src/main")
 
 include_directories(${_src_root_path_main} ${MODURU_SOURCE_DIR}/src/main)
-
-message("\n\nMODURU_BINARY_DIR: ${MODURU_BINARY_DIR}")
 
 link_directories(${MODURU_BINARY_DIR})
 
