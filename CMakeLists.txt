@@ -1,12 +1,12 @@
 cmake_minimum_required(VERSION 3.13)
 
-set(CTOOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Setting CTOOT_SOURCE_DIR")
-set(CTOOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Setting CTOOT_BINARY_DIR")
-
-include("${CMAKE_CURRENT_SOURCE_DIR}/CPM.cmake")
+include(cmake/CPM.cmake)
 
 CPMAddPackage("gh:izzyreal/moduru#no-conan")
 CPMAddPackage("gh:catchorg/Catch2#v3.1.0")
+
+set(CTOOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Setting CTOOT_SOURCE_DIR")
+set(CTOOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Setting CTOOT_BINARY_DIR")
 
 project(ctoot)
 set(CMAKE_CXX_STANDARD 17)
