@@ -14,7 +14,7 @@ void ExternalAudioServer::start()
 {
 	if (running)
 		return;
-	
+
 	client->setEnabled(true);
 	running = true;
 }
@@ -45,7 +45,7 @@ void ExternalAudioServer::work()
 {
 	if (buffers.size() < 1)
 		return;
-	
+
 	client->work(buffers[0]->getSampleCount());
 }
 
@@ -59,10 +59,10 @@ void ExternalAudioServer::resizeBuffers(int newSize)
 
 	for (auto& o : activeOutputs)
 	{
-		if (o->localBuffer.size() != newSize* 2)
+		if (o->localBuffer.size() != newSize * 2)
 			o->localBuffer.resize(newSize * 2);
 	}
-	
+
 	AudioServer::resizeBuffers(newSize);
 }
 
@@ -70,7 +70,7 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	if (!running) {
 		return;
 	}
-	
+
 	int sampleCounter = 0;
 	const int inputsToProcess = min((int)(inputChannelCount * 0.5), (int)activeInputs.size());
 
@@ -98,7 +98,7 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 				*outputBuffer++ = 0.0f;
 				continue;
 			}
-			
+
 			*outputBuffer++ = activeOutputs[output]->localBuffer[(frame * 2)];
 			*outputBuffer++ = activeOutputs[output]->localBuffer[(frame * 2) + 1];
 		}
@@ -110,15 +110,15 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 	if (!running) {
 		return;
 	}
-	
+
 	int sampleCounter = 0;
-	const int inputsToProcess = min((int) (inputChannelCount * 0.5), (int)activeInputs.size());
+	const int inputsToProcess = min((int)(inputChannelCount * 0.5), (int)activeInputs.size());
 
 	for (int frame = 0; frame < nFrames; frame++)
 	{
 		int channelCounter = 0;
-		
-		for (int input = 0; input < inputsToProcess; input ++)
+
+		for (int input = 0; input < inputsToProcess; input++)
 		{
 			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[channelCounter][frame];
 			activeInputs[input]->localBuffer[sampleCounter++] = inputBuffer[channelCounter + 1][frame];
@@ -133,7 +133,7 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 	for (int frame = 0; frame < nFrames; frame++)
 	{
 		int channelCounter = 0;
-	
+
 		for (int output = 0; output < outputsToProcess; output++)
 		{
 			if (output >= activeOutputs.size())
@@ -143,7 +143,7 @@ void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, 
 				channelCounter += 2;
 				continue;
 			}
-			
+
 			const auto frame_x2 = frame * 2;
 			outputBuffer[channelCounter][frame] = activeOutputs[output]->localBuffer[frame_x2];
 			outputBuffer[channelCounter + 1][frame] = activeOutputs[output]->localBuffer[frame_x2 + 1];
@@ -203,7 +203,7 @@ void ExternalAudioServer::closeAudioInput(ctoot::audio::server::IOAudioProcess* 
 {
 	if (input == nullptr)
 		return;
-	
+
 	input->close();
 
 	for (int i = 0; i < activeInputs.size(); i++)

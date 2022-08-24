@@ -10,7 +10,7 @@
 namespace ctoot {
 	namespace audio {
 
-			namespace server {
+		namespace server {
 
 			class NonRealTimeAudioServer
 				: public virtual AudioServer
@@ -29,7 +29,7 @@ namespace ctoot {
 				bool startASAP{ false };
 
 			private:
-				static void static_nrts(void * args);
+				static void static_nrts(void* args);
 
 			private:
 				void run();
@@ -74,6 +74,8 @@ namespace ctoot {
 				// For compatibility with JUCE
 				void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 
+				//For compatibility with PortAudio
+				void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 			public:
 				NonRealTimeAudioServer(std::weak_ptr<AudioServer> server);
 				~NonRealTimeAudioServer();

@@ -1,6 +1,6 @@
 /**
 * The ExternalAudioServer expects someone else to talk to the host OS audio API's.
-* 
+*
 * After instantiating an ExternalAudioServer and starting it, we can make it work(),
 * optionally providing it with input and output buffers. After calling work, the input data
 * has been processed and consumed by ctoot, and ctoot will have filled the output data with
