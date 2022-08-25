@@ -73,7 +73,13 @@ namespace ctoot {
 			public:
 				// For compatibility with JUCE
 				void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+<<<<<<< HEAD
 
+=======
+				
+				//For compatibility with PortAudio
+				void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+>>>>>>> b9675cc (Expose PA-compatible audio server work method)
 			public:
 				NonRealTimeAudioServer(std::weak_ptr<AudioServer> server);
 				~NonRealTimeAudioServer();
