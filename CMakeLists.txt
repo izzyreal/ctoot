@@ -1,14 +1,23 @@
 cmake_minimum_required(VERSION 3.13)
 
-include(cmake/CPM.cmake)
+include(FetchContent)
 
-CPMAddPackage("gh:izzyreal/moduru#no-conan")
-CPMAddPackage("gh:catchorg/Catch2#v3.1.0")
+FetchContent_Declare(moduru
+  GIT_REPOSITORY https://github.com/izzyreal/moduru.git
+  GIT_TAG        native-cmake
+  SOURCE_DIR     ${CMAKE_SOURCE_DIR}/editables/moduru
+)
 
-set(CTOOT_SOURCE_DIR "${CMAKE_CURRENT_SOURCE_DIR}" CACHE STRING "Setting CTOOT_SOURCE_DIR")
-set(CTOOT_BINARY_DIR "${CMAKE_CURRENT_BINARY_DIR}" CACHE STRING "Setting CTOOT_BINARY_DIR")
+FetchContent_Declare(Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.1.0
+  SOURCE_DIR     ${CMAKE_SOURCE_DIR}/deps/Catch2
+)
+
+FetchContent_MakeAvailable(moduru Catch2)
 
 project(ctoot)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fPIC -DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
 
@@ -24,9 +33,7 @@ endif()
 
 set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/src/main")
 
-include_directories(${_src_root_path_main} ${MODURU_SOURCE_DIR}/src/main)
-
-link_directories(${MODURU_BINARY_DIR})
+include_directories(${_src_root_path_main} ${moduru_SOURCE_DIR}/src/main)
 
 file(
     GLOB_RECURSE _source_list_main
