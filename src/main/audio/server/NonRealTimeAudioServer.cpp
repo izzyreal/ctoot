@@ -154,6 +154,12 @@ void NonRealTimeAudioServer::work(const float** inputBuffer, float** outputBuffe
 	}
 }
 
+void NonRealTimeAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
+	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server.lock());
+	if (externalAudioServer) {
+		externalAudioServer->work(inputBuffer, outputBuffer, nFrames, inputChannelCount, outputChannelCount);
+	}
+}
 
 void NonRealTimeAudioServer::work(int nFrames)
 {
