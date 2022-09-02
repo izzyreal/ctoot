@@ -39,8 +39,10 @@ namespace ctoot::audio::server
 
 	public:
 		void work() override;
+		
+		//For compatibility with the PortAudio framework
 		void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
-
+		
 		// For compatibility with JUCE
 		void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 
