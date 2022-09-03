@@ -1,26 +1,35 @@
 cmake_minimum_required(VERSION 3.13)
 
+include(FetchContent)
+
+FetchContent_Declare(moduru
+  GIT_REPOSITORY https://github.com/izzyreal/moduru.git
+  GIT_TAG        native-cmake
+  SOURCE_DIR     ${CMAKE_SOURCE_DIR}/editables/moduru
+)
+
+FetchContent_Declare(Catch2
+  GIT_REPOSITORY https://github.com/catchorg/Catch2.git
+  GIT_TAG        v3.1.0
+  SOURCE_DIR     ${CMAKE_SOURCE_DIR}/deps/Catch2
+)
+
+FetchContent_MakeAvailable(moduru Catch2)
+
 project(ctoot)
+
 set(CMAKE_CXX_STANDARD 17)
 set(CMAKE_CXX_FLAGS "-fPIC -DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
 
 if(APPLE)
-  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.9" CACHE INTERNAL "Minimum OS X deployment version")
+  set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE INTERNAL "Minimum OS X deployment version")
 endif()
-
-if(EXISTS ${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo_multi.cmake)
-else()
-    include(${CMAKE_CURRENT_BINARY_DIR}/conanbuildinfo.cmake)
-endif()
-
-conan_basic_setup(NO_OUTPUT_DIRS)
 
 ## Configure main lib ##
 
-set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/main")
+set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/src/main")
 
-include_directories(${_src_root_path_main})
+include_directories(${_src_root_path_main} ${moduru_SOURCE_DIR}/src/main)
 
 file(
     GLOB_RECURSE _source_list_main
@@ -44,14 +53,15 @@ if(MSVC)
 endif(MSVC)
 
 add_library(ctoot ${_source_list_main})
-conan_target_link_libraries(ctoot)
+target_link_libraries(ctoot PUBLIC moduru)
+
 if(MSVC)
 	target_compile_options(ctoot PRIVATE "/MP")
 endif(MSVC)
 
 ## Configure test suite application ##
 
-set(_src_root_path_test "${CMAKE_CURRENT_SOURCE_DIR}/test")
+set(_src_root_path_test "${CMAKE_CURRENT_SOURCE_DIR}/src/test")
 
 include_directories(${_src_root_path_test})
 
@@ -71,4 +81,4 @@ foreach(_source IN ITEMS ${_source_list_test})
 endforeach()
 
 add_executable(ctoot-tests ${_source_list_test})
-target_link_libraries(ctoot-tests ctoot)
+target_link_libraries(ctoot-tests ctoot Catch2::Catch2WithMain)
