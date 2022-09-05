@@ -4,7 +4,7 @@ include(FetchContent)
 
 FetchContent_Declare(moduru
   GIT_REPOSITORY https://github.com/izzyreal/moduru.git
-  GIT_TAG        native-cmake
+  GIT_TAG        master
   SOURCE_DIR     ${CMAKE_SOURCE_DIR}/editables/moduru
 )
 
