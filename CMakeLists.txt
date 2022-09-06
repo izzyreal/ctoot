@@ -8,6 +8,8 @@ FetchContent_Declare(moduru
   SOURCE_DIR     ${CMAKE_SOURCE_DIR}/editables/moduru
 )
 
+set(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS ON)
+
 FetchContent_Declare(Catch2
   GIT_REPOSITORY https://github.com/catchorg/Catch2.git
   GIT_TAG        v3.1.0
@@ -19,7 +21,7 @@ FetchContent_MakeAvailable(moduru Catch2)
 project(ctoot)
 
 set(CMAKE_CXX_STANDARD 17)
-set(CMAKE_CXX_FLAGS "-fPIC -DCATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS")
+set(CMAKE_CXX_FLAGS "-fPIC")
 
 if(APPLE)
   set(CMAKE_OSX_DEPLOYMENT_TARGET "10.11" CACHE INTERNAL "Minimum OS X deployment version")
