@@ -94,7 +94,6 @@ private:
     static std::vector<float> EMPTY_FRAME;
 
     ctoot::mpc::MpcMuteInfo* muteInfo = nullptr;
-    int track = 0;
     int frameOffset = 0;
     bool basic = false;
     int decayCounter = 0;
@@ -133,8 +132,7 @@ public:
     
 public:
     bool isFinished();
-    void init(int track,
-              int velocity,
+    void init(int velocity,
               std::weak_ptr<ctoot::mpc::MpcSound> _mpcSound,
               int note,
               ctoot::mpc::MpcNoteParameters* np,

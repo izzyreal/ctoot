@@ -110,10 +110,10 @@ void MpcSoundPlayerChannel::setLocation(string location)
 
 void MpcSoundPlayerChannel::noteOn(int note, int velo)
 {
-	mpcNoteOn(-1, note, velo, 0, 64, 0, true);
+	mpcNoteOn(note, velo, 0, 64, 0, true);
 }
 
-void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration)
+void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration)
 {
 	if (note < 35 || note > 98 || velo == 0)
 		return;
@@ -226,7 +226,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
         stopMonoOrPolyVoiceWithSameNoteParameters(np, note);
     }
 
-	voice.lock()->init(track, velo, sound, note, np, varType, varValue, note, drumIndex, frameOffset, true);
+	voice.lock()->init(velo, sound, note, np, varType, varValue, note, drumIndex, frameOffset, true);
 
 	if (firstGeneration)
 	{
@@ -237,13 +237,13 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 
 			if (optA != 34)
 			{
-				mpcNoteOn(track, optA, velo, varType, varValue, frameOffset, false);
+				mpcNoteOn(optA, velo, varType, varValue, frameOffset, false);
 				simultA[note] = optA;
 			}
 
 			if (optB != 34)
 			{
-				mpcNoteOn(track, optB, velo, varType, varValue, frameOffset, false);
+				mpcNoteOn(optB, velo, varType, varValue, frameOffset, false);
 				simultB[note] = optB;
 			}
 		}
@@ -268,12 +268,12 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 	}
 }
 
-void MpcSoundPlayerChannel::startDecayForNote(const int note, const int voiceOverlapMode)
+void MpcSoundPlayerChannel::startDecayForNote(const int note)
 {
     for (auto& v : controls.lock()->getMms().lock()->getVoices())
     {
         if (v.lock()->getNote() == note
-            && v.lock()->getVoiceOverlap() == voiceOverlapMode
+            && v.lock()->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
             && !v.lock()->isDecaying()
             && drumIndex == v.lock()->getMuteInfo()->getDrum())
         {
@@ -355,13 +355,13 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	if (note < 35 || note > 98)
 		return;
 
-	startDecayForNote(note, 2, frameOffset);
+	startDecayForNote(note, frameOffset);
 
 	std::map<int, int>::iterator it = simultA.find(note);
 
 	if (it != simultA.end())
 	{
-		startDecayForNote(simultA[note], VoiceOverlapMode::NOTE_OFF);
+		startDecayForNote(simultA[note]);
 		simultA.erase(it);
 	}
 
@@ -369,17 +369,17 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 
 	if (it != simultB.end())
 	{
-		startDecayForNote(simultB[note], VoiceOverlapMode::NOTE_OFF);
+		startDecayForNote(simultB[note]);
 		simultB.erase(it);
 	}
 }
 
-void MpcSoundPlayerChannel::startDecayForNote(const int note, const int voiceOverlapMode, const int frameOffset)
+void MpcSoundPlayerChannel::startDecayForNote(const int note, const int frameOffset)
 {
 	for (auto& v : controls.lock()->getMms().lock()->getVoices())
 	{
 		if (v.lock()->getNote() == note
-			&& v.lock()->getVoiceOverlap() == voiceOverlapMode
+			&& v.lock()->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
 			&& !v.lock()->isDecaying()
 			&& drumIndex == v.lock()->getMuteInfo()->getDrum())
 		{

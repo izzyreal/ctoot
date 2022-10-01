@@ -98,7 +98,6 @@ const int MpcVoice::SVF_OFFSET;
 const int MpcVoice::AMPENV_OFFSET;
 
 void MpcVoice::init(
-        int newTrackIndex,
         int newVelocity,
         weak_ptr<ctoot::mpc::MpcSound> newMpcSound,
         int newNote,
@@ -114,7 +113,6 @@ void MpcVoice::init(
 
     enableEnvs = newEnableEnvs;
     frameOffset = newFrameOffset;
-    track = newTrackIndex;
     note = newNote;
     velocity = newVelocity;
     mpcSound = newMpcSound;
