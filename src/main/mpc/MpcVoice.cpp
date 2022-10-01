@@ -142,12 +142,6 @@ void MpcVoice::init(
         veloToAttack = np->getVelocityToAttack();
         decayMode = np->getDecayMode();
         veloToLevel = np->getVeloToLevel();
-        velocityToFilterFrequency = np->getVelocityToFilterFrequency();
-        filterFrequency = np->getFilterFrequency();
-        filterAttack = np->getFilterAttack();
-        filterDecay = np->getFilterDecay();
-        filterResonance = np->getFilterResonance();
-        filterEnvelopeAmount = np->getFilterEnvelopeAmount();
         voiceOverlapMode = np->getVoiceOverlap();
     }
 
@@ -256,7 +250,7 @@ vector<float> &MpcVoice::getFrame() {
     if (!basic) {
         auto invNyquist = getInverseNyquist(sampleRate);
         filterFreq = ctoot::mpc::MpcSoundPlayerChannel::midiFreq(initialFilterValue * 1.44f) * invNyquist;
-        auto filterEnvFactor = (float) (filterEnv->getEnvelope(false) * (filterEnvelopeAmount * 0.01));
+        auto filterEnvFactor = (float) (filterEnv->getEnvelope(false) * (noteParameters->getFilterEnvelopeAmount() * 0.01));
         filterFreq += ctoot::mpc::MpcSoundPlayerChannel::midiFreq(144) * invNyquist * filterEnvFactor;
     }
 

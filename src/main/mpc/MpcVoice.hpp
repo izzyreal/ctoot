@@ -17,7 +17,6 @@ class MpcNoteParameters;
 class MpcSound;
 class MpcEnvelopeGenerator;
 class MpcEnvelopeControls;
-class MpcSoundPlayerChannel;
 class MpcMuteInfo;
 
 class MpcVoice
@@ -40,13 +39,7 @@ private:
     static const int MIX_INDEX = 2;
     static const int BANDPASS_INDEX = 3;
 
-    // NoteParameter values at the time a voice starts playing
-    int velocityToFilterFrequency;
-    int filterFrequency;
-    int filterAttack;
-    int filterDecay;
-    int filterResonance;
-    int filterEnvelopeAmount;
+    // Voice overlap mode when the voice was triggered
     int voiceOverlapMode;
 
     // Pointer to currently playing note parameters
@@ -89,10 +82,8 @@ private:
     static float getInverseNyquist(int sampleRate) { return 2.f / sampleRate; }
     static float getTimeRatio(int sampleRate) { return 5.46f * (44100.0 / sampleRate); }
 
-
 private:
     static std::vector<float> EMPTY_FRAME;
-
     ctoot::mpc::MpcMuteInfo* muteInfo = nullptr;
     int frameOffset = 0;
     bool basic = false;
