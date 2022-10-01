@@ -30,20 +30,26 @@ vector<weak_ptr<MpcVoice>> MpcMultiMidiSynth::getVoices()
     return weakVoices;
 }
 
-void MpcMultiMidiSynth::mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, int chan, int varType, int varValue, int l)
+void MpcMultiMidiSynth::mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, int chan, int varType, int varValue, int frameOffset, int startTick)
 {
-    mpcTransportChannel(msg, mapChannel(chan).lock().get(), varType, varValue, l);
+    mpcTransportChannel(msg, mapChannel(chan).lock().get(), varType, varValue, frameOffset, startTick);
 }
 
-void MpcMultiMidiSynth::mpcTransport(ctoot::midi::core::MidiMessage* msg, int timestamp, int varType, int varValue, int l)
+void MpcMultiMidiSynth::mpcTransport(ctoot::midi::core::MidiMessage* msg, int timestamp, int varType, int varValue, int frameOffset, int startTick)
 {
     if (ctoot::midi::message::ChannelMsg::isChannel(msg))
     {
-        mpcTransportChannel(msg, ctoot::midi::message::ChannelMsg::getChannel(msg), varType, varValue, l);
+        mpcTransportChannel(msg, ctoot::midi::message::ChannelMsg::getChannel(msg), varType, varValue, frameOffset, startTick);
     }
 }
 
-void MpcMultiMidiSynth::mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, ctoot::synth::SynthChannel* synthChannel, int varType, int varValue, int l)
+void MpcMultiMidiSynth::mpcTransportChannel(
+        ctoot::midi::core::MidiMessage* msg,
+        ctoot::synth::SynthChannel* synthChannel,
+        int varType,
+        int varValue,
+        int frameOffset,
+        int startTick)
 {
 	if (synthChannel == nullptr)
 		return;
@@ -59,11 +65,11 @@ void MpcMultiMidiSynth::mpcTransportChannel(ctoot::midi::core::MidiMessage* msg,
         
         if (on && velocity != 0)
         {
-			mpcSynthChannel->mpcNoteOn(pitch, velocity, varType, varValue, l, true);
+			mpcSynthChannel->mpcNoteOn(pitch, velocity, varType, varValue, frameOffset, true, startTick);
 		}
 		else
         {
-            mpcSynthChannel->mpcNoteOff(pitch, l);
+            mpcSynthChannel->mpcNoteOff(pitch, frameOffset, startTick);
 		}
 	}
 	else

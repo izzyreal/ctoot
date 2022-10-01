@@ -90,9 +90,13 @@ void MpcVoice::init(
         int muteNote,
         int muteDrum,
         int newFrameOffset,
-        bool newEnableEnvs
+        bool newEnableEnvs,
+        int newStartTick
 ) {
+    finished = false;
+
     noteParameters = np;
+    startTick = newStartTick;
 
     enableEnvs = newEnableEnvs;
     frameOffset = newFrameOffset;
@@ -102,7 +106,6 @@ void MpcVoice::init(
     varType = newVarType;
     varValue = newVarValue;
 
-    finished = false;
     staticDecay = false;
     muteInfo.setNote(muteNote);
     muteInfo.setDrum(muteDrum);
@@ -314,7 +317,9 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames)
 
         if (decayCounter != 0) {
             if (decayCounter == 1)
+            {
                 startDecay();
+            }
 
             decayCounter--;
         }
@@ -348,6 +353,11 @@ int MpcVoice::getVoiceOverlap() {
 
 int MpcVoice::getStripNumber() {
     return stripNumber;
+}
+
+int MpcVoice::getStartTick()
+{
+    return startTick;
 }
 
 bool MpcVoice::isDecaying() {

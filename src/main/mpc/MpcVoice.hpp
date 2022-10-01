@@ -47,6 +47,7 @@ private:
     ctoot::mpc::MpcNoteParameters* noteParameters = nullptr;
 
     std::weak_ptr<ctoot::mpc::MpcSound> mpcSound;
+    int startTick = -1;
     int tune = 0;
     double increment = 0;
     double position = 0;
@@ -133,13 +134,15 @@ public:
               int muteNote,
               int muteDrum,
               int frameOffset,
-              bool enableEnvs);
+              bool enableEnvs,
+              int startTick);
     std::vector<float>& getFrame();
     int getNote();
     ctoot::mpc::MpcNoteParameters* getNoteParameters();
     void startDecay();
     int getVoiceOverlap();
     int getStripNumber();
+    int getStartTick();
     bool isDecaying();
     ctoot::mpc::MpcMuteInfo& getMuteInfo();
     void startDecay(int offset);

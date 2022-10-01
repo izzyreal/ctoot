@@ -75,7 +75,7 @@ namespace ctoot::mpc
 		void setReceiveMidiVolume(bool b);
 		void setLastReceivedMidiVolume(int volume);
 		int getLastReceivedMidiVolume();
-		void mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration);
+		void mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick);
         
 	public:
 		void allSoundOff(int frameOffset);
@@ -85,13 +85,13 @@ namespace ctoot::mpc
 		std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
 
 	public:
-		void mpcNoteOff(int note, int frameOffset);
+		void mpcNoteOff(int note, int frameOffset, int noteOnStartTick);
 
 	private:
         void checkForMutes(MpcNoteParameters* np);
-        void startDecayForNote(const int note);
         void startDecayForNote(const int note,
-                               const int frameOffset);
+                               const int frameOffset,
+                               const int noteOnStartTick);
         void stopMonoOrPolyVoiceWithSameNoteParameters(ctoot::mpc::MpcNoteParameters* noteParameters, int note);
 
 	public:

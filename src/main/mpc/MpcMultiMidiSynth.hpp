@@ -21,13 +21,19 @@ public:
     std::vector<std::weak_ptr<MpcVoice>> getVoices();
     
 public:
-    virtual void mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, int chan, int varType, int varValue, int l);
+    virtual void mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, int chan, int varType, int varValue, int frameOffset, int startTick);
     
 public:
-    virtual void mpcTransport(ctoot::midi::core::MidiMessage* msg, int timestamp, int varType, int varValue, int l);
+    virtual void mpcTransport(ctoot::midi::core::MidiMessage* msg, int timestamp, int varType, int varValue, int frameOffset, int startTick);
     
 public:
-    virtual void mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, ctoot::synth::SynthChannel* synthChannel, int varType, int varValue, int l);
+    virtual void mpcTransportChannel(
+            ctoot::midi::core::MidiMessage* msg,
+            ctoot::synth::SynthChannel* synthChannel,
+            int varType,
+            int varValue,
+            int frameOffset,
+            int startTick);
     std::weak_ptr<ctoot::synth::SynthChannel> mapChannel(int chan) override;
     
 public:

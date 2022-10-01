@@ -70,7 +70,7 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 	}
 
 	fader.lock()->setValue(soundNumber == -2 ? 200 : 100);
-	voice.lock()->init(velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber != -2);
+	voice.lock()->init(velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber != -2, -1);
 }
 
 void MpcBasicSoundPlayerChannel::noteOff(int note)
