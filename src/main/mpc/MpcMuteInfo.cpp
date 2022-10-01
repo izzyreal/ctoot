@@ -26,10 +26,12 @@ int MpcMuteInfo::getDrum()
     return drum;
 }
 
-bool MpcMuteInfo::muteMe(int note, int drum)
+bool MpcMuteInfo::shouldMute(int otherNote, int otherDrum)
 {
-    if(this->note == note && this->drum == drum)
+    if (note == otherNote && drum == otherDrum)
+    {
         return true;
+    }
 
     return false;
 }

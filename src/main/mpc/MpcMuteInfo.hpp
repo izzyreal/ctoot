@@ -1,25 +1,25 @@
 #pragma once
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
+    class MpcMuteInfo {
 
-		class MpcMuteInfo
-		{
+    private:
+        int note{0};
+        int drum{0};
 
-		private:
-			int note{ 0 };
-			int drum{ 0 };
+    public:
+        void setNote(int note);
 
-		public:
-			void setNote(int note);
-			void setDrum(int drum);
-			int getNote();
-			int getDrum();
-			bool muteMe(int note, int drum);
+        void setDrum(int drum);
 
-			MpcMuteInfo();
+        int getNote();
 
-		};
+        int getDrum();
 
-	}
+        bool shouldMute(int otherNote, int otherDrum);
+
+        MpcMuteInfo();
+
+    };
+
 }

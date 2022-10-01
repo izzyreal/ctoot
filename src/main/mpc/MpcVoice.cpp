@@ -6,7 +6,6 @@
 #include <mpc/MpcEnvelopeControls.hpp>
 #include <mpc/MpcEnvelopeGenerator.hpp>
 #include <mpc/MpcSoundPlayerChannel.hpp>
-#include <mpc/MpcMuteInfo.hpp>
 
 #include <audio/core/AudioBuffer.hpp>
 #include <control/BooleanControl.hpp>
@@ -28,7 +27,6 @@ std::vector<float> MpcVoice::EMPTY_FRAME = std::vector<float>{0.f, 0.f};
 MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         : stripNumber(_stripNumber), basic(_basic), frame(EMPTY_FRAME) {
     tempFrame = EMPTY_FRAME;
-    muteInfo = new MpcMuteInfo();
     staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
     staticEnvControls->setSampleRate(sampleRate);
     staticEnv = new ctoot::mpc::MpcEnvelopeGenerator(staticEnvControls);
@@ -82,21 +80,6 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
     }
 }
 
-const float MpcVoice::STATIC_ATTACK_LENGTH{10.92f};
-const float MpcVoice::STATIC_DECAY_LENGTH{109.2f};
-const int MpcVoice::MAX_ATTACK_LENGTH_MS;
-const int MpcVoice::MAX_DECAY_LENGTH_MS;
-const int MpcVoice::MAX_ATTACK_LENGTH_SAMPLES;
-const int MpcVoice::MAX_DECAY_LENGTH_SAMPLES;
-const int MpcVoice::ATTACK_INDEX;
-const int MpcVoice::HOLD_INDEX;
-const int MpcVoice::DECAY_INDEX;
-const int MpcVoice::RESO_INDEX;
-const int MpcVoice::MIX_INDEX;
-const int MpcVoice::BANDPASS_INDEX;
-const int MpcVoice::SVF_OFFSET;
-const int MpcVoice::AMPENV_OFFSET;
-
 void MpcVoice::init(
         int newVelocity,
         weak_ptr<ctoot::mpc::MpcSound> newMpcSound,
@@ -121,8 +104,8 @@ void MpcVoice::init(
 
     finished = false;
     staticDecay = false;
-    muteInfo->setNote(muteNote);
-    muteInfo->setDrum(muteDrum);
+    muteInfo.setNote(muteNote);
+    muteInfo.setDrum(muteDrum);
     veloToStart = 0;
     attackValue = 0;
     decayValue = 2;
@@ -371,7 +354,7 @@ bool MpcVoice::isDecaying() {
     return staticDecay;
 }
 
-MpcMuteInfo *MpcVoice::getMuteInfo() {
+MpcMuteInfo& MpcVoice::getMuteInfo() {
     return muteInfo;
 }
 
@@ -391,7 +374,6 @@ ctoot::mpc::MpcNoteParameters *MpcVoice::getNoteParameters() {
 }
 
 MpcVoice::~MpcVoice() {
-    delete muteInfo;
     delete staticEnvControls;
     delete staticEnv;
 

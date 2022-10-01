@@ -83,7 +83,6 @@ namespace ctoot::mpc
 		std::weak_ptr<ctoot::audio::core::MetaInfo> getInfo();
 		std::vector<std::weak_ptr<MpcStereoMixerChannel>> getStereoMixerChannels();
 		std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
-		int getDrumNumber();
 
 	public:
 		void mpcNoteOff(int note, int frameOffset);

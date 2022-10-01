@@ -6,7 +6,6 @@
 #include "MpcFaderControl.hpp"
 #include "MpcMixerInterconnection.hpp"
 #include "MpcVoice.hpp"
-#include "MpcMuteInfo.hpp"
 
 // mpc
 #include <mpc/MpcNoteParameters.hpp>
@@ -256,11 +255,11 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 	{
 		for (auto& v : controls.lock()->getMms().lock()->getVoices())
 		{
-			if (v.lock()->isFinished() || v.lock()->getMuteInfo() == nullptr)
+			if (v.lock()->isFinished())
 				continue;
 
-			if (v.lock()->getMuteInfo()->muteMe(np->getMuteAssignA(), drumIndex)
-				|| v.lock()->getMuteInfo()->muteMe(np->getMuteAssignB(), drumIndex))
+			if (v.lock()->getMuteInfo().shouldMute(np->getMuteAssignA(), drumIndex)
+				|| v.lock()->getMuteInfo().shouldMute(np->getMuteAssignB(), drumIndex))
 			{
 				v.lock()->startDecay();
 			}
@@ -275,7 +274,7 @@ void MpcSoundPlayerChannel::startDecayForNote(const int note)
         if (v.lock()->getNote() == note
             && v.lock()->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
             && !v.lock()->isDecaying()
-            && drumIndex == v.lock()->getMuteInfo()->getDrum())
+            && drumIndex == v.lock()->getMuteInfo().getDrum())
         {
             v.lock()->startDecay();
             break;
@@ -345,11 +344,6 @@ vector<weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> MpcSoundPlayerChannel::getI
 	return weakIndivFxMixerChannels;
 }
 
-int MpcSoundPlayerChannel::getDrumNumber()
-{
-	return drumIndex;
-}
-
 void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 {
 	if (note < 35 || note > 98)
@@ -357,11 +351,11 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 
 	startDecayForNote(note, frameOffset);
 
-	std::map<int, int>::iterator it = simultA.find(note);
+	auto it = simultA.find(note);
 
 	if (it != simultA.end())
 	{
-		startDecayForNote(simultA[note]);
+		startDecayForNote(simultA[note], frameOffset);
 		simultA.erase(it);
 	}
 
@@ -369,7 +363,7 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 
 	if (it != simultB.end())
 	{
-		startDecayForNote(simultB[note]);
+		startDecayForNote(simultB[note], frameOffset);
 		simultB.erase(it);
 	}
 }
@@ -381,7 +375,7 @@ void MpcSoundPlayerChannel::startDecayForNote(const int note, const int frameOff
 		if (v.lock()->getNote() == note
 			&& v.lock()->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
 			&& !v.lock()->isDecaying()
-			&& drumIndex == v.lock()->getMuteInfo()->getDrum())
+			&& drumIndex == v.lock()->getMuteInfo().getDrum())
 		{
 			v.lock()->startDecay(frameOffset);
 			break;

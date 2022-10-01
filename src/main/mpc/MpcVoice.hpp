@@ -1,6 +1,7 @@
 #pragma once
 
 #include <audio/core/AudioProcess.hpp>
+#include "MpcMuteInfo.hpp"
 
 namespace ctoot::control {
 class FloatControl;
@@ -26,8 +27,8 @@ class MpcVoice
 private:
     float sampleRate = 44100.0;
 
-    static const float STATIC_ATTACK_LENGTH;
-    static const float STATIC_DECAY_LENGTH;
+    constexpr static const float STATIC_ATTACK_LENGTH = 10.92f;
+    constexpr static const float STATIC_DECAY_LENGTH = 109.2f;
     static const int MAX_ATTACK_LENGTH_MS = 3000;
     static const int MAX_DECAY_LENGTH_MS = 2600;
     static const int MAX_ATTACK_LENGTH_SAMPLES = 132300;
@@ -84,7 +85,7 @@ private:
 
 private:
     static std::vector<float> EMPTY_FRAME;
-    ctoot::mpc::MpcMuteInfo* muteInfo = nullptr;
+    ctoot::mpc::MpcMuteInfo muteInfo;
     int frameOffset = 0;
     bool basic = false;
     int decayCounter = 0;
@@ -140,7 +141,7 @@ public:
     int getVoiceOverlap();
     int getStripNumber();
     bool isDecaying();
-    ctoot::mpc::MpcMuteInfo* getMuteInfo();
+    ctoot::mpc::MpcMuteInfo& getMuteInfo();
     void startDecay(int offset);
     void finish();
     
