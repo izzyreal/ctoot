@@ -95,7 +95,7 @@ namespace ctoot::mpc
         void startDecayForNote(const int note,
                                const int voiceOverlapMode,
                                const int frameOffset);
-        void stopPolyVoiceWithSameNoteParameters(ctoot::mpc::MpcNoteParameters* noteParameters, int note);
+        void stopMonoOrPolyVoiceWithSameNoteParameters(ctoot::mpc::MpcNoteParameters* noteParameters, int note);
 
 	public:
 		MpcSoundPlayerChannel(std::weak_ptr<MpcSoundPlayerControls> controls);

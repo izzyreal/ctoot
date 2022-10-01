@@ -26,8 +26,7 @@ class MpcVoice
     
 private:
     float sampleRate = 44100.0;
-    float timeRatio;
-    
+
     static const float STATIC_ATTACK_LENGTH;
     static const float STATIC_DECAY_LENGTH;
     static const int MAX_ATTACK_LENGTH_MS = 3000;
@@ -53,7 +52,7 @@ private:
     // Pointer to currently playing note parameters
     ctoot::mpc::MpcNoteParameters* noteParameters = nullptr;
 
-    std::weak_ptr<ctoot::mpc::MpcSound> oscVars;
+    std::weak_ptr<ctoot::mpc::MpcSound> mpcSound;
     int tune = 0;
     double increment = 0;
     double position = 0;
@@ -64,9 +63,10 @@ private:
     float initialFilterValue = 0;
     bool staticDecay = 0;
     int note = -1;
+    int velocity = 0;
     float amplitude = 0;
-    ctoot::synth::modules::filter::StateVariableFilter* svf0 = nullptr;
-    int start = 0;
+    ctoot::synth::modules::filter::StateVariableFilter* svfLeft = nullptr;
+    ctoot::synth::modules::filter::StateVariableFilter* svfRight = nullptr;
     int end = 0;
     ctoot::control::FloatControl* attack = nullptr;
     ctoot::control::FloatControl* hold = nullptr;
@@ -74,31 +74,25 @@ private:
     ctoot::control::FloatControl* fattack = nullptr;
     ctoot::control::FloatControl* fhold = nullptr;
     ctoot::control::FloatControl* fdecay = nullptr;
-    ctoot::control::FloatControl* sattack = nullptr;
     ctoot::control::FloatControl* shold = nullptr;
-    ctoot::control::FloatControl* sdecay = nullptr;
     ctoot::control::FloatControl* reso = nullptr;
-    ctoot::control::FloatControl* mix = nullptr;
-    ctoot::control::BooleanControl* bandpass = nullptr;
     ctoot::mpc::MpcEnvelopeControls* ampEnvControls = nullptr;
     ctoot::mpc::MpcEnvelopeControls* staticEnvControls = nullptr;
     ctoot::mpc::MpcEnvelopeControls* filterEnvControls = nullptr;
     ctoot::synth::modules::filter::StateVariableFilterControls* svfControls = nullptr;
     bool finished = true;
-    bool readyToPlay = false;
     int stripNumber = -1;
-    
-public:
-    float inverseNyquist = 2.f / sampleRate;
-    
+
 private:
     void readFrame();
-    void setSampleRate(int sampleRate);
-    
+    void initializeSamplerateDependents();
+    static float getInverseNyquist(int sampleRate) { return 2.f / sampleRate; }
+    static float getTimeRatio(int sampleRate) { return 5.46f * (44100.0 / sampleRate); }
+
+
 private:
     static std::vector<float> EMPTY_FRAME;
 
-    ctoot::synth::modules::filter::StateVariableFilter* svf1 = nullptr;
     ctoot::mpc::MpcMuteInfo* muteInfo = nullptr;
     int track = 0;
     int frameOffset = 0;
@@ -110,7 +104,6 @@ private:
     std::vector<float> tempFrame;
     int varType = 0;
     int varValue = 0;
-    float veloFactor = 0;
     int veloToStart = 0;
     int attackValue = 0;
     int decayValue = 0;
@@ -142,7 +135,7 @@ public:
     bool isFinished();
     void init(int track,
               int velocity,
-              std::weak_ptr<ctoot::mpc::MpcSound> oscVars,
+              std::weak_ptr<ctoot::mpc::MpcSound> _mpcSound,
               int note,
               ctoot::mpc::MpcNoteParameters* np,
               int varType,
