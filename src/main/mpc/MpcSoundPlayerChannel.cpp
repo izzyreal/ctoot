@@ -16,21 +16,15 @@
 #include <mpc/MpcIndivFxMixerChannel.hpp>
 #include <mpc/MpcMixerSetupGui.hpp>
 #include <mpc/MpcSound.hpp>
-#include <mpc/MpcMuteInfo.hpp>
 
 // ctoot
 #include <audio/core/MetaInfo.hpp>
-#include <audio/core/AudioControlsChain.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 #include <audio/mixer/PanControl.hpp>
-#include <audio/mixer/MixerControls.hpp>
-#include <audio/server/AudioServer.hpp>
 #include <control/CompoundControl.hpp>
 #include <control/Control.hpp>
-
-//#include <Mpc.hpp>
 
 using namespace ctoot::mpc;
 using namespace std;
@@ -227,8 +221,11 @@ void MpcSoundPlayerChannel::mpcNoteOn(int track, int note, int velo, int varType
 		}
 	}
 
-	startDecayForNote(note, 1);
-    
+    if (np->getVoiceOverlap() == VoiceOverlapMode::MONO)
+    {
+        stopPolyVoiceWithSameNoteParameters(np, note);
+    }
+
 	voice.lock()->init(track, velo, sound, note, np, varType, varValue, note, drumIndex, frameOffset, true);
 
 	if (firstGeneration)
@@ -364,7 +361,7 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 
 	if (it != simultA.end())
 	{
-		startDecayForNote(simultA[note], 2);
+		startDecayForNote(simultA[note], VoiceOverlapMode::NOTE_OFF);
 		simultA.erase(it);
 	}
 	
@@ -372,7 +369,7 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset)
 	
 	if (it != simultB.end())
 	{
-		startDecayForNote(simultB[note], 2);
+		startDecayForNote(simultB[note], VoiceOverlapMode::NOTE_OFF);
 		simultB.erase(it);
 	}
 }
@@ -390,6 +387,23 @@ void MpcSoundPlayerChannel::startDecayForNote(const int note, const int voiceOve
 			break;
 		}
 	}
+}
+
+void MpcSoundPlayerChannel::stopPolyVoiceWithSameNoteParameters(
+        ctoot::mpc::MpcNoteParameters* noteParameters, int note)
+{
+    for (auto& v : controls.lock()->getMms().lock()->getVoices())
+    {
+        auto voice = v.lock();
+
+        if (voice->getNoteParameters() == noteParameters) {
+            if (voice->getNote() == note) {
+                if (voice->getVoiceOverlap() == VoiceOverlapMode::POLY) {
+                    voice->startDecay();
+                }
+            }
+        }
+    }
 }
 
 MpcSoundPlayerChannel::~MpcSoundPlayerChannel() {

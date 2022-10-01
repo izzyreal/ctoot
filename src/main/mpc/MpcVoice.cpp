@@ -9,9 +9,7 @@
 #include <mpc/MpcMuteInfo.hpp>
 
 #include <audio/core/AudioBuffer.hpp>
-#include <audio/core/ChannelFormat.hpp>
 #include <control/BooleanControl.hpp>
-#include <control/Control.hpp>
 #include <control/FloatControl.hpp>
 #include <synth/modules/filter/StateVariableFilter.hpp>
 #include <synth/modules/filter/StateVariableFilterControls.hpp>
@@ -93,10 +91,11 @@ void MpcVoice::init(
 	int frameOffset,
 	bool enableEnvs)
 {
-	this->enableEnvs = enableEnvs;
+    noteParameters = np;
+
+    this->enableEnvs = enableEnvs;
 	this->frameOffset = frameOffset;
 	this->track = track;
-	this->np = np;
     this->note = note;
 	this->oscVars = oscVars;
 	this->varType = varType;
@@ -117,7 +116,8 @@ void MpcVoice::init(
 	auto lOscVars = oscVars.lock();
 	tune = lOscVars->getTune();
 
-	if (np != nullptr) {
+	if (np != nullptr)
+    {
 		tune += np->getTune();
 		veloToStart = np->getVelocityToStart();
 		attackValue = np->getAttack();
@@ -125,7 +125,15 @@ void MpcVoice::init(
 		veloToAttack = np->getVelocityToAttack();
 		decayMode = np->getDecayMode();
 		veloToLevel = np->getVeloToLevel();
+        velocityToFilterFrequency = np->getVelocityToFilterFrequency();
+        filterFrequency = np->getFilterFrequency();
+        filterAttack = np->getFilterAttack();
+        filterDecay = np->getFilterDecay();
+        filterResonance = np->getFilterResonance();
+        filterEnvelopeAmount = np->getFilterEnvelopeAmount();
+        voiceOverlapMode = np->getVoiceOverlap();
 	}
+    
 	switch (varType) {
 	case 0:
 		tune += (varValue - 64) * 2;
@@ -169,7 +177,9 @@ void MpcVoice::init(
 	veloToLevelFactor = (float)((veloToLevel / 100.0));
 	amplitude = (float)(((veloFactor * veloToLevelFactor) + 1.0f - veloToLevelFactor));
 	amplitude *= (lOscVars->getSndLevel() / 100.0);
-	if (!basic) {
+
+	if (!basic)
+    {
 		ampEnv->reset();
 		attack->setValue(decayMode == 1 ? (float)(0) : attackMs * timeRatio);
 		hold->setValue(decayMode == 1 ? 0 : holdLengthSamples);
@@ -189,6 +199,7 @@ void MpcVoice::init(
 		svf0->update();
 		svf1->update();
 	}
+
 	decayCounter = 0;
 	readyToPlay = true;
 }
@@ -231,25 +242,25 @@ void MpcVoice::setSampleRate(int sampleRate) {
 	veloToLevelFactor = (float)((veloToLevel * 0.01));
 	amplitude = (float)((veloFactor * veloToLevelFactor) + 1.0f - veloToLevelFactor);
 	amplitude *= (lOscVars->getSndLevel() * 0.01);
-	
+
     if (!basic)
     {
 		ampEnv->reset();
 		attack->setValue(decayMode == 1 ? (float)(0) : attackMs * timeRatio);
 		hold->setValue(decayMode == 1 ? 0 : holdLengthSamples);
 		decay->setValue(decayMs * timeRatio);
-		filtParam = np->getFilterFrequency();
-	
+		filtParam = filterFrequency;
+
         if (varType == 3)
             filtParam = varValue;
 
-		initialFilterValue = (float)(filtParam + (veloFactor * np->getVelocityToFilterFrequency()));
+		initialFilterValue = (float)(filtParam + (veloFactor * velocityToFilterFrequency));
 		initialFilterValue = (float)(17.0 + (initialFilterValue * 0.75));
 		filterEnv->reset();
-		fattack->setValue((float)(np->getFilterAttack() * 0.002 * MAX_ATTACK_LENGTH_SAMPLES));
+		fattack->setValue((float)(filterAttack * 0.002 * MAX_ATTACK_LENGTH_SAMPLES));
 		fhold->setValue(0);
-		fdecay->setValue((float)(np->getFilterDecay() * 0.002 * MAX_DECAY_LENGTH_SAMPLES));
-		reso->setValue((float)(0.0625 + (np->getFilterResonance() / 26.0)));
+		fdecay->setValue((float)(filterDecay * 0.002 * MAX_DECAY_LENGTH_SAMPLES));
+		reso->setValue((float)(0.0625 + (filterResonance / 26.0)));
 		mix->setValue(0.0f);
 		bandpass->setValue(false);
 		svf0->update();
@@ -267,18 +278,18 @@ vector<float>& MpcVoice::getFrame()
 		frameOffset--;
 		return EMPTY_FRAME;
 	}
-	
+
     envAmplitude = basic ? 1.0f : ampEnv->getEnvelope(false);
 	staticEnvAmp = enableEnvs ? staticEnv->getEnvelope(staticDecay) : 1.0f;
 	envAmplitude *= staticEnvAmp;
 
 	float filterEnvFactor = 0;
 	float filterFreq = 0;
-	
+
     if (!basic)
     {
 		filterFreq = ctoot::mpc::MpcSoundPlayerChannel::midiFreq(initialFilterValue * 1.44f) * inverseNyquist;
-		filterEnvFactor = (float)(filterEnv->getEnvelope(false) * (np->getFilterEnvelopeAmount() * 0.01));
+		filterEnvFactor = (float)(filterEnv->getEnvelope(false) * (filterEnvelopeAmount * 0.01));
 		filterFreq += ctoot::mpc::MpcSoundPlayerChannel::midiFreq(144) * inverseNyquist * filterEnvFactor;
 	}
 
@@ -287,7 +298,7 @@ vector<float>& MpcVoice::getFrame()
 	if (oscVars.lock()->isMono())
     {
 		tempFrame[0] *= envAmplitude * amplitude;
-	
+
         if (!basic)
 			tempFrame[0] = svf0->filter(tempFrame[0], filterFreq);
 
@@ -297,14 +308,14 @@ vector<float>& MpcVoice::getFrame()
     {
 		tempFrame[0] *= envAmplitude * amplitude;
 		tempFrame[1] *= envAmplitude * amplitude;
-	
+
         if (!basic)
         {
 			tempFrame[0] = svf0->filter(tempFrame[0], filterFreq);
 			tempFrame[1] = svf1->filter(tempFrame[1], filterFreq);
 		}
 	}
-	
+
     return tempFrame;
 }
 
@@ -319,10 +330,10 @@ void MpcVoice::readFrame()
 		finished = true;
 		return;
 	}
-	
+
 	k = (int)(ceil(position));
 	j = k - 1;
-	
+
 	if (j == -1)
 		j = 0;
 
@@ -349,24 +360,26 @@ void MpcVoice::open()
 int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 {
 	if (buffer->getSampleRate() != sampleRate)
-		setSampleRate(buffer->getSampleRate());
+    {
+        setSampleRate(buffer->getSampleRate());
+    }
 
 	if (finished)
 	{
-    buffer->makeSilence();
-    return AUDIO_SILENCE;
+        buffer->makeSilence();
+        return AUDIO_SILENCE;
 	}
 
-  auto left = buffer->getChannel(0);
+    auto left = buffer->getChannel(0);
 	auto right = buffer->getChannel(1);
 
 	for (int i = 0; i < nFrames; i++)
 	{
 		frame = getFrame();
-	
+
 		(*left)[i] = frame[0];
 		(*right)[i] = frame[1];
-		
+
 		if (decayCounter != 0)
 		{
 			if (decayCounter == 1)
@@ -380,7 +393,7 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 	{
         note = -1;
 	}
-	
+
 	return AUDIO_OK;
 }
 
@@ -405,7 +418,7 @@ void MpcVoice::startDecay()
 
 int MpcVoice::getVoiceOverlap()
 {
-	return oscVars.lock()->isLoopEnabled() ? 2 : np->getVoiceOverlap();
+	return oscVars.lock()->isLoopEnabled() ? 2 : voiceOverlapMode;
 }
 
 int MpcVoice::getStripNumber()
@@ -434,6 +447,11 @@ void MpcVoice::startDecay(int offset)
 int MpcVoice::getNote()
 {
     return note;
+}
+
+ctoot::mpc::MpcNoteParameters* MpcVoice::getNoteParameters()
+{
+    return noteParameters;
 }
 
 MpcVoice::~MpcVoice()

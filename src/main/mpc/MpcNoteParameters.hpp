@@ -4,6 +4,8 @@
 
 namespace ctoot::mpc
 {
+    enum VoiceOverlapMode { POLY, MONO, NOTE_OFF };
+
 	class MpcNoteParameters
 	{
 	public:

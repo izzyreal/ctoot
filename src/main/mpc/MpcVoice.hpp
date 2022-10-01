@@ -40,7 +40,19 @@ private:
     static const int RESO_INDEX = 1;
     static const int MIX_INDEX = 2;
     static const int BANDPASS_INDEX = 3;
-    
+
+    // NoteParameter values at the time a voice starts playing
+    int velocityToFilterFrequency;
+    int filterFrequency;
+    int filterAttack;
+    int filterDecay;
+    int filterResonance;
+    int filterEnvelopeAmount;
+    int voiceOverlapMode;
+
+    // Pointer to currently playing note parameters
+    ctoot::mpc::MpcNoteParameters* noteParameters = nullptr;
+
     std::weak_ptr<ctoot::mpc::MpcSound> oscVars;
     int tune = 0;
     double increment = 0;
@@ -52,7 +64,6 @@ private:
     float initialFilterValue = 0;
     bool staticDecay = 0;
     int note = -1;
-    ctoot::mpc::MpcNoteParameters* np = nullptr;
     float amplitude = 0;
     ctoot::synth::modules::filter::StateVariableFilter* svf0 = nullptr;
     int start = 0;
@@ -74,7 +85,7 @@ private:
     ctoot::mpc::MpcEnvelopeControls* filterEnvControls = nullptr;
     ctoot::synth::modules::filter::StateVariableFilterControls* svfControls = nullptr;
     bool finished = true;
-    bool readyToPlay = false;;
+    bool readyToPlay = false;
     int stripNumber = -1;
     
 public:
@@ -91,9 +102,9 @@ private:
     ctoot::mpc::MpcMuteInfo* muteInfo = nullptr;
     int track = 0;
     int frameOffset = 0;
-    bool basic = false;;
+    bool basic = false;
     int decayCounter = 0;
-    bool enableEnvs = false;;
+    bool enableEnvs = false;
     static const int SVF_OFFSET = 48;
     static const int AMPENV_OFFSET = 64;
     std::vector<float> tempFrame;
@@ -142,6 +153,7 @@ public:
               bool enableEnvs);
     std::vector<float>& getFrame();
     int getNote();
+    ctoot::mpc::MpcNoteParameters* getNoteParameters();
     void startDecay();
     int getVoiceOverlap();
     int getStripNumber();
