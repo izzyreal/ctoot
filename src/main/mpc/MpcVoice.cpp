@@ -211,12 +211,6 @@ void MpcVoice::initializeSamplerateDependents() {
 
     shold->setValue(staticEnvHoldSamples);
 
-    printf("\nplayableSampleLength: %d\n", playableSampleLength);
-    printf("attackLengthSamples: %d\n",attackLengthSamples);
-    printf("decayLengthSamples%d\n",attackLengthSamples);
-    printf("holdLengthSamples%d\n",holdLengthSamples);
-    printf("staticEnvHoldSamples%d\n",staticEnvHoldSamples);
-
     if (!basic) {
         attack->setValue(decayMode == 1 ? (float) (0) : attackMs * timeRatio);
         hold->setValue(decayMode == 1 ? 0 : holdLengthSamples);
