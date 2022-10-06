@@ -6,7 +6,6 @@
 #include <audio/core/ControlChainObserver.hpp>
 #include <audio/core/AudioServices.hpp>
 #include <control/ChainMutation.hpp>
-#include <control/Control.hpp>
 
 #include <chrono>
 

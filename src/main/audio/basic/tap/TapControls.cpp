@@ -3,7 +3,6 @@
 #include <audio/basic/BasicIds.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/Taps.hpp>
-#include <control/BooleanControl.hpp>
 #include <control/CompoundControl.hpp>
 
 #include <stdexcept>

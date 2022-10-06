@@ -5,10 +5,7 @@
 #include <audio/dynamics/BusCompressor.hpp>
 #include <audio/dynamics/CompressorControls.hpp>
 #include <audio/dynamics/Compressor.hpp>
-#include <audio/dynamics/DynamicsControls.hpp>
 #include <audio/dynamics/DynamicsIds.hpp>
-#include <audio/dynamics/ExpanderControls.hpp>
-#include <audio/dynamics/Expander.hpp>
 #include <audio/dynamics/GateControls.hpp>
 #include <audio/dynamics/Gate.hpp>
 #include <audio/dynamics/LimiterControls.hpp>
@@ -17,11 +14,8 @@
 #include <audio/dynamics/MidSideCompressor.hpp>
 #include <audio/dynamics/izcompressor/IzMultiBandControls.hpp>
 #include <audio/dynamics/izcompressor/IzMultiBandCompressor.hpp>
-#include <audio/dynamics/DualBandControls.hpp>
-#include <audio/dynamics/QuadBandControls.hpp>
 #include <audio/dynamics/MultiBandControls.hpp>
 #include <audio/dynamics/MultiBandCompressor.hpp>
-#include <audio/dynamics/TremoloControls.hpp>
 #include <audio/dynamics/TremoloProcessVariables.hpp>
 #include <audio/dynamics/TremoloProcess.hpp>
 #include <audio/dynamics/VariMuCompressorControls.hpp>

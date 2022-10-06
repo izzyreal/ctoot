@@ -1,7 +1,5 @@
 #include <mpc/MpcBasicSoundPlayerControls.hpp>
 
-#include <mpc/MpcEnvelopeControls.hpp>
-#include <mpc/MpcSoundOscillatorControls.hpp>
 #include <control/ControlRow.hpp>
 #include <control/Control.hpp>
 

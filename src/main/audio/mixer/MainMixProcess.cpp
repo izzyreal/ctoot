@@ -3,7 +3,6 @@
 #include <audio/mixer/AudioMixerStrip.hpp>
 #include <util/RouteObserver.hpp>
 #include <audio/mixer/MixVariables.hpp>
-#include <control/EnumControl.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 
 using namespace std;

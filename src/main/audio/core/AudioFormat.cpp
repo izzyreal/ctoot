@@ -1,7 +1,5 @@
 #include <audio/core/AudioFormat.hpp>
 
-#include <audio/system/AudioSystem.hpp>
-
 #include <cmath>
 
 using namespace ctoot::audio::core;

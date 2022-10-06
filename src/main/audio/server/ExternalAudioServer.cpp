@@ -106,7 +106,7 @@ void ExternalAudioServer::work(float* inputBuffer, float* outputBuffer, int nFra
 	outputBuffer = originalOutputBuffer;
 }
 
-void ExternalAudioServer::work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
+void ExternalAudioServer::work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
 	if (!running) {
 		return;
 	}

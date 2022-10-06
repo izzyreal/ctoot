@@ -72,7 +72,7 @@ namespace ctoot {
 
 			public:
 				// For compatibility with JUCE
-				void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+				void work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 
 				//For compatibility with the PortAudio framework
 				void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);

@@ -14,7 +14,7 @@ using namespace ctoot::dsp;
 using namespace ctoot::audio::core;
 using namespace std;
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 IzCompressorProcess::IzCompressorProcess(IzCompressorProcessVariables* vars)
 	: IzCompressorProcess(vars, false)

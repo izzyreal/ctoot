@@ -1,7 +1,6 @@
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioControlsChain.hpp>
-#include <audio/core/AudioProcess.hpp>
 #include <audio/core/Taps.hpp>
 #include <audio/mixer/MixerControlsObserver.hpp>
 #include <audio/mixer/AudioMixerBus.hpp>
@@ -11,12 +10,10 @@
 #include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
 #include <audio/server/AudioServer.hpp>
-#include <control/CompoundControl.hpp>
-#include <control/Control.hpp>
 
-#include <time.h>
-#include <chrono>
-#include <thread>
+//#include <time.h>
+//#include <chrono>
+//#include <thread>
 
 #include <Logger.hpp>
 

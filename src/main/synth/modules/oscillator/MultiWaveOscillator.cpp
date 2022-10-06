@@ -6,7 +6,7 @@
 #include <synth/modules/oscillator/OscillatorControl.hpp>
 #include <synth/modules/oscillator/Wave.hpp>
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 using namespace ctoot::synth::modules::oscillator;
 

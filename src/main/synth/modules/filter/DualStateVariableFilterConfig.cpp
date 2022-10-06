@@ -1,7 +1,5 @@
 #include <synth/modules/filter/DualStateVariableFilterConfig.hpp>
 
-#include <synth/modules/filter/FilterType.hpp>
-
 using namespace ctoot::synth::modules::filter;
 
 DualStateVariableFilterConfig::DualStateVariableFilterConfig(std::string name, int32_t t1, int32_t t2, int32_t ratio)

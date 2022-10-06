@@ -2,7 +2,6 @@
 
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
-#include <control/LawControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <synth/modules/mixer/MixerIds.hpp>
 

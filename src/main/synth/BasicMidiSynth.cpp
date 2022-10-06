@@ -8,7 +8,7 @@
 #include <midi/misc/Controller.hpp>
 #include <synth/SynthChannel.hpp>
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 using namespace ctoot::audio::system;
 using namespace ctoot::synth;

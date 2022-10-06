@@ -1,7 +1,6 @@
 #include <control/CompoundControlMidiPersistence.hpp>
 
 #include <control/BypassControl.hpp>
-#include <control/IntegerControl.hpp>
 #include <control/CompoundControl.hpp>
 #include <control/Control.hpp>
 #include <control/automation/ControlSysexMsg.hpp>

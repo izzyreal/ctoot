@@ -2,7 +2,6 @@
 
 #include <dsp/VolumeUtils.hpp>
 #include <audio/dynamics/DynamicsVariables.hpp>
-#include <dsp/FastMath.hpp>
 
 #include <cmath>
 

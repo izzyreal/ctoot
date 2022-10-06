@@ -1,6 +1,5 @@
 #include <synth/synths/multi/MultiMidiSynthObserver.hpp>
 #include <synth/SynthChannel.hpp>
-#include <synth/SynthChannelControls.hpp>
 #include <synth/SynthChannelServices.hpp>
 #include <synth/synths/multi/MultiMidiSynth.hpp>
 #include <synth/synths/multi/MultiSynthControls.hpp>

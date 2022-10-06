@@ -1,6 +1,5 @@
 #include <synth/modules/filter/StateVariableFilter.hpp>
 //#include <dsp/FastMath.hpp>
-#include <synth/modules/filter/FilterVariables.hpp>
 #include <synth/modules/filter/StateVariableFilterElement.hpp>
 #include <synth/modules/filter/StateVariableFilterVariables.hpp>
 

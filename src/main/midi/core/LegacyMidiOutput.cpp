@@ -2,7 +2,7 @@
 
 //#include <midi/core/LegacyMidiOutput_DeviceMidiOutput_1.hpp>
 #include <midi/core/LegacyDeviceAdaptor.hpp>
-#include <midi/core/MidiDevice.hpp>
+//#include <midi/core/MidiDevice.hpp>
 #include <midi/core/ShortMessage.hpp>
 
 using namespace ctoot::midi::core;

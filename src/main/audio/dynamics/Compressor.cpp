@@ -1,7 +1,6 @@
 #include <audio/dynamics/Compressor.hpp>
 
 #include <audio/dynamics/DynamicsVariables.hpp>
-#include <dsp/FastMath.hpp>
 
 #include <cmath>
 

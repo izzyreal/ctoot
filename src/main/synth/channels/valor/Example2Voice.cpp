@@ -19,7 +19,7 @@
 using namespace ctoot::synth::channels::valor;
 using namespace std;
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 Example2Voice::Example2Voice(ValorSynthChannel* vsc, int32_t pitch, int32_t velocity, int32_t sampleRate)
 	: ctoot::synth::PolyphonicSynthChannelAbstractVoice(pitch, velocity)

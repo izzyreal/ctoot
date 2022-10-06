@@ -5,7 +5,6 @@
 #include <synth/modules/filter/DualStateVariableFilterElement.hpp>
 #include <synth/modules/filter/DualStateVariableFilterVariables.hpp>
 #include <synth/modules/filter/FilterType.hpp>
-#include <synth/modules/filter/FilterVariables.hpp>
 
 #define _USE_MATH_DEFINES
 #include <math.h>

@@ -1,8 +1,8 @@
 #include <audio/core/ChannelFormat.hpp>
 #include <audio/core/ChannelFormat1.hpp>
 #include <audio/core/ChannelFormat2.hpp>
-#include <audio/core/ChannelFormat3.hpp>
-#include <audio/core/ChannelFormat4.hpp>
+//#include <audio/core/ChannelFormat3.hpp>
+//#include <audio/core/ChannelFormat4.hpp>
 #include <audio/core/AudioBuffer.hpp>
 
 #include <cstdint>

@@ -2,7 +2,6 @@
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 #include <audio/mixer/MixControlIds.hpp>
-#include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
 #include <control/Control.hpp>
 

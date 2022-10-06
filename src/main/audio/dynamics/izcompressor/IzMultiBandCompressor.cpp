@@ -6,14 +6,11 @@
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioProcess.hpp>
 #include <audio/core/FloatDenormals.hpp>
-#include <audio/core/SimpleAudioProcess.hpp>
 #include <audio/dynamics/CrossoverControl.hpp>
 #include <audio/dynamics/CrossoverSection.hpp>
-#include <audio/dynamics/DynamicsProcess.hpp>
 #include "IzMultiBandControls.hpp"
 #include <audio/filter/Crossover.hpp>
 #include <audio/filter/IIRCrossover.hpp>
-#include <control/Control.hpp>
 #include <dsp/filter/FilterShape.hpp>
 
 using namespace ctoot::audio::dynamics::izcompressor;

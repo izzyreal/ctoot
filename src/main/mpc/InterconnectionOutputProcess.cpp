@@ -1,6 +1,5 @@
 #include "InterconnectionOutputProcess.hpp"
 
-#include "MpcMixerInterconnection.hpp"
 #include <audio/core/AudioBuffer.hpp>
 
 #include <audio/mixer/MixerControlsFactory.hpp>

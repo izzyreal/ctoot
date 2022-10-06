@@ -1,6 +1,5 @@
 #include <audio/dynamics/MidSideCompressorControls.hpp>
 
-#include <audio/dynamics/CompressorControls.hpp>
 #include <audio/dynamics/DynamicsControlIds.hpp>
 #include <audio/dynamics/DynamicsIds.hpp>
 #include <audio/dynamics/MidSideCompressorControls1.hpp>

@@ -1,5 +1,4 @@
 #include <audio/server/AudioServerProcess.hpp>
-#include <audio/server/AudioServer.hpp>
 
 #include <audio/core/ChannelFormat.hpp>
 

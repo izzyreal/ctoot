@@ -4,7 +4,6 @@
 #include <audio/basic/tap/TapControls.hpp>
 #include <audio/basic/tap/TapProcess.hpp>
 #include <audio/core/AudioControls.hpp>
-#include <audio/core/ChannelFormat.hpp>
 #include <audio/core/AudioProcess.hpp>
 
 #include <audio/analysis/SpectrumAnalyserControls.hpp>

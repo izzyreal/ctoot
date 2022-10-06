@@ -6,17 +6,14 @@
 #include <audio/delay/CabMicingProcess_Variables.hpp>
 #include <audio/delay/CabMicingProcess.hpp>
 #include <audio/delay/DelayIds.hpp>
-#include <audio/delay/ModulatedDelayControls.hpp>
 #include <audio/delay/ModulatedDelayProcessVariables.hpp>
 #include <audio/delay/ModulatedDelayProcess.hpp>
 #include <audio/delay/MultiTapDelayProcessVariables.hpp>
 #include <audio/delay/MultiTapDelayProcess.hpp>
-#include <audio/delay/MultiTapDelayStereoControls.hpp>
 #include <audio/delay/PhaserControls.hpp>
 #include <audio/delay/PhaserProcess.hpp>
 #include <audio/delay/TempoDelayControls.hpp>
 #include <audio/delay/TempoDelayProcess.hpp>
-#include <audio/delay/WowFlutterControls.hpp>
 #include <audio/delay/WowFlutterProcessVariables.hpp>
 #include <audio/delay/WowFlutterProcess.hpp>
 

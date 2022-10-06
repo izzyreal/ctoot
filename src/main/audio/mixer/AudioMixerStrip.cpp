@@ -5,7 +5,6 @@
 #include <audio/core/AudioControls.hpp>
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/core/AudioProcess.hpp>
-#include <audio/core/ChannelFormat.hpp>
 
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/mixer/AudioMixerBus.hpp>

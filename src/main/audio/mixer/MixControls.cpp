@@ -1,15 +1,11 @@
 #include <audio/mixer/MixControls.hpp>
 
-#include <audio/mixer/MainMixControls.hpp>
-
 #include <audio/core/ChannelFormat.hpp>
 #include <audio/fader/FaderControl.hpp>
-#include <audio/mixer/SoloIndicator.hpp>
 #include <audio/mixer/BusControls.hpp>
 #include <audio/mixer/MixControlIds.hpp>
 #include <audio/mixer/BalanceControl.hpp>
 #include <audio/mixer/FrontRearControl.hpp>
-#include <audio/mixer/LCRControl.hpp>
 #include <audio/mixer/PanControl.hpp>
 #include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
@@ -17,8 +13,6 @@
 #include <control/Control.hpp>
 #include <control/EnumControl.hpp>
 #include <control/BooleanControl.hpp>
-
-#include <audio/mixer/RouteControl.hpp>
 
 #include <cmath>
 

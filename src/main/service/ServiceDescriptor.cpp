@@ -1,7 +1,5 @@
 #include <service/ServiceDescriptor.hpp>
 
-#include <Logger.hpp>
-
 using namespace ctoot::service;
 using namespace std;
 

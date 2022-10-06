@@ -1,7 +1,6 @@
 #include <synth/channels/valor/ValorSynthControls.hpp>
 
 #include <control/ControlRow.hpp>
-#include <control/CompoundControl.hpp>
 #include <control/Control.hpp>
 //#include <misc/Localisation.hpp>
 #include <synth/id/TootSynthControlsId.hpp>
@@ -18,10 +17,8 @@
 #include <synth/modules/mixer/ModulationMixerVariables.hpp>
 #include <synth/modules/oscillator/LFOConfig.hpp>
 #include <synth/modules/oscillator/LFOControls.hpp>
-#include <synth/modules/oscillator/LFOVariables.hpp>
 #include <synth/modules/oscillator/MultiWaveOscillatorControls.hpp>
 #include <synth/modules/oscillator/MultiWaveOscillatorVariables.hpp>
-#include <synth/modules/oscillator/OscillatorVariables.hpp>
 
 using namespace ctoot::synth::channels::valor;
 using namespace std;

@@ -1,5 +1,4 @@
 #include <util/RouteObserver.hpp>
-#include <stdio.h>
 #include <string>
 
 using namespace ctoot::util;

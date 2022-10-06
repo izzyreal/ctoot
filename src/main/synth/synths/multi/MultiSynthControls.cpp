@@ -1,5 +1,4 @@
 #include <synth/synths/multi/MultiSynthControls.hpp>
-#include <control/CompoundControl.hpp>
 #include <control/Control.hpp>
 #include <synth/SynthChannelControls.hpp>
 

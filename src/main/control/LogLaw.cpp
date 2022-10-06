@@ -2,7 +2,7 @@
 
 #include <control/ControlLaw.hpp>
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 #include <cassert>
 #include <cmath>

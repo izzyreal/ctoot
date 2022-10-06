@@ -1,7 +1,7 @@
 #include <audio/system/AudioSystemObserver.hpp>
 #include <audio/system/DefaultAudioSystem.hpp>
 
-#include <Logger.hpp>
+//#include <Logger.hpp>
 
 using namespace ctoot::audio::system;
 

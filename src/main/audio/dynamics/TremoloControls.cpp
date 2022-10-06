@@ -2,7 +2,6 @@
 
 #include <audio/dynamics/DynamicsIds.hpp>
 #include <control/ControlColumn.hpp>
-#include <control/Control.hpp>
 #include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>

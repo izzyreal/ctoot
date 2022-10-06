@@ -4,15 +4,8 @@
 #include "MpcVoice.hpp"
 #include "MpcSampler.hpp"
 
-#include <audio/core/AudioControlsChain.hpp>
 #include <audio/fader/FaderControl.hpp>
-#include <audio/mixer/AudioMixer.hpp>
-#include <audio/mixer/AudioMixerStrip.hpp>
 #include <audio/mixer/MainMixControls.hpp>
-#include <audio/mixer/MixerControls.hpp>
-#include <audio/mixer/MixerControlsFactory.hpp>
-
-#include <control/Control.hpp>
 
 using namespace ctoot::mpc;
 using namespace ctoot::audio::mixer;

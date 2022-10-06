@@ -1,7 +1,6 @@
 #include "Control.hpp"
 
 #include "CompoundControl.hpp"
-#include "BooleanControl.hpp"
 #include "ChainMutation.hpp"
 
 using namespace ctoot::control;

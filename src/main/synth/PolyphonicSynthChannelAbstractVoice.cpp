@@ -1,7 +1,6 @@
 #include <synth/PolyphonicSynthChannelAbstractVoice.hpp>
 
 #include <audio/core/AudioBuffer.hpp>
-#include <synth/PolyphonicSynthChannel.hpp>
 #include <synth/SynthChannel.hpp>
 
 using namespace ctoot::synth;

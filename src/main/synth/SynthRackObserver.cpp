@@ -1,12 +1,9 @@
 #include <synth/SynthRackObserver.hpp>
 
 #include <audio/system/AudioDevice.hpp>
-#include <midi/core/MidiDevice.hpp>
-#include <midi/core/MidiInput.hpp>
 #include <midi/core/MidiPort.hpp>
 #include <midi/core/MidiTransport.hpp>
 #include <synth/MidiSynth.hpp>
-#include <synth/synths/multi/MultiMidiSynth.hpp>
 #include <synth/SynthControls.hpp>
 #include <synth/SynthRack.hpp>
 #include <synth/SynthRackControls.hpp>
@@ -16,7 +13,6 @@
 //#include <MpcMultiSynthControls.hpp>
 
 using namespace ctoot::synth;
-using namespace ctoot::synth::synths::multi;
 using namespace std;
 
 #include <iostream>

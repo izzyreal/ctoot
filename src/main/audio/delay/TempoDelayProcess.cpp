@@ -2,7 +2,6 @@
 
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/delay/DelayBuffer.hpp>
-#include <audio/delay/TempoDelayProcess1.hpp>
 #include <audio/delay/TempoDelayProcessVariables.hpp>
 
 #include <Logger.hpp>

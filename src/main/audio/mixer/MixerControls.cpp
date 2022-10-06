@@ -12,7 +12,6 @@
 #include <control/CompoundControl.hpp>
 #include <control/Control.hpp>
 
-#include <iostream>
 #include <algorithm>
 
 using namespace ctoot::audio::mixer;

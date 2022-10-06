@@ -1,10 +1,6 @@
 #include <synth/SynthRack.hpp>
 
-#include <audio/system/AudioDevice.hpp>
 #include <audio/system/AudioSystem.hpp>
-#include <midi/core/MidiDevice.hpp>
-#include <midi/core/MidiInput.hpp>
-#include <midi/core/MidiPort.hpp>
 #include <midi/core/MidiSystem.hpp>
 #include <midi/core/MidiTransport.hpp>
 #include <synth/MidiSynth.hpp>

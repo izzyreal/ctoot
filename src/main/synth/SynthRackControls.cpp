@@ -1,7 +1,6 @@
 #include <synth/SynthRackControls.hpp>
 #include <observer/Observable.hpp>
 #include <control/CompoundControl.hpp>
-#include <control/Control.hpp>
 #include <control/id/ProviderId.hpp>
 #include <synth/SynthControls.hpp>
 

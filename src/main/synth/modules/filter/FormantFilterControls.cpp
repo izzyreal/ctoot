@@ -4,7 +4,6 @@
 #include <control/ControlColumn.hpp>
 #include <control/Control.hpp>
 #include <control/FloatControl.hpp>
-#include <control/LawControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
 #include <synth/modules/filter/FilterIds.hpp>

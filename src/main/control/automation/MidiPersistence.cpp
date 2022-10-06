@@ -8,8 +8,6 @@
 #include <control/Control.hpp>
 #include <control/automation/ControlSysexMsg.hpp>
 
-#include <control/FloatControl.hpp>
-
 using namespace ctoot::control::automation;
 using namespace ctoot::control;
 using namespace std;

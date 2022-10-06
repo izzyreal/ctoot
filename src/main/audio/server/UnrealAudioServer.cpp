@@ -3,7 +3,6 @@
 #include "StereoOutputProcess.hpp"
 #include "../core/ChannelFormat.hpp"
 
-#include <iostream>
 #include <Logger.hpp>
 
 

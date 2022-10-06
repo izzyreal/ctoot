@@ -1,7 +1,6 @@
 #include "AudioControlsChain.hpp"
 
 #include "AudioControls.hpp"
-#include "Descriptors.hpp"
 #include "AudioServices.hpp"
 #include "ChannelFormat.hpp"
 

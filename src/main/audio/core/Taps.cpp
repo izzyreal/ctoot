@@ -1,10 +1,8 @@
 #include <audio/core/Taps.hpp>
 
-#include <audio/core/TapControl.hpp>
 #include <audio/basic/tap/TapControls.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/server/AudioServer.hpp>
-#include <control/CompoundControl.hpp>
 
 #include <lang/StrUtil.hpp>
 

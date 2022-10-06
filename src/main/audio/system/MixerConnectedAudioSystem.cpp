@@ -3,7 +3,6 @@
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
-#include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
 #include <audio/system/AudioConnection.hpp>
 #include <audio/system/AudioDevice.hpp>

@@ -4,13 +4,11 @@
 #include <synth/channels/valor/ValorSynthControls.hpp>
 #include <synth/modules/amplifier/AmplifierVariables.hpp>
 #include <synth/modules/envelope/EnvelopeVariables.hpp>
-#include <synth/modules/filter/FilterVariables.hpp>
 #include <synth/modules/filter/StateVariableFilterVariables.hpp>
 #include <synth/modules/mixer/MixerVariables.hpp>
 #include <synth/modules/mixer/ModulationMixerVariables.hpp>
 #include <synth/modules/oscillator/LFOControls.hpp>
 #include <synth/modules/oscillator/MultiWaveOscillatorVariables.hpp>
-#include <synth/modules/oscillator/MultiWaves.hpp>
 
 using namespace ctoot::synth::channels::valor;
 using namespace std;

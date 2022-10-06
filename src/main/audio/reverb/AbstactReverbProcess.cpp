@@ -4,8 +4,6 @@
 
 #include <cassert>
 
-#include <Logger.hpp>
-
 using namespace ctoot::audio::reverb;
 using namespace ctoot::audio::core;
 

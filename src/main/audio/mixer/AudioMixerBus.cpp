@@ -2,7 +2,6 @@
 #include <audio/mixer/AudioMixer.hpp>
 
 #include <audio/meter/MeterProcess.hpp>
-#include <audio/meter/MeterControls.hpp>
 
 using namespace ctoot::audio::core;
 using namespace ctoot::audio::mixer;

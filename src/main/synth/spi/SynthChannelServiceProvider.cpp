@@ -1,7 +1,6 @@
 #include <synth/spi/SynthChannelServiceProvider.hpp>
 
 #include <control/spi/ControlServiceDescriptor.hpp>
-#include <service/ServiceDescriptor.hpp>
 #include <synth/SynthChannelControls.hpp>
 #include <synth/spi/SynthChannelControlServiceDescriptor.hpp>
 
