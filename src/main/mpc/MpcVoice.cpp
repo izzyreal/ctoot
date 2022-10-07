@@ -190,10 +190,10 @@ void MpcVoice::initializeSamplerateDependents() {
     auto veloFactor = velocity / 127.0;
     auto start = lMpcSound->getStart() + (veloFactor * (veloToStart / 100.0) * lMpcSound->getLastFrameIndex());
 
-    playableSampleLength = lMpcSound->isLoopEnabled() ? INT_MAX : (int) ((end - start) / increment);
+    auto playableSampleLength = lMpcSound->isLoopEnabled() ? INT_MAX : (int) ((end - start) / increment);
 
-    attackLengthSamples = (int) (attackMs * (sampleRate * 0.001));
-    decayLengthSamples = (int) (decayMs * (sampleRate * 0.001));
+    auto attackLengthSamples = (int) (attackMs * 44.1f);
+    auto decayLengthSamples = (int) (decayMs * 44.1f);
 
     if (attackLengthSamples > MAX_ATTACK_LENGTH_SAMPLES) {
         attackLengthSamples = (int) (MAX_ATTACK_LENGTH_SAMPLES);
@@ -203,11 +203,10 @@ void MpcVoice::initializeSamplerateDependents() {
         decayLengthSamples = MAX_DECAY_LENGTH_SAMPLES;
     }
 
-    holdLengthSamples = playableSampleLength - attackLengthSamples - decayLengthSamples;
+    auto holdLengthSamples = playableSampleLength - attackLengthSamples - decayLengthSamples;
 
-    auto timeRatio = getTimeRatio(sampleRate);
-    auto staticEnvHoldSamples = (int) (playableSampleLength -
-                                       ((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * sampleRate * 0.001);
+    auto timeRatio = 5.46f;
+    auto staticEnvHoldSamples = (int) (playableSampleLength - ((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate) * 0.001);
 
     shold->setValue(staticEnvHoldSamples);
 

@@ -102,13 +102,9 @@ private:
     int veloToAttack = 0;
     int decayMode = 0;
     int veloToLevel = 0;
-    int playableSampleLength = 0;
     float attackMs = 0;
     int finalDecayValue = 0;
     float decayMs = 0;
-    int attackLengthSamples = 0;
-    int decayLengthSamples = 0;
-    int holdLengthSamples = 0;
     float veloToLevelFactor = 0;
     int filtParam = 0;
     float envAmplitude = 0;
