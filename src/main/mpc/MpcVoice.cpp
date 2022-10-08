@@ -28,7 +28,6 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         : stripNumber(_stripNumber), basic(_basic), frame(EMPTY_FRAME) {
     tempFrame = EMPTY_FRAME;
     staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
-    staticEnvControls->setSampleRate(sampleRate);
     staticEnv = new ctoot::mpc::MpcEnvelopeGenerator(staticEnvControls);
     shold = dynamic_pointer_cast<ctoot::control::FloatControl>(
             staticEnvControls->getControls()[HOLD_INDEX].lock()).get();
@@ -45,13 +44,10 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
 
     if (!basic) {
         ampEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "AmpEnv", AMPENV_OFFSET);
-        ampEnvControls->setSampleRate(sampleRate);
         filterEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
-        filterEnvControls->setSampleRate(sampleRate);
         ampEnv = new ctoot::mpc::MpcEnvelopeGenerator(ampEnvControls);
         filterEnv = new ctoot::mpc::MpcEnvelopeGenerator(filterEnvControls);
         svfControls = new ctoot::synth::modules::filter::StateVariableFilterControls(0, "Filter", SVF_OFFSET);
-        svfControls->setSampleRate(sampleRate);
         svfControls->createControls();
         svfLeft = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
         svfRight = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
@@ -182,7 +178,16 @@ void MpcVoice::init(
     initializeSamplerateDependents();
 }
 
-void MpcVoice::initializeSamplerateDependents() {
+void MpcVoice::initializeSamplerateDependents()
+{
+    staticEnvControls->setSampleRate(sampleRate);
+
+    if (!basic) {
+        ampEnvControls->setSampleRate(sampleRate);
+        filterEnvControls->setSampleRate(sampleRate);
+        svfControls->setSampleRate(sampleRate);
+    }
+
     auto lMpcSound = mpcSound.lock();
 
     increment = pow(2.0, ((double) (tune) / 120.0)) * (44100.0 / sampleRate);
@@ -192,8 +197,8 @@ void MpcVoice::initializeSamplerateDependents() {
 
     auto playableSampleLength = lMpcSound->isLoopEnabled() ? INT_MAX : (int) ((end - start) / increment);
 
-    auto attackLengthSamples = (int) (attackMs * 44.1f);
-    auto decayLengthSamples = (int) (decayMs * 44.1f);
+    auto attackLengthSamples = (int) (attackMs * sampleRate * 0.001);
+    auto decayLengthSamples = (int) (decayMs * sampleRate * 0.001);
 
     if (attackLengthSamples > MAX_ATTACK_LENGTH_SAMPLES) {
         attackLengthSamples = (int) (MAX_ATTACK_LENGTH_SAMPLES);
