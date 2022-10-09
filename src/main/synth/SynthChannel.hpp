@@ -24,16 +24,12 @@ namespace ctoot {
 			std::vector<char> controller = std::vector<char>(128);
 
 			static const double ONE_SEMITONE;
-			static std::vector<float> freqTable;
 
 		public:
 			virtual void setLocation(std::string location) = 0;
 
-		private:
-			static std::vector<float> createFreqTable();
-
-		public:
 			static float midiFreq(float pitch);
+            static std::vector<float>& freqTable();
 
 		private:
 			static float midiFreqImpl(int pitch);

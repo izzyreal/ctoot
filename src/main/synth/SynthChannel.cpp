@@ -16,30 +16,28 @@ SynthChannel::SynthChannel()
 
 const double ctoot::synth::SynthChannel::ONE_SEMITONE { 1.0594630943592953 };
 
-//vector<float> SynthChannel::freqTable = createFreqTable();
-vector<float> SynthChannel::freqTable;
-
-vector<float> SynthChannel::createFreqTable()
+vector<float>& SynthChannel::freqTable()
 {
-	static auto res = vector<float>(140);
-	for (auto i = 0; i < res.size(); i++) {
-		res[i] = midiFreqImpl(i);
-	}
-	return res;
+    static std::vector<float> res;
+    if (res.empty()) {
+        for (auto i = 0; i < 140; i++) {
+            res.push_back(midiFreqImpl(i));
+        }
+    }
+    return res;
 }
 
 float SynthChannel::midiFreq(float pitch)
 {
-	if (freqTable.size() == 0) freqTable = createFreqTable();
 	if (pitch < 0)
-		return freqTable[0];
+		return freqTable()[0];
 
-	if (pitch >= (int)(freqTable.size()) - 1)
-		return freqTable[(int)(freqTable.size()) - 2];
+	if (pitch >= (int)(freqTable().size()) - 1)
+		return freqTable()[(int)(freqTable().size()) - 2];
 
 	auto idx = (int)(pitch);
 	auto frac = pitch - idx;
-	return freqTable[idx] * (1 - frac) + freqTable[idx + 1] * frac;
+	return freqTable()[idx] * (1 - frac) + freqTable()[idx + 1] * frac;
 }
 
 float SynthChannel::midiFreqImpl(int pitch)
