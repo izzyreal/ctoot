@@ -37,6 +37,6 @@ float StateVariableFilter::filter(float sample, float f)
 
 StateVariableFilter::~StateVariableFilter() {
 	if (element != nullptr) {
-		//delete element;
+		delete element;
 	}
 }

@@ -48,6 +48,7 @@ void AudioServer::removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer)
 {
 	for (int i = 0; i < buffers.size(); i++) {
 		if (buffers[i] == buffer) {
+            delete buffers[i];
 			buffers.erase(buffers.begin() + i);
 			break;
 		}
