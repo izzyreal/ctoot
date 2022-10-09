@@ -54,7 +54,7 @@ int FaderLaw::intValue(float v)
 	return -(++ret);
 }
 
-int FaderLaw::binarySearch(vector<float> buf, float key, int min, int max)
+int FaderLaw::binarySearch(vector<float>& buf, float key, int min, int max)
 {
 	float mid;
 	float fMax = static_cast<float>(max);

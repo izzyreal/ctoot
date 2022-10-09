@@ -16,7 +16,7 @@ namespace ctoot {
 				float maxdB{ 1 };
 				float attenuationCutoffFactor{ 1};
 				std::vector<float> floatValues;
-				int binarySearch(std::vector<float> buf, float key, int min, int max);
+				int binarySearch(std::vector<float>& buf, float key, int min, int max);
 
 			public:
 				int getResolution();

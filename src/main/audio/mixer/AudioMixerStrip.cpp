@@ -170,7 +170,7 @@ shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> 
 	return AudioProcessChain::createProcess(controls);
 }
 
-int AudioMixerStrip::mix(ctoot::audio::core::AudioBuffer* bufferToMix, vector<float> gain)
+int AudioMixerStrip::mix(ctoot::audio::core::AudioBuffer* bufferToMix, vector<float>& gain)
 {
 	if (bufferToMix == nullptr) return 0;
 	auto ret = channelFormat.lock()->mix(buffer, bufferToMix, gain);

@@ -43,7 +43,7 @@ namespace ctoot {
 			public:
 				virtual bool processBuffer(int nFrames);
 				virtual void checkMetaInfo(std::weak_ptr<ctoot::audio::core::MetaInfo> info);
-				virtual int mix(ctoot::audio::core::AudioBuffer* bufferToMix, std::vector<float> gain);
+				virtual int mix(ctoot::audio::core::AudioBuffer* bufferToMix, std::vector<float>& gain);
 
 			public:
 				std::shared_ptr<AudioProcess> createProcess(std::weak_ptr<ctoot::audio::core::AudioControls> controls) override;

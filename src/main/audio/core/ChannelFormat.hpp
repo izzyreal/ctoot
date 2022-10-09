@@ -30,7 +30,7 @@ namespace ctoot {
 				virtual std::string getName(int chan) = 0;
 
 			public:
-				int mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio::core::AudioBuffer* sourceBuffer, std::vector<float> gain);
+				int mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio::core::AudioBuffer* sourceBuffer, std::vector<float>& gain);
 
 			public:
 				static std::weak_ptr<ChannelFormat> MONO();

@@ -27,13 +27,14 @@ AudioMixerStrip* MixProcess::getRoutedStrip()
 
 int MixProcess::processAudio(AudioBuffer* buffer)
 {
-	if (!vars.lock()->isEnabled() && vars.lock()->isMaster()) {
+    auto lVars = vars.lock();
+	if (!lVars->isEnabled() && lVars->isMaster()) {
 		buffer->makeSilence();
 	}
-	else if (vars.lock()->isEnabled()) {
-		gain = vars.lock()->getGain();
+	else if (lVars->isEnabled()) {
+//		gain = vars.lock()->getGain();
 		//if (gain > 0.0f || vars->isMaster()) {
-			vars.lock()->getChannelGains(&channelGains);
+			lVars->getChannelGains(&channelGains);
 			for (auto c = 0; c < channelGains.size(); c++) {
 				smoothedChannelGains[c] += smoothingFactor * (channelGains[c] - smoothedChannelGains[c]);
 			}

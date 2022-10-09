@@ -14,7 +14,7 @@ ChannelFormat::ChannelFormat()
 {
 }
 
-int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio::core::AudioBuffer* sourceBuffer, vector<float> gain)
+int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio::core::AudioBuffer* sourceBuffer, vector<float>& gain)
 {
 	auto doMix = destBuffer != sourceBuffer;
 	auto snc = sourceBuffer->getChannelCount();
