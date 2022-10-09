@@ -23,9 +23,9 @@ int TrimProcess::processAudio(AudioBuffer* buffer)
 	int sampleCount = buffer->getSampleCount();
 
 	for (int c = 0; c < channelCount; c++) {
-		auto samples = buffer->getChannel(c);
+		auto& samples = buffer->getChannel(c);
 		for (int s = 0; s < sampleCount; s++) {
-			(*samples)[s] *= trim;
+			samples[s] *= trim;
 		}
 	}
 

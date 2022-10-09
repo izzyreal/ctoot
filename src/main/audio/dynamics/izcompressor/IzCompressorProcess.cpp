@@ -79,19 +79,19 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	//auto dBuffer0 = buffer->getChannel(0);
 	//auto dBuffer1 = buffer->getChannel(1);
 
-	auto dBuffer0 = key != nullptr ? key->getChannel(0) : buffer->getChannel(0);
-	auto dBuffer1 = key != nullptr ? key->getChannel(1) : buffer->getChannel(1);
+	auto& dBuffer0 = key != nullptr ? key->getChannel(0) : buffer->getChannel(0);
+	auto& dBuffer1 = key != nullptr ? key->getChannel(1) : buffer->getChannel(1);
 
-	auto aBuffer0 = buffer->getChannel(0);
-	auto aBuffer1 = buffer->getChannel(1);
+	auto& aBuffer0 = buffer->getChannel(0);
+	auto& aBuffer1 = buffer->getChannel(1);
 
 	dryBuffer->write(aBuffer0, aBuffer1);
 
 	smoothedInputGain += 0.05f * (inputGain - smoothedInputGain);
 
 	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		(*dBuffer0)[i] *= smoothedInputGain;
-		(*dBuffer1)[i] *= smoothedInputGain;
+		dBuffer0[i] *= smoothedInputGain;
+		dBuffer1[i] *= smoothedInputGain;
 	}
 
 	auto dcm = detectionChannelMode;
@@ -191,33 +191,33 @@ int32_t IzCompressorProcess::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	vector<float> dryL(len);
 	vector<float> dryR(len);
 
-	dryBuffer->read(&dryL, &dryR, -correctiveLenSamples, len);
+	dryBuffer->read(dryL, dryR, -correctiveLenSamples, len);
 	dryBuffer->moveReadPos(len);
 
 	smoothedWetGain += 0.05f * (wetGain - smoothedWetGain);
 	smoothedDryGain += 0.05f * (dryGain - smoothedDryGain);
 
 	for (int i = 0; i < len; i++) {
-		(*aBuffer0)[i] = ((*aBuffer0)[i] * smoothedWetGain) + (dryL[i] * smoothedDryGain);
-		(*aBuffer0)[i] *= outputGain;
-		(*aBuffer1)[i] = ((*aBuffer1)[i] * smoothedWetGain) + (dryR[i] * smoothedDryGain);
-		(*aBuffer1)[i] *= outputGain;
+		aBuffer0[i] = (aBuffer0[i] * smoothedWetGain) + (dryL[i] * smoothedDryGain);
+		aBuffer0[i] *= outputGain;
+		aBuffer1[i] = (aBuffer1[i] * smoothedWetGain) + (dryR[i] * smoothedDryGain);
+		aBuffer1[i] *= outputGain;
 	}
 	vars->setDynamicGain(gain >= 0.999937f ? 1.0f : gain);
 	wasBypassed = bypassed;
 	return AUDIO_OK;
 }
 
-void IzCompressorProcess::calcGain(vector<float>* detectionSamples, float& targetGain, const int sampleIndex, const int mslen, const int len, const float sumdiv, float& gain) {
+void IzCompressorProcess::calcGain(vector<float>& detectionSamples, float& targetGain, const int sampleIndex, const int mslen, const int len, const float sumdiv, float& gain) {
 	float key = 0.0f;
 	if (isPeak) {
-		key = FastMath::max(key, abs((*detectionSamples)[sampleIndex]));
+		key = FastMath::max(key, abs(detectionSamples[sampleIndex]));
 		targetGain = function(key);
 	}
 	else if ((sampleIndex % mslen) == 0 && (sampleIndex + mslen) < len) {
 		auto sumOfSquares = 0.0f;
 		for (int j = 0, k = sampleIndex; j < mslen; j++, k++) {
-			sumOfSquares += (*detectionSamples)[k] * (*detectionSamples)[k];
+			sumOfSquares += detectionSamples[k] * detectionSamples[k];
 		}
 		squaresums[nsqsum] = sumOfSquares * sumdiv;
 		float mean = 0.0f;

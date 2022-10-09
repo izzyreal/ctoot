@@ -19,7 +19,7 @@ int MeterProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
     auto ns = buffer->getSampleCount();
     check(buffer);
     for (int c = 0; c < nc; c++) {
-        auto samples = buffer->getChannel(c);
+        auto& samples = buffer->getChannel(c);
         detectOvers(c, samples, ns);
         detectPeak(c, samples, ns);
         detectAverage(c, samples, ns);
@@ -36,12 +36,12 @@ void MeterProcess::check(ctoot::audio::core::AudioBuffer* buffer)
 	}
 }
 
-void MeterProcess::detectOvers(int chan, vector<float>* samples, int len)
+void MeterProcess::detectOvers(int chan, vector<float>& samples, int len)
 {
 	auto overs = int(0);
 	float sample;
 	for (auto i = int(0); i < len; i++) {
-		sample = (*samples)[i];
+		sample = samples[i];
 		if (sample > 1)
 			overs++;
 		else if (sample < -int(1))
@@ -53,12 +53,12 @@ void MeterProcess::detectOvers(int chan, vector<float>* samples, int len)
 	}
 }
 
-void MeterProcess::detectPeak(int chan, vector<float>* samples, int len)
+void MeterProcess::detectPeak(int chan, vector<float>& samples, int len)
 {
 	float peak = 0.0f;
 	float sample;
 	for (int i = 0; i < len; i++) {
-		sample = (*samples)[i];
+		sample = samples[i];
 		if (sample > peak) {
 			peak = sample;
 		}
@@ -69,12 +69,12 @@ void MeterProcess::detectPeak(int chan, vector<float>* samples, int len)
 	//controls.lock()->setPeak(chan, peak);
 }
 
-void MeterProcess::detectAverage(int chan, vector<float>* samples, int len)
+void MeterProcess::detectAverage(int chan, vector<float>& samples, int len)
 {
 	auto sumOfSquares = 0.0f;
 	float sample;
 	for (int i = 0; i < len; i++) {
-		sample = (*samples)[i];
+		sample = samples[i];
 		sumOfSquares += (sample * sample);
 	}
 	auto rms = static_cast<float>(1.41 * sqrt(sumOfSquares / len));

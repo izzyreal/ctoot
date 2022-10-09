@@ -19,15 +19,15 @@ int StereoInputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer, in
 		buffer->setChannelFormat(format);
 	}
 	
-	auto left = buffer->getChannel(0);
-	auto right = buffer->getChannel(1);
+	auto& left = buffer->getChannel(0);
+	auto& right = buffer->getChannel(1);
 	auto ns = nFrames <= localBuffer.size() ? nFrames : localBuffer.size();
 	
 	int sampleCounter = 0;
 	
 	for (int i = 0; i < ns; i++) {
-		(*left)[i] = static_cast<float>(localBuffer[sampleCounter++]);
-		(*right)[i] = static_cast<float>(localBuffer[sampleCounter++]);
+		left[i] = static_cast<float>(localBuffer[sampleCounter++]);
+		right[i] = static_cast<float>(localBuffer[sampleCounter++]);
 	}
 	
 	return AUDIO_OK;

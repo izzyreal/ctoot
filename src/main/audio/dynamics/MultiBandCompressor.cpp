@@ -83,15 +83,15 @@ int32_t MultiBandCompressor::processAudio(ctoot::audio::core::AudioBuffer* buffe
 	auto ns = buffer->getSampleCount();
 	float out;
 	for (auto c = 0; c < nc; c++) {
-		auto samples = buffer->getChannel(c);
+		auto& samples = buffer->getChannel(c);
 		for (auto b = 0; b < nbands; b++) {
-			auto bandsamples = bandBuffers[b]->getChannel(c);
+			auto& bandsamples = bandBuffers[b]->getChannel(c);
 			for (auto i = 0; i < ns; i++) {
-				out = (*bandsamples)[i];
+				out = bandsamples[i];
 				if (ctoot::audio::core::FloatDenormals::isDenormalOrZero(out))
 					continue;
 
-				(*samples)[i] += ((b & 1) == 1) ? -out : out;
+				samples[i] += ((b & 1) == 1) ? -out : out;
 			}
 		}
 	}

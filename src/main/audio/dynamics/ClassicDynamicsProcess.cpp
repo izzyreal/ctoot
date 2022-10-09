@@ -66,7 +66,7 @@ int32_t ClassicDynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	auto len = buffer->getSampleCount();
 	auto nc = buffer->getChannelCount();
 	for (int32_t c = 0; c < nc; c++) {
-		samples[c] = buffer->getChannel(c);
+		samples[c] = &buffer->getChannel(c);
 	}
 	if (vars->isRMS()) {
 		for (auto i = int32_t(0); i < len; i++) {

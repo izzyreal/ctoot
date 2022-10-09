@@ -26,7 +26,7 @@ constexpr int32_t SysexMessage::SYSTEM_EXCLUSIVE;
 const vector<char> SysexMessage::getData()
 {
 	vector<char> returnedArray(length - 1);
-	moduru::VecUtil::VecCopy(&data, 1, &returnedArray, 0, (length - 1));
+	moduru::VecUtil::VecCopy(data, 1, returnedArray, 0, (length - 1));
 	return returnedArray;
 }
 

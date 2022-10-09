@@ -24,13 +24,13 @@ void BiQuadFilter::init() {
 }
 */
 
-void BiQuadFilter::filter(std::vector<float>* buffer, std::vector<float>* mixBuffer, int32_t length, int32_t chan, bool doMix)
+void BiQuadFilter::filter(std::vector<float>& buffer, std::vector<float>& mixBuffer, int32_t length, int32_t chan, bool doMix)
 {
 	auto s = dynamic_cast<BiQuadState*>(getState(chan));
     float sample;
     float y;
     for (auto index = int32_t(0); index < length; index++) {
-        sample = (*buffer)[index];
+        sample = buffer[index];
         y = static_cast< float >(a0 * sample + a1 * s->x1 + a2 * s->x2 - a3 * s->y1 - a4 * s->y2);
         y = ctoot::audio::core::FloatDenormals::zeroDenorm(y);
         s->x2 = s->x1;
@@ -38,9 +38,9 @@ void BiQuadFilter::filter(std::vector<float>* buffer, std::vector<float>* mixBuf
         s->y2 = s->y1;
         s->y1 = y;
         if(!doMix) {
-            (*mixBuffer)[index] = y;
+            mixBuffer[index] = y;
         } else {
-            (*mixBuffer)[index] += (amplitudeAdj * y);
+            mixBuffer[index] += (amplitudeAdj * y);
         }
     }
 }

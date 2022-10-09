@@ -65,7 +65,7 @@ namespace ctoot {
 					virtual float dynamics(float target);
 
 				private:
-					void calcGain(std::vector<float>* detectionSamples, float& targetGain, const int sampleIndex, const int mslen, const int len, const float sumdiv, float& gain);
+					void calcGain(std::vector<float>& detectionSamples, float& targetGain, const int sampleIndex, const int mslen, const int len, const float sumdiv, float& gain);
 
 				public:
 					IzCompressorProcess(IzCompressorProcessVariables* vars);

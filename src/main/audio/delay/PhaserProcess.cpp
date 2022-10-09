@@ -32,7 +32,7 @@ int PhaserProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 
 	auto sr = static_cast<int>(buffer->getSampleRate());
 	auto ns = buffer->getSampleCount();
-	auto samples = buffer->getChannel(0);
+	auto& samples = buffer->getChannel(0);
 	if (sr != sampleRate) {
 		dmin = 440.0f / (sr / 2.0f);
 		dmax = 1600.0f / (sr / 2.0f);
@@ -49,12 +49,12 @@ int PhaserProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 			lfoPhase -= static_cast<float>(M_PI * 2);
 
 		a1 = (1.0f - d) / (1.0f + d);
-		auto y = (*samples)[i] + zm1 * fb;
+		auto y = samples[i] + zm1 * fb;
 		for (auto a = int(0); a < n; a++) {
 			y = allpass[a]->update(y);
 		}
 		zm1 = ctoot::audio::core::FloatDenormals::zeroDenorm(y);
-		(*samples)[i] += zm1 * depth;
+		samples[i] += zm1 * depth;
 	}
 	return AUDIO_OK;
 }

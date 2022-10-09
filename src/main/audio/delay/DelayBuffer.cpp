@@ -29,7 +29,7 @@ void ctoot::audio::delay::DelayBuffer::nudge(int on)
 
 void ctoot::audio::delay::DelayBuffer::append(int chan, float value)
 {
-    (*getChannel(chan))[writeIndex] = value;
+    getChannel(chan)[writeIndex] = value;
 }
 
 void ctoot::audio::delay::DelayBuffer::append(ctoot::audio::core::FloatSampleBuffer* source)
@@ -62,20 +62,20 @@ void ctoot::audio::delay::DelayBuffer::append(ctoot::audio::core::FloatSampleBuf
 		count2 = source1->getSampleCount() - count;
 	}
 	for (auto ch = int(0); ch < source1->getChannelCount(); ch++) {
-		auto dest = getChannel(ch);
-		auto src1 = source1->getChannel(ch);
-		auto src2 = source2->getChannel(ch);
+		auto& dest = getChannel(ch);
+		auto& src1 = source1->getChannel(ch);
+		auto& src2 = source2->getChannel(ch);
 		for (auto i = int(0); i < count; i++) {
-			(*dest)[i + writeIndex] = (*src1)[i] + level2 * (*src2)[i];
+			dest[i + writeIndex] = src1[i] + level2 * src2[i];
 		}
 	}
 	if (count2 > 0) {
 		for (auto ch = int(0); ch < source1->getChannelCount(); ch++) {
-			auto dest = getChannel(ch);
-			auto src1 = source1->getChannel(ch);
-			auto src2 = source2->getChannel(ch);
+			auto& dest = getChannel(ch);
+			auto& src1 = source1->getChannel(ch);
+			auto& src2 = source2->getChannel(ch);
 			for (int i = int(0), j = count; i < count2; i++, j++) {
-				(*dest)[i] = (*src1)[j] + level2 * (*src2)[j];
+				dest[i] = src1[j] + level2 * src2[j];
 			}
 		}
 	}
@@ -94,21 +94,21 @@ void ctoot::audio::delay::DelayBuffer::appendFiltered(ctoot::audio::core::FloatS
 	}
 	for (auto ch = int(0); ch < source1->getChannelCount(); ch++) {
 		auto lp = lowpass[ch];
-		auto dest = getChannel(ch);
-		auto src1 = source1->getChannel(ch);
-		auto src2 = source2->getChannel(ch);
+		auto& dest = getChannel(ch);
+		auto& src1 = source1->getChannel(ch);
+		auto& src2 = source2->getChannel(ch);
 		for (auto i = int(0); i < count; i++) {
-			(*dest)[i + writeIndex] = (*src1)[i] + lp->filter(level2 * (*src2)[i]);
+			dest[i + writeIndex] = src1[i] + lp->filter(level2 * src2[i]);
 		}
 	}
 	if (count2 > 0) {
 		for (auto ch = int(0); ch < source1->getChannelCount(); ch++) {
 			auto lp = lowpass[ch];
-			auto dest = getChannel(ch);
-			auto src1 = source1->getChannel(ch);
-			auto src2 = source2->getChannel(ch);
+			auto& dest = getChannel(ch);
+			auto& src1 = source1->getChannel(ch);
+			auto& src2 = source2->getChannel(ch);
 			for (int i = int(0), j = count; i < count2; i++, j++) {
-				(*dest)[i] = (*src1)[j] + lp->filter(level2 * (*src2)[j]);
+				dest[i] = src1[j] + lp->filter(level2 * src2[j]);
 			}
 		}
 	}
@@ -121,13 +121,13 @@ float ctoot::audio::delay::DelayBuffer::outU(int chan, int delay)
 	if (p < 0)
 		p += getSampleCount();
 
-	return (*getChannel(chan))[p];
+	return getChannel(chan)[p];
 }
 
 float ctoot::audio::delay::DelayBuffer::out(int chan, float delay)
 {
     auto ns = getSampleCount();
-    auto samples = getChannel(chan);
+    auto& samples = getChannel(chan);
     auto d1 = static_cast< int >(delay);
     auto w = delay - d1;
     auto p1 = readIndex - d1;
@@ -138,13 +138,13 @@ float ctoot::audio::delay::DelayBuffer::out(int chan, float delay)
     if(p2 < 0)
         p2 += ns;
 
-    return ((*samples)[p1] * (int(1) - w)) + ((*samples)[p2] * w);
+    return (samples[p1] * (int(1) - w)) + (samples[p2] * w);
 }
 
 float ctoot::audio::delay::DelayBuffer::outA(int chan, float delay)
 {
 	auto ns = getSampleCount();
-	auto samples = getChannel(chan);
+	auto& samples = getChannel(chan);
 	auto d1 = static_cast<int>(delay);
 	auto w = delay - d1;
 	auto p1 = readIndex - d1;
@@ -155,7 +155,7 @@ float ctoot::audio::delay::DelayBuffer::outA(int chan, float delay)
 	if (p2 < 0)
 		p2 += ns;
 
-	return apzm1[chan] = (*samples)[p2] + ((*samples)[p1] - apzm1[chan]) * ((int(1) - w) / (int(1) + w));
+	return apzm1[chan] = samples[p2] + (samples[p1] - apzm1[chan]) * ((int(1) - w) / (int(1) + w));
 }
 
 void ctoot::audio::delay::DelayBuffer::tap(ctoot::audio::core::FloatSampleBuffer* buf, int delay, float weight)
@@ -171,9 +171,9 @@ void ctoot::audio::delay::DelayBuffer::tap(int ch, ctoot::audio::core::FloatSamp
 		return;
 
 	auto sns = getSampleCount();
-	auto source = getChannel(ch);
+	auto& source = getChannel(ch);
 	auto dns = buf->getSampleCount();
-	auto dest = buf->getChannel(ch);
+	auto& dest = buf->getChannel(ch);
 	auto j = readIndex - delay + dns;
 	if (j < 0)
 		j += sns;
@@ -181,11 +181,11 @@ void ctoot::audio::delay::DelayBuffer::tap(int ch, ctoot::audio::core::FloatSamp
 	auto count = min(sns - j, dns);
 	int i;
 	for (i = 0; i < count; i++) {
-		(*dest)[i] += (*source)[i + j] * weight;
+		dest[i] += source[i + j] * weight;
 	}
 	j = -i;
 	for (; i < dns; i++) {
-		(*dest)[i] += (*source)[i + j] * weight;
+		dest[i] += source[i + j] * weight;
 	}
 }
 

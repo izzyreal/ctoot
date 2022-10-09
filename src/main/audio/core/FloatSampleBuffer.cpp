@@ -1,6 +1,8 @@
-#include <audio/core/FloatSampleBuffer.hpp>
+#include "FloatSampleBuffer.hpp"
 
-#include <Logger.hpp>
+#include "Logger.hpp"
+
+#include <exception>
 
 using namespace ctoot::audio::core;
 using namespace std;
@@ -180,9 +182,9 @@ void FloatSampleBuffer::makeSilence()
 
 void FloatSampleBuffer::makeSilence(int channel)
 {
-	auto samples = getChannel(channel);
+	auto& samples = getChannel(channel);
 	for (int i = 0; i < getSampleCount(); i++)
-		(*samples)[i] = 0;
+		samples[i] = 0;
 }
 
 void FloatSampleBuffer::addChannel(bool silent)
@@ -253,7 +255,7 @@ void FloatSampleBuffer::removeChannel(int channel, bool lazy)
 
 void FloatSampleBuffer::copyChannel(int sourceChannel, int targetChannel)
 {
-	*getChannel(targetChannel) = *getChannel(sourceChannel);
+	getChannel(targetChannel) = getChannel(sourceChannel);
 }
 
 void FloatSampleBuffer::copy(int sourceIndex, int destIndex, int length)
@@ -264,7 +266,7 @@ void FloatSampleBuffer::copy(int sourceIndex, int destIndex, int length)
 
 void FloatSampleBuffer::copy(int channel, int sourceIndex, int destIndex, int length)
 {
-	auto data = getChannel(channel);
+	auto& data = getChannel(channel);
 	auto bufferCount = getSampleCount();
     
 	if (sourceIndex + length > bufferCount || destIndex + length > bufferCount || sourceIndex < 0 || destIndex < 0 || length < 0)
@@ -295,16 +297,16 @@ void FloatSampleBuffer::expandChannel(int targetChannelCount)
 
 void FloatSampleBuffer::mixDownChannels()
 {
-	auto firstChannel = getChannel(0);
+	auto& firstChannel = getChannel(0);
 	auto sampleCount = getSampleCount();
 	auto channelCount = getChannelCount();
     
 	for (auto ch = channelCount - 1; ch > 0; ch--)
     {
-		auto thisChannel = getChannel(ch);
+		auto& thisChannel = getChannel(ch);
         
 		for (auto i = 0; i < sampleCount; i++)
-			(*firstChannel)[i] += (*thisChannel)[i];
+			firstChannel[i] += thisChannel[i];
 		
         removeChannel(ch);
 	}
@@ -353,16 +355,16 @@ void FloatSampleBuffer::setSampleRate(float sampleRate)
     this->sampleRate = sampleRate;
 }
 
-vector<float>* FloatSampleBuffer::getChannel(int channel)
+vector<float>& FloatSampleBuffer::getChannel(int channel)
 {
 	if (channel < 0 || channel >= getChannelCount())
     {
-		string error = "FloatSampleBuffer: invalid channel number.";
+		string error = "FloatSampleBuffer: invalid channel index " + std::to_string(channel) + " was provided, only up to index " + std::to_string(channels.size() - 1) + " available.";
 		printf("ERROR: %s\n", error.c_str());
-		return nullptr;
+		throw new std::invalid_argument(error);
 	}
 	
-    return &channels[channel];
+    return channels[channel];
 }
 
 vector<vector<float>>* FloatSampleBuffer::getAllChannels()

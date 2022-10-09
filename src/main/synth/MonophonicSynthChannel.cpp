@@ -78,10 +78,10 @@ int32_t ctoot::synth::MonophonicSynthChannel::processAudio(ctoot::audio::core::A
 		glide();
 
 	update(frequency);
-	auto samples = buffer->getChannel(0);
+	auto& samples = buffer->getChannel(0);
 	auto nsamples = buffer->getSampleCount();
 	for (auto i = int32_t(0); i < nsamples; i++) {
-		(*samples)[i] += getSample();
+		samples[i] += getSample();
 	}
 	return AUDIO_OK;
 }

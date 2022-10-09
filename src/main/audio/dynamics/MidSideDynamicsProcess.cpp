@@ -63,8 +63,8 @@ int32_t MidSideDynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	if (!buffer->encodeMidSide())
 		return AUDIO_OK;
 
-	samplesM = buffer->getChannel(0);
-	samplesS = buffer->getChannel(1);
+	samplesM = &buffer->getChannel(0);
+	samplesS = &buffer->getChannel(1);
 	for (int i = 0; i < len; i++) {
 		float keyM = 0.0f;
 		float keyS = 0.0f;

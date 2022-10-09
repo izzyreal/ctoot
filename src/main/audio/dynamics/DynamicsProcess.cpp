@@ -72,7 +72,7 @@ int32_t DynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	auto mslen = static_cast<int32_t>((buffer->getSampleRate() / int32_t(1000)));
 	auto nc = buffer->getChannelCount();
 	for (auto c = int32_t(0); c < nc; c++) {
-		samples[c] = buffer->getChannel(c);
+		samples[c] = &buffer->getChannel(c);
 	}
 	int32_t nck;
 	auto keyBuffer = vars->getKeyBuffer();
@@ -83,7 +83,7 @@ int32_t DynamicsProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	else {
 		nck = keyBuffer->getChannelCount();
 		for (auto c = int32_t(0); c < nck; c++) {
-			tapSamples[c] = keyBuffer->getChannel(c);
+			tapSamples[c] = &keyBuffer->getChannel(c);
 		}
 		keySamples = tapSamples;
 	}

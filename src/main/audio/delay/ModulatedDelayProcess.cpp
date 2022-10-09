@@ -62,7 +62,7 @@ int ModulatedDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	auto timeDelta = float(1) / sampleRate;
 	auto depth2 = staticDelay * depth;
 	for (int c = 0; c < nc; c++) {
-		samples[c] = buffer->getChannel(c);
+		samples[c] = &buffer->getChannel(c);
 	}
 	for (int s = 0; s < ns; s++) {
 		incrementModulators(timeDelta);

@@ -77,10 +77,10 @@ int MultiTapDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	}
 	delayBuffer->append(buffer, tappedBuffer, feedback);
 	for (int c = 0; c < nc; c++) {
-		auto samples = buffer->getChannel(c);
-		auto tapped = tappedBuffer->getChannel(c);
+		auto& samples = buffer->getChannel(c);
+		auto& tapped = tappedBuffer->getChannel(c);
 		for (auto i = int(0); i < ns; i++) {
-			(*samples)[i] += mix * (*tapped)[i];
+			samples[i] += mix * tapped[i];
 		}
 	}
 	wasBypassed = bypassed;

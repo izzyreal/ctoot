@@ -24,20 +24,18 @@ int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio
 	auto ns = destBuffer->getSampleCount();
 	float g;
 	auto k = static_cast<float>((snc)) / dnc;
-	vector<float>* in;
-	vector<float>* out;
 	for (auto i = 0; i < dnc; i++) {
 		g = gain[i] * k;
-		in = sourceBuffer->getChannel(i % snc);
-		out = destBuffer->getChannel(i);
+		auto& in = sourceBuffer->getChannel(i % snc);
+		auto& out = destBuffer->getChannel(i);
 		if (doMix) {
 			for (auto s = 0; s < ns; s++) {
-				(*out)[s] += (*in)[s] * g;
+				out[s] += in[s] * g;
 			}
 		}
 		else {
 			for (auto s = 0; s < ns; s++) {
-				(*out)[s] = (*in)[s] * g;
+				out[s] = in[s] * g;
 			}
 		}
 	}

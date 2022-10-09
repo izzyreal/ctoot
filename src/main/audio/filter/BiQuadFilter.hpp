@@ -22,7 +22,7 @@ namespace ctoot {
 				double a4{  };
 
 			public:
-				void filter(std::vector<float>* buffer, std::vector<float>* mixBuffer, int32_t length, int32_t chan, bool doMix) override;
+				void filter(std::vector<float>& buffer, std::vector<float>& mixBuffer, int32_t length, int32_t chan, bool doMix) override;
 				//void init() override;
 
 			protected:

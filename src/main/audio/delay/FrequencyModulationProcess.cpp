@@ -55,7 +55,7 @@ int FrequencyModulationProcess::processAudio(ctoot::audio::core::AudioBuffer* bu
 	auto ns = buffer->getSampleCount();
 	auto nc = buffer->getChannelCount();
 	for (auto c = int(0); c < nc; c++) {
-		samples[c] = buffer->getChannel(c);
+		samples[c] = &buffer->getChannel(c);
 	}
 	for (auto s = int(0); s < ns; s++) {
 		auto delay = staticDelay * (1.0f + modulation());

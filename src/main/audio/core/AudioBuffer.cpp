@@ -13,7 +13,7 @@ AudioBuffer::AudioBuffer(string name, int channelCount, int sampleCount, float s
 
 const bool AudioBuffer::isSilent() {
     for (int c = 0; c < getChannelCount(); c++) {
-        auto data = *getChannel(c);
+        auto& data = getChannel(c);
         for (int s = 0; s < getSampleCount(); s++) {
             if (data[s] != 0) return false;
         }
@@ -113,10 +113,10 @@ void AudioBuffer::convertTo(weak_ptr<ChannelFormat> format)
 	else if (channelFormat.lock()->getCount() == 1) {
 		auto nc = format.lock()->getCount();
 		auto ns = getSampleCount();
-		auto samples = getChannel(0);
+		auto& samples = getChannel(0);
 		auto gain = 1.0f / nc;
 		for (auto s = 0; s < ns; s++) {
-			(*samples)[s] *= gain;
+			samples[s] *= gain;
 		}
 		expandChannel(nc);
 		channelFormat = format;
@@ -138,13 +138,13 @@ void AudioBuffer::monoToStereo()
 void AudioBuffer::swap(int a, int b)
 {
     auto ns = getSampleCount();
-    auto asamples = getChannel(a);
-    auto bsamples = getChannel(b);
+    auto& asamples = getChannel(a);
+    auto& bsamples = getChannel(b);
     float tmp;
     for (auto s = 0; s < ns; s++) {
-        tmp = (*asamples)[s];
-        (*asamples)[s] = (*bsamples)[s];
-        (*bsamples)[s] = tmp;
+        tmp = asamples[s];
+        asamples[s] = bsamples[s];
+        bsamples[s] = tmp;
     }
 }
 
@@ -153,11 +153,11 @@ float AudioBuffer::square()
 	auto ns = getSampleCount();
 	auto nc = getChannelCount();
 	auto sumOfSquares = 0.0f;
-	vector<float>* samples;
+
 	for (auto c = 0; c < nc; c++) {
-		samples = getChannel(c);
+		auto& samples = getChannel(c);
 		for (auto s = 0; s < ns; s++) {
-			auto sample = (*samples)[s];
+			auto sample = samples[s];
 			sumOfSquares += sample * sample;
 		}
 	}
@@ -175,13 +175,13 @@ bool AudioBuffer::encodeMidSide()
 	auto np = lefts.size();
     auto ns = getSampleCount();
     for (auto p = 0; p < np; p++) {
-        auto left = getChannel(lefts[p]);
-        auto right = getChannel(rights[p]);
+        auto& left = getChannel(lefts[p]);
+        auto& right = getChannel(rights[p]);
         for (auto s = 0; s < ns; s++) {
-            auto mid = 0.5f * ((*left)[s] + (*right)[s]);
-            auto side = 0.5f * ((*left)[s] - (*right)[s]);
-            (*left)[s] = mid;
-            (*right)[s] = side;
+            auto mid = 0.5f * (left[s] + right[s]);
+            auto side = 0.5f * (left[s] - right[s]);
+            left[s] = mid;
+            right[s] = side;
         }
     }
 	return true;
@@ -198,13 +198,13 @@ bool AudioBuffer::decodeMidSide()
 	auto np = mids.size();
     auto ns = getSampleCount();
     for (auto p = 0; p < np; p++) {
-        auto mid = getChannel(mids[p]);
-        auto side = getChannel(sides[p]);
+        auto& mid = getChannel(mids[p]);
+        auto& side = getChannel(sides[p]);
         for (auto s = 0; s < ns; s++) {
-            auto left = (*mid)[s] + (*side)[s];
-            auto right = (*mid)[s] - (*side)[s];
-            (*mid)[s] = left;
-            (*side)[s] = right;
+            auto left = mid[s] + side[s];
+            auto right = mid[s] - side[s];
+            mid[s] = left;
+            side[s] = right;
         }
     }
     return true;
@@ -218,10 +218,10 @@ void AudioBuffer::copyFrom(AudioBuffer* src)
     auto nc = getChannelCount();
     auto ns = getSampleCount();
     for (auto c = 0; c < nc; c++) {
-        auto from = src->getChannel(c);
-        auto to = getChannel(c);
+        auto& from = src->getChannel(c);
+        auto& to = getChannel(c);
         for (auto s = 0; s < ns; s++) {
-           (*to)[s] = (*from)[s];
+           to[s] = from[s];
         }
     }
 }

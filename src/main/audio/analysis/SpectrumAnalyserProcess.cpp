@@ -55,7 +55,7 @@ int SpectrumAnalyserProcess::processAudio(AudioBuffer* buffer) {
 	vector<float> resultL(FFT_SIZE);
 	vector<float> resultR(FFT_SIZE);
 
-	circBuf->read(&l1, &r1, -FFT_SIZE, FFT_SIZE);
+	circBuf->read(l1, r1, -FFT_SIZE, FFT_SIZE);
 	circBuf->moveReadPos(ns);
 
 	applyWindow(l1);

@@ -29,7 +29,7 @@ int32_t TremoloProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	int ns = buffer->getSampleCount();
 	int nc = buffer->getChannelCount();
 	for (int c = 0; c < nc; c++) {
-		samples[c] = buffer->getChannel(c);
+		samples[c] = &buffer->getChannel(c);
 	}
 	auto lfoInc = static_cast<float>(2 * M_PI * (vars->getRate() / buffer->getSampleRate()));
 	auto depth = vars->getDepth();

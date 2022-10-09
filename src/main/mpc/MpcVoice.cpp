@@ -310,14 +310,14 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames)
         initializeSamplerateDependents();
     }
 
-    auto left = buffer->getChannel(0);
-    auto right = buffer->getChannel(1);
+    auto& left = buffer->getChannel(0);
+    auto& right = buffer->getChannel(1);
 
     for (int i = 0; i < nFrames; i++) {
         frame = getFrame();
 
-        (*left)[i] = frame[0];
-        (*right)[i] = frame[1];
+        left[i] = frame[0];
+        right[i] = frame[1];
 
         if (decayCounter != 0) {
             if (decayCounter == 1)

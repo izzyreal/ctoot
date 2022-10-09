@@ -18,7 +18,7 @@ namespace ctoot {
 
 			public:
 				void setSampleRate(int32_t rate) override;
-				void filter(std::vector<float>* source, std::vector<float>* lo, std::vector<float>* hi, int32_t nsamples, int32_t chan) override;
+				void filter(std::vector<float>& source, std::vector<float>& lo, std::vector<float>& hi, int32_t nsamples, int32_t chan) override;
 				void clear() override;
 
 			public:

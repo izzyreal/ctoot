@@ -88,11 +88,11 @@ int TempoDelayProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer)
 	}
 	delayBuffer->appendFiltered(buffer, tappedBuffer, feedback * 1.1f, vars->getLowpassCoefficient());
 	for (int c = 0; c < nc; c++) {
-		auto samples = buffer->getChannel(c);
-		auto tapped = tappedBuffer->getChannel(c);
+		auto& samples = buffer->getChannel(c);
+		auto& tapped = tappedBuffer->getChannel(c);
 		for (int i = 0; i < ns; i++) {
 			//(*samples)[i] += smoothedMix * (*tapped)[i];
-			(*samples)[i] = smoothedMix * (*tapped)[i];
+			samples[i] = smoothedMix * tapped[i];
 		}
 	}
 	wasBypassed = bypassed;

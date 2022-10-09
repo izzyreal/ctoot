@@ -63,13 +63,13 @@ public:
     void removeChannel(int channel, bool lazy);
     
     int getChannelCount();
-    std::vector<float>* getChannel(int channel);
+    std::vector<float>& getChannel(int channel);
     
     int getSampleCount();
     
     void setSampleRate(float sampleRate);
     float getSampleRate();
-    std::vector<std::vector<float> >* getAllChannels();
+    std::vector<std::vector<float>>* getAllChannels();
     
     float getDitherBits();
     int getDitherMode();

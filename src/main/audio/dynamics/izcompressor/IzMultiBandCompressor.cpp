@@ -99,19 +99,19 @@ int32_t IzMultiBandCompressor::processAudio(AudioBuffer* buffer)
 	const float inputGain = multiBandControls->getInputGain();
 	smoothedInputGain += 0.05f * (inputGain - smoothedInputGain);
 
-	auto l = buffer->getChannel(0);
-	auto r = buffer->getChannel(1);
+	auto& l = buffer->getChannel(0);
+	auto& r = buffer->getChannel(1);
 
 	if (key != nullptr) {
 		for (int i = 0; i < key->getSampleCount(); i++) {
-			(*key->getChannel(0))[i] *= smoothedInputGain;
-			(*key->getChannel(1))[i] *= smoothedInputGain;
+			key->getChannel(0)[i] *= smoothedInputGain;
+			key->getChannel(1)[i] *= smoothedInputGain;
 		}
 	}
 	else {
 		for (int i = 0; i < buffer->getSampleCount(); i++) {
-			(*l)[i] *= smoothedInputGain;
-			(*r)[i] *= smoothedInputGain;
+			l[i] *= smoothedInputGain;
+			r[i] *= smoothedInputGain;
 		}
 	}
 	
@@ -145,7 +145,7 @@ int32_t IzMultiBandCompressor::processAudio(AudioBuffer* buffer)
 	for (auto c = 0; c < nc; c++) {
 		auto samples = buffer->getChannel(c);
 		for (auto b = 0; b < nbands; b++) {
-			auto bandsamples = bandBuffers[b]->getChannel(c);
+			auto& bandsamples = bandBuffers[b]->getChannel(c);
 
 			if (soloBands.size() != 0) {
 				bool thisBandIsSolo = false;
@@ -158,19 +158,19 @@ int32_t IzMultiBandCompressor::processAudio(AudioBuffer* buffer)
 
 				if (!thisBandIsSolo) {
 
-					for (int i = 0; i < bandsamples->size(); i++)
-						(*bandsamples)[i] = 0.0f;
+					for (int i = 0; i < bandsamples.size(); i++)
+						bandsamples[i] = 0.0f;
 
 					continue;
 				}
 			}
 
 			for (auto i = 0; i < ns; i++) {
-				out = (*bandsamples)[i];
+				out = bandsamples[i];
 				if (FloatDenormals::isDenormalOrZero(out))
 					continue;
 
-				(*samples)[i] += ((b & 1) == 1) ? -out : out;
+				samples[i] += ((b & 1) == 1) ? -out : out;
 			}
 		}
 	}
@@ -179,8 +179,8 @@ int32_t IzMultiBandCompressor::processAudio(AudioBuffer* buffer)
 	smoothedOutputGain += 0.05f * (outputGain - smoothedOutputGain);
 
 	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		(*l)[i] *= smoothedOutputGain;
-		(*r)[i] *= smoothedOutputGain;
+		l[i] *= smoothedOutputGain;
+		r[i] *= smoothedOutputGain;
 	}
 
 	wasBypassed = bypassed;

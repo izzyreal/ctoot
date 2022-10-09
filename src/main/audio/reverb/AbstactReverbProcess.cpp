@@ -10,13 +10,13 @@ using namespace ctoot::audio::core;
 int AbstractReverbProcess::processAudio(AudioBuffer* buffer) {
 	cacheVariables();
 	//buffer->monoToStereo();
-	auto samplesL = buffer->getChannel(0);
-	auto samplesR = buffer->getChannel(1);
+	auto& samplesL = buffer->getChannel(0);
+	auto& samplesR = buffer->getChannel(1);
 
 	for (int i = 0; i < buffer->getSampleCount(); i++) {
-		reverb((*samplesL)[i], (*samplesR)[i]);
-		(*samplesL)[i] = left();
-		(*samplesR)[i] = right();
+		reverb(samplesL[i], samplesR[i]);
+		samplesL[i] = left();
+		samplesR[i] = right();
 	}
 	return AUDIO_OK;
 	/*

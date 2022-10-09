@@ -38,10 +38,10 @@ bool ctoot::synth::PolyphonicSynthChannelAbstractVoice::mix(ctoot::audio::core::
     if(stop_)
         return false;
 
-    auto samples = buffer->getChannel(0);
+    auto& samples = buffer->getChannel(0);
     auto nsamples = buffer->getSampleCount();
     for (auto i = int32_t(0); i < nsamples; i++) {
-        (*samples)[i] += getSample();
+        samples[i] += getSample();
     }
     return !isComplete();
 }
