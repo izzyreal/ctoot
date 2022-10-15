@@ -2,7 +2,7 @@
 
 #include "Logger.hpp"
 
-#include <exception>
+#include <stdexcept>
 
 using namespace ctoot::audio::core;
 using namespace std;
