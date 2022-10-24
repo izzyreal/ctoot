@@ -274,6 +274,23 @@ void MpcSoundPlayerChannel::noteOff(int note)
 
 void MpcSoundPlayerChannel::allNotesOff()
 {
+    for (int note = 35; note <= 98; note++)
+    {
+        for (auto& v : controls.lock()->getMms().lock()->getVoices())
+        {
+            auto voice = v.lock();
+
+            if (!voice->isFinished()
+                && voice->getNote() == note
+                && voice->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
+                && !voice->isDecaying()
+                && drumIndex == voice->getMuteInfo().getDrum())
+            {
+                voice->startDecay(0);
+                break;
+            }
+        }
+    }
 }
 
 void MpcSoundPlayerChannel::allSoundOff()
