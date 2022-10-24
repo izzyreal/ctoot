@@ -30,16 +30,16 @@ vector<weak_ptr<MpcVoice>> MpcMultiMidiSynth::getVoices()
     return weakVoices;
 }
 
-void MpcMultiMidiSynth::mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, int chan, int varType, int varValue, int frameOffset, int startTick)
+void MpcMultiMidiSynth::mpcTransportChannel(ctoot::midi::core::MidiMessage* msg, int chan, int varType, int varValue, int frameOffset, int startTick, int duration)
 {
-    mpcTransportChannel(msg, mapChannel(chan).lock().get(), varType, varValue, frameOffset, startTick);
+    mpcTransportChannel(msg, mapChannel(chan).lock().get(), varType, varValue, frameOffset, startTick, duration);
 }
 
-void MpcMultiMidiSynth::mpcTransport(ctoot::midi::core::MidiMessage* msg, int timestamp, int varType, int varValue, int frameOffset, int startTick)
+void MpcMultiMidiSynth::mpcTransport(ctoot::midi::core::MidiMessage* msg, int timestamp, int varType, int varValue, int frameOffset, int startTick, int duration)
 {
     if (ctoot::midi::message::ChannelMsg::isChannel(msg))
     {
-        mpcTransportChannel(msg, ctoot::midi::message::ChannelMsg::getChannel(msg), varType, varValue, frameOffset, startTick);
+        mpcTransportChannel(msg, ctoot::midi::message::ChannelMsg::getChannel(msg), varType, varValue, frameOffset, startTick, duration);
     }
 }
 
@@ -49,7 +49,8 @@ void MpcMultiMidiSynth::mpcTransportChannel(
         int varType,
         int varValue,
         int frameOffset,
-        int startTick)
+        int startTick,
+        int duration)
 {
 	if (synthChannel == nullptr)
 		return;
@@ -65,7 +66,7 @@ void MpcMultiMidiSynth::mpcTransportChannel(
         
         if (on && velocity != 0)
         {
-			mpcSynthChannel->mpcNoteOn(pitch, velocity, varType, varValue, frameOffset, true, startTick);
+			mpcSynthChannel->mpcNoteOn(pitch, velocity, varType, varValue, frameOffset, true, startTick, duration);
 		}
 		else
         {

@@ -82,7 +82,6 @@ private:
     void readFrame();
     void initializeSamplerateDependents();
     static float getInverseNyquist(int sampleRate) { return 2.f / sampleRate; }
-    static float getTimeRatio(int sampleRate) { return 5.46f * (44100.0 / sampleRate); }
 
 private:
     static std::vector<float> EMPTY_FRAME;
@@ -94,6 +93,7 @@ private:
     static const int SVF_OFFSET = 48;
     static const int AMPENV_OFFSET = 64;
     std::vector<float> tempFrame;
+    int duration = -1;
     int varType = 0;
     int varValue = 0;
     int veloToStart = 0;
@@ -131,7 +131,8 @@ public:
               int muteDrum,
               int frameOffset,
               bool enableEnvs,
-              int startTick);
+              int startTick,
+              int newDuration);
     std::vector<float>& getFrame();
     int getNote();
     ctoot::mpc::MpcNoteParameters* getNoteParameters();

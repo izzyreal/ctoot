@@ -109,10 +109,10 @@ void MpcSoundPlayerChannel::setLocation(string location)
 
 void MpcSoundPlayerChannel::noteOn(int note, int velo)
 {
-	mpcNoteOn(note, velo, 0, 64, 0, true, -1);
+	mpcNoteOn(note, velo, 0, 64, 0, true, -1, -1);
 }
 
-void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick)
+void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick, int durationFrames)
 {
 	if (note < 35 || note > 98 || velo == 0)
 		return;
@@ -225,7 +225,7 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
         stopMonoOrPolyVoiceWithSameNoteParameters(np, note);
     }
 
-	voice->init(velo, sound, note, np, varType, varValue, note, drumIndex, frameOffset, true, startTick);
+	voice->init(velo, sound, note, np, varType, varValue, note, drumIndex, frameOffset, true, startTick, durationFrames);
 
 	if (firstGeneration)
 	{
@@ -236,13 +236,13 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 			if (optA != 34)
 			{
-				mpcNoteOn(optA, velo, varType, varValue, frameOffset, false, startTick);
+				mpcNoteOn(optA, velo, varType, varValue, frameOffset, false, startTick, durationFrames);
 				simultA[note] = optA;
 			}
 
 			if (optB != 34)
 			{
-				mpcNoteOn(optB, velo, varType, varValue, frameOffset, false, startTick);
+				mpcNoteOn(optB, velo, varType, varValue, frameOffset, false, startTick, durationFrames);
 				simultB[note] = optB;
 			}
 		}

@@ -87,9 +87,12 @@ void MpcVoice::init(
         int muteDrum,
         int newFrameOffset,
         bool newEnableEnvs,
-        int newStartTick
+        int newStartTick,
+        int newDuration
 ) {
     finished = false;
+
+    duration = newDuration;
 
     noteParameters = np;
     startTick = newStartTick;
@@ -208,14 +211,18 @@ void MpcVoice::initializeSamplerateDependents()
         decayLengthSamples = MAX_DECAY_LENGTH_SAMPLES;
     }
 
-    auto holdLengthSamples = playableSampleLength - attackLengthSamples - decayLengthSamples;
-
     auto timeRatio = 5.46f;
     auto staticEnvHoldSamples = (int) (playableSampleLength - ((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate) * 0.001);
+
+    if (duration != -1 && duration < playableSampleLength)
+    {
+        staticEnvHoldSamples = (int) (duration - ((STATIC_ATTACK_LENGTH + STATIC_DECAY_LENGTH) / timeRatio) * (sampleRate) * 0.001);
+    }
 
     shold->setValue(staticEnvHoldSamples);
 
     if (!basic) {
+        auto holdLengthSamples = playableSampleLength - attackLengthSamples - decayLengthSamples;
         attack->setValue(decayMode == 1 ? (float) (0) : attackMs * timeRatio);
         hold->setValue(decayMode == 1 ? 0 : holdLengthSamples);
         decay->setValue(decayMs * timeRatio);

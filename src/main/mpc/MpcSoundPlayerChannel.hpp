@@ -75,7 +75,7 @@ namespace ctoot::mpc
 		void setReceiveMidiVolume(bool b);
 		void setLastReceivedMidiVolume(int volume);
 		int getLastReceivedMidiVolume();
-		void mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick);
+		void mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick, int durationFrames);
         
 	public:
 		void allSoundOff(int frameOffset);
