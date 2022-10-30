@@ -78,7 +78,7 @@ void NonRealTimeAudioServer::startNRT()
 {
 	//MLOG("startNRT");
 	if (!client.lock()) {
-		MLOG("can't lock client!")
+		MLOG("can't lock client!");
 		startASAP = true;
 		return;
 	}
