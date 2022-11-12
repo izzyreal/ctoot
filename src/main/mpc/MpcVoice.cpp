@@ -20,23 +20,22 @@
 #endif
 
 using namespace ctoot::mpc;
-using namespace std;
 
-std::vector<float> MpcVoice::EMPTY_FRAME = std::vector<float>{0.f, 0.f};
+std::vector<float> MpcVoice::EMPTY_FRAME = {0.f, 0.f};
 
 MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         : stripNumber(_stripNumber), basic(_basic), frame(EMPTY_FRAME) {
     tempFrame = EMPTY_FRAME;
     staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
     staticEnv = new ctoot::mpc::MpcEnvelopeGenerator(staticEnvControls);
-    shold = dynamic_pointer_cast<ctoot::control::FloatControl>(
+    shold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
             staticEnvControls->getControls()[HOLD_INDEX].lock()).get();
 
-    auto sattack = dynamic_pointer_cast<ctoot::control::FloatControl>(
+    auto sattack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
             staticEnvControls->getControls()[ATTACK_INDEX].lock()).get();
 
 
-    auto sdecay = dynamic_pointer_cast<ctoot::control::FloatControl>(
+    auto sdecay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
             staticEnvControls->getControls()[DECAY_INDEX].lock()).get();
 
     sattack->setValue(STATIC_ATTACK_LENGTH);
@@ -51,25 +50,25 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         svfControls->createControls();
         svfLeft = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
         svfRight = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
-        fattack = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        fattack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 filterEnvControls->getControls()[ATTACK_INDEX].lock()).get();
-        fhold = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        fhold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 filterEnvControls->getControls()[HOLD_INDEX].lock()).get();
-        fdecay = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        fdecay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 filterEnvControls->getControls()[DECAY_INDEX].lock()).get();
-        attack = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        attack = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 ampEnvControls->getControls()[ATTACK_INDEX].lock()).get();
-        hold = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        hold = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 ampEnvControls->getControls()[HOLD_INDEX].lock()).get();
-        decay = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        decay = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 ampEnvControls->getControls()[DECAY_INDEX].lock()).get();
-        reso = dynamic_pointer_cast<ctoot::control::FloatControl>(svfControls->getControls()[RESO_INDEX].lock()).get();
+        reso = std::dynamic_pointer_cast<ctoot::control::FloatControl>(svfControls->getControls()[RESO_INDEX].lock()).get();
 
-        auto mix = dynamic_pointer_cast<ctoot::control::FloatControl>(
+        auto mix = std::dynamic_pointer_cast<ctoot::control::FloatControl>(
                 svfControls->getControls()[MIX_INDEX].lock()).get();
         mix->setValue(0.0f);
 
-        auto bandpass = dynamic_pointer_cast<ctoot::control::BooleanControl>(
+        auto bandpass = std::dynamic_pointer_cast<ctoot::control::BooleanControl>(
                 svfControls->getControls()[BANDPASS_INDEX].lock()).get();
 
         bandpass->setValue(false);
@@ -78,7 +77,7 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
 
 void MpcVoice::init(
         int newVelocity,
-        weak_ptr<ctoot::mpc::MpcSound> newMpcSound,
+        std::shared_ptr<ctoot::mpc::MpcSound> newMpcSound,
         int newNote,
         ctoot::mpc::MpcNoteParameters *np,
         int newVarType,
@@ -115,7 +114,7 @@ void MpcVoice::init(
     decayMode = 0;
     veloToLevel = 100;
 
-    auto lMpcSound = mpcSound.lock();
+    auto lMpcSound = mpcSound;
 
     tune = lMpcSound->getTune();
 
@@ -191,7 +190,7 @@ void MpcVoice::initializeSamplerateDependents()
         svfControls->setSampleRate(sampleRate);
     }
 
-    auto lMpcSound = mpcSound.lock();
+    auto lMpcSound = mpcSound;
 
     increment = pow(2.0, ((double) (tune) / 120.0)) * (44100.0 / sampleRate);
 
@@ -229,7 +228,7 @@ void MpcVoice::initializeSamplerateDependents()
     }
 }
 
-vector<float> &MpcVoice::getFrame() {
+std::vector<float>& MpcVoice::getFrame() {
     if (finished)
         return EMPTY_FRAME;
 
@@ -253,7 +252,7 @@ vector<float> &MpcVoice::getFrame() {
 
     readFrame();
 
-    if (mpcSound.lock()->isMono()) {
+    if (mpcSound->isMono()) {
         tempFrame[0] *= envAmplitude * amplitude;
 
         if (!basic)
@@ -274,8 +273,8 @@ vector<float> &MpcVoice::getFrame() {
 }
 
 void MpcVoice::readFrame() {
-    if (mpcSound.lock()->isLoopEnabled() && position > end - 1)
-        position = mpcSound.lock()->getLoopTo();
+    if (mpcSound->isLoopEnabled() && position > end - 1)
+        position = mpcSound->getLoopTo();
 
     if (position >= (end - 1) || (staticEnv != nullptr && staticEnv->isComplete()) ||
         (ampEnv != nullptr && ampEnv->isComplete())) {
@@ -292,7 +291,7 @@ void MpcVoice::readFrame() {
 
     frac = position - (double) (j);
 
-    if (mpcSound.lock()->isMono()) {
+    if (mpcSound->isMono()) {
         tempFrame[0] = ((*sampleData)[j] * (1.0f - frac)) + ((*sampleData)[k] * frac);
     } else {
         auto rOffset = sampleData->size() * 0.5;
@@ -338,6 +337,7 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames)
 
     if (finished) {
         note = -1;
+        mpcSound = {};
     }
 
     return AUDIO_OK;
@@ -359,7 +359,7 @@ void MpcVoice::startDecay() {
 }
 
 int MpcVoice::getVoiceOverlap() {
-    return mpcSound.lock()->isLoopEnabled() ? 2 : voiceOverlapMode;
+    return mpcSound->isLoopEnabled() ? 2 : voiceOverlapMode;
 }
 
 int MpcVoice::getStripNumber() {

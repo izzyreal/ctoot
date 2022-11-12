@@ -42,9 +42,9 @@ namespace ctoot::mpc
 	private:
 		std::map<int, int> simultA;
 		std::map<int, int> simultB;
-		std::weak_ptr<MpcSoundPlayerControls> controls;
-		std::weak_ptr<MpcSampler> sampler;
-		std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer;
+		std::shared_ptr<MpcSoundPlayerControls> controls;
+		std::shared_ptr<MpcSampler> sampler;
+		std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer;
 		std::vector<MpcMixerInterconnection*> mixerConnections;
 		ctoot::audio::server::AudioServer* server = nullptr;
 

@@ -15,12 +15,10 @@ using namespace std;
 MpcBasicSoundPlayerChannel::MpcBasicSoundPlayerChannel(weak_ptr<MpcBasicSoundPlayerControls> controls)
 {
 	auto lControls = controls.lock();
-	sampler = lControls->getSampler();
-	mixer = lControls->getMixer();
-	voice = lControls->getVoice();
-	auto lMixer = mixer.lock();
-	mixerStrip = lMixer->getStrip("65");
-	auto sc = lMixer->getMixerControls().lock()->getStripControls("65").lock();
+	sampler = lControls->getSampler().lock();
+	mixer = lControls->getMixer().lock();
+	voice = lControls->getVoice().lock();
+	auto sc = mixer->getMixerControls().lock()->getStripControls("65").lock();
 	auto mmc = dynamic_pointer_cast<MainMixControls>(sc->find("Main").lock());
 	fader = dynamic_pointer_cast<FaderControl>(mmc->find("Level").lock());
 }
@@ -41,29 +39,29 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 	}
 
 	tempVars.reset();
-	auto lSampler = sampler.lock();
+
 	if (soundNumber == -4) {
-		tempVars = lSampler->getPlayXSound();
+		tempVars = sampler->getPlayXSound();
 	}
 	else if (soundNumber == -3) {
-		tempVars = lSampler->getMpcPreviewSound();
+		tempVars = sampler->getMpcPreviewSound();
 	}
 	else if (soundNumber == -2) {
-		tempVars = lSampler->getClickSound();
+		tempVars = sampler->getClickSound();
 	}
 	else if (soundNumber == -1) {
-		tempVars = weak_ptr<ctoot::mpc::MpcSound>();
+		tempVars = {};
 	}
 	else if (soundNumber >= 0) {
-		tempVars = lSampler->getMpcSound(soundNumber);
+		tempVars = sampler->getMpcSound(soundNumber);
 	}
     
-	if (!tempVars.lock()) {
+	if (!tempVars) {
 		return;
 	}
 
-	fader.lock()->setValue(soundNumber == -2 ? 200 : 100);
-	voice.lock()->init(velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber != -2, -1, -1);
+	fader->setValue(soundNumber == -2 ? 200 : 100);
+	voice->init(velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber != -2, -1, -1);
 }
 
 void MpcBasicSoundPlayerChannel::noteOff(int note)
@@ -76,16 +74,16 @@ void MpcBasicSoundPlayerChannel::allNotesOff()
 
 void MpcBasicSoundPlayerChannel::allSoundOff()
 {
-	voice.lock()->startDecay();
+	voice->startDecay();
 }
 
 void MpcBasicSoundPlayerChannel::finishVoice() {
-	voice.lock()->finish(); // stops voice immediately, without a short fade-out/decay time
+	voice->finish(); // stops voice immediately, without a short fade-out/decay time
 }
 
 void MpcBasicSoundPlayerChannel::connectVoice()
 {
-    mixer.lock()->getStrip("65").lock()->setInputProcess(voice);
+    mixer->getStrip("65").lock()->setInputProcess(voice);
 }
 
 void MpcBasicSoundPlayerChannel::noteOff(int pitch, int velocity)

@@ -16,13 +16,12 @@ class MpcBasicSoundPlayerChannel final
 {
     
 private:
-    std::weak_ptr<ctoot::mpc::MpcSampler> sampler;
-    std::weak_ptr<ctoot::mpc::MpcVoice> voice;
-    std::weak_ptr<ctoot::mpc::MpcSound> tempVars;
+    std::shared_ptr<ctoot::mpc::MpcSampler> sampler;
+    std::shared_ptr<ctoot::mpc::MpcVoice> voice;
+    std::shared_ptr<ctoot::mpc::MpcSound> tempVars;
     
-    std::weak_ptr<ctoot::audio::mixer::AudioMixerStrip> mixerStrip;
-    std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer;
-    std::weak_ptr<ctoot::audio::fader::FaderControl> fader;
+    std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer;
+    std::shared_ptr<ctoot::audio::fader::FaderControl> fader;
     
 public:
     void finishVoice();

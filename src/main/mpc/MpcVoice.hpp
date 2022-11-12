@@ -46,7 +46,7 @@ private:
     // Pointer to currently playing note parameters
     ctoot::mpc::MpcNoteParameters* noteParameters = nullptr;
 
-    std::weak_ptr<ctoot::mpc::MpcSound> mpcSound;
+    std::shared_ptr<ctoot::mpc::MpcSound> mpcSound;
     int startTick = -1;
     int tune = 0;
     double increment = 0;
@@ -122,7 +122,7 @@ public:
 public:
     bool isFinished();
     void init(int velocity,
-              std::weak_ptr<ctoot::mpc::MpcSound> _mpcSound,
+              std::shared_ptr<ctoot::mpc::MpcSound> mpcSound,
               int note,
               ctoot::mpc::MpcNoteParameters* np,
               int varType,
