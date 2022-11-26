@@ -7,17 +7,6 @@ MpcStereoMixerChannel::MpcStereoMixerChannel()
 {
 	panning = 50;
 	level = 100;
-	stereo = true;
-}
-
-void MpcStereoMixerChannel::setStereo(bool b)
-{
-    stereo = b;
-}
-
-bool MpcStereoMixerChannel::isStereo()
-{
-    return stereo;
 }
 
 void MpcStereoMixerChannel::setPanning(int i)

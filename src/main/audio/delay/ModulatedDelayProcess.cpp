@@ -118,7 +118,7 @@ void ModulatedDelayProcess::incrementModulators(float timeDelta)
 	}
 }
 
-#define TWODIVPI static_cast<float>(2 / M_PI);
+#define TWODIVPI static_cast<float>(2 / M_PI)
 
 static inline float triangle(float x) {
 	x += static_cast<float>(M_PI);

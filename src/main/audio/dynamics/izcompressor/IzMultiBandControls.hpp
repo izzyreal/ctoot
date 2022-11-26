@@ -49,7 +49,8 @@ namespace ctoot {
 					IzMultiBandControls();
 
 				};
-				REGISTER_TYPE(ctoot::audio::dynamics::izcompressor::, IzMultiBandControls);
+
+				REGISTER_TYPE(ctoot::audio::dynamics::izcompressor::, IzMultiBandControls)
 			}
 		}
 	}

@@ -11,10 +11,10 @@ using namespace std;
 
 DSFOscillatorSS::DSFOscillatorSS(double wn, double wp, int32_t np, float a)
 {
-	/* assert((wn > 0.0f && wn < M_PI) : ::java::lang::StringBuilder().append("wn=")->append(wn)->toString()) */;
-	/* assert(wp > 0.0f : ::java::lang::StringBuilder().append("wp=")->append(wp)->toString()) */;
-	/* assert(np > 0 : ::java::lang::StringBuilder().append("np=")->append(np)->toString()) */;
-	/* assert((a >= 0 && a < 1.0f) : ::java::lang::StringBuilder().append("a=")->append(a)->toString()) */;
+	/* assert((wn > 0.0f && wn < M_PI) : ::java::lang::StringBuilder().append("wn=")->append(wn)->toString()) */
+	/* assert(wp > 0.0f : ::java::lang::StringBuilder().append("wp=")->append(wp)->toString()) */
+	/* assert(np > 0 : ::java::lang::StringBuilder().append("np=")->append(np)->toString()) */
+	/* assert((a >= 0 && a < 1.0f) : ::java::lang::StringBuilder().append("a=")->append(a)->toString()) */
 	if (wn + wp * np >= M_PI)
 		np = static_cast<int32_t>(((M_PI - wn) / wp));
 

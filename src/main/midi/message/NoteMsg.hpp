@@ -6,7 +6,7 @@ namespace ctoot {
 
 		namespace core {
 			class MidiMessage;
-		};
+		}
 
 		namespace message {
 
@@ -41,6 +41,6 @@ namespace ctoot {
 				static int& noteOff();
 			};
 	
-		};
-	};
-};
+		}
+	}
+}

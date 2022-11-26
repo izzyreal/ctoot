@@ -14,7 +14,8 @@ namespace ctoot {
 				QuadBandControls();
 
 			};
-			REGISTER_TYPE(ctoot::audio::dynamics::, QuadBandControls);
+
+			REGISTER_TYPE(ctoot::audio::dynamics::, QuadBandControls)
 		}
 	}
 }

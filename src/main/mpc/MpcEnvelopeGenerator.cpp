@@ -27,11 +27,11 @@ float MpcEnvelopeGenerator::getEnvelope(bool decay)
 			if (envelope > 0.99f) {
 				state = HOLD;
 			}
-			goto end_switch0;;
+			goto end_switch0;
 		}
         if (v == HOLD) {
 			holdCounter++;
-			goto end_switch0;;
+			goto end_switch0;
 		}
         if (v == DECAY) {
 			envelope -= vars->getDecayCoeff();
@@ -39,10 +39,10 @@ float MpcEnvelopeGenerator::getEnvelope(bool decay)
 				envelope = 0.0f;
 				state = COMPLETE;
 			}
-			goto end_switch0;;
+			goto end_switch0;
 		}
         if (v == COMPLETE) {
-			goto end_switch0;;
+			goto end_switch0;
 		}
 	end_switch0:;
 	}

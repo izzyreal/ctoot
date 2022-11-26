@@ -29,7 +29,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 				if (abs(dbGain) > 0.1) {
 					return OrfanidisBiQuadDesigner::designPeak(srate, freq, bwHz, static_cast<float>(A));
 				}
-				goto end_switch0;;
+				goto end_switch0;
 			}
 			if (v == FilterShape::NOTCH) {
 				return OrfanidisBiQuadDesigner::designNotch(srate, freq, bwHz);
@@ -38,7 +38,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 				return OrfanidisBiQuadDesigner::designResonator(srate, freq, bwHz);
 			}
 			if ((v != FilterShape::PEQ) && (v != FilterShape::NOTCH) && (v != FilterShape::RESONATOR)) {
-				goto end_switch0;;
+				goto end_switch0;
 			}
 		end_switch0:;
 		}
@@ -60,7 +60,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = int32_t(1) + alpha;
 			a1 = -int32_t(2) * cs;
 			a2 = int32_t(1) - alpha;
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if (v == FilterShape::HPF) {
 			b0 = (int32_t(1) + cs) / int32_t(2);
@@ -69,7 +69,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = int32_t(1) + alpha;
 			a1 = -int32_t(2) * cs;
 			a2 = int32_t(1) - alpha;
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if (v == FilterShape::BPF) {
 			b0 = alpha;
@@ -78,7 +78,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = int32_t(1) + alpha;
 			a1 = -int32_t(2) * cs;
 			a2 = int32_t(1) - alpha;
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if (v == FilterShape::NOTCH) {
 			b0 = 1;
@@ -87,7 +87,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = int32_t(1) + alpha;
 			a1 = -int32_t(2) * cs;
 			a2 = int32_t(1) - alpha;
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if (v == FilterShape::PEQ) {
 			b0 = int32_t(1) + (alpha * A);
@@ -96,7 +96,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = int32_t(1) + (alpha / A);
 			a1 = -int32_t(2) * cs;
 			a2 = int32_t(1) - (alpha / A);
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if (v == FilterShape::LSH) {
 			b0 = A * ((A + int32_t(1)) - (A - int32_t(1)) * cs + beta * sn);
@@ -105,7 +105,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = (A + int32_t(1)) + (A - int32_t(1)) * cs + beta * sn;
 			a1 = -int32_t(2) * ((A - int32_t(1)) + (A + int32_t(1)) * cs);
 			a2 = (A + int32_t(1)) + (A - int32_t(1)) * cs - beta * sn;
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if (v == FilterShape::HSH) {
 			b0 = A * ((A + int32_t(1)) + (A - int32_t(1)) * cs + beta * sn);
@@ -114,7 +114,7 @@ vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq
 			a0 = (A + int32_t(1)) - (A - int32_t(1)) * cs + beta * sn;
 			a1 = int32_t(2) * ((A - int32_t(1)) - (A + int32_t(1)) * cs);
 			a2 = (A + int32_t(1)) - (A - int32_t(1)) * cs - beta * sn;
-			goto end_switch1;;
+			goto end_switch1;
 		}
 		if ((((v != FilterShape::LPF) && (v != FilterShape::HPF) && (v != FilterShape::BPF) && (v != FilterShape::NOTCH) && (v != FilterShape::PEQ) && (v != FilterShape::LSH) && (v != FilterShape::HSH)))) {
 			return {};
