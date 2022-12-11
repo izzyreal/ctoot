@@ -3,8 +3,10 @@
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcSoundOscillatorControls::MpcSoundOscillatorControls(int id, int instanceIndex)
-	: CompoundControl(id, instanceIndex, "msoc")
+unsigned short MpcSoundOscillatorControls::idxCounter = 0;
+
+MpcSoundOscillatorControls::MpcSoundOscillatorControls(int id)
+	: CompoundControl(id, idxCounter++, "msoc")
 {
 	sampleRate = 44100;
 	mono = false;
