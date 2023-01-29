@@ -16,6 +16,3 @@ FaderControl* MpcMixerControls::createFaderControl(bool muted)
 {
     return new MpcFaderControl(muted);
 }
-
-MpcMixerControls::~MpcMixerControls() {
-}

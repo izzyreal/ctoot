@@ -319,11 +319,16 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames)
     auto& left = buffer->getChannel(0);
     auto& right = buffer->getChannel(1);
 
+    auto masterLevelToUse = masterLevel.load();
+
+    auto masterLevelFactor = masterLevelToUse > -128 ? std::pow (10.f, static_cast<float>(masterLevelToUse) * 0.04f)
+                                                        : 0;
+
     for (int i = 0; i < nFrames; i++) {
         frame = getFrame();
 
-        left[i] = frame[0];
-        right[i] = frame[1];
+        left[i] = frame[0] * masterLevelFactor;
+        right[i] = frame[1] * masterLevelFactor;
 
         if (decayCounter != 0) {
             if (decayCounter == 1)
@@ -392,6 +397,16 @@ int MpcVoice::getNote() {
 
 ctoot::mpc::MpcNoteParameters *MpcVoice::getNoteParameters() {
     return noteParameters;
+}
+
+void MpcVoice::setMasterLevel(int8_t masterLevelToUse)
+{
+    masterLevel.store(masterLevelToUse);
+}
+
+int8_t MpcVoice::getMasterLevel()
+{
+    return masterLevel.load();
 }
 
 MpcVoice::~MpcVoice() {

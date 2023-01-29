@@ -113,13 +113,16 @@ private:
     int k = 0;
     int j = 0;
     std::vector<float> frame;
-    
+
+    // The master level that is set in the Mixer Setup screen.
+    // -Inf, -72, -66, -60, -54, -48, -42, -36, -30, -24, -18, -12, -6, 0, 6 or 12 dB.
+    std::atomic_int8_t masterLevel{0};
+
 public:
     void open() override;
     int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
     void close() override;
     
-public:
     bool isFinished();
     void init(int velocity,
               std::shared_ptr<ctoot::mpc::MpcSound> mpcSound,
@@ -144,7 +147,10 @@ public:
     ctoot::mpc::MpcMuteInfo& getMuteInfo();
     void startDecay(int offset);
     void finish();
-    
+
+    void setMasterLevel(int8_t masterLevel);
+    int8_t getMasterLevel();
+
 public:
     MpcVoice(int stripNumber, bool basic);
     ~MpcVoice();
