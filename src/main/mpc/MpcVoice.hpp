@@ -1,5 +1,7 @@
 #pragma once
 
+#include <atomic>
+
 #include <audio/core/AudioProcess.hpp>
 #include "MpcMuteInfo.hpp"
 
