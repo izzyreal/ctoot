@@ -43,8 +43,11 @@ namespace ctoot::audio::server
 		//For compatibility with the PortAudio framework
 		void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 		
-		// For compatibility with JUCE
+		// For compatibility with JUCE 7.0.2
         void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+
+		// For compatibility with JUCE 7.0.5
+        void work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 
 	public:
 		ExternalAudioServer();
