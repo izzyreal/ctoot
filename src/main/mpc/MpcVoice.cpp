@@ -276,7 +276,7 @@ void MpcVoice::readFrame() {
     if (mpcSound->isLoopEnabled() && position > end - 1)
         position = mpcSound->getLoopTo();
 
-    if (position >= (end - 1) || (staticEnv != nullptr && staticEnv->isComplete()) ||
+    if ( ( (position >= (end - 1)) && !mpcSound->isLoopEnabled() ) || (staticEnv != nullptr && staticEnv->isComplete()) ||
         (ampEnv != nullptr && ampEnv->isComplete())) {
         tempFrame = EMPTY_FRAME;
         finished = true;
