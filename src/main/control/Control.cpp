@@ -1,7 +1,6 @@
 #include "Control.hpp"
 
 #include "CompoundControl.hpp"
-#include "ChainMutation.hpp"
 
 using namespace ctoot::control;
 using namespace std;
@@ -15,25 +14,13 @@ Control::Control(int id, string name)
 
 void Control::registerType(const std::string& name, ControlFactory *factory)
 {
-//    printf("registerType %s\n", name.c_str());
 	(*getRegistry())[name] = factory;
-//    printf("registrySize %i\n", (int)(*getRegistry()).size());
 }
 
 shared_ptr<Control> Control::create(const std::string &name)
 {
-    //MLOG("Registry size: " + to_string(getRegistry()->size()));
-    //MLOG("Registry contains: ");
-	for (auto& s : *getRegistry()) {
-        //MLOG(s.first);
-		if (s.second == nullptr) {
-            //MLOG(s.first + " factory is nullptr!");
-		}
-	}
-    //MLOG("Trying to create " + name);
 	auto res = (*getRegistry())[name]->create();
 	auto namestr = res->getName();
-    //MLOG("Created control name: " + namestr);
 	return res;
 }
 

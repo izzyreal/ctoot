@@ -40,6 +40,3 @@ int LawControl::getIntValue()
 {
     return law.lock()->intValue(getValue());
 }
-
-LawControl::~LawControl() {
-}

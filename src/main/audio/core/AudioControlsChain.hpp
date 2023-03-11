@@ -1,38 +1,29 @@
 #pragma once
+
 #include <control/CompoundControlChain.hpp>
 #include <audio/core/ChannelFormat.hpp>
 
 #include <vector>
 
-namespace ctoot {
+namespace ctoot::audio::core {
 
-	namespace service {
-		class ServiceDescriptor;
-	}
+    class AudioControlsChain : public ctoot::control::CompoundControlChain
+    {
 
-	namespace audio {
-		namespace core {
+    private:
+        std::string sourceLabel{""};
+        std::string sourceLocation{""};
+        std::weak_ptr<ChannelFormat> constraintChannelFormat;
 
-			class AudioControlsChain
-				: public ctoot::control::CompoundControlChain
-			{
+    public:
+        std::shared_ptr<ctoot::control::CompoundControl> createControl(std::string name) override;
 
-			private:
-				std::string sourceLabel{ "" };
-				std::string sourceLocation{ "" };
-				std::weak_ptr<ChannelFormat> constraintChannelFormat;
+        int getMaxInstance() override;
 
-            public:
-				std::shared_ptr<ctoot::control::CompoundControl> createControl(std::string name) override;
-				int getMaxInstance() override;
+    public:
+        AudioControlsChain(int id, std::string name);
 
-			public:
-				AudioControlsChain(int id, std::string name);
-				AudioControlsChain(int id, int index, std::string name);
-				virtual ~AudioControlsChain() override;
+        AudioControlsChain(int id, int index, std::string name);
 
-			};
-
-		}
-	}
+    };
 }

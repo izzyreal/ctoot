@@ -1,4 +1,5 @@
 #pragma once
+
 #include <observer/Observable.hpp>
 #include <observer/Observer.hpp>
 
@@ -22,70 +23,81 @@
     }; \
     static klass##Factory global_##klass##Factory;
 
-namespace ctoot {
-	namespace control {
-		class CompoundControl;
+namespace ctoot::control {
+    class CompoundControl;
 
-		class Control : public moduru::observer::Observable
-		{
-		private:
-			static std::map<std::string, ctoot::control::ControlFactory*>* getRegistry() {
-				static std::map<std::string, ctoot::control::ControlFactory*> res;
-				return &res;
-			}
+    class Control : public moduru::observer::Observable
+    {
+    private:
+        static std::map<std::string, ctoot::control::ControlFactory *> *getRegistry()
+        {
+            static std::map<std::string, ctoot::control::ControlFactory *> res;
+            return &res;
+        }
 
-		public:
-			static void registerType(const std::string& name, ctoot::control::ControlFactory *factory);
-			static std::shared_ptr<Control> create(const std::string &name);
-			
-		private:
-			int id;
-			CompoundControl* parent{ nullptr };
-			std::string name{ "" };
-			std::string annotation{ "" };
-			bool hidden{ false };
-            bool enabled{ true };
+    public:
+        static void registerType(const std::string &name, ctoot::control::ControlFactory *factory);
 
-		protected:
-			bool indicator{ false };
+        static std::shared_ptr<Control> create(const std::string &name);
 
-		public:
-			virtual void setHidden(bool h);
-			virtual int getId();
-			CompoundControl* getParent();
+    private:
+        int id;
+        CompoundControl *parent{nullptr};
+        std::string name{""};
+        std::string annotation{""};
+        bool hidden{false};
+        bool enabled{true};
 
-		protected:
-			virtual void setParent(CompoundControl* c);
-			virtual void notifyParent(Control* obj);
-			virtual void derive(Control* obj);
+    protected:
+        bool indicator{false};
 
-		public:
-			virtual std::string getName();
-			virtual void setName(std::string s);
+    public:
+        virtual void setHidden(bool h);
 
-            virtual void setAnnotation(std::string a);
+        virtual int getId();
 
-            virtual int getIntValue();
-			virtual std::string getValueString();
-			virtual bool isHidden();
-			virtual bool isIndicator();
+        CompoundControl *getParent();
 
-            virtual void setEnabled(bool enable);
-			virtual bool isEnabled();
-			std::string toString();
+    protected:
+        virtual void setParent(CompoundControl *c);
 
-            virtual std::string getControlPath(Control* from, std::string sep);
+        virtual void notifyParent(Control *obj);
 
-		protected:
-			Control(int id, std::string name);
-	
-		public:
-			virtual ~Control();
+        virtual void derive(Control *obj);
 
-		private:
-			friend class CompoundControl;
-			friend class CompoundControlChain;
+    public:
+        virtual std::string getName();
 
-		};
-	}
+        virtual void setName(std::string s);
+
+        virtual void setAnnotation(std::string a);
+
+        virtual int getIntValue();
+
+        virtual std::string getValueString();
+
+        virtual bool isHidden();
+
+        virtual bool isIndicator();
+
+        virtual void setEnabled(bool enable);
+
+        virtual bool isEnabled();
+
+        std::string toString();
+
+        virtual std::string getControlPath(Control *from, std::string sep);
+
+    protected:
+        Control(int id, std::string name);
+
+    public:
+        virtual ~Control();
+
+    private:
+        friend class CompoundControl;
+
+        friend class CompoundControlChain;
+
+    };
 }

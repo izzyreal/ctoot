@@ -61,8 +61,7 @@ public:
 public:
     CompoundControl(int id, int instanceIndex, std::string name);
     CompoundControl(int id, std::string name);
-    virtual ~CompoundControl() override;
-    
+
 private:
     friend class ControlColumn;
     friend class ControlRow;

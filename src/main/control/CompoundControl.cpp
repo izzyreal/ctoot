@@ -239,6 +239,3 @@ void CompoundControl::setEnabled(bool enable)
 		currentControl->setEnabled(enable);
 	}
 }
-
-CompoundControl::~CompoundControl() {
-}

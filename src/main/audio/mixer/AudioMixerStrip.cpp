@@ -89,7 +89,6 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 			ret = input.lock()->processAudio(buffer, nFrames);
 
 			if (ret == AUDIO_DISCONNECT) {
-				processMutations();
 				return false;
 			}
 			else if (ret == AUDIO_SILENCE && silenceCountdown == 0) {
@@ -97,7 +96,6 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 			}
 		}
 		else {
-			processMutations();
 			return false;
 		}
 	}

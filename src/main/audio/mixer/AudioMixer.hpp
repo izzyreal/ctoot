@@ -1,93 +1,99 @@
 #pragma once
+
 #include <audio/server/AudioServer.hpp>
 #include <audio/server/AudioClient.hpp>
 #include <audio/mixer/MixControls.hpp>
-#include <audio/mixer/MixerControlsObserver.hpp>
 
 #include <thirdp/concurrentqueue.h>
 #include <vector>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
+namespace ctoot::audio::mixer {
 
-            class Mutation;
-			class AudioMixerStrip;
-			class AudioMixerBus;
-            class AudioMixer final
-				: public ctoot::audio::server::AudioClient
-			{
+    class AudioMixerStrip;
 
-			private:
-				std::weak_ptr<MixerControls> controls;
+    class AudioMixerBus;
 
-			protected:
-				std::shared_ptr<AudioMixerBus> mainBus{ nullptr };
-				std::vector<std::shared_ptr<AudioMixerBus>> busses{};
-				std::vector<std::shared_ptr<AudioMixerBus>> auxBusses{};
+    class AudioMixer final
+            : public ctoot::audio::server::AudioClient
+    {
 
-			private:
-				std::vector<std::shared_ptr<AudioMixerStrip>> strips{};
-				std::vector<std::weak_ptr<AudioMixerStrip>> channelStrips{};
-				std::vector<std::weak_ptr<AudioMixerStrip>> groupStrips{};
-				std::vector<std::weak_ptr<AudioMixerStrip>> auxStrips{};
-				std::weak_ptr<AudioMixerStrip> mainStrip;
-				std::weak_ptr<ctoot::audio::server::AudioServer> server{};
-                ctoot::audio::core::AudioBuffer* sharedAudioBuffer{ nullptr };
-				moodycamel::ConcurrentQueue<Mutation*> mutationQueue{};
+    private:
+        std::weak_ptr<MixerControls> controls;
 
-				bool enabled{ true };
-				std::unique_ptr<MixerControlsObserver> observer;
+    protected:
+        std::shared_ptr<AudioMixerBus> mainBus{nullptr};
+        std::vector<std::shared_ptr<AudioMixerBus>> busses{};
+        std::vector<std::shared_ptr<AudioMixerBus>> auxBusses{};
 
-			public:
-				std::weak_ptr<MixerControls> getMixerControls();
-				std::weak_ptr<ctoot::audio::server::AudioServer> getAudioServer();
-				moodycamel::ConcurrentQueue<Mutation*>& getMutationQueue();
+    private:
+        std::vector<std::shared_ptr<AudioMixerStrip>> strips{};
+        std::vector<std::weak_ptr<AudioMixerStrip>> channelStrips{};
+        std::vector<std::weak_ptr<AudioMixerStrip>> groupStrips{};
+        std::vector<std::weak_ptr<AudioMixerStrip>> auxStrips{};
+        std::weak_ptr<AudioMixerStrip> mainStrip;
+        std::weak_ptr<ctoot::audio::server::AudioServer> server{};
+        ctoot::audio::core::AudioBuffer *sharedAudioBuffer{nullptr};
 
-			public:
-				ctoot::audio::core::AudioBuffer* getSharedBuffer();
-				ctoot::audio::core::AudioBuffer* createBuffer(std::string name);
-				void removeBuffer(ctoot::audio::core::AudioBuffer* buffer);
+        bool enabled{true};
 
-			public:
-                void waitForMutations();
-				std::weak_ptr<AudioMixerStrip> getStrip(std::string name);
-				std::weak_ptr<AudioMixerStrip> getStripImpl(std::string name);
+    public:
+        std::weak_ptr<MixerControls> getMixerControls();
 
-                std::weak_ptr<AudioMixerStrip> getUnusedChannelStrip();
-				void work(int nFrames) override;
+        std::weak_ptr<ctoot::audio::server::AudioServer> getAudioServer();
 
-			private:
-				void processMutations();
-				void evaluateStrips(std::vector<std::weak_ptr<AudioMixerStrip>>* evalStrips, int nFrames);
-				void silenceStrips(std::vector<std::weak_ptr<AudioMixerStrip>>* evalStrips);
-				void writeBusBuffers(int nFrames);
-				void createBusses(std::weak_ptr<MixerControls> mixerControls);
-				std::shared_ptr<AudioMixerBus> createBus(std::weak_ptr<BusControls> busControls);
+    public:
+        ctoot::audio::core::AudioBuffer *getSharedBuffer();
 
-			public:
-				void processMutation(Mutation* m);
-				std::shared_ptr<AudioMixerBus> getBus(std::string name);
-				std::shared_ptr<AudioMixerBus> getMainBus();
-				std::weak_ptr<AudioMixerStrip> getMainStrip();
+        ctoot::audio::core::AudioBuffer *createBuffer(std::string name);
 
-			public:
-				void createStrips(std::weak_ptr<MixerControls> mixerControls);
-				std::weak_ptr<AudioMixerStrip> createStrip(std::weak_ptr<ctoot::audio::core::AudioControlsChain> controls);
-				void removeStrip(std::weak_ptr<ctoot::audio::core::AudioControlsChain> controls);
+        void removeBuffer(ctoot::audio::core::AudioBuffer *buffer);
 
-			public:
-				void close();
-				bool isEnabled();
+    public:
+        std::weak_ptr<AudioMixerStrip> getStrip(std::string name);
 
-			public:
-				void setEnabled(bool enabled) override;
+        std::weak_ptr<AudioMixerStrip> getStripImpl(std::string name);
 
-			public:
-				AudioMixer(std::weak_ptr<MixerControls> controls, std::weak_ptr<ctoot::audio::server::AudioServer> server);
-				~AudioMixer();
+        std::weak_ptr<AudioMixerStrip> getUnusedChannelStrip();
 
-			};
-		}
-	}
+        void work(int nFrames) override;
+
+    private:
+        void evaluateStrips(std::vector<std::weak_ptr<AudioMixerStrip>> *evalStrips, int nFrames);
+
+        void silenceStrips(std::vector<std::weak_ptr<AudioMixerStrip>> *evalStrips);
+
+        void writeBusBuffers(int nFrames);
+
+        void createBusses(std::weak_ptr<MixerControls> mixerControls);
+
+        std::shared_ptr<AudioMixerBus> createBus(std::weak_ptr<BusControls> busControls);
+
+    public:
+        std::shared_ptr<AudioMixerBus> getBus(std::string name);
+
+        std::shared_ptr<AudioMixerBus> getMainBus();
+
+        std::weak_ptr<AudioMixerStrip> getMainStrip();
+
+    public:
+        void createStrips(std::weak_ptr<MixerControls> mixerControls);
+
+        std::weak_ptr<AudioMixerStrip> createStrip(std::weak_ptr<ctoot::audio::core::AudioControlsChain> controls);
+
+        void removeStrip(std::weak_ptr<ctoot::audio::core::AudioControlsChain> controls);
+
+    public:
+        void close();
+
+        bool isEnabled();
+
+    public:
+        void setEnabled(bool enabled) override;
+
+    public:
+        AudioMixer(std::weak_ptr<MixerControls> controls, std::weak_ptr<ctoot::audio::server::AudioServer> server);
+
+        ~AudioMixer();
+
+    };
 }

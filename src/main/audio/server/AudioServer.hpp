@@ -24,9 +24,10 @@ namespace ctoot::audio::server {
 
 	public:
 		virtual void resizeBuffers(int newSize);
+        virtual ctoot::audio::core::AudioBuffer* createAudioBuffer(std::string name);
+        virtual void removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer);
 
 	public:
-
         const std::vector<ctoot::audio::core::AudioBuffer*>& getBuffers();
 		const unsigned int getBufferSize();
 
@@ -49,10 +50,6 @@ namespace ctoot::audio::server {
 		virtual int getOutputLatencyFrames() = 0;
 		virtual int getTotalLatencyFrames() = 0;
 		virtual void work() = 0;
-
-	public:
-		virtual ctoot::audio::core::AudioBuffer* createAudioBuffer(std::string name);
-		virtual void removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer);
 
 	public:
 		AudioServer();

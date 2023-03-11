@@ -2,7 +2,6 @@
 
 #include <control/id/ProviderId.hpp>
 #include <audio/mixer/BusControls.hpp>
-#include <audio/mixer/Mutation.hpp>
 #include <audio/core/ChannelFormat.hpp>
 
 //#include <audio/id/ProviderId.hpp>
@@ -95,24 +94,6 @@ void MixerControls::addStripControls(shared_ptr<CompoundControl> cc)
 {
 	canAddBusses = false;
 	add(cc);
-	//auto mcm = new Mutation(Mutation::ADD, cc);
-	//
-	//notifyObservers(mcm);
-}
-
-void MixerControls::removeStripControls(weak_ptr<CompoundControl> cc)
-{
-    remove(cc);
-    
-    notifyObservers(new Mutation(Mutation::REMOVE, cc));
-}
-
-void MixerControls::removeStripControls(string name)
-{
-	auto cc = getStripControls(name).lock();
-	if (cc) {
-		removeStripControls(cc);
-	}
 }
 
 weak_ptr<AudioControlsChain> MixerControls::getStripControls(string name)
@@ -143,17 +124,7 @@ weak_ptr<AudioControlsChain> MixerControls::getStripControls(int id, int index)
 	return {};
 }
 
-
 FaderControl* MixerControls::createFaderControl(bool muted)
 {
     return new GainControl(muted);
-}
-
-vector<string> MixerControls::opNames()
-{
-	static std::vector<std::string> res { "n/a", "Add", "Remove" };
-    return res;
-}
-
-MixerControls::~MixerControls() {
 }

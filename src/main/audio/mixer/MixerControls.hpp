@@ -42,18 +42,11 @@ namespace ctoot::audio::mixer {
 
         virtual void addStripControls(std::shared_ptr<CompoundControl> cc);
 
-        virtual void removeStripControls(std::weak_ptr<CompoundControl> cc);
-
-        virtual void removeStripControls(std::string name);
-
         virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(std::string name);
 
         virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(int id, int index);
 
         virtual ctoot::audio::fader::FaderControl *createFaderControl(bool muted);
-
-    public:
-        static std::vector<std::string> opNames();
 
     public:
         MixerControls(std::string name, std::string mainBusName,
@@ -66,8 +59,6 @@ namespace ctoot::audio::mixer {
         MixerControls(std::string name, float _smoothingFactor)
                 : MixerControls(name)
         { smoothingFactor = _smoothingFactor; };
-
-        virtual ~MixerControls() override;
 
     };
 

@@ -1,6 +1,5 @@
 #include <control/CompoundControlChain.hpp>
 #include <control/CompoundControl.hpp>
-#include <control/ChainMutation.hpp>
 #include <control/Control.hpp>
 #include <algorithm>
 
@@ -66,10 +65,7 @@ void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string in
 		}
 	}
 	controlToInsert->setParent(this);
-	ChainMutation* insertMutation = new InsertMutation((int)(insertionIndex), controlToInsert);
 	controls.insert(controls.begin() + insertionIndex, std::move(controlToInsert));
-	
-	notifyObservers(insertMutation);
 }
 
 shared_ptr<CompoundControl> CompoundControlChain::createControl(string name)
@@ -98,11 +94,4 @@ void CompoundControlChain::move(string moveName, string moveBeforeName)
 		}
 	}
 	controls.insert(controls.begin() + insertionIndex, controlToMove);
-	ChainMutation* m = new MoveMutation(indexToMove, insertionIndex);
-	
-	notifyObservers(m);
-}
-
-
-CompoundControlChain::~CompoundControlChain() {
 }

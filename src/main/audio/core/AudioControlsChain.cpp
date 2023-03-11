@@ -28,6 +28,3 @@ int ctoot::audio::core::AudioControlsChain::getMaxInstance()
 {
     return 1024 - 1;
 }
-
-AudioControlsChain::~AudioControlsChain() {
-}

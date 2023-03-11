@@ -1,11 +1,9 @@
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioControlsChain.hpp>
-#include <audio/mixer/MixerControlsObserver.hpp>
 #include <audio/mixer/AudioMixerBus.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
 #include <audio/mixer/BusControls.hpp>
-#include <audio/mixer/Mutation.hpp>
 #include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
 #include <audio/server/AudioServer.hpp>
@@ -21,16 +19,10 @@ AudioMixer::AudioMixer(weak_ptr<MixerControls> controls, weak_ptr<AudioServer> s
 	sharedAudioBuffer = server.lock()->createAudioBuffer("Mixer (shared)");
 	createBusses(controls);
 	createStrips(controls);
-	observer = make_unique<MixerControlsObserver>(this);
-	controls.lock()->addObserver(observer.get());
 }
 
 std::weak_ptr<ctoot::audio::server::AudioServer> AudioMixer::getAudioServer() {
 	return server;
-}
-
-moodycamel::ConcurrentQueue<Mutation*>& AudioMixer::getMutationQueue() {
-	return mutationQueue;
 }
 
 weak_ptr<MixerControls> AudioMixer::getMixerControls()
@@ -53,26 +45,8 @@ void AudioMixer::removeBuffer(ctoot::audio::core::AudioBuffer* buffer)
     server.lock()->removeAudioBuffer(buffer);
 }
 
-void AudioMixer::waitForMutations()
-{
-	processMutations();
-	/* VMPC2000XL doesn't need dynamic mutations, only during init.
-	while (isMutating()) {
-        if(isEnabled() && server->isRunning()) {
-			std::this_thread::sleep_for(std::chrono::milliseconds(5));
-        } else {
-            processMutations();
-        }
-    }
-	if(isEnabled() && server->isRunning()) {
-		std::this_thread::sleep_for(std::chrono::milliseconds(20));
-	}
-	*/
-}
-
 weak_ptr<AudioMixerStrip> AudioMixer::getStrip(string name)
 {
-    waitForMutations();
     return getStripImpl(name);
 }
 
@@ -99,7 +73,6 @@ void AudioMixer::work(int nFrames)
 {
 	if (!enabled) return;
 
-	processMutations();
 	silenceStrips(&groupStrips);
 	silenceStrips(&auxStrips);
 	mainStrip.lock()->silence();
@@ -108,29 +81,6 @@ void AudioMixer::work(int nFrames)
 	evaluateStrips(&auxStrips, nFrames);
 	mainStrip.lock()->processBuffer(nFrames);
 	writeBusBuffers(nFrames);
-}
-
-void AudioMixer::processMutations()
-{
-	Mutation* m = nullptr;
-	mutationQueue.try_dequeue(m);
-	if (m == nullptr) return;
-	processMutation(m);
-}
-
-void AudioMixer::processMutation(Mutation* m)
-{
-	auto control = dynamic_pointer_cast<core::AudioControlsChain>(m->getControl().lock());
-	if (!control) return;
-	switch (m->getOperation()) {
-	case Mutation::ADD:
-		createStrip(control);
-		break;
-	case Mutation::REMOVE:
-		removeStrip(control);
-		break;
-	}
-	delete m;
 }
 
 void AudioMixer::evaluateStrips(vector<weak_ptr<AudioMixerStrip>>* strips, int nFrames)
@@ -284,7 +234,6 @@ void AudioMixer::removeStrip(weak_ptr<ctoot::audio::core::AudioControlsChain> co
 void AudioMixer::close()
 {
 	enabled = false;
-    controls.lock()->deleteObserver(observer.get());
 	for (auto& s : strips) {
 		s->close();
 	}
