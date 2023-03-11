@@ -5,31 +5,32 @@
 
 #include <memory>
 
-namespace ctoot {
-	namespace control {
+namespace ctoot::control {
 
-		class LawControl
-			: public Control
-		{
+    class LawControl
+            : public Control
+    {
 
-		private:
-			std::weak_ptr<ControlLaw> law;
-			float value{ 0 };
-			float precision{ 0 };
+    private:
+        std::weak_ptr<ControlLaw> law;
+        float value{0};
+        float precision{0};
 
-        public:
-			virtual std::weak_ptr<ControlLaw> getLaw();
-			virtual float getValue();
-			virtual void setValue(float value);
+    public:
+        virtual std::weak_ptr<ControlLaw> getLaw();
 
-        public:
-			int getIntValue() override;
-			std::string getValueString() override;
+        virtual float getValue();
 
-        public:
-			LawControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue);
+        virtual void setValue(float value);
 
-		};
+    public:
+        int getIntValue() override;
 
-	}
+        std::string getValueString() override;
+
+    public:
+        LawControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue);
+
+    };
+
 }

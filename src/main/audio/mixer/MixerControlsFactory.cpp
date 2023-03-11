@@ -11,10 +11,6 @@ using namespace ctoot::audio::core;
 using namespace ctoot::control;
 using namespace std;
 
-MixerControlsFactory::MixerControlsFactory()
-{
-}
-
 void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls, string mainStripName,
                                            weak_ptr<ChannelFormat> mainFormat, int nreturns)
 {

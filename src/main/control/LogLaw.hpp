@@ -1,25 +1,23 @@
 #pragma once
+
 #include <control/AbstractLaw.hpp>
 
-namespace ctoot {
-	namespace control {
+namespace ctoot::control {
 
-		class LogLaw
-			: public AbstractLaw
-		{
+    class LogLaw
+            : public AbstractLaw
+    {
 
-		private:
-			double logMin{}, logMax{};
-			double logSpan{};
+    private:
+        double logMin{}, logMax{};
+        double logSpan{};
 
-		public:
-			int intValue(float userVal) override;
+    public:
+        int intValue(float userVal) override;
 
-        public:
-			LogLaw(float min, float max, std::string units);
-            virtual ~LogLaw(){}
-            
-		};
+    public:
+        LogLaw(float min, float max, std::string units);
 
-	}
+    };
+
 }

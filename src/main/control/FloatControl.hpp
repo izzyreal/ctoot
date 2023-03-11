@@ -1,32 +1,26 @@
 #pragma once
+
 #include <control/LawControl.hpp>
 
-namespace ctoot {
-	namespace control {
+namespace ctoot::control {
 
+    class FloatControl
+            : public LawControl
+    {
 
-		class FloatControl
-			: public LawControl
-		{
+    private:
+        std::string minLabel;
+        std::string maxLabel;
+        std::string midLabel;
 
-		private:
-			std::string minLabel{ "" };
-			std::string maxLabel{ "" };
-			std::string midLabel{ "" };
-	
-		public:
-            virtual float getMaximum();
-			virtual float getMinimum();
+    public:
+        virtual float getMaximum();
 
-            std::string toString();
+        virtual float getMinimum();
 
-		public:
-			FloatControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue) 
-				: FloatControl(id, name, law, precision, initialValue, "", "", "") {};
-			FloatControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue, std::string minLabel, std::string midLabel, std::string maxLabel);
-			virtual ~FloatControl();
+    public:
+        FloatControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue);
 
-		};
+    };
 
-	}
 }
