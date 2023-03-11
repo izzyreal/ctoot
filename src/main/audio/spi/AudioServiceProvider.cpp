@@ -11,12 +11,11 @@ using namespace std;
 
 AudioServiceProvider::AudioServiceProvider
 (
-	int providerId, 
-	const string& providerName, 
+	const string& providerName,
 	const string& description,
 	const string& version
 )
-	: ServiceProvider(providerId, providerName, description, version)
+	: ServiceProvider(providerName, description, version)
 {
     string info = moduru::System::demangle(typeid(AudioControls).name());
 	controls = service(info);

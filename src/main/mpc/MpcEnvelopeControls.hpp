@@ -52,13 +52,11 @@ namespace ctoot {
 
 		public:
 			MpcEnvelopeControls(int id, int instanceIndex, std::string name, int idOffset, float timeMultiplier);
-			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset, float timeMultiplier) 
+			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset, float timeMultiplier)
 				: MpcEnvelopeControls(MPC_ENVELOPE_ID, instanceIndex, name, idOffset, timeMultiplier) {};
-			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset) 
+			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset)
 				: MpcEnvelopeControls(instanceIndex, name, idOffset, 1.0f) {};
-			
-			~MpcEnvelopeControls();
-
+            
         };
 
 	}

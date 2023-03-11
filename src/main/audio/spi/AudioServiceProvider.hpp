@@ -34,7 +34,6 @@ namespace ctoot::audio::spi {
     public:
         AudioServiceProvider
                 (
-                        int providerId,
                         const std::string &providerName,
                         const std::string &description,
                         const std::string &version

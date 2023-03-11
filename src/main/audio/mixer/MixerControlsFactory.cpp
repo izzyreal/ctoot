@@ -19,13 +19,13 @@ void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls
                                            weak_ptr<ChannelFormat> mainFormat, int nreturns)
 {
     auto lMixerControls = mixerControls.lock();
-    lMixerControls->createStripControls(MixerControlsIds::MAIN_STRIP, 0, mainStripName);
+    lMixerControls->createStripControls(MixerControlsIds::MAIN_STRIP, mainStripName);
     auto auxControls = lMixerControls->getAuxBusControls();
     auto naux = static_cast<int>(auxControls.size());
     for (int i = 0; i < naux; i++)
     {
         auto busControls = auxControls[i];
-        lMixerControls->createStripControls(MixerControlsIds::AUX_STRIP, i, busControls->getName(), false);
+        lMixerControls->createStripControls(MixerControlsIds::AUX_STRIP, busControls->getName(), false);
     }
 }
 
@@ -36,7 +36,7 @@ void MixerControlsFactory::createChannelStrips(weak_ptr<MixerControls> mixerCont
     auto mainFormat = mbc->getChannelFormat();
     for (int i = 0; i < nchannels; i++)
     {
-        mixerControls.lock()->createStripControls(MixerControlsIds::CHANNEL_STRIP, i, to_string(1 + i));
+        mixerControls.lock()->createStripControls(MixerControlsIds::CHANNEL_STRIP, to_string(1 + i));
     }
 }
 

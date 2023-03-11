@@ -8,8 +8,8 @@
 using namespace ctoot::synth::modules::filter;
 using namespace std;
 
-FilterControls::FilterControls(int id, int instanceIndex, string name, int idOffset)
-	: CompoundControl(id, instanceIndex, name)
+FilterControls::FilterControls(int id, string name, int idOffset)
+	: CompoundControl(id, name)
 {
 	this->idOffset = idOffset;
 	createControls();
@@ -88,9 +88,4 @@ void FilterControls::setSampleRate(int rate)
 		sampleRate = rate;
 		deriveSampleRateDependentVariables();
 	}
-}
-
-FilterControls::~FilterControls() {
-	cutoffControl = nullptr;
-	resonanceControl = nullptr;
 }

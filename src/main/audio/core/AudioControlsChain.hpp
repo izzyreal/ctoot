@@ -11,19 +11,15 @@ namespace ctoot::audio::core {
     {
 
     private:
-        std::string sourceLabel{""};
-        std::string sourceLocation{""};
+        std::string sourceLabel;
+        std::string sourceLocation;
         std::weak_ptr<ChannelFormat> constraintChannelFormat;
 
     public:
-        std::shared_ptr<ctoot::control::CompoundControl> createControl(std::string name) override;
-
         int getMaxInstance() override;
 
     public:
         AudioControlsChain(int id, std::string name);
-
-        AudioControlsChain(int id, int index, std::string name);
 
     };
 }

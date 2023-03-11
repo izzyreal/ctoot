@@ -4,52 +4,57 @@
 #include <synth/modules/filter/StateVariableFilterVariables.hpp>
 
 namespace ctoot {
-	
-	namespace control {
-		class FloatControl;
-		class BooleanControl;
-	}
 
-	namespace synth {
-		namespace modules {
-			namespace filter {
+    namespace control {
+        class FloatControl;
 
-				class StateVariableFilterControls
-					: public FilterControls
-					, public virtual StateVariableFilterVariables
-				{
+        class BooleanControl;
+    }
 
-				private:
-					ctoot::control::FloatControl* modeMixControl{ nullptr };
-					ctoot::control::BooleanControl* bandModeControl{ nullptr };
-					float modeMix{ 0 };
-					bool bandMode{ false };
+    namespace synth::modules::filter {
 
-				public:
-					void derive(ctoot::control::Control* c) override;
-					void createControls() override;
-					void deriveSampleRateIndependentVariables() override;
-					float deriveResonance() override;
-					virtual float deriveModeMix();
-					virtual bool deriveBandMode();
-					virtual ctoot::control::FloatControl* createModeMixControl();
-					virtual ctoot::control::BooleanControl* createBandModeControl();
+        class StateVariableFilterControls
+                : public FilterControls, public virtual StateVariableFilterVariables
+        {
 
-				public:
-					float getModeMix() override;
-					bool isBandMode() override;
+        private:
+            ctoot::control::FloatControl *modeMixControl{nullptr};
+            ctoot::control::BooleanControl *bandModeControl{nullptr};
+            float modeMix{0};
+            bool bandMode{false};
 
-					StateVariableFilterControls(int instanceIndex, std::string name, int idOffset);
-					~StateVariableFilterControls();
+        public:
+            void derive(ctoot::control::Control *c) override;
 
-				public:
-					virtual float getCutoff() override;
-					virtual float getResonance() override;
-					virtual void setSampleRate(int rate) override;
+            void createControls() override;
 
-				};
+            void deriveSampleRateIndependentVariables() override;
 
-			}
-		}
-	}
+            float deriveResonance() override;
+
+            virtual float deriveModeMix();
+
+            virtual bool deriveBandMode();
+
+            virtual ctoot::control::FloatControl *createModeMixControl();
+
+            virtual ctoot::control::BooleanControl *createBandModeControl();
+
+        public:
+            float getModeMix() override;
+
+            bool isBandMode() override;
+
+            StateVariableFilterControls(std::string name, int idOffset);
+
+        public:
+            float getCutoff() override;
+
+            float getResonance() override;
+
+            void setSampleRate(int rate) override;
+
+        };
+
+    }
 }

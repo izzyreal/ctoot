@@ -21,8 +21,6 @@ namespace ctoot {
 				static void scan();
 
 			public:
-                static std::shared_ptr<AudioControls> createControls(int providerId, int moduleId, int instanceIndex);
-				static std::shared_ptr<AudioControls> createControls(const std::string& name);
 				static std::shared_ptr<AudioProcess> createProcess(std::weak_ptr<AudioControls> controls);
 				static void accept(std::weak_ptr<service::ServiceVisitor> v, const std::string& typeIdName);
 

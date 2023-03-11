@@ -11,11 +11,6 @@ CompoundControlChain::CompoundControlChain(int id, string name)
 {
 }
 
-CompoundControlChain::CompoundControlChain(int id, int index, string name)
-	: CompoundControl(id, index, name)
-{
-}
-
 void CompoundControlChain::add(shared_ptr<Control> control)
 {
 	if (find(control->getName()).lock()) {
@@ -28,70 +23,4 @@ void CompoundControlChain::add(int index, shared_ptr<Control> control)
 {
 	control->setParent(this);
 	controls.insert(controls.begin() + index, std::move(control));
-}
-
-void CompoundControlChain::insert(string insertName, string insertBeforeName)
-{
-	auto controlToInsert = createControl(insertName);
-	if (!controlToInsert) {
-		string error = getName() + ": insert failed to create " + insertName;
-		MLOG("CompoundControlChain::insert error: " + error);
-		return;
-	}
-	if (find(insertName).lock() || find(controlToInsert->getName()).lock()) {
-		disambiguate(controlToInsert);
-	}
-	insert(controlToInsert, insertBeforeName);
-}
-
-void CompoundControlChain::insert(shared_ptr<Control> controlToInsert, string insertBeforeName)
-{
-	auto insertionIndex = controls.size();
-	auto controlToInsertBefore = find(insertBeforeName).lock();
-	if (!controlToInsertBefore) {
-		string error = getName() + ": insert " + controlToInsert->getName() + ", " + insertBeforeName + " not found to insert before";
-		MLOG(error);
-		return;
-	}
-	if (!dynamic_pointer_cast<CompoundControl>(controlToInsertBefore)->canBeInsertedBefore()) {
-		string error = getName() + ": insert " + controlToInsert->getName() + " before " + insertBeforeName + " not allowed";
-		MLOG(error);
-		return;
-	}
-	for (int i = 0; i < controls.size(); i++) {
-		if (controls[i] == controlToInsertBefore) {
-			insertionIndex = i;
-			break;
-		}
-	}
-	controlToInsert->setParent(this);
-	controls.insert(controls.begin() + insertionIndex, std::move(controlToInsert));
-}
-
-shared_ptr<CompoundControl> CompoundControlChain::createControl(string name)
-{
-	MLOG("CompoundControlChain::createControl empty function called!");
-	return {};
-}
-
-
-void CompoundControlChain::move(string moveName, string moveBeforeName)
-{
-	auto controlToMove = find(moveName).lock();
-	auto controlToMoveBefore = find(moveBeforeName).lock();
-	if (!controlToMove || !controlToMoveBefore) return;
-	int indexToMove = 0;
-	for (indexToMove = 0; indexToMove < controls.size(); indexToMove++) {
-		if (controls[indexToMove] == controlToMove) {
-			break;
-		}
-	}
-	remove(controlToMove);
-	int insertionIndex = 0;
-	for (insertionIndex = 0; insertionIndex < controls.size(); insertionIndex++) {
-		if (controls[insertionIndex] == controlToMoveBefore) {
-			break;
-		}
-	}
-	controls.insert(controls.begin() + insertionIndex, controlToMove);
 }

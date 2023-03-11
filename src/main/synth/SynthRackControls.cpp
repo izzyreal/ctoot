@@ -1,7 +1,6 @@
 #include <synth/SynthRackControls.hpp>
 #include <observer/Observable.hpp>
 #include <control/CompoundControl.hpp>
-#include <control/id/ProviderId.hpp>
 #include <synth/SynthControls.hpp>
 
 using namespace ctoot::synth;
@@ -42,9 +41,4 @@ void SynthRackControls::setSynthControls(int synth, shared_ptr<SynthControls> co
 	synthControls[synth] = weakRef;
 	
 	notifyObservers(synth);
-}
-
-int SynthRackControls::getProviderId()
-{
-	return ctoot::control::id::ProviderId::TOOT_PROVIDER_ID;
 }

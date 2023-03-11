@@ -1,23 +1,21 @@
 #pragma once
+
 #include <control/CompoundControl.hpp>
 
-namespace ctoot {
-	namespace control {
+namespace ctoot::control {
 
-		class ControlRow
-			: public CompoundControl
-		{
+    class ControlRow
+            : public CompoundControl
+    {
 
-		public:
-			typedef CompoundControl super;
+    public:
+        typedef CompoundControl super;
 
-		public:
+    public:
 
-            ControlRow();
+        ControlRow();
 
-		private:
-			friend class CompoundControl;
-			friend class BypassControl;
-		};
-	}
+    private:
+        friend class CompoundControl;
+    };
 }

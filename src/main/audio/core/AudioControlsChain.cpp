@@ -13,17 +13,6 @@ AudioControlsChain::AudioControlsChain(int id, std::string name)
 {
 }
 
-AudioControlsChain::AudioControlsChain(int id, int index, std::string name)
-	: CompoundControlChain(id, index, name)
-{
-}
-
-std::shared_ptr<ctoot::control::CompoundControl> AudioControlsChain::createControl(std::string name)
-{
-    
-	return AudioServices::createControls(name);
-}
-
 int ctoot::audio::core::AudioControlsChain::getMaxInstance()
 {
     return 1024 - 1;

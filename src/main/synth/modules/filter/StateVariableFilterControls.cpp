@@ -11,8 +11,8 @@
 using namespace ctoot::synth::modules::filter;
 using namespace std;
 
-StateVariableFilterControls::StateVariableFilterControls(int instanceIndex, string name, int idOffset)
-	: FilterControls(ctoot::synth::modules::filter::FilterIds::STATE_VARIABLE_FILTER_ID, instanceIndex, name, idOffset)
+StateVariableFilterControls::StateVariableFilterControls(string name, int idOffset)
+	: FilterControls(ctoot::synth::modules::filter::FilterIds::STATE_VARIABLE_FILTER_ID, name, idOffset)
 {
 }
 
@@ -97,7 +97,4 @@ float StateVariableFilterControls::getResonance()
 void StateVariableFilterControls::setSampleRate(int rate)
 {
     FilterControls::setSampleRate(rate);
-}
-
-StateVariableFilterControls::~StateVariableFilterControls() {
 }

@@ -8,56 +8,60 @@
 
 namespace ctoot {
 
-	namespace control {
-		class ControlLaw;
-		class FloatControl;
-	}
+    namespace control {
+        class ControlLaw;
 
-	namespace synth {
-		namespace modules {
-			namespace filter {
+        class FloatControl;
+    }
 
-				class FilterControls
-					: public ctoot::control::CompoundControl
-					, public virtual FilterVariables
-				{
+    namespace synth::modules::filter {
 
-				private:
-					ctoot::control::FloatControl* cutoffControl{ nullptr };
-					ctoot::control::FloatControl* resonanceControl{ nullptr };
-					float cutoff{ 0.f }, resonance{ 0.f };
+        class FilterControls
+                : public ctoot::control::CompoundControl, public virtual FilterVariables
+        {
 
-				protected:
-					int idOffset{ 0 };
+        private:
+            ctoot::control::FloatControl *cutoffControl{nullptr};
+            ctoot::control::FloatControl *resonanceControl{nullptr};
+            float cutoff{0.f}, resonance{0.f};
 
-				private:
-					int sampleRate{ 44100 };
+        protected:
+            int idOffset{0};
 
-				public:
-					void derive(ctoot::control::Control* c) override;
-					virtual void createControls();
-					virtual void deriveSampleRateIndependentVariables();
-					virtual float deriveResonance();
-					virtual void deriveSampleRateDependentVariables();
-					virtual float deriveCutoff();
-					virtual ctoot::control::FloatControl* createCutoffControl();
-					virtual ctoot::control::FloatControl* createResonanceControl();
+        private:
+            int sampleRate{44100};
 
-				public:
-					float getCutoff() override;
-					float getResonance() override;
-					void setSampleRate(int rate) override;
+        public:
+            void derive(ctoot::control::Control *c) override;
 
-				public:
-					FilterControls(int id, int instanceIndex, std::string name, int idOffset);
-					virtual ~FilterControls();
+            virtual void createControls();
 
-				private:
-					static std::weak_ptr<ctoot::control::ControlLaw> SEMITONE_LAW();
+            virtual void deriveSampleRateIndependentVariables();
 
-				};
+            virtual float deriveResonance();
 
-			}
-		}
-	}
+            virtual void deriveSampleRateDependentVariables();
+
+            virtual float deriveCutoff();
+
+            virtual ctoot::control::FloatControl *createCutoffControl();
+
+            virtual ctoot::control::FloatControl *createResonanceControl();
+
+        public:
+            float getCutoff() override;
+
+            float getResonance() override;
+
+            void setSampleRate(int rate) override;
+
+        public:
+            FilterControls(int id, std::string name, int idOffset);
+
+        private:
+            static std::weak_ptr<ctoot::control::ControlLaw> SEMITONE_LAW();
+
+        };
+
+    }
 }

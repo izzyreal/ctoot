@@ -46,7 +46,7 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         filterEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
         ampEnv = new ctoot::mpc::MpcEnvelopeGenerator(ampEnvControls);
         filterEnv = new ctoot::mpc::MpcEnvelopeGenerator(filterEnvControls);
-        svfControls = new ctoot::synth::modules::filter::StateVariableFilterControls(0, "Filter", SVF_OFFSET);
+        svfControls = new ctoot::synth::modules::filter::StateVariableFilterControls("Filter", SVF_OFFSET);
         svfControls->createControls();
         svfLeft = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
         svfRight = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);

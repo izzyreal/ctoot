@@ -17,42 +17,6 @@ AudioServices::AudioServices()
 
 vector<weak_ptr<AudioServiceProvider>> AudioServices::providers;
 
-shared_ptr<AudioControls> AudioServices::createControls(int providerId, int moduleId, int instanceIndex)
-{
-	shared_ptr<AudioControls> controls;
-	for (auto& p : providers) {
-		{
-			if (p.lock()->getProviderId() == providerId) {
-				controls = p.lock()->createControls(moduleId);
-				if (controls) {
-					controls->setProviderId(providerId);
-					if (instanceIndex > 0) {
-						controls->setName(controls->getName() + " #" + to_string(instanceIndex + 1));
-						controls->setInstanceIndex(instanceIndex);
-					}
-					return controls;
-				}
-			}
-		}
-	}
-	return {};
-}
-
-shared_ptr<AudioControls> AudioServices::createControls(const string& name)
-{
-    //MLOG("AudioServices::createControls " + name);
-	for (auto& p : providers) {
-        //MLOG("Provider desc " + p.lock()->getDescription());
-        //MLOG("Provider name " + p.lock()->getProviderName());
-		auto controls = p.lock()->createControls(name);
-		if (controls) {
-			controls->setProviderId(p.lock()->getProviderId());
-			return controls;
-		}
-	}
-	return {};
-}
-
 string AudioServices::getAvailableControls() {
 	string res;
 	for (auto& p : providers) {

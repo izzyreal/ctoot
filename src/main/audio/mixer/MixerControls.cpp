@@ -1,10 +1,8 @@
 #include <audio/mixer/MixerControls.hpp>
 
-#include <control/id/ProviderId.hpp>
 #include <audio/mixer/BusControls.hpp>
 #include <audio/core/ChannelFormat.hpp>
 
-//#include <audio/id/ProviderId.hpp>
 #include <audio/mixer/GainControl.hpp>
 #include <audio/mixer/MixerControlsFactory.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
@@ -22,11 +20,6 @@ MixerControls::MixerControls(string name, string mainBusName, weak_ptr<ChannelFo
 	: CompoundControl(1, name)
 {
 	mainBusControls = make_shared<BusControls>(MixerControlsIds::MAIN_BUS, mainBusName, channelFormat.lock());
-}
-
-int MixerControls::getProviderId()
-{
-    return control::id::ProviderId::TOOT_PROVIDER_ID;
 }
 
 float MixerControls::getSmoothingFactor()
@@ -72,19 +65,17 @@ vector<shared_ptr<BusControls>> MixerControls::getAuxBusControls()
 	return auxBusControls;
 }
 
-weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int index, string name)
+weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, string name)
 {
-    return createStripControls(id, index, name, true);
+    return createStripControls(id, name, true);
 }
 
-weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int index, string name, bool hasMixControls)
+weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, string name, bool hasMixControls)
 {
 	if (getStripControls(name).lock()) {
-		string error = name.append(" already exists");
-		MLOG("ERROR: " + error);
 		return {};
 	}
-	auto chain = std::make_shared<AudioControlsChain>(id, index, name);
+	auto chain = std::make_shared<AudioControlsChain>(id, name);
 	MixerControlsFactory::addMixControls(this, chain, hasMixControls);
 	addStripControls(chain);
 	return chain;
@@ -105,20 +96,8 @@ weak_ptr<AudioControlsChain> MixerControls::getStripControls(string name)
 			try {
 				return dynamic_pointer_cast<AudioControlsChain>(c);
 			}
-			catch (const bad_cast& e) {
-				string msg = e.what();
-				MLOG("MixerControls.getStripControls bad cast: " + msg);
+			catch (const bad_cast&) {
 			}
-		}
-	}
-	return {};
-}
-
-weak_ptr<AudioControlsChain> MixerControls::getStripControls(int id, int index)
-{
-	for (auto& c : controls) {
-		if (c->getId() == id && dynamic_pointer_cast<AudioControlsChain>(c)->getInstanceIndex() == index) {
-			return dynamic_pointer_cast<AudioControlsChain>(c);
 		}
 	}
 	return {};

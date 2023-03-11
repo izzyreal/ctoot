@@ -13,12 +13,11 @@ using namespace std;
 
 SynthChannelServiceProvider::SynthChannelServiceProvider
 (
-	int32_t providerId, 
-	const string& providerName, 
+	const string& providerName,
 	const string& description, 
 	const string& version
 )
-	: ctoot::service::ServiceProvider(providerId, providerName, description, version)
+	: ctoot::service::ServiceProvider(providerName, description, version)
 {
 	string info = moduru::System::demangle(typeid(SynthChannelControls).name());
 	controls = service(info);

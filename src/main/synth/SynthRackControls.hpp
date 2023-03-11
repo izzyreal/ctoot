@@ -22,8 +22,6 @@ namespace ctoot {
 			virtual std::weak_ptr<SynthControls> getSynthControls(int synth);
 			virtual void setSynthControls(int synth, std::shared_ptr<SynthControls> controls);
 
-            int getProviderId() override;
-
 			SynthRackControls(int nsynths);
 		};
 

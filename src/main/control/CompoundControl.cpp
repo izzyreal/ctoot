@@ -6,8 +6,7 @@ using namespace std;
 
 #include <System.hpp>
 
-CompoundControl::CompoundControl(int id, string name) 
-	: CompoundControl(id, deriveInstanceIndex(name), name)
+CompoundControl::CompoundControl(int id, string name) : Control(id, name)
 {
 }
 
@@ -38,37 +37,6 @@ vector<string> CompoundControl::getControlNamesRecursive(int generation)
 	}
     
 	return res;
-}
-
-CompoundControl::CompoundControl(int id, int instanceIndex, string name) : Control(id, name)
-{
-	this->instanceIndex = instanceIndex;
-	providerId = CompoundControl::USE_PARENT_PROVIDER_ID;
-	checkInstanceIndex(instanceIndex);
-	this->instanceIndex = instanceIndex;
-}
-
-int CompoundControl::deriveInstanceIndex(string name)
-{
-	int result;
-	auto hash = name.find('#');
-	result = hash != string::npos ? stoi(name.substr(hash + 1)) - 1 : 0;
-	return result;
-}
-
-const int CompoundControl::USE_PARENT_PROVIDER_ID;
-
-void CompoundControl::checkInstanceIndex(int index)
-{
-	// toot2 for Java was checking this based on a subclass (AudioControlsChain) call from the constructor. C++ can't do this. For now we don't check.
-	if (index < 0) {
-		//string desc = getName() + " instance " + to_string(index) + " < 0\n";
-		//MLOG(desc);
-	}
-	if (index > getMaxInstance()) {
-		//string desc = getName() + " instance " + to_string(index) + " > " + to_string(getMaxInstance()) + "\n";
-		//MLOG(desc);
-	}
 }
 
 int CompoundControl::getMaxInstance()
@@ -136,34 +104,11 @@ string CompoundControl::toString()
 	return result;
 }
 
-int CompoundControl::getInstanceIndex()
-{
-    return instanceIndex;
-}
-
 weak_ptr<Control> CompoundControl::find(string name)
 {
 	for (int i = 0; i < controls.size(); i++) {
 		if (controls[i]->getName().compare(name) == 0) {
 			return controls[i];
-		}
-	}
-	return {};
-}
-
-weak_ptr<CompoundControl> CompoundControl::find(int providerId, int moduleId, int instanceIndex)
-{
-	for (int i = 0; i < controls.size(); i++) {
-		auto currentControl = controls[i];
-		auto currentCompoundControl = dynamic_pointer_cast<CompoundControl> (currentControl);
-		if (!currentCompoundControl)
-			continue;
-		if (providerId == currentCompoundControl->getProviderId() 
-			&& moduleId == currentCompoundControl->getId() 
-			&& instanceIndex == currentCompoundControl->getInstanceIndex()) {
-			
-			return currentCompoundControl;
-
 		}
 	}
 	return {};
@@ -188,29 +133,6 @@ weak_ptr<Control> CompoundControl::deepFind(int controlId)
 	return {};
 }
 
-bool CompoundControl::canBeInsertedBefore()
-{
-    return true;
-}
-
-int CompoundControl::getProviderId()
-{
-	if (providerId == USE_PARENT_PROVIDER_ID) {
-		return getParent()->getProviderId();
-	}
-	return providerId;
-}
-
-void CompoundControl::setProviderId(int id)
-{
-    providerId = id;
-}
-
-void CompoundControl::setInstanceIndex(int idx)
-{
-    instanceIndex = idx;
-}
-
 void CompoundControl::disambiguate(weak_ptr<CompoundControl> c)
 {
 	auto original = c.lock()->getName();
@@ -224,7 +146,6 @@ void CompoundControl::disambiguate(weak_ptr<CompoundControl> c)
 		str = original + " #" + (to_string(index));
 	} while (find(str).lock());
 	c.lock()->setName(str);
-	c.lock()->setInstanceIndex(index - 1);
 }
 
 void CompoundControl::close()

@@ -1,4 +1,5 @@
 #pragma once
+
 #include <cstdint>
 #include <string>
 #include <service/ServiceVisitor.hpp>
@@ -8,57 +9,56 @@
 #include <map>
 #include <stdio.h>
 
-namespace ctoot {
-	namespace service {
-		class ServiceProvider
-		{
+namespace ctoot::service {
+    class ServiceProvider
+    {
 
-		public:
-			int providerId;
-			std::string providerName;
-			std::string version;
-			std::string description;
+    public:
+        std::string providerName;
+        std::string version;
+        std::string description;
 
-		public:
-			virtual int getProviderId();
+    public:
+        virtual std::string getVersion();
 
-            virtual std::string getVersion();
-			virtual std::string getDescription();
+        virtual std::string getDescription();
 
-		private:
-			std::map<std::string, std::shared_ptr<std::vector<std::shared_ptr<ServiceDescriptor>>>> services;
+    private:
+        std::map<std::string, std::shared_ptr<std::vector<std::shared_ptr<ServiceDescriptor>>>> services;
 
-		public:
-			virtual std::weak_ptr<std::vector<std::shared_ptr<ServiceDescriptor>>> service(const std::string& typeIdName);
-			virtual void add(std::shared_ptr<ServiceDescriptor> d);
-			virtual void add
-			(
-				const std::string& typeIdName, 
-				const std::string& name,
-				const std::string& description,
-				const std::string& version
-			);
+    public:
+        virtual std::weak_ptr<std::vector<std::shared_ptr<ServiceDescriptor>>> service(const std::string &typeIdName);
 
-		public:
-			virtual void accept(std::weak_ptr<ServiceVisitor> v, const std::string& typeIdName);
+        virtual void add(std::shared_ptr<ServiceDescriptor> d);
 
-		public:
-			virtual void visit(std::weak_ptr<ServiceVisitor> v, const std::vector<std::shared_ptr<ServiceDescriptor>>& serviceDescriptors);
+        virtual void add
+                (
+                        const std::string &typeIdName,
+                        const std::string &name,
+                        const std::string &description,
+                        const std::string &version
+                );
 
-		public:
-			std::string toString();
+    public:
+        virtual void accept(std::weak_ptr<ServiceVisitor> v, const std::string &typeIdName);
 
-		public:
-			ServiceProvider
-			(
-				int providerId, 
-				const std::string& providerName, 
-				const std::string& description, 
-				const std::string& version
-			);
-			ServiceProvider() { providerName = "ServiceProvider dummy"; }
-			~ServiceProvider();
-		};
+    public:
+        virtual void visit(std::weak_ptr<ServiceVisitor> v,
+                           const std::vector<std::shared_ptr<ServiceDescriptor>> &serviceDescriptors);
 
-	}
+    public:
+        std::string toString();
+
+    public:
+        ServiceProvider
+                (
+                        const std::string &providerName,
+                        const std::string &description,
+                        const std::string &version
+                );
+
+        ServiceProvider()
+        { providerName = "ServiceProvider dummy"; }
+    };
+
 }

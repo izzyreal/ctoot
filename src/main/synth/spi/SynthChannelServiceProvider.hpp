@@ -19,7 +19,6 @@ namespace ctoot {
             public:
                 SynthChannelServiceProvider
                 (
-                 int32_t providerId,
                  const std::string& providerName,
                  const std::string& description,
                  const std::string& version
