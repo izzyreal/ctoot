@@ -1,5 +1,4 @@
 #include <synth/modules/filter/StateVariableFilter.hpp>
-//#include <dsp/FastMath.hpp>
 #include <synth/modules/filter/StateVariableFilterElement.hpp>
 #include <synth/modules/filter/StateVariableFilterVariables.hpp>
 
@@ -9,9 +8,10 @@
 
 using namespace ctoot::synth::modules::filter;
 
-StateVariableFilter::StateVariableFilter(StateVariableFilterVariables* variables) : AbstractFilter(variables)
+StateVariableFilter::StateVariableFilter(StateVariableFilterVariables* variables)
 {
 	element = new StateVariableFilterElement();
+    vars = variables;
 }
 
 float StateVariableFilter::update()
@@ -33,6 +33,12 @@ float StateVariableFilter::filter(float sample, float f)
 	v2 = min;
 	min = v1 < v2 ? v1 : v2;
     return element->filter(sample, f1, min);
+}
+
+void StateVariableFilter::setSampleRate(int rate)
+{
+    vars->setSampleRate(rate);
+    fs = rate;
 }
 
 StateVariableFilter::~StateVariableFilter() {

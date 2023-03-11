@@ -1,31 +1,32 @@
 #pragma once
-#include <synth/modules/filter/AbstractSynthFilter.hpp>
 
-namespace ctoot {
-	namespace synth {
-		namespace modules {
-			namespace filter {
+#include "FilterVariables.hpp"
 
-				class StateVariableFilterElement;
-				class StateVariableFilterVariables;
+namespace ctoot::synth::modules::filter {
 
-				class StateVariableFilter
-					: AbstractFilter
-				{
-                public:
-                    StateVariableFilter(StateVariableFilterVariables* variables);
-                    virtual ~StateVariableFilter();
+    class StateVariableFilterElement;
 
-				private:
-					StateVariableFilterElement* element{ nullptr };
-					float res{ 0.f };
+    class StateVariableFilterVariables;
 
-				public:
-					virtual float update();
-					virtual float filter(float sample, float f);
+    class StateVariableFilter
+    {
+    public:
+        StateVariableFilter(StateVariableFilterVariables *variables);
 
-				};
-			}
-		}
-	}
+        virtual ~StateVariableFilter();
+
+    private:
+        StateVariableFilterElement *element{nullptr};
+        float res{0.f};
+        FilterVariables *vars{};
+        float fs{44100.0};
+
+        void setSampleRate(int rate);
+
+    public:
+        virtual float update();
+
+        virtual float filter(float sample, float f);
+
+    };
 }
