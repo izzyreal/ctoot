@@ -1,37 +1,39 @@
 #pragma once
+
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioProcess.hpp>
 #include <audio/core/ChannelFormat.hpp>
 #include <audio/mixer/BusControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
-			class AudioMixer;
-			class AudioMixerBus
-			{
+namespace ctoot::audio::mixer {
+    class AudioMixer;
 
-			private:
-				AudioMixer* mixer{ nullptr };
-				ctoot::audio::core::AudioBuffer* buffer{ nullptr };
-				std::weak_ptr<ctoot::audio::core::AudioProcess> output;
-				ctoot::audio::core::AudioProcess* meter{ nullptr };
-				bool isFx{ false };
-				std::string name{ "" };
-				std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
+    class AudioMixerBus
+    {
 
-			public:
-                virtual ctoot::audio::core::AudioBuffer* getBuffer();
-				virtual std::string getName();
-				virtual void silence();
-				virtual void write(int nFrames);
-				virtual void close();
+    private:
+        AudioMixer *mixer{nullptr};
+        ctoot::audio::core::AudioBuffer *buffer{nullptr};
+        std::weak_ptr<ctoot::audio::core::AudioProcess> output;
+        ctoot::audio::core::AudioProcess *meter{nullptr};
+        std::string name{""};
+        std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
 
-			public:
-				AudioMixerBus(AudioMixer* mixer, std::weak_ptr<BusControls> busControls);
-				virtual ~AudioMixerBus();
-			};
-		}
-	}
+    public:
+        virtual ctoot::audio::core::AudioBuffer *getBuffer();
+
+        virtual std::string getName();
+
+        virtual void silence();
+
+        virtual void write(int nFrames);
+
+        virtual void close();
+
+    public:
+        AudioMixerBus(AudioMixer *mixer, std::weak_ptr<BusControls> busControls);
+
+        virtual ~AudioMixerBus();
+    };
 }

@@ -10,7 +10,6 @@ AudioMixerBus::AudioMixerBus(AudioMixer* mixer, weak_ptr<BusControls> busControl
 	auto lBusControls = busControls.lock();
 	this->mixer = mixer;
 	name = lBusControls->getName();
-	isFx = lBusControls->getId() == MixerControlsIds::FX_BUS;
 	channelFormat = lBusControls->getChannelFormat();
 	buffer = mixer->createBuffer(name);
 	buffer->setChannelFormat(channelFormat);
@@ -33,7 +32,7 @@ void AudioMixerBus::silence()
 
 void AudioMixerBus::write(int nFrames)
 {
-	if (!output.lock() && !isFx) return;
+	if (!output.lock()) return;
 
 	if (output.lock()) {
 		output.lock()->processAudio(buffer, nFrames);

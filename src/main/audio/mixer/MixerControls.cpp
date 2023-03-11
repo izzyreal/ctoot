@@ -35,26 +35,6 @@ float MixerControls::getSmoothingFactor()
     return smoothingFactor;
 }
 
-void MixerControls::createFxBusControls(string name, weak_ptr<ChannelFormat> format)
-{
-	if (!canAddBusses) {
-		string error = "Can't add busses after adding strips";
-		printf("ERROR: %s", error.c_str());
-	}
-	auto mainFormat = mainBusControls->getChannelFormat();
-	if (!format.lock()) {
-		format = mainFormat;
-	}
-	else if (format.lock()->getCount() > mainFormat->getCount()) {
-		format = mainFormat;
-
-		string error = name.append(" Bus limited to Main Bus channel format");
-		printf("ERROR: %s", error.c_str());
-	}
-	auto busControls = make_shared<BusControls>(MixerControlsIds::FX_BUS, name, format.lock());
-	fxBusControls.push_back(std::move(busControls));
-}
-
 void MixerControls::createAuxBusControls(string name, weak_ptr<ChannelFormat> format)
 {
 	if (!canAddBusses) {
@@ -74,12 +54,6 @@ weak_ptr<BusControls> MixerControls::getBusControls(string name)
 		return mainBusControls;
 	}
 
-	for (int i = 0; i < fxBusControls.size(); i++) {
-		auto busControls = fxBusControls[i];
-		if (busControls->getName().compare(name) == 0) {
-			return busControls;
-		}
-	}
 	for (int i = 0; i < auxBusControls.size(); i++) {
 		auto busControls = auxBusControls[i];
 		if (busControls->getName().compare(name) == 0) {
@@ -92,11 +66,6 @@ weak_ptr<BusControls> MixerControls::getBusControls(string name)
 weak_ptr<BusControls> MixerControls::getMainBusControls()
 {
 	return mainBusControls;
-}
-
-vector<shared_ptr<BusControls>> MixerControls::getFxBusControls()
-{
-	return fxBusControls;
 }
 
 vector<shared_ptr<BusControls>> MixerControls::getAuxBusControls()

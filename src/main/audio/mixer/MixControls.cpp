@@ -52,7 +52,7 @@ MixControls::MixControls(MixerControls* mixerControls, int stripId, shared_ptr<B
 	derive(muteControl.get());
 	add(enables);
 
-	auto muted = ((busId == MixerControlsIds::AUX_BUS || busId == MixerControlsIds::FX_BUS) && !master);
+	auto muted = (busId == MixerControlsIds::AUX_BUS && !master);
 	gainControl = shared_ptr<FaderControl>(mixerControls->createFaderControl(muted));
 	add(gainControl);
 	derive(gainControl.get());

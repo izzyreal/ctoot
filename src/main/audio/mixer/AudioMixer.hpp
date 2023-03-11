@@ -25,13 +25,11 @@ namespace ctoot {
 				std::shared_ptr<AudioMixerBus> mainBus{ nullptr };
 				std::vector<std::shared_ptr<AudioMixerBus>> busses{};
 				std::vector<std::shared_ptr<AudioMixerBus>> auxBusses{};
-				std::vector<std::shared_ptr<AudioMixerBus>> fxBusses{};
 
 			private:
 				std::vector<std::shared_ptr<AudioMixerStrip>> strips{};
 				std::vector<std::weak_ptr<AudioMixerStrip>> channelStrips{};
 				std::vector<std::weak_ptr<AudioMixerStrip>> groupStrips{};
-				std::vector<std::weak_ptr<AudioMixerStrip>> fxStrips{};
 				std::vector<std::weak_ptr<AudioMixerStrip>> auxStrips{};
 				std::weak_ptr<AudioMixerStrip> mainStrip;
 				std::weak_ptr<ctoot::audio::server::AudioServer> server{};

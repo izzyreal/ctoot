@@ -107,12 +107,10 @@ void AudioMixer::work(int nFrames)
 
 	processMutations();
 	silenceStrips(&groupStrips);
-	silenceStrips(&fxStrips);
 	silenceStrips(&auxStrips);
 	mainStrip.lock()->silence();
 	evaluateStrips(&channelStrips, nFrames);
 	evaluateStrips(&groupStrips, nFrames);
-	evaluateStrips(&fxStrips, nFrames);
 	evaluateStrips(&auxStrips, nFrames);
 	mainStrip.lock()->processBuffer(nFrames);
 	writeBusBuffers(nFrames);
@@ -164,19 +162,13 @@ void AudioMixer::createBusses(weak_ptr<MixerControls> mixerControls)
 {
 	busses.clear();
 	auxBusses.clear();
-	fxBusses.clear();
+
 	shared_ptr<AudioMixerBus> bus;
 
 	for (auto& bc : mixerControls.lock()->getAuxBusControls()) {
 		bus = createBus(bc);
 		busses.push_back(bus);
 		auxBusses.push_back(bus);
-	}
-
-	for (auto& bc : mixerControls.lock()->getFxBusControls()) {
-		bus = createBus(bc);
-		busses.push_back(bus);
-		fxBusses.push_back(bus);
 	}
 
 	mainBus = createBus(mixerControls.lock()->getMainBusControls());
@@ -234,9 +226,6 @@ weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::A
 	case MixerControlsIds::GROUP_STRIP:
 		groupStrips.push_back(strip);
 		break;
-	case MixerControlsIds::FX_STRIP:
-		fxStrips.push_back(strip);
-		break;
 	case MixerControlsIds::AUX_STRIP:
 		auxStrips.push_back(strip);
 		break;
@@ -284,14 +273,6 @@ void AudioMixer::removeStrip(weak_ptr<ctoot::audio::core::AudioControlsChain> co
 					}
 				}
 				break;
-			case MixerControlsIds::FX_STRIP:
-				for (int j = 0; j < fxStrips.size(); j++) {
-					if (fxStrips[j].lock() == strip) {
-						fxStrips.erase(fxStrips.begin() + j);
-						break;
-					}
-				}
-				break;
 			case MixerControlsIds::AUX_STRIP:
 				for (int j = 0; j < auxStrips.size(); j++) {
 					if (auxStrips[j].lock() == strip) {
@@ -321,7 +302,6 @@ void AudioMixer::close()
 
 	channelStrips.clear();
 	groupStrips.clear();
-	fxStrips.clear();
 	auxStrips.clear();
 	
 	for (auto& b : busses) {
@@ -329,10 +309,8 @@ void AudioMixer::close()
 	}
     busses.clear();
 	auxBusses.clear();
-	fxBusses.clear();
 	server.lock()->removeAudioBuffer(sharedAudioBuffer);
 	server.reset();
-	//mutationQueue.clear();
 	controls.reset();
 }
 
