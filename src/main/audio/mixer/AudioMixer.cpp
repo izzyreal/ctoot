@@ -10,12 +10,6 @@
 #include <audio/mixer/MixerControlsIds.hpp>
 #include <audio/server/AudioServer.hpp>
 
-//#include <time.h>
-//#include <chrono>
-//#include <thread>
-
-#include <Logger.hpp>
-
 using namespace std;
 using namespace ctoot::audio::server;
 using namespace ctoot::audio::mixer;
@@ -198,7 +192,6 @@ shared_ptr<AudioMixerBus> AudioMixer::getMainBus()
 weak_ptr<AudioMixerStrip> AudioMixer::getMainStrip()
 {
 	if (!mainStrip.lock()) {
-		MLOG("getMainStrip() called before mainStrip set");
 		return {};
 	}
 	return mainStrip;
@@ -233,20 +226,15 @@ weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::A
 		if (!mainStrip.lock()) {
 			mainStrip = strip;
 		}
-		else {
-			MLOG("Only one main strip allowed!");
-		}
 		break;
 	}
 
 	try {
 		strips.push_back(strip);
 		strip->open();
-	} catch (const std::exception& e) {
-		string msg = e.what();
-		MLOG("Mixer failed to open strip " + strip->getName() + "!");
-		MLOG("Error: " + msg);
+	} catch (const std::exception&) {
 	}
+
     return strip;
 }
 
@@ -254,7 +242,9 @@ void AudioMixer::removeStrip(weak_ptr<ctoot::audio::core::AudioControlsChain> co
 {
 	for (int i = 0; i < strips.size(); i++) {
 		auto strip = strips[i];
-		if (strip->getName().compare(controls.lock()->getName()) == 0) {
+
+		if (strip->getName().compare(controls.lock()->getName()) == 0)
+        {
 			strip->close();
 			switch (controls.lock()->getId()) {
 			case MixerControlsIds::CHANNEL_STRIP:

@@ -28,24 +28,14 @@ namespace ctoot {
 			private:
 				moodycamel::ConcurrentQueue<ctoot::control::ChainMutation*> mutationQueue {};
 				moduru::observer::Observer* controlChainObserver{ nullptr };
-				bool debugTimes{ false };
-                
-            private:
-				std::vector<int64_t> t; // for debugging
 
 			public:
 				void open() override;
 
-			private:
-				int debugIndex{};
-				int64_t prevNanos{};
-				int64_t tstart{};
-				int64_t elapsed{};
-
 			public:
 				int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
-				virtual int debugProcessAudio(ctoot::audio::core::AudioBuffer* buffer);
-				void close() override;
+
+                void close() override;
 				virtual std::string getName();
 
 			public:

@@ -1,6 +1,5 @@
 #include <audio/system/DefaultAudioSystem.hpp>
 #include <audio/system/AudioDevice.hpp>
-#include <audio/system/AudioSystemObserver.hpp>
 
 #include <Logger.hpp>
 
@@ -12,17 +11,12 @@ using namespace std;
 DefaultAudioSystem::DefaultAudioSystem() 
 {
 	autoConnect = true;
-	observer = new AudioSystemObserver(this);
 }
 
 void DefaultAudioSystem::addAudioDevice(std::weak_ptr<AudioDevice> device)
 {
-	//MLOG("Trying to add device " + device.lock()->getName());
 	checkUniqueDeviceName(device);
 	devices.push_back(device);
-	
-	notifyObservers(device);
-	device.lock()->addObserver(observer);
 }
 
 void DefaultAudioSystem::checkUniqueDeviceName(std::weak_ptr<AudioDevice> device)
@@ -37,7 +31,6 @@ void DefaultAudioSystem::checkUniqueDeviceName(std::weak_ptr<AudioDevice> device
 
 void DefaultAudioSystem::removeAudioDevice(std::weak_ptr<AudioDevice> device)
 {
-	device.lock()->deleteObserver(observer);
 	int index = 0;
 	for (auto& d : devices) {
 		if (d.lock() == device.lock()) break;
@@ -45,23 +38,6 @@ void DefaultAudioSystem::removeAudioDevice(std::weak_ptr<AudioDevice> device)
 	}
 	if (index >= devices.size()) return;
 	devices.erase(devices.begin() + index);
-	
-	notifyObservers(device);
-}
-
-vector<std::weak_ptr<AudioDevice>> DefaultAudioSystem::getAudioDevices()
-{
-	return devices;
-}
-
-vector<std::weak_ptr<AudioOutput>> DefaultAudioSystem::getAudioOutputs()
-{
-	vector<std::weak_ptr<AudioOutput>> outputs;
-	for (auto& device : devices) {
-			for (auto& output : device.lock()->getAudioOutputs())
-				outputs.push_back(output);
-	}
-	return outputs;
 }
 
 void DefaultAudioSystem::setAutoConnect(bool autoConnect)
@@ -73,10 +49,4 @@ void DefaultAudioSystem::close()
 {
 	for (auto& device : devices)
 		device.lock()->closeAudio();
-}
-
-DefaultAudioSystem::~DefaultAudioSystem() {
-	if (observer != nullptr) {
-		delete observer;
-	}
 }

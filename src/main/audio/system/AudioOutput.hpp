@@ -2,18 +2,14 @@
 
 #include <audio/system/AudioPort.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace system {
+namespace ctoot::audio::system {
 
-			class AudioOutput
-				: public virtual AudioPort
-			{
-			public:
-				virtual std::string getLocation() = 0;
+    class AudioOutput
+            : public virtual AudioPort
+    {
+    public:
+        virtual std::string getLocation() = 0;
 
-			};
+    };
 
-		}
-	}
 }

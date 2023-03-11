@@ -18,77 +18,6 @@ MixerConnectedAudioSystem::MixerConnectedAudioSystem(shared_ptr<ctoot::audio::mi
     mixerControls = mixer->getMixerControls();
 }
 
-void MixerConnectedAudioSystem::notifyObservers(nonstd::any obj)
-{
-    
-    if (!obj.has_value())
-        return;
-    
-    if (obj.type() == typeid(weak_ptr<AudioDevice>))
-    {
-        auto device = nonstd::any_cast<weak_ptr<AudioDevice>>(obj).lock();
-        
-        if (device)
-        {
-            
-            
-            bool added = false;
-            
-            for (auto& ad : getAudioDevices())
-            {
-                if (ad.lock() == device)
-                {
-                    added = true;
-                    break;
-                }
-            }
-            
-            auto outputs = device->getAudioOutputs();
-            
-            for (auto& output : outputs)
-            {
-                if (added)
-                {
-                    if (autoConnect)
-                        createConnectionFrom(output);
-                }
-                else {
-                    closeConnectionFrom(output);
-                }
-            }
-        }
-    }
-    else if (obj.type() == typeid(weak_ptr<AudioOutput>))
-    {
-        auto output = nonstd::any_cast<std::weak_ptr<AudioOutput>>(obj).lock();
-        
-        if (output)
-        {
-            bool added = false;
-            
-            for (auto& ao : getAudioOutputs())
-            {
-                if (ao.lock() == output)
-                {
-                    added = true;
-                    break;
-                }
-            }
-            
-            if (added)
-            {
-                if (autoConnect)
-                    createConnectionFrom(output);
-            }
-            else {
-                closeConnectionFrom(output);
-            }
-        }
-    }
-    
-    DefaultAudioSystem::notifyObservers(obj);
-}
-
 vector<AudioConnection*>* MixerConnectedAudioSystem::getConnections()
 {
     return &connections;
@@ -96,15 +25,13 @@ vector<AudioConnection*>* MixerConnectedAudioSystem::getConnections()
 
 void MixerConnectedAudioSystem::createConnection(std::weak_ptr<AudioOutput> from, ctoot::audio::mixer::AudioMixerStrip* to, int flags)
 {
-    //MLOG("\nTrying to create connection from " + from.lock()->getName() + " to " + to->getName());
-    if (getConnectionFrom(from.lock()->getName(), from.lock()->getLocation()) != nullptr) {
-        MLOG("Connection already exists");
+    if (getConnectionFrom(from.lock()->getName(), from.lock()->getLocation()) != nullptr)
+    {
         return;
     }
+
     AudioConnection* connection = new MixerInputConnection(this, from, to, flags);
     connections.push_back(connection);
-    
-    moduru::observer::Observable::notifyObservers();
 }
 
 AudioConnection* MixerConnectedAudioSystem::getConnectionFrom(string from, string fromLocation)
@@ -135,7 +62,6 @@ void MixerConnectedAudioSystem::createConnectionFrom(std::weak_ptr<AudioOutput> 
             mixerControls.lock()->createStripControls(ctoot::audio::mixer::MixerControlsIds::CHANNEL_STRIP, i, name);
             strip = mixer.lock()->getStrip(name).lock();
             if (!strip) {
-                MLOG("Failed to create mixer strip " + name + " for " + nameAndLocation(output));
                 return;
             }
         }
@@ -152,7 +78,6 @@ void MixerConnectedAudioSystem::closeConnectionFrom(std::weak_ptr<AudioOutput> o
     auto location = output.lock()->getLocation();
     auto connection = getConnectionFrom(name, location);
     if (connection == nullptr) {
-        MLOG("Failed to close connection from " + name + " @ " + location);
         return;
     }
     closeConnection(connection);
@@ -169,13 +94,6 @@ void MixerConnectedAudioSystem::closeConnection(AudioConnection* connection)
     }
     if (index >= connections.size()) return;
     connections.erase(connections.begin() + index);
-    
-    moduru::observer::Observable::notifyObservers();
-}
-
-string MixerConnectedAudioSystem::nameAndLocation(std::weak_ptr<AudioOutput> output)
-{
-    return output.lock()->getName() + " @ " + output.lock()->getLocation();
 }
 
 MixerConnectedAudioSystem::~MixerConnectedAudioSystem() {

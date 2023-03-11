@@ -1,43 +1,36 @@
 #pragma once
+
 #include <audio/system/AudioSystem.hpp>
 
 #include <memory>
 
-namespace ctoot {
-	namespace audio {
-		namespace system {
+namespace ctoot::audio::system {
 
-			class DefaultAudioSystem
-				: public AudioSystem
-			{
+    class DefaultAudioSystem
+            : public AudioSystem
+    {
 
-			protected:
-				std::vector<std::weak_ptr<AudioDevice>> devices{};
-				moduru::observer::Observer* observer{ nullptr };
+    protected:
+        std::vector<std::weak_ptr<AudioDevice>> devices{};
 
-			public:
-				bool autoConnect{ false };
+    public:
+        virtual void checkUniqueDeviceName(std::weak_ptr<AudioDevice> device);
 
-			public:
-				void addAudioDevice(std::weak_ptr<AudioDevice> device) override;
+    public:
+        bool autoConnect{false};
 
-			public:
-				virtual void checkUniqueDeviceName(std::weak_ptr<AudioDevice> device);
+    public:
+        void addAudioDevice(std::weak_ptr<AudioDevice> device) override;
 
-			public:
-				void removeAudioDevice(std::weak_ptr<AudioDevice> device) override;
-				std::vector<std::weak_ptr<AudioDevice>> getAudioDevices() override;
+        void removeAudioDevice(std::weak_ptr<AudioDevice> device) override;
 
-                std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
-				void setAutoConnect(bool autoConnect) override;
-				void close() override;
+        void setAutoConnect(bool autoConnect) override;
 
-			public:
-				DefaultAudioSystem();
-				virtual ~DefaultAudioSystem();
+        void close() override;
 
-			};
+    public:
+        DefaultAudioSystem();
 
-		}
-	}
+    };
+
 }

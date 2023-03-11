@@ -16,48 +16,30 @@ using namespace ctoot::audio::core;
 AudioProcessChain::AudioProcessChain(weak_ptr<AudioControlsChain> controlChain)
 {
 	this->controlChain = controlChain;
-	debugTimes = false;
-	debugIndex = 0;
-	prevNanos = 0;
 	controlChainObserver = new ControlChainObserver(this);
 }
 
 void AudioProcessChain::open()
 {
 	for (auto& control : controlChain.lock()->getControls()) {
-		//MLOG("AudioProcessChain open iterating through controls. Current control: " + control->getName());
+
 		auto candidate = dynamic_pointer_cast<AudioControls>(control.lock());
+
 		if (candidate) {
 			auto p = createProcess(candidate);
 			if (p != nullptr) {
-				//MLOG("Valid process created from control " + control->getName());
-				processes.push_back(p);
+                processes.push_back(p);
 				p->open();
-			}
-			else {
-				//MLOG("No process created from control " + candidate->getName());
 			}
 		}
 	}
 	controlChain.lock()->addObserver(controlChainObserver);
-	if (debugTimes) {
-		t.clear();
-	}
 }
 
 int AudioProcessChain::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames)
 {
 	processMutations();
-	if (debugTimes) {
-		tstart = chrono::high_resolution_clock::now().time_since_epoch().count();
-		elapsed = tstart - prevNanos;
-		prevNanos = tstart;
-		debugIndex += 1;
-		debugIndex %= 100;
-		if (debugIndex == 0) {
-			return debugProcessAudio(buffer);
-		}
-	}
+
 	for (auto& p : processes) {
 		try {
 			if (p) {
@@ -78,23 +60,6 @@ int AudioProcessChain::processAudio(ctoot::audio::core::AudioBuffer* buffer, int
 	return AUDIO_OK;
 }
 
-int AudioProcessChain::debugProcessAudio(ctoot::audio::core::AudioBuffer* buffer)
-{
-	auto len = processes.size();
-	for (auto i = 0; i < len; i++) {
-		processes[i]->processAudio(buffer);
-		t[i] = chrono::high_resolution_clock::now().time_since_epoch().count();
-	}
-	auto load = static_cast<int>(100 * (t[len - 1] - tstart) / elapsed);
-    printf("debugProcessAudio load: %i\n", load);
-	auto prevt = tstart;
-	for (auto i = 0; i < len; i++) {
-        printf("debugProcessAudio t[i]: %lld\n", t[i]);
-		prevt = t[i];
-	}
-	return AUDIO_OK;
-}
-
 void AudioProcessChain::close()
 {
 	controlChain.lock()->deleteObserver(controlChainObserver);
@@ -103,7 +68,6 @@ void AudioProcessChain::close()
 		p->close();
 	}
 	processes.clear();
-	t.clear();
 }
 
 string AudioProcessChain::getName()
@@ -145,10 +109,6 @@ void AudioProcessChain::processMutations()
 			processes.insert(processes.begin() + m->getIndex0(), p);
 			if (p) {
 				p->open();
-//				MLOG("Successfully inserted process based on control " + controls->getName());
-			}
-			else {
-//				MLOG("NOT successfully inserted process based on control " + controls->getName());
 			}
 		}
 		break;

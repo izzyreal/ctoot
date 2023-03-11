@@ -22,6 +22,3 @@ string AbstractAudioDevice::toString()
 {
 	return name;
 }
-
-AbstractAudioDevice::~AbstractAudioDevice() {
-}

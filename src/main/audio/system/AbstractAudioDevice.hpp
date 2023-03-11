@@ -1,31 +1,27 @@
 #pragma once
+
 #include <audio/system/AudioDevice.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace system {
+namespace ctoot::audio::system {
 
-			class AbstractAudioDevice
-				: public virtual AudioDevice
-			{
+    class AbstractAudioDevice
+            : public virtual AudioDevice
+    {
 
-			public:
-				std::vector<std::shared_ptr<AudioInput>> inputs{};
-				std::vector<std::shared_ptr<AudioOutput>> outputs{};
+    public:
+        std::vector<std::shared_ptr<AudioInput>> inputs{};
+        std::vector<std::shared_ptr<AudioOutput>> outputs{};
 
-			private:
-				std::string name{ "" };
+    private:
+        std::string name;
 
-			public:
-                std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
-				std::string getName() override;
-				std::string toString();
+    public:
+        std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
 
-            public:
-                ~AbstractAudioDevice();
+        std::string getName() override;
 
-			};
+        std::string toString();
 
-		}
-	}
+    };
+
 }

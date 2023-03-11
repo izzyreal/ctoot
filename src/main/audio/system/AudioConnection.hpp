@@ -2,28 +2,24 @@
 
 #include <string>
 
-namespace ctoot {
-	namespace audio {
-		namespace system {
+namespace ctoot::audio::system {
 
-			class AudioConnection
+    class AudioConnection
+    {
 
-			{
+    public:
+        AudioConnection(int flags);
 
-            public:
-                AudioConnection(int flags);
-                virtual ~AudioConnection() {}
+    private:
+        int flags{0};
 
-            private:
-				int flags{ 0 };
+    public:
+        virtual void close() = 0;
 
-			public:
-				virtual void close() = 0;
-				virtual std::string getOutputName() = 0;
-				virtual std::string getOutputLocation() = 0;
+        virtual std::string getOutputName() = 0;
 
-            };
+        virtual std::string getOutputLocation() = 0;
 
-		}
-	}
+    };
+
 }
