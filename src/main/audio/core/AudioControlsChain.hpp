@@ -1,7 +1,6 @@
 #pragma once
 #include <control/CompoundControlChain.hpp>
 #include <audio/core/ChannelFormat.hpp>
-#include <audio/core/MetaInfo.hpp>
 
 #include <vector>
 
@@ -23,19 +22,9 @@ namespace ctoot {
 				std::string sourceLocation{ "" };
 				std::weak_ptr<ChannelFormat> constraintChannelFormat;
 
-			public:
-				virtual void setMetaInfo(std::weak_ptr<MetaInfo> metaInfo);
-
             public:
 				std::shared_ptr<ctoot::control::CompoundControl> createControl(std::string name) override;
 				int getMaxInstance() override;
-
-			public:
-                bool isCompatibleDescriptor(ctoot::service::ServiceDescriptor* d);
-
-			public:
-				//std::vector<ctoot::service::ServiceDescriptor*> descriptors() override;
-				std::string getPersistenceDomain() override;
 
 			public:
 				AudioControlsChain(int id, std::string name);

@@ -18,8 +18,8 @@ namespace ctoot {
 			{
 			public:
 				virtual std::string getName() = 0;
-				virtual std::vector<std::weak_ptr<AudioInput>> getAudioInputs() = 0;
-				virtual std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() = 0;
+
+                virtual std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() = 0;
 				virtual void closeAudio() = 0;
 
 			};

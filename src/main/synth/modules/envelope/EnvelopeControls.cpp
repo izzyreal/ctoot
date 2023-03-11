@@ -14,16 +14,6 @@ using namespace std;
 
 std::vector<std::shared_ptr<ctoot::control::ControlLaw>> EnvelopeControls::laws;
 
-EnvelopeControls::EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset)
-	: EnvelopeControls(instanceIndex, name, idOffset, "S", 1.0f)
-{
-}
-
-EnvelopeControls::EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset, std::string options)
-	: EnvelopeControls(instanceIndex, name, idOffset, options, 1.0f)
-{
-}
-
 EnvelopeControls::EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset, std::string options, float timeMultiplier)
 	: EnvelopeControls(EnvelopeIds::DAHDSR_ENVELOPE_ID, instanceIndex, name, idOffset, options, timeMultiplier)
 {

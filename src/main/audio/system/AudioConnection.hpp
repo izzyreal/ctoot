@@ -14,10 +14,6 @@ namespace ctoot {
                 AudioConnection(int flags);
                 virtual ~AudioConnection() {}
 
-			public:
-				static const int PLAYBACK{ 1 };
-				static const int SYSTEM{ 2 };
-
             private:
 				int flags{ 0 };
 

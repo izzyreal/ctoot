@@ -49,7 +49,6 @@ float SynthChannel::midiFreqImpl(int pitch)
 void SynthChannel::setSampleRate(int rate)
 {
     sampleRate = rate;
-    inverseNyquist = 2.0f / sampleRate;
 }
 
 std::weak_ptr<ctoot::audio::core::ChannelFormat> SynthChannel::getChannelFormat()
@@ -105,11 +104,6 @@ void SynthChannel::programChange(int arg0, int arg1)
 {
 }
 
-int SynthChannel::getChannelPressure()
-{
-    return pressure;
-}
-
 void SynthChannel::setChannelPressure(int arg0)
 {
     pressure = arg0;
@@ -121,13 +115,8 @@ void SynthChannel::setMono(bool mono)
 
 void SynthChannel::setPitchBend(int bend)
 {
-    rawBend = bend;
     bend -= 8192;
     auto b = static_cast< float >(bendRange) * bend / 8192;
     bendFactor = static_cast< float >(pow(ONE_SEMITONE, b));
 }
 
-float SynthChannel::getBendFactor()
-{
-    return bendFactor;
-}

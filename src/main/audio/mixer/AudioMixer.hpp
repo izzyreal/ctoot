@@ -52,12 +52,11 @@ namespace ctoot {
 				void removeBuffer(ctoot::audio::core::AudioBuffer* buffer);
 
 			public:
-				bool isMutating();
-				void waitForMutations();
+                void waitForMutations();
 				std::weak_ptr<AudioMixerStrip> getStrip(std::string name);
 				std::weak_ptr<AudioMixerStrip> getStripImpl(std::string name);
-				std::vector<std::shared_ptr<AudioMixerStrip>> getStrips();
-				std::weak_ptr<AudioMixerStrip> getUnusedChannelStrip();
+
+                std::weak_ptr<AudioMixerStrip> getUnusedChannelStrip();
 				void work(int nFrames) override;
 
 			private:

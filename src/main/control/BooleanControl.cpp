@@ -61,17 +61,8 @@ string BooleanControl::getValueString()
     return isMomentary() ? "" : getStateLabel(getValue());
 }
 
-void BooleanControl::setIntValue(int value)
-{
-    setValue(value == 0 ? false : true);
-}
-
 int BooleanControl::getIntValue()
 {
 	return getValue() ? 1 : 0;
 }
 
-int BooleanControl::getWidthLimit()
-{
-    return 42;
-}

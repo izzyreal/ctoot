@@ -26,9 +26,8 @@ namespace ctoot::audio::server {
 		virtual void resizeBuffers(int newSize);
 
 	public:
-		const std::vector<IOAudioProcess*>& getActiveInputs();
-		const std::vector<IOAudioProcess*>& getActiveOutputs();
-		const std::vector<ctoot::audio::core::AudioBuffer*>& getBuffers();
+
+        const std::vector<ctoot::audio::core::AudioBuffer*>& getBuffers();
 		const unsigned int getBufferSize();
 
 	public:

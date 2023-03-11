@@ -1,8 +1,6 @@
 #include <audio/mixer/AudioMixerBus.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
-#include <audio/meter/MeterProcess.hpp>
-
 using namespace ctoot::audio::core;
 using namespace ctoot::audio::mixer;
 using namespace std;
@@ -16,12 +14,6 @@ AudioMixerBus::AudioMixerBus(AudioMixer* mixer, weak_ptr<BusControls> busControl
 	channelFormat = lBusControls->getChannelFormat();
 	buffer = mixer->createBuffer(name);
 	buffer->setChannelFormat(channelFormat);
-	setMeterProcess(new ctoot::audio::meter::MeterProcess(busControls.lock()->getMeterControls()));
-}
-
-void AudioMixerBus::setOutputProcess(std::weak_ptr<AudioProcess> output)
-{
-    this->output = output;
 }
 
 void AudioMixerBus::setMeterProcess(AudioProcess* meter)

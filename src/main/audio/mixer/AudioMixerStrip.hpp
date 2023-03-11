@@ -2,8 +2,6 @@
 #include <audio/core/AudioProcessChain.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
-#include <audio/core/MetaInfo.hpp>
-
 #include <memory>
 
 namespace ctoot {
@@ -19,7 +17,6 @@ namespace ctoot {
 
 			private:
                 ctoot::audio::core::AudioBuffer* buffer{ nullptr };
-				std::shared_ptr<ctoot::audio::core::MetaInfo> metaInfo;
 				std::weak_ptr<AudioProcess> input;
 				std::weak_ptr<AudioProcess> directOutput;
 				bool isChannel{ false };
@@ -29,8 +26,8 @@ namespace ctoot {
 			public:
 				virtual std::weak_ptr<AudioProcess> getInputProcess();
 				virtual void setInputProcess(std::weak_ptr<AudioProcess> input);
-				virtual std::weak_ptr<AudioProcess> getDirectOutputProcess();
-				virtual void setDirectOutputProcess(std::weak_ptr<AudioProcess> output);
+
+                virtual void setDirectOutputProcess(std::weak_ptr<AudioProcess> output);
 				virtual void silence();
 
 			public:
@@ -42,7 +39,6 @@ namespace ctoot {
 
 			public:
 				virtual bool processBuffer(int nFrames);
-				virtual void checkMetaInfo(std::weak_ptr<ctoot::audio::core::MetaInfo> info);
 				virtual int mix(ctoot::audio::core::AudioBuffer* bufferToMix, std::vector<float>& gain);
 
 			public:

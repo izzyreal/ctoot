@@ -13,9 +13,8 @@ namespace ctoot {
 
 		public:
 			int intValue(float v) override;
-			float userValue(int i) override;
 
-			LinearLaw(float min, float max, std::string units);
+            LinearLaw(float min, float max, std::string units);
             virtual ~LinearLaw() override {}
             
 		public:

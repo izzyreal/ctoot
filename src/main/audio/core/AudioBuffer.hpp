@@ -1,6 +1,5 @@
 #pragma once
 #include <audio/core/FloatSampleBuffer.hpp>
-#include <audio/core/MetaInfo.hpp>
 
 #include <string>
 
@@ -15,7 +14,6 @@ namespace ctoot::audio::core
 	{
 
 	private:
-		std::weak_ptr<MetaInfo> metaInfo;
 		std::weak_ptr<ChannelFormat> channelFormat;
 		bool realTime{ true };
 		std::string name{ "" };
@@ -27,8 +25,6 @@ namespace ctoot::audio::core
 		void setChannelCount(int count);
 
 	public:
-		void setMetaInfo(std::weak_ptr<MetaInfo> info);
-		std::weak_ptr<MetaInfo> getMetaInfo();
 		bool isRealTime();
 		void setRealTime(bool realTime);
 
@@ -38,13 +34,12 @@ namespace ctoot::audio::core
 	public:
 		std::weak_ptr<ChannelFormat> getChannelFormat();
 		void setChannelFormat(std::weak_ptr<ChannelFormat> format);
-		void monoToStereo();
-		void convertTo(std::weak_ptr<ChannelFormat> format);
+
+        void convertTo(std::weak_ptr<ChannelFormat> format);
 		void swap(int a, int b);
 		float square();
-		bool encodeMidSide();
-		bool decodeMidSide();
-		void copyFrom(AudioBuffer* src);
+
+        void copyFrom(AudioBuffer* src);
 		const bool isSilent();
 
 	public:

@@ -52,8 +52,8 @@ namespace ctoot {
 
 		public:
 			std::vector<std::weak_ptr<ctoot::audio::system::AudioOutput>> getAudioOutputs() override;
-			std::vector<std::weak_ptr<ctoot::audio::system::AudioInput>> getAudioInputs() override;
-			void closeAudio() override;
+
+            void closeAudio() override;
 			std::string getName() override;
 
 

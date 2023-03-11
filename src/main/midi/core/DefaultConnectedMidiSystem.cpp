@@ -38,29 +38,6 @@ void DefaultConnectedMidiSystem::checkConnections()
 	}
 }
 
-void DefaultConnectedMidiSystem::createMidiConnection(MidiOutput* from, MidiInput* to, int flags)
-{
-    auto connection = new MidiConnection(from, to, flags);
-	connections.push_back(connection);
-    
-    notifyObservers();
-}
-
-void DefaultConnectedMidiSystem::closeMidiConnection(MidiOutput* from, MidiInput* to)
-{
-    auto connection = getConnection(from, to);
-	int i;
-	for (i = 0; i < connections.size(); i++) {
-		if (connections[i] == connection)
-			break;
-	}
-	if (i >= connections.size()) return;
-	connections.erase(connections.begin() + i);
-    connection->close();
-    
-    notifyObservers();
-}
-
 MidiConnection* DefaultConnectedMidiSystem::getConnection(MidiOutput* from, MidiInput* to)
 {
 	for (auto& c : connections) {
@@ -72,19 +49,6 @@ MidiConnection* DefaultConnectedMidiSystem::getConnection(MidiOutput* from, Midi
 	//    throw new ::java::lang::IllegalArgumentException(stringBuilder().append("MidiConnection from "->append(npc(from)->getName())
 	//        ->append(" to "
 	//        ->append(npc(to)->getName())->toString());
-}
-
-MidiPort* DefaultConnectedMidiSystem::getPort(string* name, bool isOut)
-{
-	for (auto& device : getMidiDevices()) {
-		vector<MidiPort*> ports = isOut ? vector<MidiPort*>(device->getMidiOutputs().begin(), device->getMidiOutputs().end()) : vector<MidiPort*>(device->getMidiInputs().begin(), device->getMidiInputs().end());
-		for (auto& port : ports) {
-			if (name->compare(port->getName()) == 0) {
-				return port;
-			}
-		}
-	}
-	return nullptr;
 }
 
 DefaultConnectedMidiSystem::~DefaultConnectedMidiSystem() {

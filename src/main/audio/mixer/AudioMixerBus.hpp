@@ -22,8 +22,7 @@ namespace ctoot {
 				std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
 
 			public:
-				virtual void setOutputProcess(std::weak_ptr<ctoot::audio::core::AudioProcess> output);
-				virtual void setMeterProcess(ctoot::audio::core::AudioProcess* meter);
+                virtual void setMeterProcess(ctoot::audio::core::AudioProcess* meter);
 				virtual ctoot::audio::core::AudioBuffer* getBuffer();
 				virtual std::string getName();
 				virtual void silence();

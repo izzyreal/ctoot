@@ -17,11 +17,6 @@ MidiConnection::MidiConnection(MidiOutput* from, MidiInput* to, int flags)
 	from->addConnectionTo(to);
 }
 
-const int MidiConnection::PLAYBACK;
-const int MidiConnection::SYSTEM;
-const int MidiConnection::OUTPUT_LOCKED;
-const int MidiConnection::INPUT_LOCKED;
-
 void MidiConnection::close()
 {
     from->removeConnectionTo(to);

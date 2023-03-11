@@ -21,12 +21,11 @@ namespace ctoot {
 
 		public:
 			std::string toString();
-			virtual int getWidthLimit();
 
         public:
 			std::string getValueString() override;
-			void setIntValue(int value) override;
-			int getIntValue() override;
+
+            int getIntValue() override;
 
 		public:
 			EnumControl(int id, std::string name, nonstd::any value);

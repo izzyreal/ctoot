@@ -6,7 +6,6 @@ namespace ctoot {
 
 			struct TootSynthControlsId
 			{
-                static constexpr int VALOR_CHANNEL_ID{ 2 };
 
             };
 

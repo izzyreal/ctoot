@@ -17,8 +17,7 @@ namespace ctoot {
 				std::string name{ "" };
 
 			public:
-				std::vector<std::weak_ptr<AudioInput>> getAudioInputs() override;
-				std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
+                std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
 				std::string getName() override;
 				std::string toString();
 

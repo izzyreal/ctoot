@@ -17,8 +17,7 @@ namespace ctoot {
 
 			public:
 
-                static ctoot::midi::core::MidiMessage* createShort(int status, int data1, int data2);
-				static ctoot::midi::core::MidiMessage* setMessage(ctoot::midi::core::MidiMessage* msg, int status);
+                static ctoot::midi::core::MidiMessage* setMessage(ctoot::midi::core::MidiMessage* msg, int status);
 				static ctoot::midi::core::MidiMessage* setMessage(ctoot::midi::core::MidiMessage* msg, int status, int data1, int data2);
 
 			private:

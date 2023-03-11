@@ -10,9 +10,7 @@ namespace ctoot {
 			private:
 				static constexpr double K{ 20.0 };
 
-			public:
-                static double log2lin(double dLogarithmic);
-			};
+            };
 		}
 	}
 }

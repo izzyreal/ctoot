@@ -24,17 +24,6 @@ SynthChannelServiceProvider::SynthChannelServiceProvider
 	controls = service(info);
 }
 
-string SynthChannelServiceProvider::lookupName(int32_t moduleId)
-{
-	for (auto& c : *controls.lock()) {
-		auto d = dynamic_pointer_cast<ControlServiceDescriptor>(c);
-		if (d && d->getModuleId() == moduleId) {
-			return d->getChildClass();
-		}
-	}
-	return {};
-}
-
 shared_ptr<ctoot::synth::SynthChannelControls> SynthChannelServiceProvider::createControls(int32_t moduleId)
 {
 	for (auto& c : *controls.lock()) {

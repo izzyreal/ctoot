@@ -94,12 +94,6 @@ void Control::setAnnotation(string a)
     annotation = a;
 }
 
-void Control::setIntValue(int value)
-{
-	string description = "ERROR: Unexpected setIntValue(" + to_string(value) + ") called on " + getControlPath();
-	MLOG(description);
-}
-
 int Control::getIntValue()
 {
     return -1;

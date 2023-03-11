@@ -22,11 +22,7 @@ namespace ctoot {
 				virtual std::vector<int8_t> getRight() = 0;
 				virtual std::string getName() = 0;
 
-                virtual bool isLeft(int chan) = 0;
-				virtual bool isRight(int chan) = 0;
-
-                virtual bool isLFE(int chan) = 0;
-				virtual std::string getName(int chan) = 0;
+                virtual std::string getName(int chan) = 0;
 
 			public:
 				int mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio::core::AudioBuffer* sourceBuffer, std::vector<float>& gain);

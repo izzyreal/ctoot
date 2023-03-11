@@ -48,13 +48,3 @@ int SynthRackControls::getProviderId()
 {
 	return ctoot::control::id::ProviderId::TOOT_PROVIDER_ID;
 }
-
-string SynthRackControls::getPersistenceDomain()
-{
-	return "synth";
-}
-
-SynthRackControls::~SynthRackControls() {
-	for (auto& s : synthControls)
-		s.reset();
-}

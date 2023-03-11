@@ -29,7 +29,6 @@ namespace ctoot {
 				std::shared_ptr<ctoot::control::BooleanControl> muteControl;
 				std::shared_ptr<ctoot::audio::fader::FaderControl> gainControl;
 				std::shared_ptr<LCRControl> lcrControl;
-				std::shared_ptr<FrontRearControl> frontRearControl;
 				std::shared_ptr<BusControls> busControls;
 
 			protected:
@@ -47,19 +46,12 @@ namespace ctoot {
 			public:
 				void derive(Control* c) override;
 
-			public:
-				virtual ctoot::control::BooleanControl* getSoloControl();
-				virtual ctoot::control::BooleanControl* getMuteControl();
-
-			public:
+            public:
 				bool isMaster() override;
                 std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
-				bool canBypass() override;
 
-                virtual bool isSolo();
 				virtual bool isMute();
 				bool isEnabled() override;
-				virtual bool hasSolo();
 				float getGain() override;
 				void getChannelGains(std::vector<float>* dest) override;
 				float getSmoothingFactor() override;
@@ -67,11 +59,9 @@ namespace ctoot {
 			public:
 				virtual ctoot::control::EnumControl* createRouteControl(int stripId);
 				virtual ctoot::control::BooleanControl* createMuteControl();
-				virtual ctoot::control::BooleanControl* createSoloControl();
 
 			public:
 				MixControls(MixerControls* mixerControls, int stripId, std::shared_ptr<BusControls> busControls, bool isMaster);
-				~MixControls() override;
 
 			public:
 				virtual std::string getName() override;

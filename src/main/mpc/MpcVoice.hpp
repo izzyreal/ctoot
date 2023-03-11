@@ -151,7 +151,6 @@ public:
     void finish();
 
     void setMasterLevel(int8_t masterLevel);
-    int8_t getMasterLevel();
 
 public:
     MpcVoice(int stripNumber, bool basic);

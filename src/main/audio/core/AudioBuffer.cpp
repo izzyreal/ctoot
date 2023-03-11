@@ -42,17 +42,6 @@ void AudioBuffer::setChannelCount(int count)
 	}
 }
 
-
-void AudioBuffer::setMetaInfo(weak_ptr<MetaInfo> info)
-{
-    //metaInfo = info;
-}
-
-weak_ptr<MetaInfo> AudioBuffer::getMetaInfo()
-{
-    return metaInfo;
-}
-
 bool AudioBuffer::isRealTime()
 {
     return realTime;
@@ -128,13 +117,6 @@ void AudioBuffer::convertTo(weak_ptr<ChannelFormat> format)
 }
 
 
-void AudioBuffer::monoToStereo()
-{
-	if (getChannelCount() < 2) {
-		convertTo(ChannelFormat::STEREO());
-	}
-}
-
 void AudioBuffer::swap(int a, int b)
 {
     auto ns = getSampleCount();
@@ -164,51 +146,6 @@ float AudioBuffer::square()
 	return sumOfSquares / (nc * ns);
 }
 
-bool AudioBuffer::encodeMidSide()
-{
-	auto lefts = channelFormat.lock()->getLeft();
-    auto rights = channelFormat.lock()->getRight();
-
-	if (lefts.size() == 0)
-        return false;
-
-	auto np = lefts.size();
-    auto ns = getSampleCount();
-    for (auto p = 0; p < np; p++) {
-        auto& left = getChannel(lefts[p]);
-        auto& right = getChannel(rights[p]);
-        for (auto s = 0; s < ns; s++) {
-            auto mid = 0.5f * (left[s] + right[s]);
-            auto side = 0.5f * (left[s] - right[s]);
-            left[s] = mid;
-            right[s] = side;
-        }
-    }
-	return true;
-}
-
-
-bool AudioBuffer::decodeMidSide()
-{
-	auto mids = channelFormat.lock()->getLeft();
-    auto sides = channelFormat.lock()->getRight();
-    if (mids.size() == 0)
-        return false;
-
-	auto np = mids.size();
-    auto ns = getSampleCount();
-    for (auto p = 0; p < np; p++) {
-        auto& mid = getChannel(mids[p]);
-        auto& side = getChannel(sides[p]);
-        for (auto s = 0; s < ns; s++) {
-            auto left = mid[s] + side[s];
-            auto right = mid[s] - side[s];
-            mid[s] = left;
-            side[s] = right;
-        }
-    }
-    return true;
-}
 
 void AudioBuffer::copyFrom(AudioBuffer* src)
 {

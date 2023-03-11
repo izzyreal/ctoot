@@ -9,10 +9,7 @@ namespace ctoot {
 			: public Phasor
 		{
 
-		public:
-			Sine(double w);
-
-		};
+        };
 
 	}
 }

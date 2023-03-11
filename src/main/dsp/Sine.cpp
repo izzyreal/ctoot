@@ -2,7 +2,3 @@
 
 using namespace ctoot::dsp;
 
-Sine::Sine(double w)
-	: Phasor(w, 0)
-{
-}

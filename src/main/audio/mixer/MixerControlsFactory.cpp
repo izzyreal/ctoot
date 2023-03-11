@@ -17,21 +17,6 @@ MixerControlsFactory::MixerControlsFactory()
 {
 }
 
-void MixerControlsFactory::createBusses(weak_ptr<MixerControls> mixerControls, int nsends, int naux)
-{
-	auto lMixerControls = mixerControls.lock();
-	string base = "FX";	
-	for (int i = 0; i < nsends; i++) {
-		string res = base + "#" + to_string(i + 1);
-		lMixerControls->createFxBusControls(res, ChannelFormat::STEREO());
-	}
-    base = "Aux";
-	for (int i = 0; i < naux; i++) {
-		string res = base + "#" + to_string(i + 1);
-		lMixerControls->createAuxBusControls(res, ChannelFormat::STEREO());
-	}
-}
-
 void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls)
 {
 	createBusStrips(mixerControls, "L-R", ChannelFormat::STEREO(), (int)(mixerControls.lock()->getFxBusControls().size()));
@@ -53,16 +38,6 @@ void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls
 		auto busControls = fxControlsList[i];
 		lMixerControls->createStripControls(MixerControlsIds::FX_STRIP, i, busControls->getName(), i < nreturns, busControls->getChannelFormat());
 	}
-}
-
-void MixerControlsFactory::createGroupStrips(weak_ptr<MixerControls> mixerControls, int ngroups)
-{
-	auto lMixerControls = mixerControls.lock();
-	auto mbc = lMixerControls->getMainBusControls().lock();
-    auto mainFormat = mbc->getChannelFormat();
-    for (auto i = 0; i < ngroups; i++) {
-        lMixerControls->createStripControls(MixerControlsIds::GROUP_STRIP, i, string("A").append(to_string(i)), mainFormat);
-    }
 }
 
 void MixerControlsFactory::createChannelStrips(weak_ptr<MixerControls> mixerControls, int nchannels)

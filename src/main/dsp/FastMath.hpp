@@ -20,8 +20,7 @@ namespace ctoot {
 			static float triangle(float x);
 			static float min(float a, float b);
 			static float max(float a, float b);
-			static float tanh(float x);
 
-		};
+        };
 	}
 }

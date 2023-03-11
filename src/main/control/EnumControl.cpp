@@ -81,21 +81,6 @@ string EnumControl::getValueString()
     return nullptr;
 }
 
-void EnumControl::setIntValue(int value)
-{
-    auto values = getValues();
-    
-    if (value >= values.size())
-        return;
-    
-    try {
-        setValue(getValues()[value]);
-    }
-    catch (const exception& e) {
-        printf("%s", e.what());
-    }
-}
-
 int EnumControl::getIntValue()
 {
     if (!value.has_value() || value.type() != typeid(string))
@@ -117,10 +102,5 @@ int EnumControl::getIntValue()
     }
     
     return -1;
-}
-
-int EnumControl::getWidthLimit()
-{
-    return 40;
 }
 

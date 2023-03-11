@@ -13,11 +13,6 @@ ControlSysexMsg::ControlSysexMsg()
 
 constexpr int32_t ControlSysexMsg::LENGTH;
 
-bool ControlSysexMsg::isControl(const vector<char>& data)
-{
-    return (static_cast<unsigned char>(data[0]) == SYSTEM_EXCLUSIVE) && (data[1] == ID_NON_COMMERCIAL) && data.size() == LENGTH;
-}
-
 const vector<char> ControlSysexMsg::createControl(int32_t providerId, int32_t moduleId, int32_t instanceIndex, int32_t controlId, int32_t value)
 {
 
@@ -44,21 +39,6 @@ const vector<char> ControlSysexMsg::createControl(int32_t providerId, int32_t mo
 int32_t ControlSysexMsg::getProviderId(const std::vector<char>& data)
 {
     return data[2] & int32_t(127);
-}
-
-int32_t ControlSysexMsg::getModuleId(const std::vector<char>& data)
-{
-    return data[3] & int32_t(127);
-}
-
-int32_t ControlSysexMsg::getInstanceIndex(const std::vector<char>& data)
-{
-    return data[4] & int32_t(7);
-}
-
-int32_t ControlSysexMsg::getControlId(const std::vector<char>& data)
-{
-    return data[5] & int32_t(127);
 }
 
 int32_t ControlSysexMsg::getValue(const std::vector<char>& data)

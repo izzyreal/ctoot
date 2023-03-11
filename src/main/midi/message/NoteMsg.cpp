@@ -51,11 +51,6 @@ bool NoteMsg::isOn(int status, int data2)
     return getCommand(status) == NOTE_ON && data2 != 0;
 }
 
-bool NoteMsg::isOff(int status, int data2)
-{
-	return !isOn(status, data2);
-}
-
 int NoteMsg::getVelocity(ctoot::midi::core::MidiMessage* msg)
 {
 	return getData2(msg);

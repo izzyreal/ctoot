@@ -23,17 +23,6 @@ SynthServiceProvider::SynthServiceProvider
 	controls = service(info);
 }
 
-string SynthServiceProvider::lookupName(int32_t moduleId)
-{
-	for (auto& c : *controls.lock()) {
-		auto d = dynamic_pointer_cast<ctoot::control::spi::ControlServiceDescriptor>(c);
-		if (d && d->getModuleId() == moduleId) {
-			return d->getChildClass();
-		}
-	}
-	return {};
-}
-
 shared_ptr<ctoot::synth::SynthControls> SynthServiceProvider::createControls(int32_t moduleId)
 {
 	for (auto& c : *controls.lock()) {

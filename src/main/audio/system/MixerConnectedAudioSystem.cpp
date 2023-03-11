@@ -173,20 +173,6 @@ void MixerConnectedAudioSystem::closeConnection(AudioConnection* connection)
     moduru::observer::Observable::notifyObservers();
 }
 
-std::weak_ptr<AudioOutput> MixerConnectedAudioSystem::getOutputPort(string name, string location)
-{
-    for (auto& device : devices) {
-        auto outputs = device.lock()->getAudioOutputs();
-        for (auto& output : outputs) {
-            if (name.compare(output.lock()->getName()) == 0 && location.compare(output.lock()->getLocation()) == 0) {
-                return output;
-            }
-        }
-    }
-    MLOG("AudioOutput " + name + " @ " + location + " not found");
-    return {};
-}
-
 string MixerConnectedAudioSystem::nameAndLocation(std::weak_ptr<AudioOutput> output)
 {
     return output.lock()->getName() + " @ " + output.lock()->getLocation();

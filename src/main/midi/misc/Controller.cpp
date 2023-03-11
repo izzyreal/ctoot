@@ -65,20 +65,6 @@ const int Controller::POLY_PRESSURE_PSEUDO;
 const int Controller::CHANNEL_PRESSURE_PSEUDO;
 const int Controller::PROGRAM_PSEUDO;
 
-vector<int> Controller::PERFORMANCE_CONTROLLERS_;
-
-vector<int> Controller::SOUND_CONTROLLERS_;
-
-vector<int> Controller::MIXER_CONTROLLERS_;
-
-vector<int> Controller::EFFECTS_CONTROLLERS_;
-
-vector<int> Controller::UNDEFINED_CONTROLLERS_;
-
-vector<int> Controller::NO_CONTROLLERS_;
-
-vector<int> Controller::SWITCH_CONTROLLERS_;
-
 vector<string> Controller::CATEGORIES_;
 
 vector<string> Controller::getCategories()

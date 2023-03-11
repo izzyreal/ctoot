@@ -19,7 +19,3 @@ int LinearLaw::intValue(float v)
     return static_cast< int >((resolution - 1) * (v - min) / (max - min));
 }
 
-float LinearLaw::userValue(int v)
-{
-    return min + (max - min) * (static_cast< float >(v) / (resolution - 1));
-}

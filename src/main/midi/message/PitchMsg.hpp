@@ -12,8 +12,7 @@ namespace ctoot {
 			public:
 				typedef ChannelMsg super;
 
-                static bool isPitch(int status);
-				static ctoot::midi::core::MidiMessage* transpose(ctoot::midi::core::MidiMessage* msg, int semitones);
+                static ctoot::midi::core::MidiMessage* transpose(ctoot::midi::core::MidiMessage* msg, int semitones);
 				static int getPitch(ctoot::midi::core::MidiMessage* msg);
 
                 PitchMsg();

@@ -16,14 +16,6 @@ void ctoot::audio::server::AudioServer::setSampleRate(int rate) {
 		b->setSampleRate(sampleRate);
 }
 
-const std::vector<IOAudioProcess*>& AudioServer::getActiveInputs() {
-	return activeInputs;
-}
-
-const std::vector<IOAudioProcess*>& AudioServer::getActiveOutputs() {
-	return activeOutputs;
-}
-
 const std::vector<ctoot::audio::core::AudioBuffer*>& AudioServer::getBuffers() {
 	return buffers;
 }

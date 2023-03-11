@@ -7,10 +7,6 @@ int ControlLaw::intValue(float userVal) {
 	return 0;
 }
 
-float ControlLaw::userValue(int intVal) {
-	return 0;
-}
-
 int ControlLaw::getResolution() {
 	return 0;
 }

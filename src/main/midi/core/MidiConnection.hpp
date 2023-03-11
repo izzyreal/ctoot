@@ -10,13 +10,7 @@ namespace ctoot {
 			class MidiConnection
 			{
 
-			public:
-				static const int PLAYBACK{ 1 };
-				static const int SYSTEM{ 2 };
-				static const int OUTPUT_LOCKED{ 4 };
-				static const int INPUT_LOCKED{ 8 };
-
-			private:
+            private:
 				MidiOutput* from{ nullptr };
 				MidiInput* to{ nullptr };
 				int flags{ 0 };

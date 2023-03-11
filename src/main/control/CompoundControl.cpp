@@ -193,11 +193,6 @@ bool CompoundControl::canBeInsertedBefore()
     return true;
 }
 
-string CompoundControl::getPersistenceDomain()
-{
-	return getParent()->getPersistenceDomain();
-}
-
 int CompoundControl::getProviderId()
 {
 	if (providerId == USE_PARENT_PROVIDER_ID) {

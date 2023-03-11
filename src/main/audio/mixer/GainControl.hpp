@@ -11,10 +11,8 @@ namespace ctoot {
 
 			public:
 				void setValue(float value) override;
-				std::vector<std::string> getPresetNames() override;
-				void applyPreset(std::string name) override;
 
-			public:
+            public:
 				GainControl(bool muted);
 				virtual ~GainControl();
 

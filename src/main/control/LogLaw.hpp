@@ -14,9 +14,8 @@ namespace ctoot {
 
 		public:
 			int intValue(float userVal) override;
-			float userValue(int intVal) override;
 
-		public:
+        public:
 			LogLaw(float min, float max, std::string units);
             virtual ~LogLaw(){}
             

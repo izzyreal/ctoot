@@ -7,12 +7,6 @@ PitchMsg::PitchMsg()
 {
 }
 
-bool PitchMsg::isPitch(int status)
-{
-    auto cmd = getCommand(status);
-    return (cmd == NOTE_ON) || (cmd == NOTE_OFF) || (cmd == POLY_PRESSURE);
-}
-
 ctoot::midi::core::MidiMessage* PitchMsg::transpose(ctoot::midi::core::MidiMessage* msg, int semitones)
 {
 	auto note = getData1(msg) + semitones;

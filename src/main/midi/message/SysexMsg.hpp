@@ -11,7 +11,6 @@ namespace ctoot {
 			{
 
 			public:
-                static bool isSysex(int status);
 
                 static const unsigned char SYSTEM_EXCLUSIVE{ 240 };
 				static const unsigned char SPECIAL_SYSTEM_EXCLUSIVE{ 247 };

@@ -19,11 +19,6 @@ int32_t IntegerLaw::intValue(float v)
     return round(v - min);
 }
 
-float IntegerLaw::userValue(int32_t v)
-{
-    return v + min;
-}
-
 int32_t IntegerLaw::getResolution()
 {
     return res;

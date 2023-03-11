@@ -32,8 +32,7 @@ namespace ctoot {
 				std::weak_ptr<std::vector<std::shared_ptr<ctoot::service::ServiceDescriptor>>> controls;
 
 			public:
-				virtual std::string lookupName(int32_t moduleId);
-				virtual std::shared_ptr<ctoot::synth::SynthChannelControls> createControls(int32_t moduleId);
+                virtual std::shared_ptr<ctoot::synth::SynthChannelControls> createControls(int32_t moduleId);
 
 			protected:
 				void addControls

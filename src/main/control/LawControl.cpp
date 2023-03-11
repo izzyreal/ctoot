@@ -36,23 +36,9 @@ void LawControl::setValue(float value)
 	notifyParent(this);
 }
 
-void LawControl::setIntValue(int value)
-{
-    setValue(law.lock()->userValue(value));
-}
-
 int LawControl::getIntValue()
 {
     return law.lock()->intValue(getValue());
-}
-
-vector<string> LawControl::getPresetNames()
-{
-	return {};
-}
-
-void LawControl::applyPreset(string name)
-{
 }
 
 LawControl::~LawControl() {

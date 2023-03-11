@@ -1,6 +1,5 @@
 #include <audio/mixer/AudioMixerStrip.hpp>
 
-#include <audio/core/MetaInfo.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioControls.hpp>
 #include <audio/core/AudioControlsChain.hpp>
@@ -11,9 +10,6 @@
 #include <audio/mixer/MainMixProcess.hpp>
 #include <audio/mixer/MixVariables.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
-
-#include <audio/meter/MeterProcess.hpp>
-#include <audio/meter/MeterControls.hpp>
 
 using namespace ctoot::audio::mixer;
 using namespace ctoot::audio::core;
@@ -44,17 +40,8 @@ void AudioMixerStrip::setInputProcess(weak_ptr<AudioProcess> input)
 	if (input.lock()) input.lock()->open();
 
 	this->input = input;
-	if (!input.lock()) {
-		this->metaInfo.reset();
-		controlChain.lock()->setMetaInfo(weak_ptr<MetaInfo>());
-	}
 	if (oldInput.lock())
 		oldInput.lock()->close();
-}
-
-weak_ptr<AudioProcess> AudioMixerStrip::getDirectOutputProcess()
-{
-    return directOutput;
 }
 
 void AudioMixerStrip::setDirectOutputProcess(weak_ptr<AudioProcess> output)
@@ -100,8 +87,7 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 	if (isChannel) {
 		if (input.lock()) {
 			ret = input.lock()->processAudio(buffer, nFrames);
-			buffer->getMetaInfo();
-			checkMetaInfo(buffer->getMetaInfo());
+
 			if (ret == AUDIO_DISCONNECT) {
 				processMutations();
 				return false;
@@ -135,14 +121,6 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 	return true;
 }
 
-void AudioMixerStrip::checkMetaInfo(weak_ptr<MetaInfo> wInfo)
-{
-	auto info = wInfo.lock();
-	//metaInfo.reset();
-	//metaInfo = make_shared<MetaInfo>(info->getSourceLabel(), info->getSourceLocation());
-	//controlChain->setMetaInfo(metaInfo);
-}
-
 shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> controls)
 {
 	auto mixVars = dynamic_pointer_cast<MixVariables>(controls.lock());
@@ -161,10 +139,6 @@ shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> 
 			routedStrip = mixer->getStripImpl(mixVars->getName());
 			return make_shared<MixProcess>(routedStrip.lock(), mixVars);
 		}
-	}
-	auto meterControls = dynamic_pointer_cast<ctoot::audio::meter::MeterControls>(controls.lock());
-	if (meterControls) {
-		return make_shared<ctoot::audio::meter::MeterProcess>(meterControls);
 	}
 
 	return AudioProcessChain::createProcess(controls);

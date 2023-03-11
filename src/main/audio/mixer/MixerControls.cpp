@@ -151,25 +151,6 @@ void MixerControls::removeStripControls(string name)
 	}
 }
 
-void MixerControls::moveStripControls(string name, string beforeName)
-{
-	auto cc = getStripControls(name).lock();
-	auto bc = getStripControls(beforeName).lock();
-	if (cc && bc) {
-		remove(cc);
-		int i;
-		for (i = 0; i < controls.size(); i++) {
-			auto currentControl = controls[i];
-			if (currentControl == bc) {
-				break;
-			}
-		}
-		controls.insert(controls.begin() + i, cc);
-		
-		notifyObservers(cc);
-	}
-}
-
 weak_ptr<AudioControlsChain> MixerControls::getStripControls(string name)
 {
 	string size = to_string(getControls().size());

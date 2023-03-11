@@ -38,14 +38,3 @@ float FastMath::max(float a, float b)
     return a > b ? a : b;
 }
 
-float FastMath::tanh(float x)
-{
-	if (x < -3.0f)
-		return -1.0f;
-
-	if (x > 3.0f)
-		return 1.0f;
-
-	auto const x2 = x * x;
-	return x * (27.0f + x2) / (27.0f + 9.0f * x2);
-}

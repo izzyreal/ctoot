@@ -26,44 +26,6 @@ AudioControlsChain::AudioControlsChain(int id, int index, string name, weak_ptr<
 	constraintChannelFormat = constraintFormat;
 }
 
-
-bool AudioControlsChain::isCompatibleDescriptor(ctoot::service::ServiceDescriptor* d) {
-	// !!! nasty heuristic so reverbs only appear in FX strips
-	//if (d.getDescription().equals(getString("Reverb")) && getName().indexOf("FX") < 0) {
-		//return false;
-	//}
-	if (!constraintChannelFormat.lock()) return true; // we're not fixed format
-	/*
-	if (d instanceof AudioControlServiceDescriptor) {
-		AudioControlServiceDescriptor acsd =
-			(AudioControlServiceDescriptor)d;
-		ChannelFormat descriptorFormat = acsd.getChannelFormat();
-		if (descriptorFormat == null) return true; // plugin can cope
-		if (descriptorFormat.getCount() > constraintChannelFormat.getCount()) {
-			return false;
-		}
-	}
-	*/
-	return true;
-}
-
-void AudioControlsChain::setMetaInfo(weak_ptr<MetaInfo> wMetaInfo)
-{
-	/*
-	auto metaInfo = wMetaInfo.lock();
-	if(metaInfo != nullptr) {
-		sourceLabel = metaInfo->getSourceLabel();
-		sourceLocation = metaInfo->getSourceLocation();
-    } else {
-		sourceLabel = "";
-        sourceLocation = "";
-    }
-    
-	notifyObservers();
-	*/
-}
-
-
 shared_ptr<ctoot::control::CompoundControl> AudioControlsChain::createControl(string name)
 {
     
@@ -73,11 +35,6 @@ shared_ptr<ctoot::control::CompoundControl> AudioControlsChain::createControl(st
 int ctoot::audio::core::AudioControlsChain::getMaxInstance()
 {
     return 1024 - 1;
-}
-
-string ctoot::audio::core::AudioControlsChain::getPersistenceDomain()
-{
-	return "audio";
 }
 
 AudioControlsChain::~AudioControlsChain() {

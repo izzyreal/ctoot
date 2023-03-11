@@ -59,10 +59,7 @@ namespace ctoot {
 			
 			~MpcEnvelopeControls();
 
-		private:
-			static float& LOG_0_01();
-
-		};
+        };
 
 	}
 }

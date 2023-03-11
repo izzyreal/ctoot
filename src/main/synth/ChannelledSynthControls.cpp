@@ -19,12 +19,6 @@ weak_ptr<SynthChannelControls> ChannelledSynthControls::getChannelControls(int c
     return channelControls[chan];
 }
 
-void ChannelledSynthControls::setGlobalControls(CompoundControl* controls)
-{
-    globalControls = controls;
-	add(shared_ptr<Control>(controls));
-}
-
 void ChannelledSynthControls::setChannelControls(int chan, shared_ptr<SynthChannelControls> controls)
 {
 	channelControls[chan] = controls;

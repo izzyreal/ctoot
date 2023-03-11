@@ -75,20 +75,6 @@ int FaderLaw::binarySearch(vector<float>& buf, float key, int min, int max)
 	return std::min(min, max);
 }
 
-float FaderLaw::userValue(int v)
-{
-	if (floatValues.size() == 0) {
-		floatValues = createFloatValues();
-	}
-	if (v < 0)
-		return floatValues[0];
-
-	if (v > resolution - 1)
-		return floatValues[resolution - 1];
-
-	return floatValues[v];
-}
-
 vector<float> FaderLaw::createFloatValues()
 {
 	auto vals = vector<float>(resolution);

@@ -11,8 +11,7 @@ namespace ctoot {
 				{
 
 				public:
-					static constexpr int32_t ENVELOPE_BASE_ID{ int32_t(64) };
-					static constexpr int32_t DAHDSR_ENVELOPE_ID{ int32_t(65) };
+                    static constexpr int32_t DAHDSR_ENVELOPE_ID{ int32_t(65) };
 
 				};
 

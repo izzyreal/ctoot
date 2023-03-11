@@ -22,15 +22,11 @@ namespace ctoot {
 			virtual float getValue();
 			virtual void setValue(float value);
 
-            virtual std::vector<std::string> getPresetNames();
-			virtual void applyPreset(std::string name);
-
-		public:
+        public:
 			int getIntValue() override;
 			std::string getValueString() override;
-			void setIntValue(int value) override;
 
-		public:
+        public:
 			LawControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue);
 			virtual ~LawControl() override;
 

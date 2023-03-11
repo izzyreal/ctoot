@@ -25,12 +25,7 @@ namespace ctoot {
 		private:
 			static std::string NAME_;
 
-		public:
-			static const int OSC_OFFSET{ 0 };
-			static const int AMP_OFFSET{ 56 };
-			static const int AMPENV_OFFSET{ 64 };
-
-		private:
+        private:
 			std::weak_ptr<ctoot::mpc::MpcSampler> sampler{ };
 			std::weak_ptr<ctoot::mpc::MpcVoice> voice{};
 			std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer{};

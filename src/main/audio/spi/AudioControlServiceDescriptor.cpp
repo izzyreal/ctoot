@@ -32,7 +32,3 @@ std::weak_ptr<ctoot::audio::core::ChannelFormat> AudioControlServiceDescriptor::
     return channelFormat;
 }
 
-string AudioControlServiceDescriptor::getPluginPath()
-{
-    return pluginPath;
-}

@@ -5,14 +5,6 @@
 using namespace ctoot::audio::system;
 using namespace std;
 
-vector<std::weak_ptr<AudioInput>> AbstractAudioDevice::getAudioInputs()
-{
-	std::vector<std::weak_ptr<AudioInput>> res;
-	for (auto& i : inputs)
-		res.push_back(i);
-	return res;
-}
-
 vector<std::weak_ptr<AudioOutput>> AbstractAudioDevice::getAudioOutputs()
 {
 	std::vector<std::weak_ptr<AudioOutput>> res;

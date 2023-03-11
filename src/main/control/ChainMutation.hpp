@@ -47,16 +47,10 @@ namespace ctoot {
 			ChainMutation(int type, int index0, int index1);
             virtual ~ChainMutation(){}
 
-		public:
-			static ChainMutation*& COMMENCE_INSTANCE();
-			static ChainMutation*& COMPLETE_INSTANCE();
-
-		};
+        };
 
 		class DeleteMutation : public ChainMutation {
-		public:
-			DeleteMutation(int index);
-		};
+        };
 
 		class InsertMutation : public ChainMutation {
 		public:

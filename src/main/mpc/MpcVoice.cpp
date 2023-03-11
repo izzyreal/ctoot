@@ -279,7 +279,7 @@ void MpcVoice::readFrame() {
         position = mpcSound->getLoopTo();
 
     if ( ( (position >= (end - 1)) && !mpcSound->isLoopEnabled() ) || (staticEnv != nullptr && staticEnv->isComplete()) ||
-        (ampEnv != nullptr && ampEnv->isComplete())) {
+         (ampEnv != nullptr && ampEnv->isComplete())) {
         tempFrame = EMPTY_FRAME;
         finished = true;
         return;
@@ -324,7 +324,7 @@ int MpcVoice::processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames)
     auto masterLevelToUse = masterLevel.load();
 
     auto masterLevelFactor = masterLevelToUse > -128 ? std::pow (10.f, static_cast<float>(masterLevelToUse) * 0.04f)
-                                                        : 0;
+                                                     : 0;
 
     for (int i = 0; i < nFrames; i++) {
         frame = getFrame();
@@ -404,11 +404,6 @@ ctoot::mpc::MpcNoteParameters *MpcVoice::getNoteParameters() {
 void MpcVoice::setMasterLevel(int8_t masterLevelToUse)
 {
     masterLevel.store(masterLevelToUse);
-}
-
-int8_t MpcVoice::getMasterLevel()
-{
-    return masterLevel.load();
 }
 
 MpcVoice::~MpcVoice() {

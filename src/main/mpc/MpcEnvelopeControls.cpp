@@ -66,10 +66,6 @@ float MpcEnvelopeControls::deriveHold()
     return holdControl->getValue();
 }
 
-float& MpcEnvelopeControls::LOG_0_01()
-{
-    return LOG_0_01_;
-}
 float MpcEnvelopeControls::LOG_0_01_ = static_cast< float >(log(0.01));
 
 float MpcEnvelopeControls::deriveTimeFactor(float milliseconds)

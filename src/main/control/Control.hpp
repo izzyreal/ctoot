@@ -44,8 +44,7 @@ namespace ctoot {
 			std::string name{ "" };
 			std::string annotation{ "" };
 			bool hidden{ false };
-			bool adjusting{ false };
-			bool enabled{ true };
+            bool enabled{ true };
 
 		protected:
 			bool indicator{ false };
@@ -65,8 +64,8 @@ namespace ctoot {
 			virtual void setName(std::string s);
 
             virtual void setAnnotation(std::string a);
-			virtual void setIntValue(int value);
-			virtual int getIntValue();
+
+            virtual int getIntValue();
 			virtual std::string getValueString();
 			virtual bool isHidden();
 			virtual bool isIndicator();

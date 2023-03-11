@@ -8,12 +8,6 @@ Encoding::Encoding(string name)
 	this->name = name;
 }
 
-Encoding*& Encoding::ALAW()
-{
-	return ALAW_;
-}
-Encoding* Encoding::ALAW_ = new Encoding("alaw");
-
 Encoding*& Encoding::PCM_SIGNED()
 {
 	return PCM_SIGNED_;
@@ -25,12 +19,6 @@ Encoding*& Encoding::PCM_UNSIGNED()
 	return PCM_UNSIGNED_;
 }
 Encoding* Encoding::PCM_UNSIGNED_ = new Encoding("pcm_unsigned");
-
-Encoding*& Encoding::ULAW()
-{
-	return ULAW_;
-}
-Encoding* Encoding::ULAW_ = new Encoding("ulaw");
 
 string Encoding::toString()
 {

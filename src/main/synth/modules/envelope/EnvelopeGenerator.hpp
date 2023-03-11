@@ -26,12 +26,10 @@ namespace ctoot {
 					float envelope{ 0.0f };
 
 				public:
-					virtual float getEnvelope(bool release);
-					virtual bool isComplete();
-					virtual void trigger();
 
-					EnvelopeGenerator(EnvelopeVariables* vars);
-				};
+                    virtual void trigger();
+
+                };
 
 			}
 		}

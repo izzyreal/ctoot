@@ -25,15 +25,10 @@ namespace ctoot {
 			public:
 				virtual void checkConnections();
 
-			public:
-                void createMidiConnection(MidiOutput* from, MidiInput* to, int flags) override;
-				void closeMidiConnection(MidiOutput* from, MidiInput* to) override;
-
             public:
 				virtual MidiConnection* getConnection(MidiOutput* from, MidiInput* to);
-				virtual MidiPort* getPort(std::string* name, bool isOut);
 
-			public:
+            public:
 				DefaultConnectedMidiSystem();
 				~DefaultConnectedMidiSystem();
 

@@ -17,7 +17,6 @@
 #include <mpc/MpcSound.hpp>
 
 // ctoot
-#include <audio/core/MetaInfo.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 #include <audio/mixer/PanControl.hpp>
@@ -325,11 +324,6 @@ void MpcSoundPlayerChannel::connectVoices()
 		ams2->setInputProcess(mi->getOutputProcess());
 		mixerConnections.push_back(mi);
 	}
-}
-
-weak_ptr<ctoot::audio::core::MetaInfo> MpcSoundPlayerChannel::getInfo()
-{
-	return weak_ptr<ctoot::audio::core::MetaInfo>();
 }
 
 vector<weak_ptr<ctoot::mpc::MpcStereoMixerChannel>> MpcSoundPlayerChannel::getStereoMixerChannels()

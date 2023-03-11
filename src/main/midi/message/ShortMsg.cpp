@@ -20,14 +20,6 @@ ctoot::midi::core::MidiMessage*& ShortMsg::fastShortPrototype()
 }
 ctoot::midi::core::MidiMessage* ShortMsg::fastShortPrototype_;
 
-ctoot::midi::core::MidiMessage* ShortMsg::createShort(int status, int data1, int data2)
-{
-    
-    auto msg = dynamic_cast< ctoot::midi::core::ShortMessage* >(fastShortPrototype_->clone());
-    msg->setMessage(status, data1, data2);
-    return msg;
-}
-
 ctoot::midi::core::MidiMessage* ShortMsg::setMessage(ctoot::midi::core::MidiMessage* msg, int status)
 {
     dynamic_cast< ctoot::midi::core::ShortMessage* >(msg)->setMessage(status);

@@ -26,19 +26,6 @@ void GainControl::setValue(float value)
 	FaderControl::setValue(value);
 }
 
-vector<string> GainControl::getPresetNames()
-{
-	static vector<string> res{ "Unity" };
-    return res;
-}
-
-void GainControl::applyPreset(string name)
-{
-    if (name.compare("Unity") == 0) {
-        setValue(0.0f);
-    }
-}
-
 GainControl::~GainControl() {
 	
 }

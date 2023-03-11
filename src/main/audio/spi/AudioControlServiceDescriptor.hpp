@@ -18,9 +18,8 @@ namespace ctoot {
 
 			public:
 				virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
-				virtual std::string getPluginPath();
 
-			public:
+            public:
 				AudioControlServiceDescriptor(
 					const std::string& typeIdName, 
 					int moduleId, 

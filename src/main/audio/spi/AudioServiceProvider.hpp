@@ -18,8 +18,7 @@ namespace ctoot {
 				std::weak_ptr<std::vector<std::shared_ptr<ctoot::service::ServiceDescriptor>>> controls;
 
 			public:
-				virtual std::string lookupName(int moduleId);
-				virtual std::weak_ptr<service::ServiceDescriptor> lookupDescriptor(int moduleId);
+                virtual std::weak_ptr<service::ServiceDescriptor> lookupDescriptor(int moduleId);
 
 			public:
 				virtual void addControls
@@ -30,19 +29,8 @@ namespace ctoot {
 					const std::string& description,
 					const std::string& version
 				);
-				
-				virtual void addControls
-				(
-					const std::string& typeIdName,
-					int moduleId, 
-					const std::string& name,
-					const std::string& description,
-					const std::string& version,
-					std::weak_ptr<ctoot::audio::core::ChannelFormat> format, 
-					const std::string& path
-				);
 
-			public:
+            public:
 				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(int moduleId);
 				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(const std::string& name);
 				virtual std::shared_ptr<ctoot::audio::core::AudioControls> createControls(std::weak_ptr<service::ServiceDescriptor> d);

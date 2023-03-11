@@ -14,7 +14,6 @@ namespace ctoot {
 				MainMixControls* mainMixControls{ nullptr };
 
 			public:
-				bool isEnabled() override;
 				float getGain() override;
 
 			public:

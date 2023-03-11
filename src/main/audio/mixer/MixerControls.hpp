@@ -38,8 +38,8 @@ namespace ctoot {
 				virtual void addStripControls(std::shared_ptr<CompoundControl> cc);
 				virtual void removeStripControls(std::weak_ptr<CompoundControl> cc);
 				virtual void removeStripControls(std::string name);
-				virtual void moveStripControls(std::string name, std::string beforeName);
-				virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(std::string name);
+
+                virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(std::string name);
 				virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(int id, int index);
 				virtual ctoot::audio::fader::FaderControl* createFaderControl(bool muted);
 				

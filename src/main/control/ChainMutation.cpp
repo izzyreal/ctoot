@@ -31,16 +31,8 @@ const int ChainMutation::MOVE;
 const int ChainMutation::COMMENCE;
 const int ChainMutation::COMPLETE;
 
-ChainMutation*& ChainMutation::COMMENCE_INSTANCE()
-{
-    return COMMENCE_INSTANCE_;
-}
 ChainMutation* ChainMutation::COMMENCE_INSTANCE_ = new ChainMutation(COMMENCE);
 
-ChainMutation*& ChainMutation::COMPLETE_INSTANCE()
-{
-    return COMPLETE_INSTANCE_;
-}
 ChainMutation* ChainMutation::COMPLETE_INSTANCE_ = new ChainMutation(COMPLETE);
 
 int ChainMutation::getType()
@@ -85,8 +77,6 @@ string ChainMutation::typeName()
 
     return string("unknown mutation");
 }
-
-DeleteMutation::DeleteMutation(int index) : ChainMutation(ChainMutation::DELETE, index) {}
 
 InsertMutation::InsertMutation(int index, weak_ptr<Control> c) : ChainMutation(ChainMutation::INSERT, index) {
 	this->control = c;

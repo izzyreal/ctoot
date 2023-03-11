@@ -22,11 +22,10 @@ namespace ctoot {
 			virtual std::string getStateLabel(bool state);
 			std::string toString();
 			std::string getValueString() override;
-			void setIntValue(int value) override;
-			int getIntValue() override;
-			virtual int getWidthLimit();
 
-		public:
+            int getIntValue() override;
+
+        public:
 			BooleanControl(int id, std::string name, bool initialValue, std::string trueStateLabel, std::string falseStateLabel);
 			BooleanControl(int id, std::string name, bool initialValue);
 			BooleanControl(int id, std::string name, bool initialValue, bool momentary);

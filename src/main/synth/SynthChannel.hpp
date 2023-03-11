@@ -13,11 +13,9 @@ namespace ctoot {
 
 		public:
 			int sampleRate{ 44100 };
-			float inverseNyquist{ 2.0f / sampleRate };
 
-		private:
-			int rawBend{ 8192 };
-			int bendRange{ 2 };
+        private:
+            int bendRange{ 2 };
 			float bendFactor{ 1.0f };
 			int pressure{ 0 };
 			std::vector<char> polyPressure = std::vector<char>(128);
@@ -50,16 +48,14 @@ namespace ctoot {
 			int getProgram() override;
 			void programChange(int arg0) override;
 			void programChange(int arg0, int arg1) override;
-			int getChannelPressure() override;
-			void setChannelPressure(int arg0) override;
+
+            void setChannelPressure(int arg0) override;
 
             void setMono(bool mono) override;
 
             void setPitchBend(int bend) override;
 
-            virtual float getBendFactor();
-
-			SynthChannel();
+            SynthChannel();
 
 		public:
 			virtual void noteOff(int noteNumber) override = 0;

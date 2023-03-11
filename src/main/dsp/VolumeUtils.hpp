@@ -10,12 +10,7 @@ namespace ctoot {
 			static double FACTOR1;
 			static constexpr double FACTOR2{ 0.05 };
 
-		public:
-			static double lin2log(double dLinear);
-			static double lin2log(double dLinear, double a, double b);
-			static double log2lin(double dLogarithmic);
-
-		};
+        };
 
 	}
 }

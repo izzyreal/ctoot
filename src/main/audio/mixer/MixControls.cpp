@@ -33,17 +33,6 @@ MixControls::MixControls(MixerControls* mixerControls, int stripId, shared_ptr<B
 	auto busId = busControls->getId();
 	auto format = getChannelFormat();
 	channelCount = format->getCount();
-	if (format->getLFE() >= 0) {
-	}
-
-	if (channelCount >= 4) {
-		frontRearControl = make_shared<FrontRearControl>();
-		add(frontRearControl);
-		derive(frontRearControl.get());
-	}
-
-	if (format->getCenter() >= 0 && channelCount > 1) {
-	}
 
 	if (channelCount > 1) {
 		if (stripId == MixerControlsIds::CHANNEL_STRIP) {
@@ -58,29 +47,11 @@ MixControls::MixControls(MixerControls* mixerControls, int stripId, shared_ptr<B
 	}
 
 	auto enables = make_shared<ControlRow>();
-	if (master) {
-		enables->add(shared_ptr<Control>(busControls->getSoloIndicator()));
-	}
-	else {
-		soloControl = shared_ptr<BooleanControl>(createSoloControl());
-		enables->add(soloControl);
-		derive(soloControl.get());
-		soloControl->addObserver(busControls.get());
-	}
 
 	muteControl = shared_ptr<BooleanControl>(createMuteControl());
 	enables->add(muteControl);
 	derive(muteControl.get());
 	add(enables);
-	
-	/* Compared to toot (Java), this method was moved to be called from outside the constructor so it calls the derived class's overrided function.
-	if (busId == MixerControlsIds::MAIN_BUS) {
-		auto routeControl = createRouteControl(strpId);
-		if (routeControl != nullptr) {
-			add(routeControl);
-		}
-	}
-	*/
 
 	auto muted = ((busId == MixerControlsIds::AUX_BUS || busId == MixerControlsIds::FX_BUS) && !master);
 	gainControl = shared_ptr<FaderControl>(mixerControls->createFaderControl(muted));
@@ -114,21 +85,7 @@ void MixControls::derive(Control* c)
 		left = lcrControl->getLeft();
 		right = lcrControl->getRight();
 		break;
-	case MixControlIds::FRONT_SURROUND:
-		front = frontRearControl->getFront();
-		rear = frontRearControl->getRear();
-		break;
 	}
-}
-
-BooleanControl* MixControls::getSoloControl()
-{
-    return soloControl.get();
-}
-
-BooleanControl* MixControls::getMuteControl()
-{
-    return muteControl.get();
 }
 
 
@@ -143,17 +100,6 @@ shared_ptr<ChannelFormat> MixControls::getChannelFormat()
     return busControls->getChannelFormat();
 }
 
-bool MixControls::canBypass()
-{
-    return false;
-}
-
-
-bool MixControls::isSolo()
-{
-    return soloControl ? hasSolo() : solo;
-}
-
 bool MixControls::isMute()
 {
     return mute;
@@ -161,12 +107,7 @@ bool MixControls::isMute()
 
 bool MixControls::isEnabled()
 {
-	return !(isMute() || isSolo() != hasSolo());
-}
-
-bool MixControls::hasSolo()
-{
-    return busControls->hasSolo();
+	return !isMute();
 }
 
 float MixControls::getGain()
@@ -220,17 +161,7 @@ BooleanControl* MixControls::createMuteControl()
     return c;
 }
 
-BooleanControl* MixControls::createSoloControl()
-{
-    auto c = new BooleanControl(MixControlIds::SOLO, "Solo", false);
-    c->setAnnotation(c->getName().substr(0, 1));
-    return c;
-}
-
 string MixControls::getName()
 {
     return Control::getName();
-}
-
-MixControls::~MixControls() {
 }

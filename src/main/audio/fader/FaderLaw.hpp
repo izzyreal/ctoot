@@ -24,9 +24,8 @@ namespace ctoot {
 				float getMinimum();
 				std::string getUnits();
 				int intValue(float v);
-				float userValue(int v);
 
-			private:
+            private:
 				std::vector<float> createFloatValues();
 
 			public:

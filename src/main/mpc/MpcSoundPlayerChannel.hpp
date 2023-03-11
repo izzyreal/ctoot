@@ -11,10 +11,6 @@ namespace ctoot::audio::server {
 	class AudioServer;
 }
 
-namespace ctoot::audio::core {
-	class MetaInfo;
-}
-
 namespace ctoot::audio::mixer {
 	class AudioMixer;
 	class MainMixControls;
@@ -80,7 +76,6 @@ namespace ctoot::mpc
 	public:
 		void allSoundOff(int frameOffset);
 		void connectVoices();
-		std::weak_ptr<ctoot::audio::core::MetaInfo> getInfo();
 		std::vector<std::weak_ptr<MpcStereoMixerChannel>> getStereoMixerChannels();
 		std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
 

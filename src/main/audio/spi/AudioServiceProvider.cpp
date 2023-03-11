@@ -33,12 +33,6 @@ string AudioServiceProvider::getAvailableControls() {
 	return res;
 }
 
-string AudioServiceProvider::lookupName(int moduleId)
-{
-	auto d = lookupDescriptor(moduleId).lock();
-	return !d ? string("module id " + to_string(moduleId) + " not found!") : d->getChildClass();
-}
-
 weak_ptr<ctoot::service::ServiceDescriptor> AudioServiceProvider::lookupDescriptor(int moduleId)
 {
 	auto c = controls.lock();
@@ -62,20 +56,6 @@ void AudioServiceProvider::addControls
 {
 	auto descriptor = make_shared<AudioControlServiceDescriptor>(typeIdName, moduleId, name, description, version);
 	add(descriptor);
-}
-
-void AudioServiceProvider::addControls
-(
-	const string& typeIdName, 
-	int moduleId, 
-	const string& name, 
-	const string& description, 
-	const string& version, 
-	std::weak_ptr<ChannelFormat> format, 
-	const string& path
-)
-{
-	add(make_shared<AudioControlServiceDescriptor>(typeIdName, moduleId, name, description, version, format, path));
 }
 
 shared_ptr<AudioControls> AudioServiceProvider::createControls(int moduleId)

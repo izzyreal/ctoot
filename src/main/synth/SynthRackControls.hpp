@@ -24,10 +24,7 @@ namespace ctoot {
 
             int getProviderId() override;
 
-            std::string getPersistenceDomain() override;
-
 			SynthRackControls(int nsynths);
-			~SynthRackControls();
 		};
 
 	}

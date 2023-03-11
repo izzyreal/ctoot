@@ -9,8 +9,8 @@ namespace ctoot {
 			virtual void allNotesOff() = 0;
 			virtual void allSoundOff() = 0;
 			virtual void controlChange(int controller, int value) = 0;
-			virtual int getChannelPressure() = 0;
-			virtual int getController(int controller) = 0;
+
+            virtual int getController(int controller) = 0;
 
             virtual int getProgram() = 0;
 

@@ -43,8 +43,6 @@ public:
 
     virtual bool canBeInsertedBefore();
 
-    virtual std::string getPersistenceDomain();
-
     virtual int getProviderId();
     virtual void setProviderId(int id);
     virtual void setInstanceIndex(int idx);

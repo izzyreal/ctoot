@@ -10,11 +10,6 @@ PostFadeMixControls::PostFadeMixControls(MixerControls* mixerControls, int strip
 	this->mainMixControls = mainMixControls;
 }
 
-bool PostFadeMixControls::isEnabled()
-{
-    return MixControls::isEnabled() && !mainMixControls->isMute();
-}
-
 float PostFadeMixControls::getGain()
 {
     return MixControls::getGain() * mainMixControls->getGain();

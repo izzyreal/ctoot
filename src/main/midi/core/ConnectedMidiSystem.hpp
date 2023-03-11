@@ -15,9 +15,6 @@ namespace ctoot {
 			class ConnectedMidiSystem
 				: public virtual MidiSystem
 			{
-			public:
-				virtual void createMidiConnection(MidiOutput* from, MidiInput* to, int flags) = 0;
-				virtual void closeMidiConnection(MidiOutput* from, MidiInput* to) = 0;
 
             };
 

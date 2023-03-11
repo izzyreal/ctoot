@@ -91,11 +91,6 @@ int FloatSampleBuffer::getByteArrayBufferSize(AudioFormat* format, int lenInSamp
     return format->getFrameSize() * lenInSamples;
 }
 
-int FloatSampleBuffer::convertToByteArray_(vector<char>* buffer, int offset, AudioFormat* format)
-{
-    return convertToByteArray_(0, getSampleCount(), buffer, offset, format);
-}
-
 int FloatSampleBuffer::convertToByteArray_(int readOffset, int lenInSamples, vector<char>* buffer, int writeOffset, AudioFormat* format)
 {
 	int byteCount = getByteArrayBufferSize(format, lenInSamples);

@@ -1,7 +1,6 @@
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioControlsChain.hpp>
-#include <audio/core/Taps.hpp>
 #include <audio/mixer/MixerControlsObserver.hpp>
 #include <audio/mixer/AudioMixerBus.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
@@ -25,7 +24,6 @@ AudioMixer::AudioMixer(weak_ptr<MixerControls> controls, weak_ptr<AudioServer> s
 {
 	this->controls = controls;
 	this->server = server;
-	ctoot::audio::core::Taps::setAudioServer(server);
 	sharedAudioBuffer = server.lock()->createAudioBuffer("Mixer (shared)");
 	createBusses(controls);
 	createStrips(controls);
@@ -61,11 +59,6 @@ void AudioMixer::removeBuffer(ctoot::audio::core::AudioBuffer* buffer)
     server.lock()->removeAudioBuffer(buffer);
 }
 
-bool AudioMixer::isMutating()
-{
-    return !(mutationQueue.size_approx() == 0);
-}
-
 void AudioMixer::waitForMutations()
 {
 	processMutations();
@@ -97,12 +90,6 @@ weak_ptr<AudioMixerStrip> AudioMixer::getStripImpl(string name)
 		}
 	}
 	return {};
-}
-
-vector<shared_ptr<AudioMixerStrip>> AudioMixer::getStrips()
-{
-    waitForMutations();
-	return strips;
 }
 
 weak_ptr<AudioMixerStrip> AudioMixer::getUnusedChannelStrip()

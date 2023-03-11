@@ -142,11 +142,6 @@ vector<std::weak_ptr<AudioOutput>> BasicMidiSynth::getAudioOutputs()
     return audioOutputs;
 }
 
-vector<std::weak_ptr<AudioInput>> BasicMidiSynth::getAudioInputs()
-{
-	return {};
-}
-
 void BasicMidiSynth::closeAudio()
 {
 }

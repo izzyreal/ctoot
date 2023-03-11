@@ -70,9 +70,7 @@ namespace ctoot {
 					float getReleaseCoeff() override;
 					void setSampleRate(int32_t rate) override;
 
-					EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset);
-					EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset, std::string options);
-					EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset, std::string options, float timeMultiplier);
+                    EnvelopeControls(int32_t instanceIndex, std::string name, int32_t idOffset, std::string options, float timeMultiplier);
 					EnvelopeControls(int32_t id, int32_t instanceIndex, std::string name, int32_t idOffset, std::string options, float timeMultiplier);
 				};
 

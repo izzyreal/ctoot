@@ -12,25 +12,8 @@ namespace ctoot {
 			{
 
 			public:
-				typedef control::CompoundControl super;
-
-			private:
-                std::weak_ptr<ctoot::control::BypassControl> bypassControl;
-
-			public:
-				virtual bool hasOrderedFrequencies();
-				virtual bool canBypass();
-				virtual void setBypassed(bool state);
-				virtual bool isBypassed();
-				virtual control::BooleanControl* getBypassControl();
-
-			public:
-                virtual std::string getPersistenceDomain() override;
-
-			public:
 				AudioControls(int id, std::string name, int bypassId);
 				AudioControls(int id, std::string name);
-				virtual ~AudioControls() override;
 
 			};
 		}

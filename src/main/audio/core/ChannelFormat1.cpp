@@ -13,21 +13,6 @@ int ChannelFormat1::getCount()
     return 1;
 }
 
-bool ChannelFormat1::isLeft(int chan)
-{
-    return false;
-}
-
-bool ChannelFormat1::isRight(int chan)
-{
-    return false;
-}
-
-bool ChannelFormat1::isLFE(int chan)
-{
-    return false;
-}
-
 int ChannelFormat1::getCenter()
 {
     return 0;

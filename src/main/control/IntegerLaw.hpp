@@ -14,8 +14,8 @@ namespace ctoot {
 
 		public:
 			int32_t intValue(float v) override;
-			float userValue(int32_t v) override;
-			int32_t getResolution() override;
+
+            int32_t getResolution() override;
 
 			IntegerLaw(int32_t min, int32_t max, std::string units);
 
