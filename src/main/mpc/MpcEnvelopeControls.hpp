@@ -1,6 +1,6 @@
 #pragma once
 #include <control/CompoundControl.hpp>
-#include <control/FloatControl.hpp>
+#include <control/LawControl.hpp>
 
 namespace ctoot::mpc {
 
@@ -12,9 +12,9 @@ namespace ctoot::mpc {
 			typedef ctoot::control::CompoundControl super;
 
 		private:
-			ctoot::control::FloatControl* attackControl{ nullptr };
-			ctoot::control::FloatControl* holdControl{ nullptr };
-			ctoot::control::FloatControl* decayControl{ nullptr };
+			ctoot::control::LawControl* attackControl{ nullptr };
+			ctoot::control::LawControl* holdControl{ nullptr };
+			ctoot::control::LawControl* decayControl{ nullptr };
 			float sampleRate{ 44100 };
 			float attack{}, decay{}, hold{ 0 };
 			int idOffset{ 0 };
@@ -39,9 +39,9 @@ namespace ctoot::mpc {
 			float deriveTimeFactor(float milliseconds);
 			float deriveAttack();
 			float deriveDecay();
-			ctoot::control::FloatControl* createAttackControl(float init);
-			ctoot::control::FloatControl* createHoldControl(float init);
-			ctoot::control::FloatControl* createDecayControl(float init);
+			ctoot::control::LawControl* createAttackControl(float init);
+			ctoot::control::LawControl* createHoldControl(float init);
+			ctoot::control::LawControl* createDecayControl(float init);
 
 		public:
 			float getAttackCoeff();

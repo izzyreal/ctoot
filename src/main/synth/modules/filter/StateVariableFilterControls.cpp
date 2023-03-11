@@ -1,7 +1,7 @@
 #include <synth/modules/filter/StateVariableFilterControls.hpp>
 #include <control/BooleanControl.hpp>
 #include <control/Control.hpp>
-#include <control/FloatControl.hpp>
+#include <control/LawControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <synth/modules/filter/FilterControlIds.hpp>
 #include <synth/modules/filter/FilterIds.hpp>
@@ -61,9 +61,9 @@ bool StateVariableFilterControls::deriveBandMode()
     return bandModeControl->getValue();
 }
 
-ctoot::control::FloatControl* StateVariableFilterControls::createModeMixControl()
+ctoot::control::LawControl* StateVariableFilterControls::createModeMixControl()
 {
-    auto control = new ctoot::control::FloatControl(FilterControlIds::MODE_MIX + idOffset, "Mix", ctoot::control::LinearLaw::UNITY(), 0.01f, 0.0f);
+    auto control = new ctoot::control::LawControl(FilterControlIds::MODE_MIX + idOffset, "Mix", ctoot::control::LinearLaw::UNITY(), 0.01f, 0.0f);
     return control;
 }
 

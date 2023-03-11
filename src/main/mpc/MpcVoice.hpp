@@ -6,7 +6,7 @@
 #include "MpcMuteInfo.hpp"
 
 namespace ctoot::control {
-class FloatControl;
+class LawControl;
 class BooleanControl;
 }
 
@@ -65,14 +65,14 @@ private:
     ctoot::synth::modules::filter::StateVariableFilter* svfLeft = nullptr;
     ctoot::synth::modules::filter::StateVariableFilter* svfRight = nullptr;
     int end = 0;
-    ctoot::control::FloatControl* attack = nullptr;
-    ctoot::control::FloatControl* hold = nullptr;
-    ctoot::control::FloatControl* decay = nullptr;
-    ctoot::control::FloatControl* fattack = nullptr;
-    ctoot::control::FloatControl* fhold = nullptr;
-    ctoot::control::FloatControl* fdecay = nullptr;
-    ctoot::control::FloatControl* shold = nullptr;
-    ctoot::control::FloatControl* reso = nullptr;
+    ctoot::control::LawControl* attack = nullptr;
+    ctoot::control::LawControl* hold = nullptr;
+    ctoot::control::LawControl* decay = nullptr;
+    ctoot::control::LawControl* fattack = nullptr;
+    ctoot::control::LawControl* fhold = nullptr;
+    ctoot::control::LawControl* fdecay = nullptr;
+    ctoot::control::LawControl* shold = nullptr;
+    ctoot::control::LawControl* reso = nullptr;
     ctoot::mpc::MpcEnvelopeControls* ampEnvControls = nullptr;
     ctoot::mpc::MpcEnvelopeControls* staticEnvControls = nullptr;
     ctoot::mpc::MpcEnvelopeControls* filterEnvControls = nullptr;

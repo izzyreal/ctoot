@@ -1,7 +1,7 @@
 #include <synth/modules/filter/FilterControls.hpp>
 
 #include <control/Control.hpp>
-#include <control/FloatControl.hpp>
+#include <control/LawControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <synth/modules/filter/FilterControlIds.hpp>
 
@@ -62,14 +62,14 @@ float FilterControls::deriveCutoff()
 	return cutoffControl->getValue();
 }
 
-ctoot::control::FloatControl* FilterControls::createCutoffControl()
+ctoot::control::LawControl* FilterControls::createCutoffControl()
 {
-	return new ctoot::control::FloatControl(FilterControlIds::FREQUENCY + idOffset, "Cutoff", SEMITONE_LAW(), 1.0f, 0.0f);
+	return new ctoot::control::LawControl(FilterControlIds::FREQUENCY + idOffset, "Cutoff", SEMITONE_LAW(), 1.0f, 0.0f);
 }
 
-ctoot::control::FloatControl* FilterControls::createResonanceControl()
+ctoot::control::LawControl* FilterControls::createResonanceControl()
 {
-	return new ctoot::control::FloatControl(FilterControlIds::RESONANCE + idOffset, "Resonance", ctoot::control::LinearLaw::UNITY(), 0.01f, 0.25f);
+	return new ctoot::control::LawControl(FilterControlIds::RESONANCE + idOffset, "Resonance", ctoot::control::LinearLaw::UNITY(), 0.01f, 0.25f);
 }
 
 float FilterControls::getCutoff()

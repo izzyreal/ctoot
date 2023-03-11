@@ -6,8 +6,7 @@
 namespace ctoot {
 
     namespace control {
-        class FloatControl;
-
+        class LawControl;
         class BooleanControl;
     }
 
@@ -18,7 +17,7 @@ namespace ctoot {
         {
 
         private:
-            ctoot::control::FloatControl *modeMixControl{nullptr};
+            ctoot::control::LawControl *modeMixControl{nullptr};
             ctoot::control::BooleanControl *bandModeControl{nullptr};
             float modeMix{0};
             bool bandMode{false};
@@ -36,7 +35,7 @@ namespace ctoot {
 
             virtual bool deriveBandMode();
 
-            virtual ctoot::control::FloatControl *createModeMixControl();
+            virtual ctoot::control::LawControl *createModeMixControl();
 
             virtual ctoot::control::BooleanControl *createBandModeControl();
 

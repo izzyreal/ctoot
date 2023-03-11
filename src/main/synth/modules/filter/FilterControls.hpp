@@ -11,7 +11,7 @@ namespace ctoot {
     namespace control {
         class ControlLaw;
 
-        class FloatControl;
+        class LawControl;
     }
 
     namespace synth::modules::filter {
@@ -21,8 +21,8 @@ namespace ctoot {
         {
 
         private:
-            ctoot::control::FloatControl *cutoffControl{nullptr};
-            ctoot::control::FloatControl *resonanceControl{nullptr};
+            ctoot::control::LawControl *cutoffControl{nullptr};
+            ctoot::control::LawControl *resonanceControl{nullptr};
             float cutoff{0.f}, resonance{0.f};
 
         protected:
@@ -44,9 +44,9 @@ namespace ctoot {
 
             virtual float deriveCutoff();
 
-            virtual ctoot::control::FloatControl *createCutoffControl();
+            virtual ctoot::control::LawControl *createCutoffControl();
 
-            virtual ctoot::control::FloatControl *createResonanceControl();
+            virtual ctoot::control::LawControl *createResonanceControl();
 
         public:
             float getCutoff() override;
