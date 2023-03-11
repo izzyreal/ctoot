@@ -1,29 +1,22 @@
 #pragma once
 
-//#include <misc/IObservable.hpp>
-#include <observer/Observable.hpp>
-
 #include <string>
 #include <vector>
 #include <memory>
 
-namespace ctoot {
-	namespace audio {
-		namespace system {
+namespace ctoot::audio::system {
 
-			struct AudioInput;
-			class AudioOutput;
-			class AudioDevice
-				: public virtual moduru::observer::Observable
-			{
-			public:
-				virtual std::string getName() = 0;
+    struct AudioInput;
 
-                virtual std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() = 0;
-				virtual void closeAudio() = 0;
+    class AudioOutput;
 
-			};
+    class AudioDevice
+    {
+    public:
+        virtual std::string getName() = 0;
 
-		}
-	}
+        virtual void closeAudio() = 0;
+
+    };
+
 }

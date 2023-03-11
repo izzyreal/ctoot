@@ -250,39 +250,6 @@ void FloatSampleBuffer::copy(int channel, int sourceIndex, int destIndex, int le
 		data[destIndex + i] = data[sourceIndex + i];
 }
 
-void FloatSampleBuffer::expandChannel(int targetChannelCount)
-{
-	if (getChannelCount() != 1)
-    {
-		string error = "FloatSampleBuffer: can only expand channels for mono signals.";
-		printf("ERROR: %s\n", error.c_str());
-		return;
-	}
-	
-    for (auto ch = 1; ch < targetChannelCount; ch++)
-    {
-		addChannel(false);
-		copyChannel(0, ch);
-	}
-}
-
-void FloatSampleBuffer::mixDownChannels()
-{
-	auto& firstChannel = getChannel(0);
-	auto sampleCount = getSampleCount();
-	auto channelCount = getChannelCount();
-    
-	for (auto ch = channelCount - 1; ch > 0; ch--)
-    {
-		auto& thisChannel = getChannel(ch);
-        
-		for (auto i = 0; i < sampleCount; i++)
-			firstChannel[i] += thisChannel[i];
-		
-        removeChannel(ch);
-	}
-}
-
 int FloatSampleBuffer::getChannelCount()
 {
 	return channelCount;

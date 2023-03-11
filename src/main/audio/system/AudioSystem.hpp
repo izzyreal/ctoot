@@ -19,8 +19,6 @@ namespace ctoot::audio::system {
 
         virtual void removeAudioDevice(std::weak_ptr<AudioDevice> device) = 0;
 
-        virtual void setAutoConnect(bool autoConnect) = 0;
-
         virtual void close() = 0;
 
     };

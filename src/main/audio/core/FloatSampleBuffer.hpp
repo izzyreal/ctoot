@@ -51,8 +51,7 @@ public:
     void makeSilence();
     void makeSilence(int channel);
     void addChannel(bool silent);
-    void expandChannel(int targetChannelCount);
-    void mixDownChannels();
+
     void copyChannel(int sourceChannel, int targetChannel);
     void copy(int sourceIndex, int destIndex, int length);
     void copy(int channel, int sourceIndex, int destIndex, int length);

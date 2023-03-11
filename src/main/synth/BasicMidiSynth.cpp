@@ -137,11 +137,6 @@ void BasicMidiSynth::removeAudioOutput(std::weak_ptr<AudioOutput> output)
 	notifyObservers(output);
 }
 
-vector<std::weak_ptr<AudioOutput>> BasicMidiSynth::getAudioOutputs()
-{
-    return audioOutputs;
-}
-
 void BasicMidiSynth::closeAudio()
 {
 }

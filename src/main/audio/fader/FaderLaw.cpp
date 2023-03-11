@@ -18,11 +18,6 @@ FaderLaw::FaderLaw(int resolution)
 	this->resolution = resolution;
 }
 
-int FaderLaw::getResolution()
-{
-    return resolution;
-}
-
 float FaderLaw::getMaximum()
 {
     return maxdB;

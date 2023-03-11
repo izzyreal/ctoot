@@ -15,8 +15,7 @@ namespace ctoot {
 			std::string units{ "" };
 
 		public:
-			int getResolution() override;
-			float getMinimum() override;
+            float getMinimum() override;
 			float getMaximum() override;
 			std::string getUnits() override;
 

@@ -10,7 +10,6 @@ using namespace std;
 
 DefaultAudioSystem::DefaultAudioSystem() 
 {
-	autoConnect = true;
 }
 
 void DefaultAudioSystem::addAudioDevice(std::weak_ptr<AudioDevice> device)
@@ -38,11 +37,6 @@ void DefaultAudioSystem::removeAudioDevice(std::weak_ptr<AudioDevice> device)
 	}
 	if (index >= devices.size()) return;
 	devices.erase(devices.begin() + index);
-}
-
-void DefaultAudioSystem::setAutoConnect(bool autoConnect)
-{
-    this->autoConnect = autoConnect;
 }
 
 void DefaultAudioSystem::close()
