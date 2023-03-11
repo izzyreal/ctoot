@@ -2,31 +2,23 @@
 
 #include "AudioControls.hpp"
 #include "AudioServices.hpp"
-#include "ChannelFormat.hpp"
 
 #include <service/ServiceDescriptor.hpp>
 
-//#include <audio/spi/AudioControlServiceDescriptor.hpp>
-//#include <service/ServiceDescriptor.hpp>
-
-
 using namespace ctoot::audio::core;
-//using namespace ctoot::audio::spi;
 using namespace ctoot::control;
-using namespace std;
 
-AudioControlsChain::AudioControlsChain(int id, string name)
+AudioControlsChain::AudioControlsChain(int id, std::string name)
 	: CompoundControlChain(id, name)
 {
 }
 
-AudioControlsChain::AudioControlsChain(int id, int index, string name, weak_ptr<ChannelFormat> constraintFormat)
+AudioControlsChain::AudioControlsChain(int id, int index, std::string name)
 	: CompoundControlChain(id, index, name)
 {
-	constraintChannelFormat = constraintFormat;
 }
 
-shared_ptr<ctoot::control::CompoundControl> AudioControlsChain::createControl(string name)
+std::shared_ptr<ctoot::control::CompoundControl> AudioControlsChain::createControl(std::string name)
 {
     
 	return AudioServices::createControls(name);

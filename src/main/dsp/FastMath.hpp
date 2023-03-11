@@ -1,7 +1,6 @@
 #pragma once
 
-namespace ctoot {
-	namespace dsp {
+namespace ctoot::dsp {
 
 		class FastMath
 		{
@@ -23,4 +22,3 @@ namespace ctoot {
 
         };
 	}
-}

@@ -28,7 +28,7 @@ namespace ctoot {
 
 			public:
 				AudioControlsChain(int id, std::string name);
-				AudioControlsChain(int id, int index, std::string name, std::weak_ptr<ChannelFormat> constraintFormat);
+				AudioControlsChain(int id, int index, std::string name);
 				virtual ~AudioControlsChain() override;
 
 			};

@@ -17,26 +17,21 @@ MixerControlsFactory::MixerControlsFactory()
 {
 }
 
-void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls)
-{
-	createBusStrips(mixerControls, "L-R", ChannelFormat::STEREO(), (int)(mixerControls.lock()->getFxBusControls().size()));
-}
-
 void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls, string mainStripName, weak_ptr<ChannelFormat> mainFormat, int nreturns)
 {
 	auto lMixerControls = mixerControls.lock();
-	lMixerControls->createStripControls(MixerControlsIds::MAIN_STRIP, 0, mainStripName, mainFormat);
+	lMixerControls->createStripControls(MixerControlsIds::MAIN_STRIP, 0, mainStripName);
 	auto auxControls = lMixerControls->getAuxBusControls();
 	auto naux = static_cast<int>(auxControls.size());
 	for (int i = 0; i < naux; i++) {
 		auto busControls = auxControls[i];
-		lMixerControls->createStripControls(MixerControlsIds::AUX_STRIP, i, busControls->getName(), false, busControls->getChannelFormat());
+		lMixerControls->createStripControls(MixerControlsIds::AUX_STRIP, i, busControls->getName(), false);
 	}
 	auto fxControlsList = lMixerControls->getFxBusControls();
 	auto nsends = static_cast<int>(fxControlsList.size());
 	for (int i = 0; i < nsends; i++) {
 		auto busControls = fxControlsList[i];
-		lMixerControls->createStripControls(MixerControlsIds::FX_STRIP, i, busControls->getName(), i < nreturns, busControls->getChannelFormat());
+		lMixerControls->createStripControls(MixerControlsIds::FX_STRIP, i, busControls->getName(), i < nreturns);
 	}
 }
 
@@ -46,7 +41,7 @@ void MixerControlsFactory::createChannelStrips(weak_ptr<MixerControls> mixerCont
 	auto mbc = mixerControls.lock()->getMainBusControls().lock();
 	auto mainFormat = mbc->getChannelFormat();
 	for (int i = 0; i < nchannels; i++) {
-		mixerControls.lock()->createStripControls(MixerControlsIds::CHANNEL_STRIP, i, to_string(1 + i), mainFormat);
+		mixerControls.lock()->createStripControls(MixerControlsIds::CHANNEL_STRIP, i, to_string(1 + i));
 	}
 }
 

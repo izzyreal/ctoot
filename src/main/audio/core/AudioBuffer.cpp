@@ -162,6 +162,3 @@ void AudioBuffer::copyFrom(AudioBuffer* src)
         }
     }
 }
-
-AudioBuffer::~AudioBuffer() {
-}

@@ -9,8 +9,7 @@ namespace ctoot {
 			{
 
 			public:
-                static void createBusStrips(std::weak_ptr<MixerControls> mixerControls);
-				static void createBusStrips(std::weak_ptr<MixerControls> mixerControls, std::string mainStripName, std::weak_ptr<ctoot::audio::core::ChannelFormat> mainFormat, int nreturns);
+                static void createBusStrips(std::weak_ptr<MixerControls> mixerControls, std::string mainStripName, std::weak_ptr<ctoot::audio::core::ChannelFormat> mainFormat, int nreturns);
 
                 static void createChannelStrips(std::weak_ptr<MixerControls> mixerControls, int nchannels);
 

@@ -44,7 +44,6 @@ namespace ctoot::audio::core
 
 	public:
 		AudioBuffer(std::string name, int channelCount, int sampleCount, float sampleRate);
-		~AudioBuffer();
 
 	};
 }

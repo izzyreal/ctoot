@@ -106,22 +106,17 @@ vector<shared_ptr<BusControls>> MixerControls::getAuxBusControls()
 
 weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int index, string name)
 {
-    return createStripControls(id, index, name, true, ChannelFormat::STEREO());
+    return createStripControls(id, index, name, true);
 }
 
-weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int index, string name, weak_ptr<ChannelFormat> constraintFormat)
-{
-    return createStripControls(id, index, name, true, constraintFormat);
-}
-
-weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int index, string name, bool hasMixControls, weak_ptr<ChannelFormat> constraintFormat)
+weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, int index, string name, bool hasMixControls)
 {
 	if (getStripControls(name).lock()) {
 		string error = name.append(" already exists");
 		MLOG("ERROR: " + error);
 		return {};
 	}
-	auto chain = make_shared<AudioControlsChain>(id, index, name, constraintFormat);
+	auto chain = std::make_shared<AudioControlsChain>(id, index, name);
 	MixerControlsFactory::addMixControls(this, chain, hasMixControls);
 	addStripControls(chain);
 	return chain;

@@ -33,8 +33,7 @@ namespace ctoot {
 				virtual std::vector<std::shared_ptr<BusControls>> getFxBusControls();
 				virtual std::vector<std::shared_ptr<BusControls>> getAuxBusControls();
 				virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> createStripControls(int id, int index, std::string name);
-				virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> createStripControls(int id, int index, std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> constraintFormat);
-				virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> createStripControls(int id, int index, std::string name, bool hasMixControls, std::weak_ptr<ctoot::audio::core::ChannelFormat> constraintFormat);
+				virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> createStripControls(int id, int index, std::string name, bool hasMixControls);
 				virtual void addStripControls(std::shared_ptr<CompoundControl> cc);
 				virtual void removeStripControls(std::weak_ptr<CompoundControl> cc);
 				virtual void removeStripControls(std::string name);
