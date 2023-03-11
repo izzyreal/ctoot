@@ -63,7 +63,6 @@ public:
     CompoundControl(int id, std::string name);
 
 private:
-    friend class ControlColumn;
     friend class ControlRow;
     friend class BypassControl;
 };

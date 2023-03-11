@@ -17,7 +17,6 @@ namespace ctoot {
 
 		private:
 			friend class CompoundControl;
-			friend class ControlColumn;
 			friend class BypassControl;
 		};
 	}
