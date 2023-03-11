@@ -142,10 +142,12 @@ void MpcVoice::init(
             break;
     }
 
-    auto veloFactor = velocity / 127.0;
+    const auto veloFactor = velocity / 127.f;
+    const auto inverseVeloFactor = 1.f - veloFactor;
 
     end = lMpcSound->getEnd();
-    position = lMpcSound->getStart() + (veloFactor * (veloToStart / 100.0) * lMpcSound->getLastFrameIndex());
+
+    position = lMpcSound->getStart() + (inverseVeloFactor * (veloToStart / 100.0) * lMpcSound->getLastFrameIndex());
     sampleData = lMpcSound->getSampleData();
     attackMs = (float) ((attackValue / 100.0) * MAX_ATTACK_LENGTH_MS);
     attackMs += (float) ((veloToAttack / 100.0) * MAX_ATTACK_LENGTH_MS * veloFactor);
@@ -194,7 +196,7 @@ void MpcVoice::initializeSamplerateDependents()
 
     increment = pow(2.0, ((double) (tune) / 120.0)) * (44100.0 / sampleRate);
 
-    auto veloFactor = velocity / 127.0;
+    const auto veloFactor = 1.f - (velocity / 127.f);
     auto start = lMpcSound->getStart() + (veloFactor * (veloToStart / 100.0) * lMpcSound->getLastFrameIndex());
 
     auto playableSampleLength = lMpcSound->isLoopEnabled() ? INT_MAX : (int) ((end - start) / increment);
