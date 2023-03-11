@@ -2,8 +2,7 @@
 #include <control/CompoundControl.hpp>
 #include <control/FloatControl.hpp>
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
 
 		class MpcEnvelopeControls
 			: public ctoot::control::CompoundControl
@@ -13,7 +12,6 @@ namespace ctoot {
 			typedef ctoot::control::CompoundControl super;
 
 		private:
-			static const int MPC_ENVELOPE_ID{ 2 };
 			ctoot::control::FloatControl* attackControl{ nullptr };
 			ctoot::control::FloatControl* holdControl{ nullptr };
 			ctoot::control::FloatControl* decayControl{ nullptr };
@@ -51,13 +49,6 @@ namespace ctoot {
 			float getDecayCoeff();
 
 		public:
-			MpcEnvelopeControls(int id, int instanceIndex, std::string name, int idOffset, float timeMultiplier);
-			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset, float timeMultiplier)
-				: MpcEnvelopeControls(MPC_ENVELOPE_ID, instanceIndex, name, idOffset, timeMultiplier) {};
-			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset)
-				: MpcEnvelopeControls(instanceIndex, name, idOffset, 1.0f) {};
-            
+			MpcEnvelopeControls(int id, std::string name, int idOffset);
         };
-
 	}
-}

@@ -12,7 +12,7 @@
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcEnvelopeControls::MpcEnvelopeControls(int id, int instanceIndex, string name, int idOffset, float timeMultiplier)
+MpcEnvelopeControls::MpcEnvelopeControls(int id, string name, int idOffset)
 	: CompoundControl(id, name)
 {
 	this->idOffset = idOffset;
@@ -20,8 +20,6 @@ MpcEnvelopeControls::MpcEnvelopeControls(int id, int instanceIndex, string name,
 	deriveSampleRateIndependentVariables();
 	deriveSampleRateDependentVariables();
 }
-
-const int MpcEnvelopeControls::MPC_ENVELOPE_ID;
 
 void MpcEnvelopeControls::derive(ctoot::control::Control* c)
 {
