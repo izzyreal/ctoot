@@ -46,11 +46,6 @@ void DefaultMidiSystem::removeMidiDevice(MidiDevice* device)
 	notifyObservers();
 }
 
-vector<MidiDevice*> DefaultMidiSystem::getMidiDevices()
-{
-    return devices;
-}
-
 vector<MidiInput*> DefaultMidiSystem::getMidiInputs()
 {
 	vector<MidiInput*> inputs;

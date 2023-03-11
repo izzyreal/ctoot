@@ -1,30 +1,27 @@
 #pragma once
+
 #include <control/EnumControl.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 
 #include <thirdp/any.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
+namespace ctoot::audio::mixer {
 
-			class RouteControl
-				: public ctoot::control::EnumControl
-			{
+    class RouteControl
+            : public ctoot::control::EnumControl
+    {
 
-			private:
-				MainMixControls* mmc;
-				bool canRouteToGroups{};
+    private:
+        MainMixControls *mmc;
+        bool canRouteToGroups{};
 
-			public:
-				std::vector<nonstd::any> getValues();
-				
-			public:
-				RouteControl(MainMixControls* mmc, std::string defaultRoute, bool canRouteToGroups);
+    public:
+        std::vector<nonstd::any> getValues();
 
-				friend class MainMixControls;
-			};
+    public:
+        RouteControl(MainMixControls *mmc, std::string defaultRoute, bool canRouteToGroups);
 
-		}
-	}
+        friend class MainMixControls;
+    };
+
 }

@@ -5,7 +5,6 @@
 #include <audio/mixer/BusControls.hpp>
 #include <audio/mixer/MixControlIds.hpp>
 #include <audio/mixer/BalanceControl.hpp>
-#include <audio/mixer/FrontRearControl.hpp>
 #include <audio/mixer/PanControl.hpp>
 #include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
@@ -75,9 +74,6 @@ void MixControls::derive(Control* c)
 	case MixControlIds::MUTE:
 		mute = muteControl->getValue();
 		break;
-	case MixControlIds::SOLO:
-		solo = soloControl->getValue();
-		break;
 	case MixControlIds::GAIN:
 		gain = gainControl->getGain();
 		break;
@@ -117,28 +113,8 @@ float MixControls::getGain()
 
 void MixControls::getChannelGains(vector<float>* dest)
 {
-	float r;
-	float f;
-	switch (channelCount) {
-	case 6:
-		//dest[5] = gain;
-		//dest[4] = gain;
-	case 4:
-		r = gain * rear;
-		//dest[3] = r * right;
-		//dest[2] = r * left;
-		f = gain * front;
-		//dest[1] = f * right;
-		//dest[0] = f * left;
-		break;
-	case 2:
-		(*dest)[1] = gain * right;
-		(*dest)[0] = gain * left;
-		break;
-	case 1:
-		//dest[0] = gain;
-		break;
-	}
+    (*dest)[1] = gain * right;
+    (*dest)[0] = gain * left;
 }
 
 float MixControls::getSmoothingFactor()

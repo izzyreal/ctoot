@@ -117,6 +117,6 @@ void SynthChannel::setPitchBend(int bend)
 {
     bend -= 8192;
     auto b = static_cast< float >(bendRange) * bend / 8192;
-    bendFactor = static_cast< float >(pow(ONE_SEMITONE, b));
+    static_cast< float >(pow(ONE_SEMITONE, b));
 }
 

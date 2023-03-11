@@ -1,65 +1,69 @@
 #pragma once
+
 #include <observer/Observable.hpp>
 #include <synth/MidiChannel.hpp>
 #include <audio/core/ChannelFormat.hpp>
 
-namespace ctoot {
-	namespace synth {
+namespace ctoot::synth {
 
-		class SynthChannel
-			: public moduru::observer::Observable
-			, public virtual MidiChannel
-		{
+    class SynthChannel
+            : public moduru::observer::Observable, public virtual MidiChannel
+    {
 
-		public:
-			int sampleRate{ 44100 };
+    public:
+        int sampleRate{44100};
 
-        private:
-            int bendRange{ 2 };
-			float bendFactor{ 1.0f };
-			int pressure{ 0 };
-			std::vector<char> polyPressure = std::vector<char>(128);
-			std::vector<char> controller = std::vector<char>(128);
+    private:
+        int bendRange{2};
+        int pressure{0};
+        std::vector<char> polyPressure = std::vector<char>(128);
+        std::vector<char> controller = std::vector<char>(128);
 
-			static const double ONE_SEMITONE;
+        static const double ONE_SEMITONE;
 
-		public:
-			virtual void setLocation(std::string location) = 0;
+    public:
+        virtual void setLocation(std::string location) = 0;
 
-			static float midiFreq(float pitch);
-            static std::vector<float>& freqTable();
+        static float midiFreq(float pitch);
 
-		private:
-			static float midiFreqImpl(int pitch);
+        static std::vector<float> &freqTable();
 
-		public:
-			virtual void setSampleRate(int rate);
-			virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
-			/*void noteOn(int pitch, int velocity); (already declared) */
-			/*void noteOff(int pitch); (already declared) */
+    private:
+        static float midiFreqImpl(int pitch);
 
-		public:
-			void noteOff(int pitch, int velocity) override;
-			/*void allNotesOff(); (already declared) */
-			/*void allSoundOff(); (already declared) */
-			void controlChange(int arg0, int arg1) override;
-			int getController(int arg0) override;
-			void resetAllControllers() override;
-			int getProgram() override;
-			void programChange(int arg0) override;
-			void programChange(int arg0, int arg1) override;
+    public:
+        virtual void setSampleRate(int rate);
 
-            void setChannelPressure(int arg0) override;
+        virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
+        /*void noteOn(int pitch, int velocity); (already declared) */
+        /*void noteOff(int pitch); (already declared) */
 
-            void setMono(bool mono) override;
+    public:
+        void noteOff(int pitch, int velocity) override;
+        /*void allNotesOff(); (already declared) */
+        /*void allSoundOff(); (already declared) */
+        void controlChange(int arg0, int arg1) override;
 
-            void setPitchBend(int bend) override;
+        int getController(int arg0) override;
 
-            SynthChannel();
+        void resetAllControllers() override;
 
-		public:
-			virtual void noteOff(int noteNumber) override = 0;
+        int getProgram() override;
 
-		};
-	}
+        void programChange(int arg0) override;
+
+        void programChange(int arg0, int arg1) override;
+
+        void setChannelPressure(int arg0) override;
+
+        void setMono(bool mono) override;
+
+        void setPitchBend(int bend) override;
+
+        SynthChannel();
+
+    public:
+        virtual void noteOff(int noteNumber) override = 0;
+
+    };
 }

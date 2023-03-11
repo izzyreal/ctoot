@@ -21,8 +21,8 @@ namespace ctoot {
 			public:
 				void addMidiDevice(MidiDevice* device) override;
 				void removeMidiDevice(MidiDevice* device) override;
-				std::vector<MidiDevice*> getMidiDevices() override;
-				std::vector<MidiInput*> getMidiInputs() override;
+
+                std::vector<MidiInput*> getMidiInputs() override;
 				std::vector<MidiOutput*> getMidiOutputs() override;
 				void close() override;
 
