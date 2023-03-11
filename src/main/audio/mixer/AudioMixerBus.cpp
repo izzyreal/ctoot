@@ -16,11 +16,6 @@ AudioMixerBus::AudioMixerBus(AudioMixer* mixer, weak_ptr<BusControls> busControl
 	buffer->setChannelFormat(channelFormat);
 }
 
-void AudioMixerBus::setMeterProcess(AudioProcess* meter)
-{
-    this->meter = meter;
-}
-
 AudioBuffer* AudioMixerBus::getBuffer()
 {
     return buffer;

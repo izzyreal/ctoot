@@ -90,33 +90,6 @@ void AudioBuffer::setChannelFormat(weak_ptr<ChannelFormat> newFormat)
 }
 
 
-void AudioBuffer::convertTo(weak_ptr<ChannelFormat> format)
-{
-	if (channelFormat.lock() == format.lock())
-		return;
-
-	if (format.lock()->getCount() == 1) {
-		mixDownChannels();
-		channelFormat = format;
-	}
-	else if (channelFormat.lock()->getCount() == 1) {
-		auto nc = format.lock()->getCount();
-		auto ns = getSampleCount();
-		auto& samples = getChannel(0);
-		auto gain = 1.0f / nc;
-		for (auto s = 0; s < ns; s++) {
-			samples[s] *= gain;
-		}
-		expandChannel(nc);
-		channelFormat = format;
-	}
-	else {
-		//auto convertingFormat = channelFormat.lock()->getCount() > format.lock()->getCount() ? channelFormat : format;
-		// currently not implemented, see java toot
-	}
-}
-
-
 void AudioBuffer::swap(int a, int b)
 {
     auto ns = getSampleCount();

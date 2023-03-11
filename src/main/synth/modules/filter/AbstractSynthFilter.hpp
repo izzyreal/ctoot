@@ -1,26 +1,20 @@
 #pragma once
 
-namespace ctoot {
-	namespace synth {
-		namespace modules {
-			namespace filter {
+namespace ctoot::synth::modules::filter {
 
-				class FilterVariables;
+    class FilterVariables;
 
-				class AbstractFilter
-				{
+    class AbstractFilter
+    {
 
-				public:
-					FilterVariables* vars{};
-					float fs{ 44100.0 };
+    public:
+        FilterVariables *vars{};
+        float fs{44100.0};
 
-				public:
-					virtual void setSampleRate(int rate);
+    public:
+        virtual void setSampleRate(int rate);
 
-					AbstractFilter(FilterVariables* filterVariables);
+        AbstractFilter(FilterVariables *filterVariables);
 
-				};
-			}
-		}
-	}
+    };
 }

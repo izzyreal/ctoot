@@ -31,10 +31,6 @@ const int ChainMutation::MOVE;
 const int ChainMutation::COMMENCE;
 const int ChainMutation::COMPLETE;
 
-ChainMutation* ChainMutation::COMMENCE_INSTANCE_ = new ChainMutation(COMMENCE);
-
-ChainMutation* ChainMutation::COMPLETE_INSTANCE_ = new ChainMutation(COMPLETE);
-
 int ChainMutation::getType()
 {
     return type;
@@ -52,11 +48,6 @@ int ChainMutation::getIndex1()
 
 string ChainMutation::toString()
 {
-//    return stringBuilder().append(typeName())->append(&string("("
-//        ->append(index0)
-//        ->append(&string(", "
-//        ->append(index1)
-//        ->append(&string(")"->toString();
 	return typeName();
 }
 

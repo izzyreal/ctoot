@@ -17,9 +17,7 @@ namespace ctoot {
 			public:
 				int getCount() override;
 
-                int getCenter() override;
-				int getLFE() override;
-				std::vector<int8_t> getLeft() override;
+                std::vector<int8_t> getLeft() override;
 				std::vector<int8_t> getRight() override;
 				std::string getName() override;
 				std::string getName(int chan) override;

@@ -26,9 +26,6 @@ namespace ctoot {
 				virtual void checkConnections();
 
             public:
-				virtual MidiConnection* getConnection(MidiOutput* from, MidiInput* to);
-
-            public:
 				DefaultConnectedMidiSystem();
 				~DefaultConnectedMidiSystem();
 

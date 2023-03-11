@@ -33,31 +33,6 @@ string AudioServiceProvider::getAvailableControls() {
 	return res;
 }
 
-weak_ptr<ctoot::service::ServiceDescriptor> AudioServiceProvider::lookupDescriptor(int moduleId)
-{
-	auto c = controls.lock();
-	for (int i = 0; i < c->size(); i++) {
-		auto d = c->at(i);
-		if (dynamic_pointer_cast<control::spi::ControlServiceDescriptor>(d)->getModuleId() == moduleId) {
-			return d;
-		}
-	}
-	return {};
-}
-
-void AudioServiceProvider::addControls
-(
-	const string& typeIdName, 
-	int moduleId, 
-	const string& name,
-	const string& description,
-	const string& version
-)
-{
-	auto descriptor = make_shared<AudioControlServiceDescriptor>(typeIdName, moduleId, name, description, version);
-	add(descriptor);
-}
-
 shared_ptr<AudioControls> AudioServiceProvider::createControls(int moduleId)
 {
 	auto c = controls.lock();

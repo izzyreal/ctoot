@@ -13,16 +13,6 @@ int ChannelFormat1::getCount()
     return 1;
 }
 
-int ChannelFormat1::getCenter()
-{
-    return 0;
-}
-
-int ChannelFormat1::getLFE()
-{
-    return -1;
-}
-
 std::vector<int8_t> ChannelFormat1::getLeft()
 {
     return empty;

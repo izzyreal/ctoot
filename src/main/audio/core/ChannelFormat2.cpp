@@ -12,16 +12,6 @@ int ChannelFormat2::getCount()
     return 2;
 }
 
-int ChannelFormat2::getCenter()
-{
-    return -1;
-}
-
-int ChannelFormat2::getLFE()
-{
-    return -1;
-}
-
 std::vector<int8_t> ChannelFormat2::getLeft()
 {
     return left;

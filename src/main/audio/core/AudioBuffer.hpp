@@ -35,8 +35,7 @@ namespace ctoot::audio::core
 		std::weak_ptr<ChannelFormat> getChannelFormat();
 		void setChannelFormat(std::weak_ptr<ChannelFormat> format);
 
-        void convertTo(std::weak_ptr<ChannelFormat> format);
-		void swap(int a, int b);
+        void swap(int a, int b);
 		float square();
 
         void copyFrom(AudioBuffer* src);

@@ -38,19 +38,6 @@ void DefaultConnectedMidiSystem::checkConnections()
 	}
 }
 
-MidiConnection* DefaultConnectedMidiSystem::getConnection(MidiOutput* from, MidiInput* to)
-{
-	for (auto& c : connections) {
-		if (c->getMidiOutput() == from && c->getMidiInput() == to) {
-			return c;
-		}
-	}
-	return nullptr;
-	//    throw new ::java::lang::IllegalArgumentException(stringBuilder().append("MidiConnection from "->append(npc(from)->getName())
-	//        ->append(" to "
-	//        ->append(npc(to)->getName())->toString());
-}
-
 DefaultConnectedMidiSystem::~DefaultConnectedMidiSystem() {
 	connections.clear();
 }

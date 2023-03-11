@@ -4,7 +4,6 @@
 #include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
-//#include <misc/Localisation.hpp>
 #include <synth/modules/envelope/EnvelopeControlIds.hpp>
 
 #include <cfloat>

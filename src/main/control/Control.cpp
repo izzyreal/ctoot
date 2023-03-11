@@ -130,11 +130,6 @@ string Control::toString()
 	return result;
 }
 
-string Control::getControlPath()
-{
-	return getControlPath(nullptr, "/");
-}
-
 string Control::getControlPath(Control* from, string sep)
 {
 	if (parent != from) {

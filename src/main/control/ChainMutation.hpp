@@ -4,64 +4,70 @@
 #include <string>
 #include <memory>
 
-namespace ctoot {
-	namespace control {
+namespace ctoot::control {
 
-		class Control;
+    class Control;
 
-		class ChainMutation
-		{
-		protected:
-			std::weak_ptr<Control> control;
+    class ChainMutation
+    {
+    protected:
+        std::weak_ptr<Control> control;
 
-		public:
-			static const int DELETE{ 1 };
-			static const int INSERT{ 2 };
-			static const int MOVE{ 3 };
-			static const int COMMENCE{ 4 };
-			static const int COMPLETE{ 5 };
+    public:
+        static const int DELETE{1};
+        static const int INSERT{2};
+        static const int MOVE{3};
+        static const int COMMENCE{4};
+        static const int COMPLETE{5};
 
-		private:
-			static ChainMutation* COMMENCE_INSTANCE_;
-			static ChainMutation* COMPLETE_INSTANCE_;
-			int type{};
-			int index0 = -1;
+    private:
+        int type{};
+        int index0 = -1;
 
-		protected:
-			int index1 = -1;
+    protected:
+        int index1 = -1;
 
-		public:
-			virtual int getType();
-			virtual int getIndex0();
-			virtual int getIndex1();
-			std::string toString();
+    public:
+        virtual int getType();
 
-		private:
-			std::string typeName();
+        virtual int getIndex0();
 
-		protected:
-			ChainMutation(int type);
-			ChainMutation(int type, int index);
+        virtual int getIndex1();
 
-		public:
-			ChainMutation(int type, int index0, int index1);
-            virtual ~ChainMutation(){}
+        std::string toString();
 
-        };
+    private:
+        std::string typeName();
 
-		class DeleteMutation : public ChainMutation {
-        };
+    protected:
+        ChainMutation(int type);
 
-		class InsertMutation : public ChainMutation {
-		public:
-			InsertMutation(int index, std::weak_ptr<Control> c);
-			std::weak_ptr<Control> getControl();
-		};
+        ChainMutation(int type, int index);
 
-		class MoveMutation : public ChainMutation {
-		public:
-			MoveMutation(int index0, int index1);
-		};
+    public:
+        ChainMutation(int type, int index0, int index1);
 
-	}
+        virtual ~ChainMutation()
+        {}
+
+    };
+
+    class DeleteMutation : public ChainMutation
+    {
+    };
+
+    class InsertMutation : public ChainMutation
+    {
+    public:
+        InsertMutation(int index, std::weak_ptr<Control> c);
+
+        std::weak_ptr<Control> getControl();
+    };
+
+    class MoveMutation : public ChainMutation
+    {
+    public:
+        MoveMutation(int index0, int index1);
+    };
+
 }
