@@ -16,9 +16,6 @@ namespace ctoot::audio::core {
         std::weak_ptr<ChannelFormat> constraintChannelFormat;
 
     public:
-        int getMaxInstance() override;
-
-    public:
         AudioControlsChain(int id, std::string name);
 
     };

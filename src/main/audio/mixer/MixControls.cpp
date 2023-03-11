@@ -8,7 +8,6 @@
 #include <audio/mixer/PanControl.hpp>
 #include <audio/mixer/MixerControls.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
-#include <control/ControlRow.hpp>
 #include <control/Control.hpp>
 #include <control/EnumControl.hpp>
 #include <control/BooleanControl.hpp>
@@ -45,12 +44,9 @@ MixControls::MixControls(MixerControls* mixerControls, int stripId, shared_ptr<B
 		derive(lcrControl.get());
 	}
 
-	auto enables = make_shared<ControlRow>();
-
 	muteControl = shared_ptr<BooleanControl>(createMuteControl());
-	enables->add(muteControl);
 	derive(muteControl.get());
-	add(enables);
+	add(muteControl);
 
 	auto muted = (busId == MixerControlsIds::AUX_BUS && !master);
 	gainControl = shared_ptr<FaderControl>(mixerControls->createFaderControl(muted));

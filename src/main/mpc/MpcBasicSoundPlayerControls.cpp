@@ -1,6 +1,5 @@
 #include <mpc/MpcBasicSoundPlayerControls.hpp>
 
-#include <control/ControlRow.hpp>
 #include <control/Control.hpp>
 
 using namespace ctoot::mpc;

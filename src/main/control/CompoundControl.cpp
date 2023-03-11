@@ -39,11 +39,6 @@ vector<string> CompoundControl::getControlNamesRecursive(int generation)
 	return res;
 }
 
-int CompoundControl::getMaxInstance()
-{
-    return 8 - 1;
-}
-
 void CompoundControl::add(shared_ptr<Control> control)
 {
 	if (!control) return;

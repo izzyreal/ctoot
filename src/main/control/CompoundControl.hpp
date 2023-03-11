@@ -14,7 +14,6 @@ namespace ctoot::control {
         std::vector<std::string> getControlNamesRecursive(int generation = 0);
 
     public:
-        virtual int getMaxInstance();
 
         virtual void add(std::shared_ptr<Control> control);
 
@@ -34,12 +33,9 @@ namespace ctoot::control {
 
         virtual void close();
 
-        virtual void setEnabled(bool enable) override;
+        void setEnabled(bool enable) override;
 
     public:
         CompoundControl(int id, std::string name);
-
-    private:
-        friend class ControlRow;
     };
 }
