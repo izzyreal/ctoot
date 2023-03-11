@@ -12,10 +12,8 @@ namespace ctoot {
 			typedef CompoundControl super;
 
 		public:
-			bool isAlwaysHorizontal() override;
-			bool isNeverBordered() override;
 
-			ControlRow();
+            ControlRow();
 
 		private:
 			friend class CompoundControl;

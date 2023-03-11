@@ -6,8 +6,6 @@ using namespace std;
 
 #include <System.hpp>
 
-shared_ptr<CompoundControlPersistence> CompoundControl::persistence;
-
 CompoundControl::CompoundControl(int id, string name) 
 	: CompoundControl(id, deriveInstanceIndex(name), name)
 {
@@ -107,11 +105,6 @@ void CompoundControl::remove(weak_ptr<Control> c)
 	}
 }
 
-vector<weak_ptr<Control>> CompoundControl::getMemberControls()
-{
-    return weakControls;
-}
-
 vector<weak_ptr<Control>> CompoundControl::getControls()
 {
     return weakControls;
@@ -143,48 +136,9 @@ string CompoundControl::toString()
 	return result;
 }
 
-bool CompoundControl::isAlwaysVertical()
-{
-    return false;
-}
-
-bool CompoundControl::isAlwaysHorizontal()
-{
-    return false;
-}
-
-bool CompoundControl::isNeverBordered()
-{
-    return false;
-}
-
-float CompoundControl::getAlignmentY()
-{
-    return -1.0f;
-}
-
-string* CompoundControl::getAlternate()
-{
-    return nullptr;
-}
-
 int CompoundControl::getInstanceIndex()
 {
     return instanceIndex;
-}
-
-weak_ptr<Control> CompoundControl::findByTypeIdName(string typeIdName)
-{
-	for (int i = 0; i < controls.size(); i++) {
-        auto control = controls[i].get();
-        auto currentTypeIdName = typeid(*control).name();
-		string currentDemangledTypeIdName = moduru::System::demangle(currentTypeIdName);
-		
-        if (currentDemangledTypeIdName.compare(typeIdName) == 0) {
-			return controls[i];
-		}
-	}
-	return {};
 }
 
 weak_ptr<Control> CompoundControl::find(string name)
@@ -234,73 +188,14 @@ weak_ptr<Control> CompoundControl::deepFind(int controlId)
 	return {};
 }
 
-weak_ptr<CompoundControlPersistence> CompoundControl::getPersistence()
-{
-    return persistence;
-}
-
-void CompoundControl::setPersistence(shared_ptr<CompoundControlPersistence> p)
-{
-    persistence = p;
-}
-
-bool CompoundControl::canBeMoved()
-{
-    return true;
-}
-
-bool CompoundControl::canBeMovedBefore()
-{
-    return true;
-}
-
 bool CompoundControl::canBeInsertedBefore()
 {
     return true;
 }
 
-bool CompoundControl::canBeDeleted()
-{
-    return true;
-}
-
-bool CompoundControl::canBeMinimized()
-{
-    return false;
-}
-
-bool CompoundControl::hasPresets()
-{
-    return true;
-}
-
-bool CompoundControl::hasCustomUI()
-{
-    return false;
-}
-
-bool CompoundControl::canLearn()
-{
-    return false;
-}
-
-bool CompoundControl::getLearn()
-{
-    return false;
-}
-
-void CompoundControl::setLearn(bool learn)
-{
-}
-
 string CompoundControl::getPersistenceDomain()
 {
 	return getParent()->getPersistenceDomain();
-}
-
-bool CompoundControl::isPluginParent()
-{
-    return false;
 }
 
 int CompoundControl::getProviderId()

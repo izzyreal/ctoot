@@ -15,13 +15,10 @@ namespace ctoot {
 			std::string midLabel{ "" };
 	
 		public:
-			virtual bool isRotary();
-			virtual float getMaximum();
+            virtual float getMaximum();
 			virtual float getMinimum();
-			virtual std::string getMinLabel();
-			virtual std::string getMidLabel();
-			virtual std::string getMaxLabel();
-			std::string toString();
+
+            std::string toString();
 
 		public:
 			FloatControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue) 

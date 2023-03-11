@@ -17,16 +17,6 @@ AudioServices::AudioServices()
 
 vector<weak_ptr<AudioServiceProvider>> AudioServices::providers;
 
-string AudioServices::lookupModuleName(int providerId, int moduleId)
-{
-	for (auto& p : providers) {
-		if (p.lock()->getProviderId() == providerId) {
-			return p.lock()->lookupName(moduleId);
-		}
-	}
-	return "Module not found!";
-}
-
 shared_ptr<AudioControls> AudioServices::createControls(int providerId, int moduleId, int instanceIndex)
 {
 	shared_ptr<AudioControls> controls;
@@ -101,7 +91,3 @@ void AudioServices::accept(weak_ptr<ctoot::service::ServiceVisitor> v, const str
 	}
 }
 
-void AudioServices::printServiceDescriptors(const string& typeIdName)
-{
-    //accept(new service::ServicePrinter(), clazz);
-}

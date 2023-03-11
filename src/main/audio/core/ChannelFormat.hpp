@@ -21,12 +21,11 @@ namespace ctoot {
 				virtual std::vector<int8_t> getLeft() = 0;
 				virtual std::vector<int8_t> getRight() = 0;
 				virtual std::string getName() = 0;
-				virtual bool isCenter(int chan) = 0;
-				virtual bool isLeft(int chan) = 0;
+
+                virtual bool isLeft(int chan) = 0;
 				virtual bool isRight(int chan) = 0;
-				virtual bool isFront(int chan) = 0;
-				virtual bool isRear(int chan) = 0;
-				virtual bool isLFE(int chan) = 0;
+
+                virtual bool isLFE(int chan) = 0;
 				virtual std::string getName(int chan) = 0;
 
 			public:

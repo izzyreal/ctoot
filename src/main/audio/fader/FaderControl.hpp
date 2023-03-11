@@ -22,9 +22,8 @@ namespace ctoot {
 				float getGain();
 
 			public:
-				static std::weak_ptr<FaderLaw> SEMI_LOG();
-				static std::weak_ptr<FaderLaw> LOG();
-				static std::weak_ptr<FaderLaw> BROADCAST();
+
+                static std::weak_ptr<FaderLaw> BROADCAST();
 				static float ATTENUATION_CUTOFF();
 				static std::weak_ptr<FaderLaw> defaultLaw();
 

@@ -46,10 +46,5 @@ string MixerInputConnection::getOutputLocation()
     return from.lock()->getLocation();
 }
 
-string MixerInputConnection::getInputName()
-{
-    return to->getName();
-}
-
 MixerInputConnection::~MixerInputConnection() {
 }

@@ -10,10 +10,6 @@
 using namespace ctoot::dsp::filter;
 using namespace std;
 
-bool& BiQuadDesigner::decramped()
-{
-    return decramped_;
-}
 bool BiQuadDesigner::decramped_ = true;
 
 vector<double> BiQuadDesigner::design(FilterShape type, float dbGain, float freq, float srate, float resonance)

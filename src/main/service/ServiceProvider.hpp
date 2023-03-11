@@ -21,8 +21,8 @@ namespace ctoot {
 
 		public:
 			virtual int getProviderId();
-			virtual std::string getProviderName();
-			virtual std::string getVersion();
+
+            virtual std::string getVersion();
 			virtual std::string getDescription();
 
 		private:

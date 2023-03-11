@@ -14,12 +14,3 @@ AudioConnection::AudioConnection(int flags)
 //const int AudioConnection::OUTPUT_LOCKED;
 //const int AudioConnection::INPUT_LOCKED;
 
-bool AudioConnection::isSystem()
-{
-    return (flags & SYSTEM) != 0;
-}
-
-bool AudioConnection::isPlayback()
-{
-    return (flags & PLAYBACK) != 0;
-}

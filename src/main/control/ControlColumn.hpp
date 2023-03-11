@@ -13,11 +13,8 @@ namespace ctoot {
 			typedef CompoundControl super;
 
 		public:
-			//void add(shared_ptr<Control> c) override;
-			bool isAlwaysVertical() override;
-			bool isNeverBordered() override;
 
-			ControlColumn();
+            ControlColumn();
 
 		private:
 			friend class CompoundControl;

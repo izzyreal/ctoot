@@ -27,12 +27,11 @@ namespace ctoot {
 			public:
 				virtual void addMidiInput(MidiInput* input);
 				virtual void removeMidiInput(MidiInput* input);
-				virtual void removeAllMidiInputs();
-				virtual void addMidiOutput(MidiOutput* output);
-				virtual void removeMidiOutput(MidiOutput* output);
-				virtual void removeAllMidiOutputs();
 
-			public:
+                virtual void addMidiOutput(MidiOutput* output);
+				virtual void removeMidiOutput(MidiOutput* output);
+
+            public:
 				AbstractMidiDevice(std::string name);
 				AbstractMidiDevice();
 

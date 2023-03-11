@@ -26,13 +26,10 @@ namespace ctoot {
 				virtual void checkConnections();
 
 			public:
-				std::vector<MidiConnection*> getMidiConnections() override;
-				void createMidiConnection(MidiOutput* from, MidiInput* to, int flags) override;
+                void createMidiConnection(MidiOutput* from, MidiInput* to, int flags) override;
 				void closeMidiConnection(MidiOutput* from, MidiInput* to) override;
-				void createMidiConnection(std::string* fromPortName, std::string* toPortName, int flags) override;
-				void closeMidiConnection(std::string* fromPortName, std::string* toPortName) override;
 
-			public:
+            public:
 				virtual MidiConnection* getConnection(MidiOutput* from, MidiInput* to);
 				virtual MidiPort* getPort(std::string* name, bool isOut);
 

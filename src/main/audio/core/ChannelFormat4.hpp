@@ -16,12 +16,11 @@ namespace ctoot {
 
 			public:
 				int getCount() override;
-				bool isCenter(int chan) override;
-				bool isLeft(int chan) override;
+
+                bool isLeft(int chan) override;
 				bool isRight(int chan) override;
-				bool isFront(int chan) override;
-				bool isRear(int chan) override;
-				bool isLFE(int chan) override;
+
+                bool isLFE(int chan) override;
 				int getCenter() override;
 				int getLFE() override;
 				std::vector<int8_t> getLeft() override;

@@ -89,11 +89,6 @@ void Control::setName(string s)
     annotation = s;
 }
 
-string Control::getAnnotation()
-{
-    return annotation;
-}
-
 void Control::setAnnotation(string a)
 {
     annotation = a;
@@ -123,17 +118,6 @@ bool Control::isHidden()
 bool Control::isIndicator()
 {
     return indicator;
-}
-
-bool Control::isAdjusting()
-{
-    return adjusting;
-}
-
-void Control::setAdjusting(bool state)
-{
-    adjusting = state;
-    notifyParent(this);
 }
 
 void Control::setEnabled(bool enable)

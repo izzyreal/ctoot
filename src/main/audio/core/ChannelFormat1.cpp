@@ -13,27 +13,12 @@ int ChannelFormat1::getCount()
     return 1;
 }
 
-bool ChannelFormat1::isCenter(int chan)
-{
-    return true;
-}
-
 bool ChannelFormat1::isLeft(int chan)
 {
     return false;
 }
 
 bool ChannelFormat1::isRight(int chan)
-{
-    return false;
-}
-
-bool ChannelFormat1::isFront(int chan)
-{
-    return true;
-}
-
-bool ChannelFormat1::isRear(int chan)
 {
     return false;
 }

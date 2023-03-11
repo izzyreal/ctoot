@@ -27,8 +27,8 @@ namespace ctoot {
 			public:
 				void removeAudioDevice(std::weak_ptr<AudioDevice> device) override;
 				std::vector<std::weak_ptr<AudioDevice>> getAudioDevices() override;
-				std::vector<std::weak_ptr<AudioInput>> getAudioInputs() override;
-				std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
+
+                std::vector<std::weak_ptr<AudioOutput>> getAudioOutputs() override;
 				void setAutoConnect(bool autoConnect) override;
 				void close() override;
 

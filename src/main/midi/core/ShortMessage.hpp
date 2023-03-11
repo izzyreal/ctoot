@@ -9,25 +9,16 @@ class ShortMessage final
 {
     
 public:
-    static const int ACTIVE_SENSING{ 254 };
     static const int CHANNEL_PRESSURE{ 208 };
     static const int CONTINUE{ 251 };
     static const int CONTROL_CHANGE{ 176 };
-    static const int END_OF_EXCLUSIVE{ 247 };
-    static const int MIDI_TIME_CODE{ 241 };
     static const int NOTE_OFF{ 128 };
     static const int NOTE_ON{ 144 };
-    static const int PITCH_BEND{ 224 };
     static const int POLY_PRESSURE{ 160 };
-    static const int PROGRAM_CHANGE{ 192 };
-    static const int SONG_POSITION_POINTER{ 242 };
-    static const int SONG_SELECT{ 243 };
     static const int START{ 250 };
     static const int STOP{ 252 };
-    static const int SYSTEM_RESET{ 255 };
     static const int TIMING_CLOCK{ 248 };
-    static const int TUNE_REQUEST{ 246 };
-    
+
 public:
     virtual int getChannel();
     virtual int getCommand();

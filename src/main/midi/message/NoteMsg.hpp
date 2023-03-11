@@ -29,13 +29,12 @@ namespace ctoot {
 				static ctoot::midi::core::MidiMessage* off(int chan, int note);
 				static bool isOn(ctoot::midi::core::MidiMessage* msg);
 				static bool isOn(int status, int data2);
-				static bool isOff(ctoot::midi::core::MidiMessage* msg);
-				static bool isOff(int status, int data2);
+
+                static bool isOff(int status, int data2);
 				static int getVelocity(ctoot::midi::core::MidiMessage* msg);
 				static ctoot::midi::core::MidiMessage* setVelocity(ctoot::midi::core::MidiMessage* msg, int vel);
-				static ctoot::midi::core::MidiMessage* louden(ctoot::midi::core::MidiMessage* msg, int velocityDelta);
 
-				NoteMsg();
+                NoteMsg();
 
 			private:
 				static int& noteOff();

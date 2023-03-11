@@ -41,10 +41,6 @@ void BooleanControl::setValue(bool value)
 	}
 }
 
-void BooleanControl::momentaryAction()
-{
-}
-
 bool BooleanControl::getValue()
 {
     return value;

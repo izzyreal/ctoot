@@ -94,22 +94,6 @@ vector<AudioConnection*>* MixerConnectedAudioSystem::getConnections()
     return &connections;
 }
 
-void MixerConnectedAudioSystem::createConnection(string fromPortName, string fromPortLocation, string toPortName, int flags)
-{
-    //MLOG("\nTrying to create connection from " + fromPortName + " to " + toPortName);
-    auto from = getOutputPort(fromPortName, fromPortLocation);
-    if (!from.lock()) {
-        MLOG(fromPortName + " @ " + fromPortLocation + " does not exist");
-        return;
-    }
-    auto to = mixer.lock()->getStrip(toPortName);
-    if (to.lock() == nullptr) {
-        MLOG(toPortName + " does not exist");
-        return;
-    }
-    createConnection(from, to.lock().get(), flags);
-}
-
 void MixerConnectedAudioSystem::createConnection(std::weak_ptr<AudioOutput> from, ctoot::audio::mixer::AudioMixerStrip* to, int flags)
 {
     //MLOG("\nTrying to create connection from " + from.lock()->getName() + " to " + to->getName());

@@ -13,8 +13,7 @@ namespace ctoot {
 			{
 
 			public:
-				void momentaryAction() override;
-				int32_t getWidthLimit() override;
+                int32_t getWidthLimit() override;
 
 				ResetControl(MeterControls* mcThis);
 

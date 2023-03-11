@@ -62,12 +62,6 @@ bool LegacyDeviceAdaptor::isOpen()
 	return input != nullptr || output != nullptr;
 }
 
-string  LegacyDeviceAdaptor::getProvider()
-{
-    //return device->getDeviceInfo()->getVendor();
-	return "<tmp_provider>";
-}
-
 string  LegacyDeviceAdaptor::getDescription()
 {
     //return device->getDeviceInfo()->getDescription();

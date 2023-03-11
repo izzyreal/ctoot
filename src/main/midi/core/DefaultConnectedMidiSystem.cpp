@@ -38,11 +38,6 @@ void DefaultConnectedMidiSystem::checkConnections()
 	}
 }
 
-vector<MidiConnection*> DefaultConnectedMidiSystem::getMidiConnections()
-{
-	return connections;
-}
-
 void DefaultConnectedMidiSystem::createMidiConnection(MidiOutput* from, MidiInput* to, int flags)
 {
     auto connection = new MidiConnection(from, to, flags);
@@ -64,25 +59,6 @@ void DefaultConnectedMidiSystem::closeMidiConnection(MidiOutput* from, MidiInput
     connection->close();
     
     notifyObservers();
-}
-
-void DefaultConnectedMidiSystem::createMidiConnection(string* fromPortName, string* toPortName, int flags)
-{
-	auto from = dynamic_cast<MidiOutput*>(getPort(fromPortName, true));
-	auto to = dynamic_cast<MidiInput*>(getPort(toPortName, false));
-	if (from == nullptr) return;
-	//        npc(::java::lang::System::err())->println(stringBuilder().append(fromPortName)->append(" not found"->toString());
-
-	if (to == nullptr) return;
-	//        npc(::java::lang::System::err())->println(stringBuilder().append(toPortName)->append(" not found"->toString());
-	createMidiConnection(from, to, flags);
-}
-
-void DefaultConnectedMidiSystem::closeMidiConnection(string* fromPortName, string* toPortName)
-{
-	auto from = dynamic_cast<MidiOutput*>(getPort(fromPortName, true));
-	auto to = dynamic_cast<MidiInput*>(getPort(toPortName, false));
-	closeMidiConnection(from, to);
 }
 
 MidiConnection* DefaultConnectedMidiSystem::getConnection(MidiOutput* from, MidiInput* to)

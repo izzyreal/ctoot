@@ -22,15 +22,8 @@ namespace ctoot {
 				std::string getName() override;
 				std::string toString();
 
-			public:
-				virtual void addAudioInput(std::shared_ptr<AudioInput> input);
-				virtual void removeAudioInput(std::weak_ptr<AudioInput> input);
-				virtual void addAudioOutput(std::shared_ptr<AudioOutput> output);
-				virtual void removeAudioOutput(std::weak_ptr<AudioOutput> output);
-
-			public:
-				AbstractAudioDevice(std::string name);
-				~AbstractAudioDevice();
+            public:
+                ~AbstractAudioDevice();
 
 			};
 

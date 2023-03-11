@@ -14,11 +14,6 @@ ChannelledSynthControls::ChannelledSynthControls(int id, string name) : SynthCon
 	channelControls = vector<weak_ptr<SynthChannelControls>>(16);
 }
 
-CompoundControl* ChannelledSynthControls::getGlobalControls()
-{
-    return globalControls;
-}
-
 weak_ptr<SynthChannelControls> ChannelledSynthControls::getChannelControls(int chan)
 {
     return channelControls[chan];

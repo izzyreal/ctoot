@@ -14,17 +14,6 @@ float FaderControl::getGain()
 {
     return gain;
 }
-weak_ptr<FaderLaw> FaderControl::SEMI_LOG()
-{
-	static shared_ptr<FaderLaw> res = make_shared<FaderLaw>(1024, -10.0f, 10.0f, 0.33f);
-	return res;
-}
-
-weak_ptr<FaderLaw> FaderControl::LOG()
-{
-	static shared_ptr<FaderLaw> res = make_shared<FaderLaw>(1024, -20.0f, 15.0f, 0.2f);
-	return res;
-}
 
 weak_ptr<FaderLaw> FaderControl::BROADCAST()
 {

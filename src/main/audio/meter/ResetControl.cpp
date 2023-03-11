@@ -10,12 +10,6 @@ ResetControl::ResetControl(MeterControls* mcThis)
 	this->mcThis = mcThis;
 }
 
-void ctoot::audio::meter::ResetControl::momentaryAction()
-{
-    mcThis->resetOvers();
-    mcThis->resetMaxima();
-}
-
 int32_t ctoot::audio::meter::ResetControl::getWidthLimit()
 {
     return 127;

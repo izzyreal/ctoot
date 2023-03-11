@@ -29,9 +29,8 @@ namespace ctoot {
 
 			public:
 				std::vector<AudioConnection*>* getConnections();
-				void createConnection(std::string fromPortName, std::string fromPortLocation, std::string toPortName, int flags);
 
-			public:
+            public:
 				virtual void createConnection(std::weak_ptr<AudioOutput> from, ctoot::audio::mixer::AudioMixerStrip* to, int flags);
 				virtual AudioConnection* getConnectionFrom(std::string from, std::string fromLocation);
 				virtual void createConnectionFrom(std::weak_ptr<AudioOutput> output);

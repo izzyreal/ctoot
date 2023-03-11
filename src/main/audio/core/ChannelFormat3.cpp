@@ -12,11 +12,6 @@ int ChannelFormat3::getCount()
     return 4;
 }
 
-bool ChannelFormat3::isCenter(int chan)
-{
-    return false;
-}
-
 bool ChannelFormat3::isLeft(int chan)
 {
     return (chan & 1) == 0;
@@ -25,16 +20,6 @@ bool ChannelFormat3::isLeft(int chan)
 bool ChannelFormat3::isRight(int chan)
 {
     return (chan & 1) == 1;
-}
-
-bool ChannelFormat3::isFront(int chan)
-{
-    return chan < 2;
-}
-
-bool ChannelFormat3::isRear(int chan)
-{
-    return chan >= 2;
 }
 
 bool ChannelFormat3::isLFE(int chan)

@@ -17,29 +17,6 @@ void LegacyDevices::addDevice(string name, MidiSystem* system, bool input)
 	system->addMidiDevice(new LegacyDeviceAdaptor(name, input));
 }
 
-void LegacyDevices::installPlatformPorts(MidiSystem* system)
-{
-	//auto rtMidiIn = new RtMidiIn();
-	//auto count = rtMidiIn->getPortCount();
-	//for (int i = 0; i < count; i++) {
-	//	addDevice(rtMidiIn->getPortName(i), system, false);
-	//}
-	//
-	//delete rtMidiIn;
-	//rtMidiIn = 0;
-
-	//auto rtMidiOut = new RtMidiOut();
-	//count = rtMidiOut->getPortCount();
-	//for (int i = 0; i < count; i++) {
-	//	auto name = rtMidiOut->getPortName(i);
-	//	if (name.compare("Microsoft GS Wavetable Synth") == 0) continue;
-	//	addDevice(name, system, true);
-	//}
-
-	//delete rtMidiOut;
-	//rtMidiOut = 0;
-}
-
 /*
 void LegacyDevices::installPlatformComponents(MidiSystem* system)
 {

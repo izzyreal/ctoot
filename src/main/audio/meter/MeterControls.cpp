@@ -73,21 +73,6 @@ bool ctoot::audio::meter::MeterControls::canBypass()
     return false;
 }
 
-bool ctoot::audio::meter::MeterControls::isAlwaysVertical()
-{
-    return true;
-}
-
-float ctoot::audio::meter::MeterControls::getMaxdB()
-{
-    return maxdB;
-}
-
-float ctoot::audio::meter::MeterControls::getMindB()
-{
-    return mindB;
-}
-
 weak_ptr<ctoot::audio::core::ChannelFormat> ctoot::audio::meter::MeterControls::getChannelFormat()
 {
     return channelFormat;
@@ -162,16 +147,8 @@ void ctoot::audio::meter::MeterControls::setAverage(int chan, float average)
 	setPeak(chan, state->average);
 }
 
-double ctoot::audio::meter::MeterControls::PEAK_K_PER_MS()
-{
-    return PEAK_K_PER_MS_;
-}
 double ctoot::audio::meter::MeterControls::PEAK_K_PER_MS_ = log(0.05) / 3000.0;
 
-double ctoot::audio::meter::MeterControls::AV_K_PER_MS()
-{
-    return AV_K_PER_MS_;
-}
 double ctoot::audio::meter::MeterControls::AV_K_PER_MS_ = log(0.01) / 600;
 
 

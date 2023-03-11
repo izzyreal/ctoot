@@ -73,29 +73,18 @@ namespace ctoot {
 
 			public:
 				static std::vector<std::string> getCategories();
-				static std::vector<int> getControllers(std::string category);
-				static std::string propertyName(int controller);
+
+                static std::string propertyName(int controller);
 				static bool is7bit(int controller);
 				static int getMinimum(int controller);
 				static int getMaximum(int controller);
 				static int getDefault(int controller);
-				static int getOffset(int controller);
-				static int getOrientation(int controller);
+
+                static int getOrientation(int controller);
 
 				Controller();
 
-			public:
-				static std::vector<int>& PERFORMANCE_CONTROLLERS();
-				static std::vector<int>& SOUND_CONTROLLERS();
-				static std::vector<int>& MIXER_CONTROLLERS();
-				static std::vector<int>& EFFECTS_CONTROLLERS();
-				static std::vector<int>& UNDEFINED_CONTROLLERS();
-				static std::vector<int>& NO_CONTROLLERS();
-				static std::vector<int>& SWITCH_CONTROLLERS();
-
-			private:
-				static std::vector<std::string>& CATEGORIES();
-			};
+            };
 
 		}
 	}

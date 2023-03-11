@@ -18,13 +18,6 @@ FloatSampleBuffer::FloatSampleBuffer(int channelCount, int sampleCount, float sa
 	init(channelCount, sampleCount, sampleRate, LAZY_DEFAULT);
 }
 
-FloatSampleBuffer::FloatSampleBuffer(vector<char> buffer, int offset, int byteCount, AudioFormat* format)
-{
-	MLOG("This crap constructor of FloatSampleBuffer is called! It doesn't work...");
-	FloatSampleBuffer(format->getChannels(), byteCount / (format->getSampleSizeInBits() / 8 * format->getChannels()), format->getSampleRate());
-	initFromByteArray_(buffer, offset, byteCount, format);
-}
-
 void FloatSampleBuffer::init(int channelCount, int sampleCount, float sampleRate)
 {
     init(channelCount, sampleCount, sampleRate, LAZY_DEFAULT);
@@ -77,16 +70,6 @@ void FloatSampleBuffer::initFromByteArray_(vector<char> buffer, int offset, int 
 	FloatSampleTools::byte2float(buffer, offset, &channels, 0, sampleCount, format);
 }
 
-void FloatSampleBuffer::initFromFloatSampleBuffer(FloatSampleBuffer* source)
-{
-	init(source->getChannelCount(), source->getSampleCount(), source->getSampleRate());
-	for (auto ch = 0; ch < getChannelCount(); ch++) {
-		for (int i = 0; i < sampleCount; i++) {
-			getChannel(ch)[i] = source->getChannel(ch)[i];
-		}
-	}
-}
-
 
 void FloatSampleBuffer::reset()
 {
@@ -133,13 +116,6 @@ int FloatSampleBuffer::convertToByteArray_(int readOffset, int lenInSamples, vec
 	}
 	FloatSampleTools::float2byte(channels, readOffset, buffer, writeOffset, lenInSamples, format, getConvertDitherBits(FloatSampleTools::getFormatType(format)));
 	return byteCount;
-}
-
-vector<char> FloatSampleBuffer::convertToByteArray_(AudioFormat* format)
-{
-	auto res = vector<char>(getByteArrayBufferSize(format));
-	convertToByteArray_(&res, 0, format);
-	return res;
 }
 
 void FloatSampleBuffer::changeSampleCount(int newSampleCount, bool keepOldSamples)
@@ -312,23 +288,6 @@ void FloatSampleBuffer::mixDownChannels()
 	}
 }
 
-void ctoot::audio::core::FloatSampleBuffer::setSamplesFromBytes(vector<char> input, int inByteOffset, AudioFormat* format, int floatOffset, int frameCount)
-{
-	if (floatOffset < 0 || frameCount < 0 || inByteOffset < 0) {
-		//        throw new ::java::lang::IllegalArgumentException("FloatSampleBuffer.setSamplesFromBytes: negative inByteOffset, floatOffset, or frameCount";
-		return;
-	}
-	if (inByteOffset + (frameCount * format->getFrameSize()) > sizeof(input)) {
-		//      throw new ::java::lang::IllegalArgumentException("FloatSampleBuffer.setSamplesFromBytes: input buffer too small.";
-		return;
-	}
-	if (floatOffset + frameCount > getSampleCount()) {
-		//    throw new ::java::lang::IllegalArgumentException("FloatSampleBuffer.setSamplesFromBytes: frameCount too large";
-		return;
-	}
-	FloatSampleTools::byte2float(input, inByteOffset, &channels, floatOffset, frameCount, format);
-}
-
 int FloatSampleBuffer::getChannelCount()
 {
 	return channelCount;
@@ -365,45 +324,6 @@ vector<float>& FloatSampleBuffer::getChannel(int channel)
 	}
 	
     return channels[channel];
-}
-
-vector<vector<float>>* FloatSampleBuffer::getAllChannels()
-{
-	return &channels;
-}
-
-void FloatSampleBuffer::setDitherBits(float ditherBits)
-{
-	if (ditherBits <= 0)
-    {
-		string error = "DitherBits must be greater than 0";
-		printf("ERROR: %s\n", error.c_str());
-		return;
-	}
-	
-    this->ditherBits = ditherBits;
-}
-
-float FloatSampleBuffer::getDitherBits()
-{
-    return ditherBits;
-}
-
-void FloatSampleBuffer::setDitherMode(int mode)
-{
-	if (mode != DITHER_MODE_AUTOMATIC && mode != DITHER_MODE_ON && mode != DITHER_MODE_OFF)
-    {
-		string error = "Illegal DitherMode";
-		printf("ERROR: %s\n", error.c_str());
-		return;
-	}
-	
-    this->ditherMode = mode;
-}
-
-int FloatSampleBuffer::getDitherMode()
-{
-    return ditherMode;
 }
 
 float FloatSampleBuffer::getConvertDitherBits(int newFormatType)

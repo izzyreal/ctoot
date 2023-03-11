@@ -30,11 +30,6 @@ int ServiceProvider::getProviderId()
     return providerId;
 }
 
-string ServiceProvider::getProviderName()
-{
-    return providerName;
-}
-
 string ServiceProvider::getVersion()
 {
     return version;

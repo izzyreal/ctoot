@@ -79,29 +79,6 @@ shared_ptr<CompoundControl> CompoundControlChain::createControl(string name)
 }
 
 
-void CompoundControlChain::delete_(string deleteName)
-{
-	auto controlToDelete = find(deleteName).lock();
-	int index;
-	for (index = 0; index < controls.size(); index++) {
-		if (controls[index] == controlToDelete) {
-			break;
-		}
-	}
-	remove(controlToDelete);
-	ChainMutation* m = new DeleteMutation(index);
-	
-	notifyObservers(m);
-}
-
-void CompoundControlChain::delete_(int indexToDelete)
-{
-	remove(controls[indexToDelete]);
-	ChainMutation* m = new DeleteMutation(indexToDelete);
-	
-	notifyObservers(m);
-}
-
 void CompoundControlChain::move(string moveName, string moveBeforeName)
 {
 	auto controlToMove = find(moveName).lock();
@@ -126,17 +103,6 @@ void CompoundControlChain::move(string moveName, string moveBeforeName)
 	notifyObservers(m);
 }
 
-void CompoundControlChain::setMutating(bool mutating)
-{
-	
-	notifyObservers(mutating ? ChainMutation::COMMENCE_INSTANCE() : ChainMutation::COMPLETE_INSTANCE());
-}
-
-
-bool CompoundControlChain::isPluginParent()
-{
-	return true;
-}
 
 CompoundControlChain::~CompoundControlChain() {
 }

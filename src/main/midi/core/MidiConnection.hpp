@@ -22,15 +22,11 @@ namespace ctoot {
 				int flags{ 0 };
 
 			public:
-				virtual void connectTo(MidiInput* to);
-				virtual void connectFrom(MidiOutput* from);
-				virtual void close();
+                virtual void close();
 				virtual MidiOutput* getMidiOutput();
 				virtual MidiInput* getMidiInput();
-				virtual bool isSystem();
-				virtual bool isPlayback();
 
-				MidiConnection(MidiOutput* from, MidiInput* to, int flags);
+                MidiConnection(MidiOutput* from, MidiInput* to, int flags);
 				MidiConnection(MidiOutput* from, MidiInput* to) : MidiConnection(from, to, 0) {};
 
 				~MidiConnection();

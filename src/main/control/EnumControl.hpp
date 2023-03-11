@@ -22,9 +22,8 @@ namespace ctoot {
 		public:
 			std::string toString();
 			virtual int getWidthLimit();
-			virtual bool hasLabel();
 
-		public:
+        public:
 			std::string getValueString() override;
 			void setIntValue(int value) override;
 			int getIntValue() override;

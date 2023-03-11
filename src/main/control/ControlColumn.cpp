@@ -6,12 +6,3 @@ ControlColumn::ControlColumn() : CompoundControl(0, "ControlColumn")
 {
 }
 
-bool ControlColumn::isAlwaysVertical()
-{
-    return true;
-}
-
-bool ControlColumn::isNeverBordered()
-{
-    return true;
-}

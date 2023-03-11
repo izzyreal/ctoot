@@ -16,11 +16,8 @@ namespace ctoot {
 				static ctoot::midi::core::MidiMessage* fastShortPrototype_;
 
 			public:
-				static bool isShort(ctoot::midi::core::MidiMessage* msg);
-				static bool isShort(int status);
-				static ctoot::midi::core::MidiMessage* createShort(int status);
-				static ctoot::midi::core::MidiMessage* createShort(int status, int data1);
-				static ctoot::midi::core::MidiMessage* createShort(int status, int data1, int data2);
+
+                static ctoot::midi::core::MidiMessage* createShort(int status, int data1, int data2);
 				static ctoot::midi::core::MidiMessage* setMessage(ctoot::midi::core::MidiMessage* msg, int status);
 				static ctoot::midi::core::MidiMessage* setMessage(ctoot::midi::core::MidiMessage* msg, int status, int data1, int data2);
 

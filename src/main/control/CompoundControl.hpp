@@ -1,20 +1,12 @@
 #pragma once
 #include <control/Control.hpp>
-#include <control/CompoundControlPersistence.hpp>
 
 namespace ctoot::control
 {
 class CompoundControl
 : public Control
 {
-    
-private:
-    static std::shared_ptr<CompoundControlPersistence> persistence;
-    
-public:
-    static std::weak_ptr<CompoundControlPersistence> getPersistence();
-    static void setPersistence(std::shared_ptr<CompoundControlPersistence> p);
-    
+
 public:
     static const int USE_PARENT_PROVIDER_ID{ 0 };
     
@@ -40,31 +32,19 @@ public:
     virtual void remove(std::weak_ptr<Control> control);
     
 public:
-    std::vector<std::weak_ptr<Control>> getMemberControls();
     virtual std::vector<std::weak_ptr<Control>> getControls();
     virtual std::string toString();
-    virtual bool isAlwaysVertical();
-    virtual bool isAlwaysHorizontal();
-    virtual bool isNeverBordered();
-    virtual float getAlignmentY();
-    virtual std::string* getAlternate();
+
     virtual int getInstanceIndex();
-    virtual std::weak_ptr<Control> findByTypeIdName(std::string typeIdName);
+
     virtual std::weak_ptr<Control> find(std::string name);
     virtual std::weak_ptr<CompoundControl> find(int providerId, int moduleId, int instanceIndex);
     virtual std::weak_ptr<Control> deepFind(int controlId);
-    virtual bool canBeMoved();
-    virtual bool canBeMovedBefore();
+
     virtual bool canBeInsertedBefore();
-    virtual bool canBeDeleted();
-    virtual bool canBeMinimized();
-    virtual bool hasPresets();
-    virtual bool hasCustomUI();
-    virtual bool canLearn();
-    virtual bool getLearn();
-    virtual void setLearn(bool learn);
+
     virtual std::string getPersistenceDomain();
-    virtual bool isPluginParent();
+
     virtual int getProviderId();
     virtual void setProviderId(int id);
     virtual void setInstanceIndex(int idx);

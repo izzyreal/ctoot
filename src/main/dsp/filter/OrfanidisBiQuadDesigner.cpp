@@ -6,10 +6,6 @@
 using namespace ctoot::dsp::filter;
 using namespace std;
 
-float& OrfanidisBiQuadDesigner::THREE_DB()
-{
-    return THREE_DB_;
-}
 float OrfanidisBiQuadDesigner::THREE_DB_ = static_cast< float >((sqrt(2) / int32_t(2)));
 
 constexpr double OrfanidisBiQuadDesigner::PI2;

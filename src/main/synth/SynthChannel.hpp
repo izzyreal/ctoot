@@ -52,20 +52,12 @@ namespace ctoot {
 			void programChange(int arg0, int arg1) override;
 			int getChannelPressure() override;
 			void setChannelPressure(int arg0) override;
-			int getPolyPressure(int arg0) override;
-			void setPolyPressure(int arg0, int arg1) override;
-			bool getSolo() override;
-			bool getMute() override;
-			bool getMono() override;
-			bool getOmni() override;
-			void setSolo(bool arg0) override;
-			void setMute(bool arg0) override;
-			void setMono(bool mono) override;
-			void setOmni(bool arg0) override;
-			bool localControl(bool arg0) override;
-			void setPitchBend(int bend) override;
-			int getPitchBend() override;
-			virtual float getBendFactor();
+
+            void setMono(bool mono) override;
+
+            void setPitchBend(int bend) override;
+
+            virtual float getBendFactor();
 
 			SynthChannel();
 

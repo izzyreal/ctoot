@@ -35,9 +35,8 @@ namespace ctoot {
 				std::vector<nonstd::any> getValues() override;
 				void setIntValue(int32_t value) override;
 				int32_t getIntValue() override;
-				bool hasLabel() override;
 
-				TapControl(int32_t id, std::string name);
+                TapControl(int32_t id, std::string name);
 			};
 
 		}

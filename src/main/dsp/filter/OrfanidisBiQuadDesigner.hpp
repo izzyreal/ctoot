@@ -21,9 +21,7 @@ namespace ctoot {
 
 				OrfanidisBiQuadDesigner();
 
-			private:
-				static float& THREE_DB();
-			};
+            };
 
 		}
 	}

@@ -13,16 +13,6 @@ SynthServices::SynthServices()
 }
 vector<weak_ptr<ctoot::synth::spi::SynthServiceProvider>> SynthServices::providers;
 
-string SynthServices::lookupModuleName(int32_t providerId, int32_t moduleId)
-{
-	for (auto& p : providers) {
-		if (p.lock()->getProviderId() == providerId) {
-			return p.lock()->lookupName(moduleId);
-		}
-	}
-	return "Module not found!";
-}
-
 shared_ptr<ctoot::synth::SynthControls> SynthServices::createControls(string name)
 {
 	shared_ptr<SynthControls> controls;
@@ -71,7 +61,3 @@ void SynthServices::accept(weak_ptr<ctoot::service::ServiceVisitor> v, string ty
 	}
 }
 
-void SynthServices::printServiceDescriptors(string typeIdName)
-{
-    //accept(new ctoot::service::ServicePrinter(), clazz);
-}

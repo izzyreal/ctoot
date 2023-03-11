@@ -54,16 +54,6 @@ vector<std::weak_ptr<AudioDevice>> DefaultAudioSystem::getAudioDevices()
 	return devices;
 }
 
-vector<std::weak_ptr<AudioInput>> DefaultAudioSystem::getAudioInputs()
-{
-	vector<std::weak_ptr<AudioInput>> inputs;
-	for (auto& device : devices) {
-		for (auto& i : device.lock()->getAudioInputs())
-			inputs.push_back(i);
-	}
-	return inputs;
-}
-
 vector<std::weak_ptr<AudioOutput>> DefaultAudioSystem::getAudioOutputs()
 {
 	vector<std::weak_ptr<AudioOutput>> outputs;

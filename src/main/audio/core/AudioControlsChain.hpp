@@ -25,16 +25,13 @@ namespace ctoot {
 
 			public:
 				virtual void setMetaInfo(std::weak_ptr<MetaInfo> metaInfo);
-				virtual std::string getSourceLabel();
-				virtual std::string getSourceLocation();
 
-			public:
+            public:
 				std::shared_ptr<ctoot::control::CompoundControl> createControl(std::string name) override;
 				int getMaxInstance() override;
 
 			public:
-				std::weak_ptr<ChannelFormat> getConstraintChannelFormat();
-				bool isCompatibleDescriptor(ctoot::service::ServiceDescriptor* d);
+                bool isCompatibleDescriptor(ctoot::service::ServiceDescriptor* d);
 
 			public:
 				//std::vector<ctoot::service::ServiceDescriptor*> descriptors() override;

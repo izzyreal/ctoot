@@ -32,8 +32,8 @@ namespace ctoot {
 				virtual void open();
 				void closeMidi() override;
 				virtual bool isOpen();
-				virtual std::string getProvider();
-				virtual std::string getDescription();
+
+                virtual std::string getDescription();
 
 				LegacyDeviceAdaptor(std::string name, bool isInput);
 

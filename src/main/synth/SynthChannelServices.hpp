@@ -16,14 +16,12 @@ namespace ctoot {
 			static std::vector<std::weak_ptr<ctoot::synth::spi::SynthChannelServiceProvider>> providers;
 
 		public:
-			static std::string lookupModuleName(int32_t providerId, int32_t moduleId);
-			static std::shared_ptr<SynthChannelControls> createControls(const std::string& name);
+            static std::shared_ptr<SynthChannelControls> createControls(const std::string& name);
 			static std::shared_ptr<SynthChannel> createSynthChannel(std::weak_ptr<SynthChannelControls> controls);
 			static void scan();
 			static void accept(std::weak_ptr<service::ServiceVisitor> v, const std::string& typeIdName);
-			static void printServiceDescriptors(const std::string& typeIdName);
 
-		protected:
+        protected:
 			SynthChannelServices();
 
 		};

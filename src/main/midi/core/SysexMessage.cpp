@@ -9,19 +9,6 @@ SysexMessage::SysexMessage()
 {
 }
 
-SysexMessage::SysexMessage(const vector<char>& data)
-	: MidiMessage(data)
-{
-}
-
-SysexMessage::SysexMessage(const vector<char>& data, int32_t length)
-	: MidiMessage(data)
-{
-}
-
-constexpr int32_t SysexMessage::SPECIAL_SYSTEM_EXCLUSIVE;
-constexpr int32_t SysexMessage::SYSTEM_EXCLUSIVE;
-
 
 const vector<char> SysexMessage::getData()
 {

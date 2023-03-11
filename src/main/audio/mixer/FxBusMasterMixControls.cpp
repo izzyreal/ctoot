@@ -14,12 +14,3 @@ bool FxBusMasterMixControls::canBeInsertedBefore()
     return !hasMixControls;
 }
 
-bool FxBusMasterMixControls::canBeMovedBefore()
-{
-    return !hasMixControls;
-}
-
-bool FxBusMasterMixControls::canBeMoved()
-{
-    return !hasMixControls;
-}

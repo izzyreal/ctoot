@@ -55,10 +55,8 @@ namespace ctoot {
 				bool isMaster() override;
                 std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 				bool canBypass() override;
-				bool isAlwaysVertical() override;
-				bool canBeDeleted() override;
-				bool hasPresets() override;
-				virtual bool isSolo();
+
+                virtual bool isSolo();
 				virtual bool isMute();
 				bool isEnabled() override;
 				virtual bool hasSolo();

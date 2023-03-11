@@ -25,8 +25,7 @@ namespace ctoot {
 				virtual control::BooleanControl* getBypassControl();
 
 			public:
-				virtual bool canBeMinimized() override;
-				virtual std::string getPersistenceDomain() override;
+                virtual std::string getPersistenceDomain() override;
 
 			public:
 				AudioControls(int id, std::string name, int bypassId);

@@ -19,10 +19,7 @@ namespace ctoot {
 			public:
 				static std::vector<double> design(FilterShape type, float dbGain, float freq, float srate, float resonance);
 
-			public:
-				static bool& decramped();
-
-			};
+            };
 
 		}
 	}

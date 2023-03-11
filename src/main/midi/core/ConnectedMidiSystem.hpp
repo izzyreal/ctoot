@@ -18,11 +18,8 @@ namespace ctoot {
 			public:
 				virtual void createMidiConnection(MidiOutput* from, MidiInput* to, int flags) = 0;
 				virtual void closeMidiConnection(MidiOutput* from, MidiInput* to) = 0;
-				virtual void createMidiConnection(std::string* fromPortName, std::string* toPortName, int flags) = 0;
-				virtual void closeMidiConnection(std::string* fromPortName, std::string* toPortName) = 0;
-				virtual std::vector<MidiConnection*> getMidiConnections() = 0;
 
-			};
+            };
 
 		}
 	}

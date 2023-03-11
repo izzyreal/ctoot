@@ -7,11 +7,6 @@ PitchMsg::PitchMsg()
 {
 }
 
-bool PitchMsg::isPitch(ctoot::midi::core::MidiMessage* msg)
-{
-    return isPitch(getStatus(msg));
-}
-
 bool PitchMsg::isPitch(int status)
 {
     auto cmd = getCommand(status);
@@ -31,7 +26,3 @@ int PitchMsg::getPitch(ctoot::midi::core::MidiMessage* msg)
 	return getData1(msg);
 }
 
-ctoot::midi::core::MidiMessage* PitchMsg::setPitch(ctoot::midi::core::MidiMessage* msg, int pitch)
-{
-	return setData1(msg, pitch);
-}

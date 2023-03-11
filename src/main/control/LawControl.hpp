@@ -17,15 +17,12 @@ namespace ctoot {
 			float value{ 0 };
 			float precision{ 0 };
 
-		public:
-			virtual int calculateDecimalPlaces();
-
-		public:
+        public:
 			virtual std::weak_ptr<ControlLaw> getLaw();
 			virtual float getValue();
 			virtual void setValue(float value);
-			virtual float getPrecision();
-			virtual std::vector<std::string> getPresetNames();
+
+            virtual std::vector<std::string> getPresetNames();
 			virtual void applyPreset(std::string name);
 
 		public:

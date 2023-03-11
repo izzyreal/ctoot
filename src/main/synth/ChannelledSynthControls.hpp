@@ -19,8 +19,7 @@ namespace ctoot {
 			std::vector<std::weak_ptr<SynthChannelControls>> channelControls{};
 
 		public:
-			virtual CompoundControl* getGlobalControls();
-			virtual std::weak_ptr<SynthChannelControls> getChannelControls(int chan);
+            virtual std::weak_ptr<SynthChannelControls> getChannelControls(int chan);
 
 		public:
 			virtual void setGlobalControls(CompoundControl* controls);

@@ -33,17 +33,7 @@ namespace ctoot {
 			void update(moduru::observer::Observable* o, nonstd::any a) override;
 			//    void run() override;
 
-		public:
-			virtual void relay(ControlChange* change);
-
-		public:
-			virtual int getMappedControlId(int n);
-			virtual void setMappedControlId(int n, int cid);
-			bool canLearn() override;
-			bool getLearn() override;
-			void setLearn(bool learn) override;
-
-		public:
+        public:
 			SynthChannelControls(int id, std::string name);
 			virtual ~SynthChannelControls();
 

@@ -13,8 +13,7 @@ namespace ctoot {
 
 			public:
 				static void addDevice(std::string name, MidiSystem* system, bool input);
-				static void installPlatformPorts(MidiSystem* system);
-				//static void installPlatformComponents(java::sound::MidiSystem* system);
+                //static void installPlatformComponents(java::sound::MidiSystem* system);
 
 				LegacyDevices();
 

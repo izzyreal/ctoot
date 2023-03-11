@@ -27,9 +27,8 @@ namespace ctoot {
 					virtual void removeBuffer();
 					virtual ctoot::audio::core::AudioBuffer* getBuffer();
 					virtual void reference(int32_t ref);
-					bool canBeDeleted() override;
 
-				public:
+                public:
 					virtual bool isInactive();
 
 				public:

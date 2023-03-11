@@ -63,21 +63,6 @@ void AudioControlsChain::setMetaInfo(weak_ptr<MetaInfo> wMetaInfo)
 	*/
 }
 
-string ctoot::audio::core::AudioControlsChain::getSourceLabel()
-{
-    return sourceLabel;
-}
-
-string ctoot::audio::core::AudioControlsChain::getSourceLocation()
-{
-    return sourceLocation;
-}
-
-
-weak_ptr<ChannelFormat> ctoot::audio::core::AudioControlsChain::getConstraintChannelFormat()
-{
-    return constraintChannelFormat;
-}
 
 shared_ptr<ctoot::control::CompoundControl> AudioControlsChain::createControl(string name)
 {

@@ -9,16 +9,3 @@ MetaInfo::MetaInfo(string sourceLabel, string sourceLocation)
 	this->sourceLocation = sourceLocation;
 }
 
-string MetaInfo::getSourceLabel()
-{
-    return sourceLabel;
-}
-
-string MetaInfo::getSourceLocation()
-{
-    return sourceLocation;
-}
-
-void MetaInfo::setSourceLocation(string sourceLocation) {
-	this->sourceLabel = sourceLocation;
-}

@@ -44,21 +44,9 @@ void SynthRackControls::setSynthControls(int synth, shared_ptr<SynthControls> co
 	notifyObservers(synth);
 }
 
-void SynthRackControls::removeAll()
-{
-	for (auto synth = 0; synth < nsynths; synth++) {
-		setSynthControls(synth, nullptr);
-	}
-}
-
 int SynthRackControls::getProviderId()
 {
 	return ctoot::control::id::ProviderId::TOOT_PROVIDER_ID;
-}
-
-bool SynthRackControls::isPluginParent()
-{
-    return true;
 }
 
 string SynthRackControls::getPersistenceDomain()

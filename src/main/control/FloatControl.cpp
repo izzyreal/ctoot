@@ -12,11 +12,6 @@ FloatControl::FloatControl(int id, string name, weak_ptr<ControlLaw> law, float 
 	this->maxLabel = maxLabel;
 }
 
-bool FloatControl::isRotary()
-{
-    return true;
-}
-
 float FloatControl::getMaximum()
 {
     return getLaw().lock()->getMaximum();
@@ -25,21 +20,6 @@ float FloatControl::getMaximum()
 float FloatControl::getMinimum()
 {
     return getLaw().lock()->getMinimum();
-}
-
-string FloatControl::getMinLabel()
-{
-    return minLabel;
-}
-
-string FloatControl::getMidLabel()
-{
-    return midLabel;
-}
-
-string FloatControl::getMaxLabel()
-{
-    return maxLabel;
 }
 
 string FloatControl::toString()

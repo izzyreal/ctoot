@@ -148,21 +148,6 @@ bool MixControls::canBypass()
     return false;
 }
 
-bool MixControls::isAlwaysVertical()
-{
-    return true;
-}
-
-bool MixControls::canBeDeleted()
-{
-    return false;
-}
-
-
-bool MixControls::hasPresets()
-{
-    return false;
-}
 
 bool MixControls::isSolo()
 {

@@ -51,11 +51,6 @@ bool NoteMsg::isOn(int status, int data2)
     return getCommand(status) == NOTE_ON && data2 != 0;
 }
 
-bool NoteMsg::isOff(ctoot::midi::core::MidiMessage* msg)
-{
-    return isOff(getStatus(msg), getVelocity(msg));
-}
-
 bool NoteMsg::isOff(int status, int data2)
 {
 	return !isOn(status, data2);
@@ -71,10 +66,3 @@ ctoot::midi::core::MidiMessage* NoteMsg::setVelocity(ctoot::midi::core::MidiMess
 	return setData2(msg, vel);
 }
 
-ctoot::midi::core::MidiMessage* NoteMsg::louden(ctoot::midi::core::MidiMessage* msg, int velocityDelta)
-{
-	auto velocity = getData2(msg) + velocityDelta;
-	if (velocity > 127) velocity = 127;
-	else if (velocity < 0) velocity = 0;
-	return setData2(msg, velocity);
-}

@@ -124,7 +124,3 @@ int EnumControl::getWidthLimit()
     return 40;
 }
 
-bool EnumControl::hasLabel()
-{
-    return false;
-}

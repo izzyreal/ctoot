@@ -54,10 +54,8 @@ namespace ctoot {
 
 			public:
 				bool canBypass() override;
-				bool isAlwaysVertical() override;
-				float getMaxdB();
-				float getMindB();
-				std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
+
+                std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
 
 			protected:
 				bool invalidChannel(int chan);
@@ -80,11 +78,7 @@ namespace ctoot {
 				MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> format, std::string name);
 				MeterControls(std::weak_ptr<ctoot::audio::core::ChannelFormat> format, std::string name, bool full);
 
-			private:
-				static double PEAK_K_PER_MS();
-				static double AV_K_PER_MS();
-
-			};
+            };
 
 		}
 	}

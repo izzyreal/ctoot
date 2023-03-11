@@ -65,87 +65,26 @@ const int Controller::POLY_PRESSURE_PSEUDO;
 const int Controller::CHANNEL_PRESSURE_PSEUDO;
 const int Controller::PROGRAM_PSEUDO;
 
-vector<int>& Controller::PERFORMANCE_CONTROLLERS()
-{
-    
-    return PERFORMANCE_CONTROLLERS_;
-}
 vector<int> Controller::PERFORMANCE_CONTROLLERS_;
 
-vector<int>& Controller::SOUND_CONTROLLERS()
-{
-    
-    return SOUND_CONTROLLERS_;
-}
 vector<int> Controller::SOUND_CONTROLLERS_;
 
-vector<int>& Controller::MIXER_CONTROLLERS()
-{
-    
-    return MIXER_CONTROLLERS_;
-}
 vector<int> Controller::MIXER_CONTROLLERS_;
 
-vector<int>& Controller::EFFECTS_CONTROLLERS()
-{
-    
-    return EFFECTS_CONTROLLERS_;
-}
 vector<int> Controller::EFFECTS_CONTROLLERS_;
 
-vector<int>& Controller::UNDEFINED_CONTROLLERS()
-{
-    
-    return UNDEFINED_CONTROLLERS_;
-}
 vector<int> Controller::UNDEFINED_CONTROLLERS_;
 
-vector<int>& Controller::NO_CONTROLLERS()
-{
-    
-    return NO_CONTROLLERS_;
-}
 vector<int> Controller::NO_CONTROLLERS_;
 
-vector<int>& Controller::SWITCH_CONTROLLERS()
-{
-    
-    return SWITCH_CONTROLLERS_;
-}
 vector<int> Controller::SWITCH_CONTROLLERS_;
 
-vector<string>& Controller::CATEGORIES()
-{
-    
-    return CATEGORIES_;
-}
 vector<string> Controller::CATEGORIES_;
 
 vector<string> Controller::getCategories()
 {
     
     return CATEGORIES_;
-}
-
-vector<int> Controller::getControllers(string category)
-{
-
-	if (string("Performance").compare(category) == 0) {
-		return PERFORMANCE_CONTROLLERS_;
-	}
-	else if (string("Sound").compare(category) == 0) {
-		return SOUND_CONTROLLERS_;
-	}
-	else if (string("Mixer").compare(category) == 0) {
-		return MIXER_CONTROLLERS_;
-	}
-	else if (string("Effects").compare(category) == 0) {
-		return EFFECTS_CONTROLLERS_;
-	}
-	else if (string("Undefined").compare(category) == 0) {
-		return UNDEFINED_CONTROLLERS_;
-	}
-	return NO_CONTROLLERS_;
 }
 
 string Controller::propertyName(int controller)
@@ -285,12 +224,6 @@ int Controller::getDefault(int controller)
         return 0;
     }
 
-}
-
-int Controller::getOffset(int controller)
-{
-
-	return (controller == PAN || controller == BALANCE || controller == PITCH_BEND_PSEUDO) ? (getMaximum(controller) + 1) / 2 : 0;
 }
 
 int Controller::getOrientation(int controller)

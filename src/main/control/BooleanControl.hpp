@@ -17,8 +17,8 @@ namespace ctoot {
 		public:
 			virtual bool isMomentary();
 			virtual void setValue(bool value);
-			virtual void momentaryAction();
-			virtual bool getValue();
+
+            virtual bool getValue();
 			virtual std::string getStateLabel(bool state);
 			std::string toString();
 			std::string getValueString() override;

@@ -53,13 +53,6 @@ void AbstractMidiDevice::removeMidiInput(MidiInput* input)
 	notifyObservers();
 }
 
-void AbstractMidiDevice::removeAllMidiInputs()
-{
-	inputs.clear();
-	
-	notifyObservers();
-}
-
 void AbstractMidiDevice::addMidiOutput(MidiOutput* output)
 {
     outputs.push_back(output);
@@ -78,13 +71,6 @@ void AbstractMidiDevice::removeMidiOutput(MidiOutput* output)
 	}
 	if (counter >= outputs.size()) return;
 	outputs.erase(outputs.begin() + counter);
-    
-    notifyObservers();
-}
-
-void AbstractMidiDevice::removeAllMidiOutputs()
-{
-    outputs.clear();
     
     notifyObservers();
 }

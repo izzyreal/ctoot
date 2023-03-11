@@ -115,55 +115,8 @@ void SynthChannel::setChannelPressure(int arg0)
     pressure = arg0;
 }
 
-int SynthChannel::getPolyPressure(int arg0)
-{
-    return polyPressure[arg0];
-}
-
-void SynthChannel::setPolyPressure(int arg0, int arg1)
-{
-    polyPressure[arg0] = static_cast< int8_t >(arg1);
-}
-
-bool SynthChannel::getSolo()
-{
-    return false;
-}
-
-bool SynthChannel::getMute()
-{
-    return false;
-}
-
-bool SynthChannel::getMono()
-{
-    return false;
-}
-
-bool SynthChannel::getOmni()
-{
-    return false;
-}
-
-void SynthChannel::setSolo(bool arg0)
-{
-}
-
-void SynthChannel::setMute(bool arg0)
-{
-}
-
 void SynthChannel::setMono(bool mono)
 {
-}
-
-void SynthChannel::setOmni(bool arg0)
-{
-}
-
-bool SynthChannel::localControl(bool arg0)
-{
-    return false;
 }
 
 void SynthChannel::setPitchBend(int bend)
@@ -172,11 +125,6 @@ void SynthChannel::setPitchBend(int bend)
     bend -= 8192;
     auto b = static_cast< float >(bendRange) * bend / 8192;
     bendFactor = static_cast< float >(pow(ONE_SEMITONE, b));
-}
-
-int SynthChannel::getPitchBend()
-{
-    return rawBend;
 }
 
 float SynthChannel::getBendFactor()

@@ -63,16 +63,15 @@ namespace ctoot {
 		public:
 			virtual std::string getName();
 			virtual void setName(std::string s);
-			virtual std::string getAnnotation();
-			virtual void setAnnotation(std::string a);
+
+            virtual void setAnnotation(std::string a);
 			virtual void setIntValue(int value);
 			virtual int getIntValue();
 			virtual std::string getValueString();
 			virtual bool isHidden();
 			virtual bool isIndicator();
-			virtual bool isAdjusting();
-			virtual void setAdjusting(bool state);
-			virtual void setEnabled(bool enable);
+
+            virtual void setEnabled(bool enable);
 			virtual bool isEnabled();
 			std::string toString();
 			virtual std::string getControlPath();

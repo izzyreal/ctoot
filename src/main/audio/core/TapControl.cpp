@@ -107,7 +107,3 @@ int32_t TapControl::getIntValue()
 	return strip * 8 + instance;
 }
 
-bool TapControl::hasLabel()
-{
-	return true;
-}

@@ -12,11 +12,6 @@ LawControl::LawControl(int id, string name, weak_ptr<ControlLaw> law, float prec
 	this->value = initialValue;
 }
 
-int LawControl::calculateDecimalPlaces()
-{
-    return law.lock()->getMaximum() - law.lock()->getMinimum() > 100.0f ? 1 : 2;
-}
-
 weak_ptr<ControlLaw> LawControl::getLaw()
 {
     return law;
@@ -39,11 +34,6 @@ void LawControl::setValue(float value)
 	if (!isEnabled()) return;
 	this->value = value;
 	notifyParent(this);
-}
-
-float LawControl::getPrecision()
-{
-    return precision;
 }
 
 void LawControl::setIntValue(int value)

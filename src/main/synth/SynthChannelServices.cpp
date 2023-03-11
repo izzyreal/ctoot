@@ -12,16 +12,6 @@ SynthChannelServices::SynthChannelServices()
 }
 vector<weak_ptr<spi::SynthChannelServiceProvider>> SynthChannelServices::providers;
 
-string SynthChannelServices::lookupModuleName(int32_t providerId, int32_t moduleId)
-{
-	for (auto& p : providers) {
-		if (p.lock()->getProviderId() == providerId) {
-			return p.lock()->lookupName(moduleId);
-		}
-	}
-	return "Module not found!";
-}
-
 shared_ptr<SynthChannelControls> SynthChannelServices::createControls(const string& name)
 {
 	shared_ptr<SynthChannelControls> controls;
@@ -67,7 +57,3 @@ void SynthChannelServices::accept(weak_ptr<ctoot::service::ServiceVisitor> v, co
 	}
 }
 
-void SynthChannelServices::printServiceDescriptors(const string& typeIdName)
-{
-	//accept(new ctoot::service::ServicePrinter(), clazz);
-}

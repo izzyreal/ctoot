@@ -56,11 +56,6 @@ void TapControls::reference(int32_t ref)
 	}
 }
 
-bool TapControls::canBeDeleted()
-{
-    return isInactive();
-}
-
 bool TapControls::isInactive()
 {
     return refCount == 0;

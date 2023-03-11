@@ -26,17 +26,11 @@ namespace ctoot {
 				void close() override;
 				std::string getOutputName() override;
 				std::string getOutputLocation() override;
-				std::string getInputName() override;
 
-				MixerInputConnection(MixerConnectedAudioSystem* mca, std::weak_ptr<AudioOutput> from, ctoot::audio::mixer::AudioMixerStrip* to, int flags);
-				MixerInputConnection(MixerConnectedAudioSystem* mca, std::weak_ptr<AudioOutput> from, mixer::AudioMixerStrip* to)
-					: MixerInputConnection(mca, from, to, 0) {};
+                MixerInputConnection(MixerConnectedAudioSystem* mca, std::weak_ptr<AudioOutput> from, ctoot::audio::mixer::AudioMixerStrip* to, int flags);;
 				~MixerInputConnection();
 
-			public:
-				MixerConnectedAudioSystem *mca{ nullptr };
-
-			};
+            };
 
 		}
 	}

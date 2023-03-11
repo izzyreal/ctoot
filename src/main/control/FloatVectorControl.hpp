@@ -20,8 +20,7 @@ namespace ctoot {
 			std::vector<float>* getValues();
 
 		public:
-			FloatVectorControl(int id, std::string name, int size);
-			~FloatVectorControl();
+            ~FloatVectorControl();
 
 		};
 	}

@@ -18,8 +18,8 @@ namespace ctoot {
 				static bool isChannel(ctoot::midi::core::MidiMessage* msg);
 				static bool isChannel(int status);
 				static ctoot::midi::core::MidiMessage* createChannel(int status, int chan, int data1, int data2);
-				static ctoot::midi::core::MidiMessage* createChannel(int status, int chan, int data1);
-				static int getCommand(ctoot::midi::core::MidiMessage* msg);
+
+                static int getCommand(ctoot::midi::core::MidiMessage* msg);
 				static int getCommand(int status);
 				static int getChannel(ctoot::midi::core::MidiMessage* msg);
 				static int getChannel(int status);
@@ -29,8 +29,7 @@ namespace ctoot {
 				static const int NOTE_ON{ int(144) };
 				static const int POLY_PRESSURE{ int(160) };
 				static const int CONTROL_CHANGE{ int(176) };
-				static const int PROGRAM_CHANGE{ int(192) };
-				static const int CHANNEL_PRESSURE{ int(208) };
+                static const int CHANNEL_PRESSURE{ int(208) };
 				static const int PITCH_BEND{ int(224) };
 
 				ChannelMsg();

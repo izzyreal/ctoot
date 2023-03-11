@@ -21,10 +21,10 @@ namespace ctoot {
 			virtual int size();
 			virtual std::weak_ptr<SynthControls> getSynthControls(int synth);
 			virtual void setSynthControls(int synth, std::shared_ptr<SynthControls> controls);
-			virtual void removeAll();
-			int getProviderId() override;
-			bool isPluginParent() override;
-			std::string getPersistenceDomain() override;
+
+            int getProviderId() override;
+
+            std::string getPersistenceDomain() override;
 
 			SynthRackControls(int nsynths);
 			~SynthRackControls();

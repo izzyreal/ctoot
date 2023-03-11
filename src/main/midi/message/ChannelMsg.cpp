@@ -26,11 +26,6 @@ ctoot::midi::core::MidiMessage* ChannelMsg::createChannel(int status, int chan, 
     return msg;
 }
 
-ctoot::midi::core::MidiMessage* ChannelMsg::createChannel(int status, int chan, int data1) /* throws(InvalidMidiDataException) */
-{
-    return createChannel(status, chan, data1, 0);
-}
-
 int ChannelMsg::getCommand(ctoot::midi::core::MidiMessage* msg)
 {
     

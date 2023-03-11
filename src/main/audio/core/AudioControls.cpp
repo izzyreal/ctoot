@@ -23,11 +23,6 @@ bool AudioControls::hasOrderedFrequencies()
     return false;
 }
 
-bool AudioControls::canBeMinimized()
-{
-    return true;
-}
-
 bool AudioControls::canBypass()
 {
     return true;
