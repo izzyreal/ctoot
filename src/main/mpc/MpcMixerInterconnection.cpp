@@ -19,12 +19,12 @@ MpcMixerInterconnection::MpcMixerInterconnection(string name, ctoot::audio::serv
 	outputProcess = make_shared<InterconnectionOutputProcess>(sharedBuffer);
 }
 
-weak_ptr<AudioProcess> MpcMixerInterconnection::getInputProcess()
+shared_ptr<AudioProcess> MpcMixerInterconnection::getInputProcess()
 {
     return inputProcess;
 }
 
-weak_ptr<AudioProcess> MpcMixerInterconnection::getOutputProcess()
+shared_ptr<AudioProcess> MpcMixerInterconnection::getOutputProcess()
 {
     return outputProcess;
 }
