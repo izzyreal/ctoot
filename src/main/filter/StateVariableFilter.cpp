@@ -1,5 +1,5 @@
-#include <synth/modules/filter/StateVariableFilter.hpp>
-#include <synth/modules/filter/StateVariableFilterElement.hpp>
+#include "StateVariableFilter.hpp"
+#include "StateVariableFilterElement.hpp"
 
 #define _USE_MATH_DEFINES
 //#include <cmath>

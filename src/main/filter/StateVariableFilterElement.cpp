@@ -1,4 +1,4 @@
-#include <synth/modules/filter/StateVariableFilterElement.hpp>
+#include "StateVariableFilterElement.hpp"
 
 using namespace ctoot::synth::modules::filter;
 

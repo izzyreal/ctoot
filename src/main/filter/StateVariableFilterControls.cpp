@@ -1,7 +1,7 @@
-#include <synth/modules/filter/StateVariableFilterControls.hpp>
-#include <control/Control.hpp>
-#include <control/LawControl.hpp>
-#include <control/LinearLaw.hpp>
+#include "StateVariableFilterControls.hpp"
+#include "control/Control.hpp"
+#include "control/LawControl.hpp"
+#include "control/LinearLaw.hpp"
 
 #include <cmath>
 

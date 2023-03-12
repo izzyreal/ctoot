@@ -1,8 +1,8 @@
-#include <synth/modules/filter/FilterControls.hpp>
+#include "FilterControls.hpp"
 
-#include <control/Control.hpp>
-#include <control/LawControl.hpp>
-#include <control/LinearLaw.hpp>
+#include "control/Control.hpp"
+#include "control/LawControl.hpp"
+#include "control/LinearLaw.hpp"
 
 using namespace ctoot::synth::modules::filter;
 using namespace std;

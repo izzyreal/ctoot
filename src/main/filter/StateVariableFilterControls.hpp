@@ -1,6 +1,6 @@
 #pragma once
 
-#include <synth/modules/filter/FilterControls.hpp>
+#include "FilterControls.hpp"
 
 namespace ctoot::synth::modules::filter {
 

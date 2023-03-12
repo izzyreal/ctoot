@@ -4,14 +4,12 @@
 #include <mpc/MpcSound.hpp>
 
 #include <mpc/MpcEnvelopeControls.hpp>
-#include <mpc/MpcEnvelopeGenerator.hpp>
-#include <mpc/MpcSoundPlayerChannel.hpp>
+#include <mpc/MpcEnvelopeGenerator.hpp>\
 
 #include <audio/core/AudioBuffer.hpp>
-#include <control/BooleanControl.hpp>
 #include <control/LawControl.hpp>
-#include <synth/modules/filter/StateVariableFilter.hpp>
-#include <synth/modules/filter/StateVariableFilterControls.hpp>
+#include "filter/StateVariableFilter.hpp"
+#include "filter/StateVariableFilterControls.hpp"
 
 #include <cmath>
 
