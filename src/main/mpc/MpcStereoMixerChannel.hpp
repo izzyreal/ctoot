@@ -1,7 +1,5 @@
 #pragma once
 
-#include <observer/Observable.hpp>
-
 namespace ctoot::mpc {
 
 		class MpcStereoMixerChannel

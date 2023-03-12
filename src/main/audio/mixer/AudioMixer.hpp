@@ -4,7 +4,6 @@
 #include <audio/server/AudioClient.hpp>
 #include <audio/mixer/MixControls.hpp>
 
-#include <thirdp/concurrentqueue.h>
 #include <vector>
 
 namespace ctoot::audio::mixer {

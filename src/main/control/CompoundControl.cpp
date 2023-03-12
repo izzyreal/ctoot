@@ -4,8 +4,6 @@
 using namespace ctoot::control;
 using namespace std;
 
-#include <System.hpp>
-
 CompoundControl::CompoundControl(int id, string name) : Control(id, name)
 {
 }

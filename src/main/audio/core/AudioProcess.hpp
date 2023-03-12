@@ -20,6 +20,6 @@ namespace ctoot::audio::core {
         virtual int processAudio(ctoot::audio::core::AudioBuffer *buffer, int)
         { return processAudio(buffer); }
 
-        virtual void close() {};
+        virtual void close() {}
     };
 }

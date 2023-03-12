@@ -53,7 +53,7 @@ namespace ctoot::audio::server {
 
 	public:
 		AudioServer();
-		virtual ~AudioServer();
+		~AudioServer();
 
 	private:
 		friend class StereoInputProcess;
