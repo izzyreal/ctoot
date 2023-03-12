@@ -8,7 +8,6 @@
 #include <cstdint>
 #include <string>
 #include <map>
-#include "ControlFactory.hpp"
 
 namespace ctoot::control {
     class CompoundControl;

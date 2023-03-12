@@ -3,18 +3,9 @@
 using namespace ctoot::midi::core;
 using namespace std;
 
-MidiMessage::MidiMessage()
-{
-}
-
 MidiMessage::MidiMessage(const vector<char>& _data)
 : data (_data), length (data.size())
 {
-}
-
-MidiMessage* MidiMessage::clone()
-{
-	return {};
 }
 
 int MidiMessage::getLength()

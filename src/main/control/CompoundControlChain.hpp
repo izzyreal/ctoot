@@ -9,7 +9,7 @@ namespace ctoot::control
 	{
 
 	public:
-		virtual void add(std::shared_ptr<Control> control) override;
+		void add(std::shared_ptr<Control> control) override;
 		virtual void add(int index, std::shared_ptr<Control> control);
 
     public:

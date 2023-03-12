@@ -29,15 +29,15 @@ public:
     int getDataLength(int status);
     
 public:
-    virtual void setMessage(int status);
-    virtual void setMessage(int status, int data1, int data2);
-    virtual void setMessage(int command, int channel, int data1, int data2);
-    
+    void setMessage(int status);
+    void setMessage(int status, int data1, int data2);
+    void setMessage(int command, int channel, int data1, int data2);
+
     ShortMessage();
-    ShortMessage(const std::vector<char>& data);
+    explicit ShortMessage(const std::vector<char>& data);
     
 public:
-    virtual void setMessage(const std::vector<char>& data, int length);
+    void setMessage(const std::vector<char>& data, int length) override;
     
 };
 }

@@ -104,18 +104,18 @@ void ShortMessage::setMessage(int status, int data1, int data2) {
             }
         }
     }
-    
+
     length = dataLength + 1;
-    
+
     if (data.size() < length)
         data = vector<char>(3);
-    
+
     data[0] = (status & 0xFF);
-    
+
     if (length > 1)
     {
         data[1] = (data1 & 0xFF);
-        
+
         if (length > 2)
             data[2] = (data2 & 0xFF);
     }
@@ -127,12 +127,12 @@ void ShortMessage::setMessage(int command, int channel, int data1, int data2)
         string error = "command out of range: " + to_string(command);
         return;
     }
-    
+
     if ((channel & 0xFFFFFFF0) != 0) { // <=> (channel<0 || channel>15)
         string error = "channel out of range: " + to_string(channel);
         return;
     }
-    
+
     setMessage((command & 0xF0) | (channel & 0x0F), data1, data2);
 }
 
