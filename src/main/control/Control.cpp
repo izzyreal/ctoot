@@ -3,9 +3,8 @@
 #include "CompoundControl.hpp"
 
 using namespace ctoot::control;
-using namespace std;
 
-Control::Control(int id, string name)
+Control::Control(int id, std::string name)
 {
 	this->name = name;
 	this->id = id;
@@ -49,18 +48,18 @@ void Control::derive(Control* obj)
 {
 }
 
-string Control::getName()
+std::string Control::getName()
 {
     return name;
 }
 
-void Control::setName(string s)
+void Control::setName(std::string s)
 {
     name = s;
     annotation = s;
 }
 
-void Control::setAnnotation(string a)
+void Control::setAnnotation(std::string a)
 {
     annotation = a;
 }
@@ -70,9 +69,9 @@ int Control::getIntValue()
     return -1;
 }
 
-string Control::getValueString()
+std::string Control::getValueString()
 {
-	return string("");
+	return std::string("");
 }
 
 bool Control::isHidden()
@@ -95,11 +94,11 @@ bool Control::isEnabled()
     return enabled;
 }
 
-string Control::getControlPath(Control* from, string sep)
+std::string Control::getControlPath(Control* from, std::string sep)
 {
 	if (parent != from) {
 		if (getName().length() > 0) {
-			string result = parent->getControlPath(from, sep) + sep + getName();
+			std::string result = parent->getControlPath(from, sep) + sep + getName();
 			return result;
 		}
 		else {

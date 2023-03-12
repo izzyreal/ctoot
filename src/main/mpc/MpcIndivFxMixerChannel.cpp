@@ -1,7 +1,6 @@
 #include "MpcIndivFxMixerChannel.hpp"
 
 using namespace ctoot::mpc;
-using namespace std;
 
 MpcIndivFxMixerChannel::MpcIndivFxMixerChannel() 
 {
