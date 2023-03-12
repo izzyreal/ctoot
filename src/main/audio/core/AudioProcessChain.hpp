@@ -4,9 +4,6 @@
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/core/AudioControls.hpp>
 
-#include <observer/Observer.hpp>
-#include <thirdp/concurrentqueue.h>
-
 #include <cstdint>
 
 namespace ctoot::audio::core {

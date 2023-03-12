@@ -2,9 +2,6 @@
 #include <catch2/catch_test_macros.hpp>
 
 #include "audio/core/AudioFormat.hpp"
-#include "audio/core/AudioServices.hpp"
-
-#include <Logger.hpp>
 
 using namespace ctoot::audio::core;
 
