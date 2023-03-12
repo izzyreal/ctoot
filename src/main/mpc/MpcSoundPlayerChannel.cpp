@@ -20,7 +20,6 @@
 #include <audio/mixer/MainMixControls.hpp>
 #include <audio/mixer/PanControl.hpp>
 #include <control/CompoundControl.hpp>
-#include <control/Control.hpp>
 
 using namespace ctoot::mpc;
 using namespace std;
@@ -56,7 +55,6 @@ void MpcSoundPlayerChannel::setProgram(int i)
         return;
 
     programNumber = i;
-	notifyObservers(string("pgm"));
 }
 
 int MpcSoundPlayerChannel::getProgram()
@@ -72,8 +70,6 @@ bool MpcSoundPlayerChannel::receivesPgmChange()
 void MpcSoundPlayerChannel::setReceivePgmChange(bool b)
 {
 	receivePgmChange = b;
-
-	notifyObservers(string("receivepgmchange"));
 }
 
 bool MpcSoundPlayerChannel::receivesMidiVolume()
@@ -84,8 +80,6 @@ bool MpcSoundPlayerChannel::receivesMidiVolume()
 void MpcSoundPlayerChannel::setReceiveMidiVolume(bool b)
 {
 	receiveMidiVolume = b;
-
-	notifyObservers(string("receivemidivolume"));
 }
 
 int MpcSoundPlayerChannel::getLastReceivedMidiVolume()
@@ -99,15 +93,6 @@ void MpcSoundPlayerChannel::setLastReceivedMidiVolume(int volume)
 		return;
 
 	lastReceivedMidiVolume = volume;
-}
-
-void MpcSoundPlayerChannel::setLocation(string location)
-{
-}
-
-void MpcSoundPlayerChannel::noteOn(int note, int velo)
-{
-	mpcNoteOn(note, velo, 0, 64, 0, true, -1, -1);
 }
 
 void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick, int durationFrames)
@@ -257,11 +242,6 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 			}
 		}
 	}
-}
-
-void MpcSoundPlayerChannel::noteOff(int note)
-{
-	mpcNoteOff(note, 0, -1);
 }
 
 void MpcSoundPlayerChannel::allNotesOff()

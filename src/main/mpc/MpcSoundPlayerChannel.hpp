@@ -1,7 +1,7 @@
 #pragma once
-#include <synth/SynthChannel.hpp>
 
 #include <map>
+#include <vector>
 
 namespace ctoot::control {
 	class CompoundControl;
@@ -32,7 +32,6 @@ namespace ctoot::mpc {
 namespace ctoot::mpc
 {
 	class MpcSoundPlayerChannel final
-		: public ctoot::synth::SynthChannel
 	{
 
 	private:
@@ -57,13 +56,8 @@ namespace ctoot::mpc
         std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> weakIndivFxMixerChannels;
 
 	public:
-		int getProgram() override;
-		void setLocation(std::string location) override;
-		void noteOn(int note, int velo) override;
-		void noteOff(int note) override;
-		void allNotesOff() override;
-
-    public:
+		int getProgram();
+		void allNotesOff();
 		void setProgram(int i);
 		bool receivesPgmChange();
 		void setReceivePgmChange(bool b);

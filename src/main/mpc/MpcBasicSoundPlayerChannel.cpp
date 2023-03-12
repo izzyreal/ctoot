@@ -23,15 +23,6 @@ MpcBasicSoundPlayerChannel::MpcBasicSoundPlayerChannel(weak_ptr<MpcBasicSoundPla
 	fader = dynamic_pointer_cast<FaderControl>(mmc->find("Level").lock());
 }
 
-void MpcBasicSoundPlayerChannel::setLocation(string location)
-{
-}
-
-void MpcBasicSoundPlayerChannel::noteOn(int soundNumber, int velocity)
-{
-	mpcNoteOn(soundNumber, velocity, 0);
-}
-
 void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int frameOffset)
 {
 	if (velocity == 0) {
@@ -64,14 +55,6 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 	voice->init(velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber != -2, -1, -1);
 }
 
-void MpcBasicSoundPlayerChannel::noteOff(int note)
-{
-}
-
-void MpcBasicSoundPlayerChannel::allNotesOff()
-{
-}
-
 void MpcBasicSoundPlayerChannel::finishVoice() {
 	voice->finish(); // stops voice immediately, without a short fade-out/decay time
 }
@@ -79,9 +62,4 @@ void MpcBasicSoundPlayerChannel::finishVoice() {
 void MpcBasicSoundPlayerChannel::connectVoice()
 {
     mixer->getStrip("65").lock()->setInputProcess(voice);
-}
-
-void MpcBasicSoundPlayerChannel::noteOff(int pitch, int velocity)
-{
-	SynthChannel::noteOff(pitch, velocity);
 }

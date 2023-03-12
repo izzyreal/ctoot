@@ -27,6 +27,10 @@ class MpcVoice
 {
     
 private:
+    static float midiFreq(float pitch);
+
+    static float midiFreqImpl(int pitch);
+
     float sampleRate = 44100.0;
 
     constexpr static const float STATIC_ATTACK_LENGTH = 10.92f;
@@ -151,6 +155,8 @@ public:
     void finish();
 
     void setMasterLevel(int8_t masterLevel);
+
+    static std::vector<float> &freqTable();
 
 public:
     MpcVoice(int stripNumber, bool basic);

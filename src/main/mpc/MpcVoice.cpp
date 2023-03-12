@@ -247,9 +247,9 @@ std::vector<float>& MpcVoice::getFrame() {
 
     if (!basic) {
         auto invNyquist = getInverseNyquist(sampleRate);
-        filterFreq = ctoot::mpc::MpcSoundPlayerChannel::midiFreq(initialFilterValue * 1.44f) * invNyquist;
+        filterFreq = midiFreq(initialFilterValue * 1.44f) * invNyquist;
         auto filterEnvFactor = (float) (filterEnv->getEnvelope(false) * (noteParameters->getFilterEnvelopeAmount() * 0.01));
-        filterFreq += ctoot::mpc::MpcSoundPlayerChannel::midiFreq(144) * invNyquist * filterEnvFactor;
+        filterFreq += midiFreq(144) * invNyquist * filterEnvFactor;
     }
 
     readFrame();
@@ -404,6 +404,35 @@ ctoot::mpc::MpcNoteParameters *MpcVoice::getNoteParameters() {
 void MpcVoice::setMasterLevel(int8_t masterLevelToUse)
 {
     masterLevel.store(masterLevelToUse);
+}
+
+std::vector<float>& MpcVoice::freqTable()
+{
+    static std::vector<float> res;
+    if (res.empty()) {
+        for (auto i = 0; i < 140; i++) {
+            res.push_back(midiFreqImpl(i));
+        }
+    }
+    return res;
+}
+
+float MpcVoice::midiFreq(float pitch)
+{
+    if (pitch < 0)
+        return freqTable()[0];
+
+    if (pitch >= (int)(freqTable().size()) - 1)
+        return freqTable()[(int)(freqTable().size()) - 2];
+
+    auto idx = (int)(pitch);
+    auto frac = pitch - idx;
+    return freqTable()[idx] * (1 - frac) + freqTable()[idx + 1] * frac;
+}
+
+float MpcVoice::midiFreqImpl(int pitch)
+{
+    return (float)(440.0 * pow(2.0, ((double)(pitch) - 69.0) / 12.0));
 }
 
 MpcVoice::~MpcVoice() {
