@@ -5,8 +5,9 @@
 using namespace ctoot::audio::server;
 using namespace std;
 
-StereoInputProcess::StereoInputProcess(string name, bool mono, string location) 
-	: AudioServerProcess(name, mono) {
+StereoInputProcess::StereoInputProcess(string name)
+	: AudioServerProcess(name)
+{
 }
 
 int StereoInputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) {

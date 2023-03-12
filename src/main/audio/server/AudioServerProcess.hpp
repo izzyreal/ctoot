@@ -27,7 +27,7 @@ namespace ctoot::audio {
 
             std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 
-            AudioServerProcess(std::string name, bool mono);
+            AudioServerProcess(std::string name);
         };
 
     }

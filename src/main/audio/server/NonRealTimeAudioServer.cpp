@@ -202,15 +202,15 @@ vector<string> NonRealTimeAudioServer::getAvailableInputNames()
     return lServer->getAvailableInputNames();
 }
 
-IOAudioProcess* NonRealTimeAudioServer::openAudioOutput(string name, string label)
+IOAudioProcess* NonRealTimeAudioServer::openAudioOutput(string name)
 {
 	auto lServer = server.lock();
-    return lServer->openAudioOutput(name, label);
+    return lServer->openAudioOutput(name);
 }
 
-IOAudioProcess* NonRealTimeAudioServer::openAudioInput(string name, string label)
+IOAudioProcess* NonRealTimeAudioServer::openAudioInput(string name)
 {
-    return server.lock()->openAudioInput(name, label);
+    return server.lock()->openAudioInput(name);
 }
 
 void NonRealTimeAudioServer::closeAudioOutput(IOAudioProcess* output)

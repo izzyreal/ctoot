@@ -39,8 +39,8 @@ namespace ctoot::audio::server {
 		virtual void setClient(std::weak_ptr<AudioClient> client) = 0;
 		virtual std::vector<std::string> getAvailableOutputNames() = 0;
 		virtual std::vector<std::string> getAvailableInputNames() = 0;
-		virtual IOAudioProcess* openAudioOutput(std::string name, std::string label) = 0;
-		virtual IOAudioProcess* openAudioInput(std::string name, std::string label) = 0;
+		virtual IOAudioProcess* openAudioOutput(std::string name) = 0;
+		virtual IOAudioProcess* openAudioInput(std::string name) = 0;
 		virtual void closeAudioOutput(IOAudioProcess* output) = 0;
 		virtual void closeAudioInput(IOAudioProcess* input) = 0;
 		virtual float getSampleRate();

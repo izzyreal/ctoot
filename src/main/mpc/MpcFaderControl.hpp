@@ -1,25 +1,23 @@
 #pragma once
+
 #include <audio/fader/FaderControl.hpp>
 
 #include <memory>
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
 
-		class MpcFaderControl
-			: public ctoot::audio::fader::FaderControl
-		{
+    class MpcFaderControl
+            : public ctoot::audio::fader::FaderControl
+    {
 
-		private:
-			static std::weak_ptr<ctoot::control::ControlLaw> MPC_FADER_LAW();
+    private:
+        static std::weak_ptr<ctoot::control::ControlLaw> MPC_FADER_LAW();
 
-		public:
-			void setValue(float value) override;
+    public:
+        void setValue(float value) override;
 
-			MpcFaderControl(bool muted);
-			~MpcFaderControl();
+        MpcFaderControl(bool muted);
 
-		};
+    };
 
-	}
 }

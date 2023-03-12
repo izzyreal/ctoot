@@ -1,4 +1,5 @@
 #pragma once
+
 #include <audio/server/AudioServer.hpp>
 #include <audio/server/AudioClient.hpp>
 
@@ -7,84 +8,105 @@
 #include <string>
 #include <vector>
 
-namespace ctoot {
-	namespace audio {
+namespace ctoot::audio::server {
 
-			namespace server {
+    class NonRealTimeAudioServer
+            : public virtual AudioServer, public virtual AudioClient
+    {
 
-			class NonRealTimeAudioServer
-				: public virtual AudioServer
-				, public virtual AudioClient
-			{
+    private:
 
-			private:
+        std::weak_ptr<NonRealTimeAudioServer> me{};
 
-				std::weak_ptr<NonRealTimeAudioServer> me{};
+        bool realTime{true};
+        bool isRunning_{false};
+        std::weak_ptr<AudioServer> server{};
+        std::weak_ptr<AudioClient> client{};
+        std::thread nrtThread;
+        bool startASAP{false};
 
-				bool realTime{ true };
-				bool isRunning_{ false };
-				std::weak_ptr<AudioServer> server{ };
-				std::weak_ptr<AudioClient> client{ };
-				std::thread nrtThread;
-				bool startASAP{ false };
+    private:
+        static void static_nrts(void *args);
 
-			private:
-				static void static_nrts(void * args);
+    private:
+        void run();
 
-			private:
-				void run();
-				void startNRT();
-				void stopNRT();
+        void startNRT();
 
-			public:
-				void setRealTime(bool rt);
-				bool isRealTime();
+        void stopNRT();
 
-				void setWeakPtr(std::shared_ptr<NonRealTimeAudioServer> sharedPtr);
+    public:
+        void setRealTime(bool rt);
 
-			public:
-				// override AudioServer
-				void start() override;
-				void stop() override;
-				void close() override;
-				void setClient(std::weak_ptr<AudioClient> client) override;
-				bool isRunning() override;
-				float getLoad() override;
-				void setEnabled(bool enable) override;
-				void work() override {}; // nothing to do (?)
-				ctoot::audio::core::AudioBuffer* createAudioBuffer(std::string name) override;
-				void removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer) override;
-				std::vector<std::string> getAvailableOutputNames() override;
-				std::vector<std::string> getAvailableInputNames() override;
-				IOAudioProcess* openAudioOutput(std::string name, std::string label) override;
-				IOAudioProcess* openAudioInput(std::string name, std::string label) override;
-				void closeAudioOutput(IOAudioProcess* output) override;
-				void closeAudioInput(IOAudioProcess* input) override;
-				float getSampleRate() override;
-				void setSampleRate(int rate) override;
-				int getInputLatencyFrames() override;
-				int getOutputLatencyFrames() override;
-				int getTotalLatencyFrames() override;
-				void resizeBuffers(int newSize) override;
+        bool isRealTime();
 
-			public:
-				void work(int nFrames) override;
+        void setWeakPtr(std::shared_ptr<NonRealTimeAudioServer> sharedPtr);
 
-			public:
-				// For compatibility with JUCE 7.0.2
-                void work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+    public:
+        // override AudioServer
+        void start() override;
 
-                // For compatibility with JUCE 7.0.5
-                void work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+        void stop() override;
 
-				//For compatibility with the PortAudio framework
-				void work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
-				
-			public:
-				NonRealTimeAudioServer(std::weak_ptr<AudioServer> server);
-				~NonRealTimeAudioServer();
-			};
+        void close() override;
 
-		}
-	}
+        void setClient(std::weak_ptr<AudioClient> client) override;
+
+        bool isRunning() override;
+
+        float getLoad() override;
+
+        void setEnabled(bool enable) override;
+
+        void work() override
+        {}; // nothing to do (?)
+        ctoot::audio::core::AudioBuffer *createAudioBuffer(std::string name) override;
+
+        void removeAudioBuffer(ctoot::audio::core::AudioBuffer *buffer) override;
+
+        std::vector<std::string> getAvailableOutputNames() override;
+
+        std::vector<std::string> getAvailableInputNames() override;
+
+        IOAudioProcess *openAudioOutput(std::string name) override;
+
+        IOAudioProcess *openAudioInput(std::string name) override;
+
+        void closeAudioOutput(IOAudioProcess *output) override;
+
+        void closeAudioInput(IOAudioProcess *input) override;
+
+        float getSampleRate() override;
+
+        void setSampleRate(int rate) override;
+
+        int getInputLatencyFrames() override;
+
+        int getOutputLatencyFrames() override;
+
+        int getTotalLatencyFrames() override;
+
+        void resizeBuffers(int newSize) override;
+
+    public:
+        void work(int nFrames) override;
+
+    public:
+        // For compatibility with JUCE 7.0.2
+        void work(const float **inputBuffer, float **outputBuffer, int nFrames, int inputChannelCount,
+                  int outputChannelCount);
+
+        // For compatibility with JUCE 7.0.5
+        void work(const float *const *inputBuffer, float *const *outputBuffer, int nFrames, int inputChannelCount,
+                  int outputChannelCount);
+
+        //For compatibility with the PortAudio framework
+        void work(float *inputBuffer, float *outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
+
+    public:
+        NonRealTimeAudioServer(std::weak_ptr<AudioServer> server);
+
+        ~NonRealTimeAudioServer();
+    };
+
 }

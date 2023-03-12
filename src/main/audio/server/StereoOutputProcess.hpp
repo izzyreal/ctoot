@@ -9,12 +9,8 @@ namespace ctoot::audio::server
 	{
 
 	public:
-		void open() override {};
-		void close() override {};
-
 		int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
-
-		StereoOutputProcess(std::string name, bool mono, std::string location);
+		StereoOutputProcess(std::string name);
 
 	};
 }

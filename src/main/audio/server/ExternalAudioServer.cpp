@@ -216,15 +216,15 @@ vector<string> ExternalAudioServer::getAvailableInputNames()
 	return res;
 }
 
-IOAudioProcess* ExternalAudioServer::openAudioOutput(string name, string label)
+IOAudioProcess* ExternalAudioServer::openAudioOutput(string name)
 {
-	activeOutputs.push_back(new StereoOutputProcess(name, false, "ExternalAudioServer"));
+	activeOutputs.push_back(new StereoOutputProcess(name));
 	return activeOutputs.back();
 }
 
-IOAudioProcess* ExternalAudioServer::openAudioInput(string name, string label)
+IOAudioProcess* ExternalAudioServer::openAudioInput(string name)
 {
-	activeInputs.push_back(new StereoInputProcess(name, false, "ExternalAudioServer"));
+	activeInputs.push_back(new StereoInputProcess(name));
 	return activeInputs.back();
 }
 

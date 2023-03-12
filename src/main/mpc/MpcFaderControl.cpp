@@ -21,6 +21,3 @@ void MpcFaderControl::setValue(float value)
     gain = value * 0.01f;
     FaderControl::setValue(value);
 }
-
-MpcFaderControl::~MpcFaderControl() {
-}
