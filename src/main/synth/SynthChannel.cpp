@@ -14,8 +14,6 @@ SynthChannel::SynthChannel()
 {
 }
 
-const double ctoot::synth::SynthChannel::ONE_SEMITONE { 1.0594630943592953 };
-
 vector<float>& SynthChannel::freqTable()
 {
     static std::vector<float> res;

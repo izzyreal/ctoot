@@ -60,15 +60,6 @@ weak_ptr<AudioMixerStrip> AudioMixer::getStripImpl(string name)
 	return {};
 }
 
-weak_ptr<AudioMixerStrip> AudioMixer::getUnusedChannelStrip()
-{
-	for (auto& strip : channelStrips) {
-		if (!strip.lock()->getInputProcess().lock())
-			return strip;
-	}
-	return {};
-}
-
 void AudioMixer::work(int nFrames)
 {
 	if (!enabled) return;
@@ -186,49 +177,6 @@ weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::A
 	}
 
     return strip;
-}
-
-void AudioMixer::removeStrip(weak_ptr<ctoot::audio::core::AudioControlsChain> controls)
-{
-	for (int i = 0; i < strips.size(); i++) {
-		auto strip = strips[i];
-
-		if (strip->getName().compare(controls.lock()->getName()) == 0)
-        {
-			strip->close();
-			switch (controls.lock()->getId()) {
-			case MixerControlsIds::CHANNEL_STRIP:
-				for (int j = 0; j < channelStrips.size(); j++) {
-					if (channelStrips[j].lock() == strip) {
-						channelStrips.erase(channelStrips.begin() + j);
-						break;
-					}
-				}
-				break;
-			case MixerControlsIds::GROUP_STRIP:
-				for (int j = 0; j < groupStrips.size(); j++) {
-					if (groupStrips[j].lock() == strip) {
-						groupStrips.erase(groupStrips.begin() + j);
-						break;
-					}
-				}
-				break;
-			case MixerControlsIds::AUX_STRIP:
-				for (int j = 0; j < auxStrips.size(); j++) {
-					if (auxStrips[j].lock() == strip) {
-						auxStrips.erase(auxStrips.begin() + j);
-						break;
-					}
-				}
-				break;
-			case MixerControlsIds::MAIN_STRIP:
-				mainStrip.reset();
-				break;
-			}
-			strips.erase(strips.begin() + i);
-			return;
-		}
-	}
 }
 
 void AudioMixer::close()

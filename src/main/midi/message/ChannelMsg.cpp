@@ -9,11 +9,6 @@ ChannelMsg::ChannelMsg()
 {
 }
 
-bool ChannelMsg::isChannel(int status)
-{
-    return status < 240;
-}
-
 ctoot::midi::core::MidiMessage* ChannelMsg::createChannel(int status, int chan, int data1, int data2) /* throws(InvalidMidiDataException) */
 {
     auto msg = dynamic_cast< ctoot::midi::core::ShortMessage* >(fastShortPrototype()->clone());

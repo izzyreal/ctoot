@@ -14,12 +14,9 @@ namespace ctoot::synth {
         int sampleRate{44100};
 
     private:
-        int bendRange{2};
         int pressure{0};
         std::vector<char> polyPressure = std::vector<char>(128);
         std::vector<char> controller = std::vector<char>(128);
-
-        static const double ONE_SEMITONE;
 
     public:
         virtual void setLocation(std::string location) = 0;

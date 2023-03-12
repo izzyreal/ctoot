@@ -53,8 +53,6 @@ namespace ctoot::audio::mixer {
 
         std::weak_ptr<AudioMixerStrip> getStripImpl(std::string name);
 
-        std::weak_ptr<AudioMixerStrip> getUnusedChannelStrip();
-
         void work(int nFrames) override;
 
     private:
@@ -79,8 +77,6 @@ namespace ctoot::audio::mixer {
         void createStrips(std::weak_ptr<MixerControls> mixerControls);
 
         std::weak_ptr<AudioMixerStrip> createStrip(std::weak_ptr<ctoot::audio::core::AudioControlsChain> controls);
-
-        void removeStrip(std::weak_ptr<ctoot::audio::core::AudioControlsChain> controls);
 
     public:
         void close();
