@@ -10,7 +10,7 @@ namespace ctoot::audio::core {
 	private:
         static Encoding* PCM_SIGNED_;
 		static Encoding* PCM_UNSIGNED_;
-        std::string name = "";
+        std::string name;
 
 
 	public:

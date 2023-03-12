@@ -12,16 +12,6 @@ AbstractLaw::AbstractLaw(float min, float max, string units)
 
 const int AbstractLaw::resolution;
 
-float AbstractLaw::getMinimum()
-{
-    return min;
-}
-
-float AbstractLaw::getMaximum()
-{
-    return max;
-}
-
 string AbstractLaw::getUnits()
 {
     return units;

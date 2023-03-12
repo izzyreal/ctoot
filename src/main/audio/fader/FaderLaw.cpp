@@ -18,16 +18,6 @@ FaderLaw::FaderLaw(int resolution)
 	this->resolution = resolution;
 }
 
-float FaderLaw::getMaximum()
-{
-    return maxdB;
-}
-
-float FaderLaw::getMinimum()
-{
-    return -100.0f;
-}
-
 string FaderLaw::getUnits()
 {
 	return "dB";

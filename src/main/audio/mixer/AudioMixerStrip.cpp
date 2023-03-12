@@ -24,11 +24,6 @@ AudioMixerStrip::AudioMixerStrip(AudioMixer* mixer, weak_ptr<AudioControlsChain>
 	channelFormat = buffer->getChannelFormat();
 }
 
-weak_ptr<AudioProcess> AudioMixerStrip::getInputProcess()
-{
-    return input;
-}
-
 void AudioMixerStrip::setInputProcess(weak_ptr<AudioProcess> input)
 {
 

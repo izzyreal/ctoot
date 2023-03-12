@@ -15,9 +15,7 @@ namespace ctoot {
 			std::string units{ "" };
 
 		public:
-            float getMinimum() override;
-			float getMaximum() override;
-			std::string getUnits() override;
+            std::string getUnits() override;
 
 		public:
 			AbstractLaw(float min, float max, std::string units);

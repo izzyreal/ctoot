@@ -17,8 +17,6 @@ void MpcIndivFxMixerChannel::setFollowStereo(bool b)
 	if (followStereo == b) return;
 
 	followStereo = b;
-	
-	notifyObservers(string("followstereo"));
 }
 
 bool MpcIndivFxMixerChannel::isFollowingStereo()
@@ -37,8 +35,6 @@ void MpcIndivFxMixerChannel::setOutput(int i)
 		return;
 
 	output = i;
-	
-	notifyObservers(string("output"));
 }
 
 void MpcIndivFxMixerChannel::setVolumeIndividualOut(int i)
@@ -47,8 +43,6 @@ void MpcIndivFxMixerChannel::setVolumeIndividualOut(int i)
 		return;
 
 	volumeIndividualOut = i;
-	
-	notifyObservers(string("volumeindividual"));
 }
 
 int MpcIndivFxMixerChannel::getVolumeIndividualOut()
@@ -62,8 +56,6 @@ void MpcIndivFxMixerChannel::setFxPath(int i)
 		return;
 
 	fxPath = i;
-	
-	notifyObservers(string("fxpath"));
 }
 
 int MpcIndivFxMixerChannel::getFxPath()
@@ -77,8 +69,6 @@ void MpcIndivFxMixerChannel::setFxSendLevel(int i)
 		return;
 
 	fxSendLevel = i;
-	
-	notifyObservers(string("fxsendlevel"));
 }
 
 int MpcIndivFxMixerChannel::getFxSendLevel()

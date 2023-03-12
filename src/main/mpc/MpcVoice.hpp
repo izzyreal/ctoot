@@ -43,8 +43,6 @@ private:
     static const int HOLD_INDEX = 1;
     static const int DECAY_INDEX = 2;
     static const int RESO_INDEX = 1;
-    static const int MIX_INDEX = 2;
-    static const int BANDPASS_INDEX = 3;
 
     // Voice overlap mode when the voice was triggered
     int voiceOverlapMode;

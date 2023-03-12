@@ -11,10 +11,6 @@ namespace ctoot::control {
     public:
         virtual int intValue(float userVal);
 
-        virtual float getMinimum();
-
-        virtual float getMaximum();
-
         virtual std::string getUnits();
 
     };
