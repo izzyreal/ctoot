@@ -97,12 +97,3 @@ ctoot::midi::core::MidiMessage* ShortMsg::setData2(ctoot::midi::core::MidiMessag
     return msg;
 }
 
-int ShortMsg::getData1and2(ctoot::midi::core::MidiMessage* msg)
-{
-    return getData1and2(getData1(msg), getData2(msg));
-}
-
-int ShortMsg::getData1and2(int data1, int data2)
-{
-    return (data1 & 63) | (data2 << 7);
-}

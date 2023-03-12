@@ -283,17 +283,6 @@ void MpcSoundPlayerChannel::allNotesOff()
     }
 }
 
-void MpcSoundPlayerChannel::allSoundOff()
-{
-	for (auto& voice : controls->getVoices())
-	{
-		if (voice->isFinished())
-			continue;
-
-		voice->startDecay();
-	}
-}
-
 void MpcSoundPlayerChannel::allSoundOff(int frameOffset)
 {
 	for (auto& voice : controls->getVoices())

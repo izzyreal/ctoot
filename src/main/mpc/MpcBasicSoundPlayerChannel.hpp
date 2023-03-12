@@ -30,7 +30,7 @@ public:
     void mpcNoteOn(int soundNumber, int velocity, int frameOffset);
     void noteOff(int note) override;
     void allNotesOff() override;
-    void allSoundOff() override;
+
     void connectVoice();
     
     MpcBasicSoundPlayerChannel(std::weak_ptr<MpcBasicSoundPlayerControls> controls);

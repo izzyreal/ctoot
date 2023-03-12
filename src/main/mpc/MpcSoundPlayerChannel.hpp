@@ -62,9 +62,8 @@ namespace ctoot::mpc
 		void noteOn(int note, int velo) override;
 		void noteOff(int note) override;
 		void allNotesOff() override;
-		void allSoundOff() override;
 
-	public:
+    public:
 		void setProgram(int i);
 		bool receivesPgmChange();
 		void setReceivePgmChange(bool b);

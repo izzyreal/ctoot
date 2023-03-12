@@ -28,10 +28,8 @@ namespace ctoot {
 				static ctoot::midi::core::MidiMessage* setData1(ctoot::midi::core::MidiMessage* msg, int data1);
 				static int getData2(ctoot::midi::core::MidiMessage* msg);
 				static ctoot::midi::core::MidiMessage* setData2(ctoot::midi::core::MidiMessage* msg, int data2);
-				static int getData1and2(ctoot::midi::core::MidiMessage* msg);
-				static int getData1and2(int data1, int data2);
 
-				ShortMsg();
+                ShortMsg();
 
 			public:
 				static ctoot::midi::core::MidiMessage*& fastShortPrototype();

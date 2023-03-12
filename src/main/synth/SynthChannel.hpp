@@ -42,19 +42,13 @@ namespace ctoot::synth {
 
         int getController(int arg0) override;
 
-        void resetAllControllers() override;
-
         int getProgram() override;
 
         void programChange(int arg0) override;
 
         void programChange(int arg0, int arg1) override;
 
-        void setChannelPressure(int arg0) override;
-
         void setMono(bool mono) override;
-
-        void setPitchBend(int bend) override;
 
         SynthChannel();
 

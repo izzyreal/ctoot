@@ -17,8 +17,6 @@ namespace ctoot::control {
         float precision{0};
 
     public:
-        virtual std::weak_ptr<ControlLaw> getLaw();
-
         virtual float getValue();
 
         virtual void setValue(float value);

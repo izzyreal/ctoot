@@ -15,8 +15,3 @@ ctoot::midi::core::MidiMessage* PitchMsg::transpose(ctoot::midi::core::MidiMessa
 	return setData1(msg, note);
 }
 
-int PitchMsg::getPitch(ctoot::midi::core::MidiMessage* msg)
-{
-	return getData1(msg);
-}
-

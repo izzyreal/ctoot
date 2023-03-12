@@ -72,11 +72,6 @@ void MpcBasicSoundPlayerChannel::allNotesOff()
 {
 }
 
-void MpcBasicSoundPlayerChannel::allSoundOff()
-{
-	voice->startDecay();
-}
-
 void MpcBasicSoundPlayerChannel::finishVoice() {
 	voice->finish(); // stops voice immediately, without a short fade-out/decay time
 }

@@ -9,11 +9,6 @@ ChannelMsg::ChannelMsg()
 {
 }
 
-bool ChannelMsg::isChannel(ctoot::midi::core::MidiMessage* msg)
-{
-    return isChannel(getStatus(msg));
-}
-
 bool ChannelMsg::isChannel(int status)
 {
     return status < 240;

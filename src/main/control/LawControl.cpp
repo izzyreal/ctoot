@@ -12,11 +12,6 @@ LawControl::LawControl(int id, string name, weak_ptr<ControlLaw> law, float prec
 	this->value = initialValue;
 }
 
-weak_ptr<ControlLaw> LawControl::getLaw()
-{
-    return law;
-}
-
 float LawControl::getValue()
 {
     return value;

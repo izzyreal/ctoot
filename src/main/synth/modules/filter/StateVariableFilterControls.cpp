@@ -4,7 +4,6 @@
 #include <control/LawControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <synth/modules/filter/FilterControlIds.hpp>
-#include <synth/modules/filter/FilterIds.hpp>
 
 #include <cmath>
 
@@ -12,7 +11,7 @@ using namespace ctoot::synth::modules::filter;
 using namespace std;
 
 StateVariableFilterControls::StateVariableFilterControls(string name, int idOffset)
-	: FilterControls(ctoot::synth::modules::filter::FilterIds::STATE_VARIABLE_FILTER_ID, name, idOffset)
+	: FilterControls(34, name, idOffset)
 {
 }
 

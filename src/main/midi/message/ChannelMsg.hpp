@@ -15,8 +15,8 @@ namespace ctoot {
 
 			public:
 				typedef ShortMsg super;
-				static bool isChannel(ctoot::midi::core::MidiMessage* msg);
-				static bool isChannel(int status);
+
+                static bool isChannel(int status);
 				static ctoot::midi::core::MidiMessage* createChannel(int status, int chan, int data1, int data2);
 
                 static int getCommand(ctoot::midi::core::MidiMessage* msg);
@@ -27,11 +27,8 @@ namespace ctoot {
 				static int setChannel(int status, int chan);
 				static const int NOTE_OFF{ int(128) };
 				static const int NOTE_ON{ int(144) };
-                static const int CONTROL_CHANGE{ int(176) };
-                static const int CHANNEL_PRESSURE{ int(208) };
-				static const int PITCH_BEND{ int(224) };
 
-				ChannelMsg();
+                ChannelMsg();
 
 			};
 

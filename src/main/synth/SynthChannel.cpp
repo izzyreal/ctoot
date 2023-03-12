@@ -75,22 +75,6 @@ int SynthChannel::getController(int arg0)
     return controller[arg0];
 }
 
-void SynthChannel::resetAllControllers()
-{
-    for (auto i = 0; i < controller.size() ; i++) {
-        controller[i] = 0;
-    }
- /*
-	controller[ctoot::midi::misc::Controller::EXPRESSION] = 127;
-    controller[ctoot::midi::misc::Controller::EXPRESSION + 32] = 127;
-    controller[ctoot::midi::misc::Controller::VOLUME] = 100;
-    controller[ctoot::midi::misc::Controller::PAN] = 64;
-    controller[ctoot::midi::misc::Controller::PAN + 32] = 64;
-	*/
-    pressure = 0;
-    setPitchBend(8192);
-}
-
 int SynthChannel::getProgram()
 {
     return 0;
@@ -104,19 +88,7 @@ void SynthChannel::programChange(int arg0, int arg1)
 {
 }
 
-void SynthChannel::setChannelPressure(int arg0)
-{
-    pressure = arg0;
-}
-
 void SynthChannel::setMono(bool mono)
 {
-}
-
-void SynthChannel::setPitchBend(int bend)
-{
-    bend -= 8192;
-    auto b = static_cast< float >(bendRange) * bend / 8192;
-    static_cast< float >(pow(ONE_SEMITONE, b));
 }
 
