@@ -95,12 +95,6 @@ bool Control::isEnabled()
     return enabled;
 }
 
-string Control::toString()
-{
-	string result = getName() + " Control";
-	return result;
-}
-
 string Control::getControlPath(Control* from, string sep)
 {
 	if (parent != from) {

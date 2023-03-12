@@ -14,8 +14,6 @@ namespace ctoot::audio::core {
 
 
 	public:
-		std::string toString();
-
 		Encoding(std::string name);
 
 	public:

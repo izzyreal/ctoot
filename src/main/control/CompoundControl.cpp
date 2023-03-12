@@ -73,32 +73,6 @@ vector<weak_ptr<Control>> CompoundControl::getControls()
     return weakControls;
 }
 
-string CompoundControl::toString()
-{
-	vector<string> builder;
-	
-    for (auto i = 0; i < controls.size(); i++)
-    {
-		if (i != 0)
-        {
-			builder.push_back(", ");
-		
-            if (controls.size() == i + 1)
-				builder.push_back("and ");
-		}
-        
-		builder.push_back(controls[i]->getName());
-	}
-
-	string result;
-    
-	for (int i = 0; i < builder.size(); i++)
-		result += builder[i];
-
-	result = " Control containing " + result + " Controls.";
-	return result;
-}
-
 weak_ptr<Control> CompoundControl::find(string name)
 {
 	for (int i = 0; i < controls.size(); i++) {

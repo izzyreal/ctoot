@@ -24,8 +24,6 @@ namespace ctoot::control {
     public:
         virtual std::vector<std::weak_ptr<Control>> getControls();
 
-        virtual std::string toString();
-
         virtual std::weak_ptr<Control> find(std::string name);
 
         virtual std::weak_ptr<Control> deepFind(int controlId);

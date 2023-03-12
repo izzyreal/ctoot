@@ -19,8 +19,3 @@ Encoding*& Encoding::PCM_UNSIGNED()
 	return PCM_UNSIGNED_;
 }
 Encoding* Encoding::PCM_UNSIGNED_ = new Encoding("pcm_unsigned");
-
-string Encoding::toString()
-{
-		return name;
-}

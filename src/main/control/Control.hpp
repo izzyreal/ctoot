@@ -55,8 +55,6 @@ namespace ctoot::control {
 
         virtual bool isEnabled();
 
-        std::string toString();
-
         virtual std::string getControlPath(Control *from, std::string sep);
 
     protected:
