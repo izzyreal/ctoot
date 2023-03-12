@@ -3,7 +3,6 @@
 #include <control/Control.hpp>
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
-#include <synth/modules/envelope/EnvelopeControlIds.hpp>
 
 #include <cfloat>
 #include <cmath>
@@ -23,13 +22,13 @@ MpcEnvelopeControls::MpcEnvelopeControls(int id, string name, int idOffset)
 void MpcEnvelopeControls::derive(ctoot::control::Control* c)
 {
 	switch (c->getId() - idOffset) {
-	case ctoot::synth::modules::envelope::EnvelopeControlIds::ATTACK:
+	case ATTACK:
 		attack = deriveAttack();
 		break;
-	case ctoot::synth::modules::envelope::EnvelopeControlIds::HOLD:
+	case HOLD:
 		hold = deriveHold();
 		break;
-	case ctoot::synth::modules::envelope::EnvelopeControlIds::DECAY:
+	case DECAY:
 		decay = deriveDecay();
 		break;
 	}
@@ -98,17 +97,17 @@ weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::HOLD_LAW() {
 
 ctoot::control::LawControl* MpcEnvelopeControls::createAttackControl(float init)
 {
-	return new ctoot::control::LawControl(ctoot::synth::modules::envelope::EnvelopeControlIds::ATTACK + idOffset, "Attack", ATTACK_LAW(), 0.1f, init);
+	return new ctoot::control::LawControl(ATTACK + idOffset, "Attack", ATTACK_LAW(), 0.1f, init);
 }
 
 ctoot::control::LawControl* MpcEnvelopeControls::createHoldControl(float init)
 {
-	return new ctoot::control::LawControl(ctoot::synth::modules::envelope::EnvelopeControlIds::HOLD + idOffset, "Hold", HOLD_LAW(), 0.1f, init);
+	return new ctoot::control::LawControl(HOLD + idOffset, "Hold", HOLD_LAW(), 0.1f, init);
 }
 
 ctoot::control::LawControl* MpcEnvelopeControls::createDecayControl(float init)
 {
-	return new ctoot::control::LawControl(ctoot::synth::modules::envelope::EnvelopeControlIds::DECAY + idOffset, "Decay", DECAY_LAW(), 0.1f, init);
+	return new ctoot::control::LawControl(DECAY + idOffset, "Decay", DECAY_LAW(), 0.1f, init);
 }
 
 float MpcEnvelopeControls::getAttackCoeff()

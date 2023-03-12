@@ -8,11 +8,13 @@ namespace ctoot::mpc {
 			: public ctoot::control::CompoundControl
 		{
 
-		public:
-			typedef ctoot::control::CompoundControl super;
-
 		private:
-			ctoot::control::LawControl* attackControl{ nullptr };
+            static const int ATTACK{1};
+            static const int HOLD{2};
+            static const int DECAY{3};
+            static const int RELEASE{5};
+
+            ctoot::control::LawControl* attackControl{ nullptr };
 			ctoot::control::LawControl* holdControl{ nullptr };
 			ctoot::control::LawControl* decayControl{ nullptr };
 			float sampleRate{ 44100 };
