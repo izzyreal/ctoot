@@ -27,13 +27,3 @@ float StateVariableFilterControls::deriveResonance()
 {
     return static_cast< float >(2 * (1.0f - pow(FilterControls::deriveResonance(), 0.25)));
 }
-
-float StateVariableFilterControls::getCutoff()
-{
-    return FilterControls::getCutoff();
-}
-
-float StateVariableFilterControls::getResonance()
-{
-    return FilterControls::getResonance();
-}

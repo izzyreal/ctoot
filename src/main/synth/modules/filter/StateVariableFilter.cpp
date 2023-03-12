@@ -7,7 +7,7 @@
 
 using namespace ctoot::synth::modules::filter;
 
-StateVariableFilter::StateVariableFilter(FilterVariables* variables)
+StateVariableFilter::StateVariableFilter(FilterControls* variables)
 {
 	element = new StateVariableFilterElement();
     vars = variables;

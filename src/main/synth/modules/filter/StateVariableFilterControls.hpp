@@ -16,12 +16,6 @@ namespace ctoot::synth::modules::filter {
 
     public:
         StateVariableFilterControls(std::string name, int idOffset);
-
-    public:
-        float getCutoff() override;
-
-        float getResonance() override;
-
     };
 
 }

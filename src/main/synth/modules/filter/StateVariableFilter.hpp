@@ -1,6 +1,6 @@
 #pragma once
 
-#include "FilterVariables.hpp"
+#include "FilterControls.hpp"
 
 namespace ctoot::synth::modules::filter {
 
@@ -9,22 +9,22 @@ namespace ctoot::synth::modules::filter {
     class StateVariableFilter
     {
     public:
-        StateVariableFilter(FilterVariables *variables);
+        StateVariableFilter(FilterControls *variables);
 
         virtual ~StateVariableFilter();
 
     private:
         StateVariableFilterElement *element{nullptr};
         float res{0.f};
-        FilterVariables *vars{};
+        FilterControls *vars{};
         float fs{44100.0};
 
         void setSampleRate(int rate);
 
     public:
-        virtual float update();
+        float update();
 
-        virtual float filter(float sample, float f);
+        float filter(float sample, float f);
 
     };
 }

@@ -1,7 +1,6 @@
 #pragma once
 
 #include <control/CompoundControl.hpp>
-#include <synth/modules/filter/FilterVariables.hpp>
 
 #include <memory>
 #include <string>
@@ -17,7 +16,7 @@ namespace ctoot {
     namespace synth::modules::filter {
 
         class FilterControls
-                : public ctoot::control::CompoundControl, public FilterVariables
+                : public ctoot::control::CompoundControl
         {
 
         private:
@@ -50,9 +49,9 @@ namespace ctoot {
             virtual ctoot::control::LawControl *createResonanceControl();
 
         public:
-            float getCutoff() override;
+            float getCutoff();
 
-            float getResonance() override;
+            float getResonance();
 
         public:
             FilterControls(int id, std::string name, int idOffset);
