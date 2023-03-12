@@ -1,5 +1,5 @@
 #pragma once
-#include <midi/core/MidiMessage.hpp>
+#include "MidiMessage.hpp"
 
 #include <vector>
 

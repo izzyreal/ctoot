@@ -1,4 +1,4 @@
-#include <midi/core/ShortMessage.hpp>
+#include "ShortMessage.hpp"
 
 #include <string>
 

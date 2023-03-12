@@ -16,6 +16,3 @@ int InterconnectionOutputProcess::processAudio(ctoot::audio::core::AudioBuffer* 
     buffer->copyFrom(sharedBuffer);
     return AUDIO_OK;
 }
-
-InterconnectionOutputProcess::~InterconnectionOutputProcess() {
-}

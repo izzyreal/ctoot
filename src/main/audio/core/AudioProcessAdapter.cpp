@@ -13,17 +13,7 @@ AudioProcessAdapter::AudioProcessAdapter(AudioProcess* process)
 	this->process = process;
 }
 
-void AudioProcessAdapter::open()
-{
-    process->open();
-}
-
 int AudioProcessAdapter::processAudio(AudioBuffer* buf, int nFrames)
 {
 	return process->processAudio(buf, nFrames);
-}
-
-void AudioProcessAdapter::close()
-{
-	process->close();
 }

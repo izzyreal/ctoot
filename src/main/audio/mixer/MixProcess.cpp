@@ -43,6 +43,3 @@ int MixProcess::processAudio(AudioBuffer* buffer)
 	}
 	return AUDIO_OK;
 }
-
-MixProcess::~MixProcess() {
-}

@@ -1,4 +1,4 @@
-#include <midi/core/MidiMessage.hpp>
+#include "MidiMessage.hpp"
 
 using namespace ctoot::midi::core;
 using namespace std;

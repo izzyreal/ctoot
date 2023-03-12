@@ -18,6 +18,3 @@ int InterconnectionInputProcess::processAudio(ctoot::audio::core::AudioBuffer* b
 	if (!mmi->isRightEnabled()) sharedBuffer->makeSilence(1);
 	return AUDIO_OK;
 }
-
-InterconnectionInputProcess::~InterconnectionInputProcess() {
-}

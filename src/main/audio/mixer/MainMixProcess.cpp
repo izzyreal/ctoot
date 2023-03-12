@@ -1,7 +1,6 @@
 #include <audio/mixer/MainMixProcess.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
-#include <util/RouteObserver.hpp>
 #include <audio/mixer/MixVariables.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 
@@ -14,7 +13,6 @@ MainMixProcess::MainMixProcess(shared_ptr<AudioMixerStrip> strip, weak_ptr<MixVa
 	auto mmc = dynamic_pointer_cast<MainMixControls>(vars.lock());
 	routeControl = mmc->getRouteControl();
 	if (routeControl != nullptr) {
-		routeObserver = new util::RouteObserver(this, mixer);
 		routedStrip = mixer->getStripImpl(routeControl->getValueString());
 	}
 }
@@ -25,27 +23,5 @@ AudioMixerStrip* MainMixProcess::getRoutedStrip()
 		routedStrip = nextRoutedStrip;
 		nextRoutedStrip = weak_ptr<AudioMixerStrip>();
 	}
-	return super::getRoutedStrip();
-}
-
-void MainMixProcess::open()
-{
-	super::open();
-	if (routeControl != nullptr && routeObserver != nullptr) {
-		routeControl->addObserver(routeObserver);
-	}
-}
-
-void MainMixProcess::close()
-{
-	if (routeControl != nullptr && routeObserver != nullptr) {
-		routeControl->deleteObserver(routeObserver);
-	}
-	super::close();
-}
-
-MainMixProcess::~MainMixProcess() {
-	if (routeObserver != nullptr) {
-		delete routeObserver;
-	}
+	return MixProcess::getRoutedStrip();
 }
