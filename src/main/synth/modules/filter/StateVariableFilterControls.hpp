@@ -43,8 +43,6 @@ namespace ctoot {
 
             float getResonance() override;
 
-            void setSampleRate(int rate) override;
-
         };
 
     }

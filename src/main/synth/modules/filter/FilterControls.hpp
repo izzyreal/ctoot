@@ -43,8 +43,6 @@ namespace ctoot {
 
             virtual float deriveResonance();
 
-            virtual void deriveSampleRateDependentVariables();
-
             virtual float deriveCutoff();
 
             virtual ctoot::control::LawControl *createCutoffControl();
@@ -55,8 +53,6 @@ namespace ctoot {
             float getCutoff() override;
 
             float getResonance() override;
-
-            void setSampleRate(int rate) override;
 
         public:
             FilterControls(int id, std::string name, int idOffset);

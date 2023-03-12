@@ -13,7 +13,6 @@ FilterControls::FilterControls(int id, string name, int idOffset)
 	this->idOffset = idOffset;
 	createControls();
 	deriveSampleRateIndependentVariables();
-	deriveSampleRateDependentVariables();
 }
 
 weak_ptr<ctoot::control::ControlLaw> FilterControls::SEMITONE_LAW() {
@@ -52,10 +51,6 @@ float FilterControls::deriveResonance()
 	return resonanceControl->getValue();
 }
 
-void FilterControls::deriveSampleRateDependentVariables()
-{
-}
-
 float FilterControls::deriveCutoff()
 {
 	return cutoffControl->getValue();
@@ -79,12 +74,4 @@ float FilterControls::getCutoff()
 float FilterControls::getResonance()
 {
 	return resonance;
-}
-
-void FilterControls::setSampleRate(int rate)
-{
-	if (sampleRate != rate) {
-		sampleRate = rate;
-		deriveSampleRateDependentVariables();
-	}
 }

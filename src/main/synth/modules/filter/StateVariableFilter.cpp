@@ -37,7 +37,6 @@ float StateVariableFilter::filter(float sample, float f)
 
 void StateVariableFilter::setSampleRate(int rate)
 {
-    vars->setSampleRate(rate);
     fs = rate;
 }
 

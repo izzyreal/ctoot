@@ -189,7 +189,6 @@ void MpcVoice::initializeSamplerateDependents()
     if (!basic) {
         ampEnvControls->setSampleRate(sampleRate);
         filterEnvControls->setSampleRate(sampleRate);
-        svfControls->setSampleRate(sampleRate);
     }
 
     auto lMpcSound = mpcSound;

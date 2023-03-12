@@ -60,8 +60,3 @@ float StateVariableFilterControls::getResonance()
 {
     return FilterControls::getResonance();
 }
-
-void StateVariableFilterControls::setSampleRate(int rate)
-{
-    FilterControls::setSampleRate(rate);
-}
