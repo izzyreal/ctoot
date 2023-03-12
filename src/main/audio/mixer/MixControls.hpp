@@ -12,7 +12,7 @@ namespace ctoot::audio::mixer {
     class LCRControl;
 
     class MixControls
-            : public virtual MixVariables, public ctoot::audio::core::AudioControls
+            : public MixVariables, public ctoot::audio::core::AudioControls
     {
 
     private:
@@ -45,7 +45,7 @@ namespace ctoot::audio::mixer {
 
         std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 
-        virtual bool isMute();
+        bool isMute();
 
         bool isEnabled() override;
 

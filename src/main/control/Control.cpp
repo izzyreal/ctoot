@@ -31,9 +31,6 @@ CompoundControl* Control::getParent()
 void Control::setParent(CompoundControl* c)
 {
 	parent = c;
-	if (parent == nullptr) {
-		MLOG("Parent for " + getName() + " is nullptr!");
-	}
 }
 
 void Control::notifyParent(Control* c)
@@ -41,7 +38,6 @@ void Control::notifyParent(Control* c)
 
 	derive(c);
 	
-	notifyObservers(c);
 	if (c->isIndicator()) return;
 
 	if (parent != nullptr) {
@@ -118,7 +114,4 @@ string Control::getControlPath(Control* from, string sep)
 	}
 	return getName();
 
-}
-
-Control::~Control() {
 }

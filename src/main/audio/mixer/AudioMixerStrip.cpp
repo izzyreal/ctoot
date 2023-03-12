@@ -28,7 +28,6 @@ void AudioMixerStrip::setInputProcess(weak_ptr<AudioProcess> input)
 {
 
 	if (controlChain.lock()->getId() != MixerControlsIds::CHANNEL_STRIP) {
-		MLOG("No external input to this strip type");
 		return;
 	}
 	auto oldInput = this->input;

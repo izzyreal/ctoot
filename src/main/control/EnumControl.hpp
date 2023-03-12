@@ -20,11 +20,6 @@ namespace ctoot::control {
 
         virtual std::vector<nonstd::any> getValues() = 0;
 
-        virtual bool isValueSupported(nonstd::any value);
-
-    public:
-        std::string toString();
-
     public:
         std::string getValueString() override;
 

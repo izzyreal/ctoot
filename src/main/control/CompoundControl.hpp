@@ -1,5 +1,7 @@
 #pragma once
 
+#include <vector>
+
 #include <control/Control.hpp>
 
 namespace ctoot::control {

@@ -17,8 +17,6 @@ void MpcSoundOscillatorControls::setSndLevel(int i)
 	if (i < 0 || i > 200) return;
 
 	sndLevel = i;
-	
-	notifyObservers(string("level"));
 }
 
 void MpcSoundOscillatorControls::setTune(int i)
@@ -31,8 +29,6 @@ void MpcSoundOscillatorControls::setTune(int i)
 void MpcSoundOscillatorControls::setLoopEnabled(bool b)
 {
     loopEnabled = b;
-    
-    notifyObservers(string("loopenabled"));
 }
 
 void MpcSoundOscillatorControls::setStart(int i)
@@ -54,9 +50,6 @@ void MpcSoundOscillatorControls::setStart(int i)
 
 	if (start > end)
 		setEnd(start);
-
-	
-	notifyObservers(string("start"));
 }
 
 void MpcSoundOscillatorControls::setEnd(int i)
@@ -85,8 +78,6 @@ void MpcSoundOscillatorControls::setEnd(int i)
     
 	if (end < start)
 		setStart(end);
-
-    notifyObservers(string("end"));
 }
 
 void MpcSoundOscillatorControls::setMono(bool b)
@@ -106,8 +97,6 @@ void MpcSoundOscillatorControls::setLoopTo(int i)
 		value = getFrameCount();
 
 	loopTo = value;
-	
-	notifyObservers(string("loopto"));
 }
 
 

@@ -1,10 +1,5 @@
 #pragma once
 
-#include <observer/Observable.hpp>
-#include <observer/Observer.hpp>
-
-#include <Logger.hpp>
-
 #include <cstdint>
 #include <string>
 #include <map>
@@ -12,7 +7,7 @@
 namespace ctoot::control {
     class CompoundControl;
 
-    class Control : public moduru::observer::Observable
+    class Control
     {
     private:
         int id;
@@ -31,6 +26,8 @@ namespace ctoot::control {
         virtual int getId();
 
         CompoundControl *getParent();
+
+        virtual ~Control() {}
 
     protected:
         virtual void setParent(CompoundControl *c);
@@ -64,9 +61,6 @@ namespace ctoot::control {
 
     protected:
         Control(int id, std::string name);
-
-    public:
-        virtual ~Control();
 
     private:
         friend class CompoundControl;
