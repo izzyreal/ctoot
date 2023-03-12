@@ -1,6 +1,5 @@
 #pragma once
 
-#include <synth/SynthChannelControls.hpp>
 #include <audio/server/AudioServer.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
@@ -14,11 +13,8 @@ namespace ctoot::mpc {
     class MpcVoice;
 
     class MpcSoundPlayerControls
-            : public ctoot::synth::SynthChannelControls
+            : public ctoot::control::CompoundControl
     {
-
-    public:
-        static const int MPC_SOUND_PLAYER_CHANNEL_ID{8};
 
     private:
         static std::string NAME_;

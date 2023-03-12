@@ -14,7 +14,7 @@ MpcSoundPlayerControls::MpcSoundPlayerControls(
     weak_ptr<ctoot::audio::server::AudioServer> server,
     ctoot::mpc::MpcMixerSetupGui* mixerSetupGui,
     std::vector<std::shared_ptr<MpcVoice>> voicesToUse) :
-    ctoot::synth::SynthChannelControls(MPC_SOUND_PLAYER_CHANNEL_ID, NAME_),
+    ctoot::control::CompoundControl(8, NAME_),
     voices(voicesToUse)
 {
 	this->sampler = sampler;
@@ -24,7 +24,6 @@ MpcSoundPlayerControls::MpcSoundPlayerControls(
 	this->mixerSetupGui = mixerSetupGui;
 }
 
-const int MpcSoundPlayerControls::MPC_SOUND_PLAYER_CHANNEL_ID;
 string MpcSoundPlayerControls::NAME_ = "MpcSoundPlayer";
 
 std::vector<std::shared_ptr<MpcVoice>> MpcSoundPlayerControls::getVoices()
