@@ -6,12 +6,10 @@ namespace ctoot::synth::modules::filter {
 
     class StateVariableFilterElement;
 
-    class StateVariableFilterVariables;
-
     class StateVariableFilter
     {
     public:
-        StateVariableFilter(StateVariableFilterVariables *variables);
+        StateVariableFilter(FilterVariables *variables);
 
         virtual ~StateVariableFilter();
 

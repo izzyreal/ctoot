@@ -1,49 +1,27 @@
 #pragma once
 
 #include <synth/modules/filter/FilterControls.hpp>
-#include <synth/modules/filter/StateVariableFilterVariables.hpp>
 
-namespace ctoot {
+namespace ctoot::synth::modules::filter {
 
-    namespace control {
-        class LawControl;
-        class BooleanControl;
-    }
+    class StateVariableFilterControls
+            : public FilterControls
+    {
+    public:
+        void derive(ctoot::control::Control *c) override;
 
-    namespace synth::modules::filter {
+        void deriveSampleRateIndependentVariables() override;
 
-        class StateVariableFilterControls
-                : public FilterControls, public virtual StateVariableFilterVariables
-        {
+        float deriveResonance() override;
 
-        private:
-            ctoot::control::LawControl *modeMixControl{nullptr};
-            ctoot::control::BooleanControl *bandModeControl{nullptr};
-            bool bandMode{false};
+    public:
+        StateVariableFilterControls(std::string name, int idOffset);
 
-        public:
-            void derive(ctoot::control::Control *c) override;
+    public:
+        float getCutoff() override;
 
-            void createControls() override;
+        float getResonance() override;
 
-            void deriveSampleRateIndependentVariables() override;
+    };
 
-            float deriveResonance() override;
-
-            virtual ctoot::control::LawControl *createModeMixControl();
-
-            virtual ctoot::control::BooleanControl *createBandModeControl();
-
-        public:
-
-            StateVariableFilterControls(std::string name, int idOffset);
-
-        public:
-            float getCutoff() override;
-
-            float getResonance() override;
-
-        };
-
-    }
 }

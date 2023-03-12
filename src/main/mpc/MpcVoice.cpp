@@ -63,15 +63,6 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         decay = std::dynamic_pointer_cast<ctoot::control::LawControl>(
                 ampEnvControls->getControls()[DECAY_INDEX].lock()).get();
         reso = std::dynamic_pointer_cast<ctoot::control::LawControl>(svfControls->getControls()[RESO_INDEX].lock()).get();
-
-        auto mix = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                svfControls->getControls()[MIX_INDEX].lock()).get();
-        mix->setValue(0.0f);
-
-        auto bandpass = std::dynamic_pointer_cast<ctoot::control::BooleanControl>(
-                svfControls->getControls()[BANDPASS_INDEX].lock()).get();
-
-        bandpass->setValue(false);
     }
 }
 

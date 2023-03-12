@@ -1,6 +1,5 @@
 #include <synth/modules/filter/StateVariableFilter.hpp>
 #include <synth/modules/filter/StateVariableFilterElement.hpp>
-#include <synth/modules/filter/StateVariableFilterVariables.hpp>
 
 #define _USE_MATH_DEFINES
 //#include <cmath>
@@ -8,7 +7,7 @@
 
 using namespace ctoot::synth::modules::filter;
 
-StateVariableFilter::StateVariableFilter(StateVariableFilterVariables* variables)
+StateVariableFilter::StateVariableFilter(FilterVariables* variables)
 {
 	element = new StateVariableFilterElement();
     vars = variables;

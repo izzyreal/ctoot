@@ -17,7 +17,7 @@ namespace ctoot {
     namespace synth::modules::filter {
 
         class FilterControls
-                : public ctoot::control::CompoundControl, public virtual FilterVariables
+                : public ctoot::control::CompoundControl, public FilterVariables
         {
 
         private:
