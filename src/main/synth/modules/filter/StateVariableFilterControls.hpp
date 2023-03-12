@@ -19,7 +19,6 @@ namespace ctoot {
         private:
             ctoot::control::LawControl *modeMixControl{nullptr};
             ctoot::control::BooleanControl *bandModeControl{nullptr};
-            float modeMix{0};
             bool bandMode{false};
 
         public:
@@ -31,18 +30,11 @@ namespace ctoot {
 
             float deriveResonance() override;
 
-            virtual float deriveModeMix();
-
-            virtual bool deriveBandMode();
-
             virtual ctoot::control::LawControl *createModeMixControl();
 
             virtual ctoot::control::BooleanControl *createBandModeControl();
 
         public:
-            float getModeMix() override;
-
-            bool isBandMode() override;
 
             StateVariableFilterControls(std::string name, int idOffset);
 

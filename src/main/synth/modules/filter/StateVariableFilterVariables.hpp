@@ -1,21 +1,14 @@
 #pragma once
+
 #include <synth/modules/filter/FilterVariables.hpp>
 
-namespace ctoot {
-	namespace synth {
-		namespace modules {
-			namespace filter {
+namespace ctoot::synth::modules::filter {
 
-				class StateVariableFilterVariables
-					: public virtual FilterVariables
-				{
-				public:
-					virtual float getModeMix() = 0;
-					virtual bool isBandMode() = 0;
+    class StateVariableFilterVariables
+            : public virtual FilterVariables
+    {
+    public:
 
-				};
+    };
 
-			}
-		}
-	}
 }

@@ -21,6 +21,9 @@ namespace ctoot {
         {
 
         private:
+            static const int FREQUENCY{ 0 };
+            static const int RESONANCE{ 1 };
+
             ctoot::control::LawControl *cutoffControl{nullptr};
             ctoot::control::LawControl *resonanceControl{nullptr};
             float cutoff{0.f}, resonance{0.f};

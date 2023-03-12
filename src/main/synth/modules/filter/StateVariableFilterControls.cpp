@@ -17,17 +17,7 @@ StateVariableFilterControls::StateVariableFilterControls(string name, int idOffs
 
 void StateVariableFilterControls::derive(ctoot::control::Control* c)
 {
-	switch (c->getId() - idOffset) {
-	case FilterControlIds::MODE_MIX:
-		modeMix = deriveModeMix();
-		break;
-	case FilterControlIds::BAND_MODE:
-		bandMode = deriveBandMode();
-		break;
-	default:
-		FilterControls::derive(c);
-		break;
-	}
+	FilterControls::derive(c);
 }
 
 void StateVariableFilterControls::createControls()
@@ -41,23 +31,11 @@ void StateVariableFilterControls::createControls()
 void StateVariableFilterControls::deriveSampleRateIndependentVariables()
 {
     FilterControls::deriveSampleRateIndependentVariables();
-    modeMix = deriveModeMix();
-    bandMode = deriveBandMode();
 }
 
 float StateVariableFilterControls::deriveResonance()
 {
     return static_cast< float >(2 * (1.0f - pow(FilterControls::deriveResonance(), 0.25)));
-}
-
-float StateVariableFilterControls::deriveModeMix()
-{
-    return modeMixControl->getValue();
-}
-
-bool StateVariableFilterControls::deriveBandMode()
-{
-    return bandModeControl->getValue();
 }
 
 ctoot::control::LawControl* StateVariableFilterControls::createModeMixControl()
@@ -71,16 +49,6 @@ ctoot::control::BooleanControl* StateVariableFilterControls::createBandModeContr
 	auto control = new ctoot::control::BooleanControl(FilterControlIds::BAND_MODE + idOffset, "Band.Pass", bandMode);
 	control->setAnnotation("B");
 	return control;
-}
-
-float StateVariableFilterControls::getModeMix()
-{
-    return modeMix;
-}
-
-bool StateVariableFilterControls::isBandMode()
-{
-    return bandMode;
 }
 
 float StateVariableFilterControls::getCutoff()

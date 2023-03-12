@@ -3,7 +3,6 @@
 #include <control/Control.hpp>
 #include <control/LawControl.hpp>
 #include <control/LinearLaw.hpp>
-#include <synth/modules/filter/FilterControlIds.hpp>
 
 using namespace ctoot::synth::modules::filter;
 using namespace std;
@@ -25,10 +24,10 @@ weak_ptr<ctoot::control::ControlLaw> FilterControls::SEMITONE_LAW() {
 void FilterControls::derive(ctoot::control::Control* c)
 {
 	switch (c->getId() - idOffset) {
-	case FilterControlIds::FREQUENCY:
+	case FREQUENCY:
 		cutoff = deriveCutoff();
 		break;
-	case FilterControlIds::RESONANCE:
+	case RESONANCE:
 		resonance = deriveResonance();
 		break;
 	}
@@ -64,12 +63,12 @@ float FilterControls::deriveCutoff()
 
 ctoot::control::LawControl* FilterControls::createCutoffControl()
 {
-	return new ctoot::control::LawControl(FilterControlIds::FREQUENCY + idOffset, "Cutoff", SEMITONE_LAW(), 1.0f, 0.0f);
+	return new ctoot::control::LawControl(FREQUENCY + idOffset, "Cutoff", SEMITONE_LAW(), 1.0f, 0.0f);
 }
 
 ctoot::control::LawControl* FilterControls::createResonanceControl()
 {
-	return new ctoot::control::LawControl(FilterControlIds::RESONANCE + idOffset, "Resonance", ctoot::control::LinearLaw::UNITY(), 0.01f, 0.25f);
+	return new ctoot::control::LawControl(RESONANCE + idOffset, "Resonance", ctoot::control::LinearLaw::UNITY(), 0.01f, 0.25f);
 }
 
 float FilterControls::getCutoff()

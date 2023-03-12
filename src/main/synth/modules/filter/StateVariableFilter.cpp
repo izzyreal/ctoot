@@ -17,8 +17,8 @@ StateVariableFilter::StateVariableFilter(StateVariableFilterVariables* variables
 float StateVariableFilter::update()
 {
     res = vars->getResonance();
-    element->mix = dynamic_cast< StateVariableFilterVariables* >(vars)->getModeMix();
-    element->bp = dynamic_cast< StateVariableFilterVariables* >(vars)->isBandMode();
+    element->mix = 0;
+    element->bp = false;
     return vars->getCutoff();
 }
 
