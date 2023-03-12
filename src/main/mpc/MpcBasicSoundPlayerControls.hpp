@@ -43,6 +43,5 @@ namespace ctoot {
 			static std::string& NAME();
 
 		};
-		REGISTER_TYPE(ctoot::mpc::, MpcBasicSoundPlayerControls)
 	}
 }

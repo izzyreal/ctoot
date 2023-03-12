@@ -12,18 +12,6 @@ Control::Control(int id, string name)
 	annotation = name;
 }
 
-void Control::registerType(const std::string& name, ControlFactory *factory)
-{
-	(*getRegistry())[name] = factory;
-}
-
-shared_ptr<Control> Control::create(const std::string &name)
-{
-	auto res = (*getRegistry())[name]->create();
-	auto namestr = res->getName();
-	return res;
-}
-
 void Control::setHidden(bool h)
 {
     hidden = h;

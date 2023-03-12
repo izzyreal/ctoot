@@ -3,7 +3,6 @@
 #include <audio/core/AudioControls.hpp>
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/core/AudioProcess.hpp>
-#include <audio/core/AudioServices.hpp>
 
 using namespace std;
 using namespace ctoot::control;
@@ -64,9 +63,4 @@ void AudioProcessChain::close()
 string AudioProcessChain::getName()
 {
     return controlChain.lock()->getName();
-}
-
-shared_ptr<AudioProcess> AudioProcessChain::createProcess(weak_ptr<AudioControls> controls)
-{
-    return AudioServices::createProcess(controls);
 }

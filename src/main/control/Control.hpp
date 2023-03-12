@@ -10,41 +10,16 @@
 #include <map>
 #include "ControlFactory.hpp"
 
-#define REGISTER_TYPE(nspace, klass) \
-    class klass##Factory : public ctoot::control::ControlFactory { \
-    public: \
-        klass##Factory() \
-        { \
-            ctoot::control::Control::registerType("" #nspace#klass, this); \
-        } \
-        virtual std::shared_ptr<ctoot::control::Control> create() { \
-            return std::make_shared<klass>(); \
-        } \
-    }; \
-    static klass##Factory global_##klass##Factory;
-
 namespace ctoot::control {
     class CompoundControl;
 
     class Control : public moduru::observer::Observable
     {
     private:
-        static std::map<std::string, ctoot::control::ControlFactory *> *getRegistry()
-        {
-            static std::map<std::string, ctoot::control::ControlFactory *> res;
-            return &res;
-        }
-
-    public:
-        static void registerType(const std::string &name, ctoot::control::ControlFactory *factory);
-
-        static std::shared_ptr<Control> create(const std::string &name);
-
-    private:
         int id;
         CompoundControl *parent{nullptr};
-        std::string name{""};
-        std::string annotation{""};
+        std::string name;
+        std::string annotation;
         bool hidden{false};
         bool enabled{true};
 

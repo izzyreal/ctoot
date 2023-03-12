@@ -2,7 +2,6 @@
 
 // ctootextensions
 #include "MpcSoundPlayerControls.hpp"
-#include "MpcMultiMidiSynth.hpp"
 #include "MpcFaderControl.hpp"
 #include "MpcMixerInterconnection.hpp"
 #include "MpcVoice.hpp"
@@ -29,6 +28,7 @@ using namespace std;
 MpcSoundPlayerChannel::MpcSoundPlayerChannel(weak_ptr<MpcSoundPlayerControls> controlsToUse)
 {
 	controls = controlsToUse.lock();
+    voices = controls->getVoices();
 	receivePgmChange = true;
 	receiveMidiVolume = true;
 
@@ -123,11 +123,11 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 	shared_ptr<MpcVoice> voice;
 
-	for (auto& v : controls->getMms().lock()->getVoices())
+	for (auto& v : voices)
 	{
-		if (v.lock()->isFinished())
+		if (v->isFinished())
 		{
-			voice = v.lock();
+			voice = v;
 			break;
 		}
 	}
@@ -245,15 +245,15 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 {
 	if (np->getMuteAssignA() != 34 || np->getMuteAssignB() != 34)
 	{
-		for (auto& v : controls->getMms().lock()->getVoices())
+		for (auto& v : controls->getVoices())
 		{
-			if (v.lock()->isFinished())
+			if (v->isFinished())
 				continue;
 
-			if (v.lock()->getMuteInfo().shouldMute(np->getMuteAssignA(), drumIndex)
-				|| v.lock()->getMuteInfo().shouldMute(np->getMuteAssignB(), drumIndex))
+			if (v->getMuteInfo().shouldMute(np->getMuteAssignA(), drumIndex)
+				|| v->getMuteInfo().shouldMute(np->getMuteAssignB(), drumIndex))
 			{
-				v.lock()->startDecay();
+				v->startDecay();
 			}
 		}
 	}
@@ -268,10 +268,8 @@ void MpcSoundPlayerChannel::allNotesOff()
 {
     for (int note = 35; note <= 98; note++)
     {
-        for (auto& v : controls->getMms().lock()->getVoices())
+        for (auto& voice : controls->getVoices())
         {
-            auto voice = v.lock();
-
             if (!voice->isFinished()
                 && voice->getNote() == note
                 && voice->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
@@ -287,23 +285,23 @@ void MpcSoundPlayerChannel::allNotesOff()
 
 void MpcSoundPlayerChannel::allSoundOff()
 {
-	for (auto& voice : controls->getMms().lock()->getVoices())
+	for (auto& voice : controls->getVoices())
 	{
-		if (voice.lock()->isFinished())
+		if (voice->isFinished())
 			continue;
 
-		voice.lock()->startDecay();
+		voice->startDecay();
 	}
 }
 
 void MpcSoundPlayerChannel::allSoundOff(int frameOffset)
 {
-	for (auto& voice : controls->getMms().lock()->getVoices())
+	for (auto& voice : controls->getVoices())
 	{
-		if (voice.lock()->isFinished())
+		if (voice->isFinished())
 			continue;
 
-		voice.lock()->startDecay(frameOffset);
+		voice->startDecay(frameOffset);
 	}
 }
 
@@ -312,7 +310,7 @@ void MpcSoundPlayerChannel::connectVoices()
 	for (auto j = 0; j < 32; j++)
 	{
 		auto ams1 = mixer->getStrip(to_string(j + 1)).lock();
-		auto voice = controls->getMms().lock()->getVoices()[j];
+		auto voice = controls->getVoices()[j];
 		ams1->setInputProcess(voice);
 		auto mi = new MpcMixerInterconnection("con" + to_string(j), server);
 		ams1->setDirectOutputProcess(mi->getInputProcess());
@@ -358,10 +356,8 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset, int noteOnStar
 
 void MpcSoundPlayerChannel::startDecayForNote(const int note, const int frameOffset, const int noteOnStartTick)
 {
-    for (auto& v : controls->getMms().lock()->getVoices())
+    for (auto& voice : controls->getVoices())
 	{
-        auto voice = v.lock();
-
 		if (!voice->isFinished()
             && voice->getStartTick() == noteOnStartTick
             && voice->getNote() == note
@@ -378,10 +374,8 @@ void MpcSoundPlayerChannel::startDecayForNote(const int note, const int frameOff
 void MpcSoundPlayerChannel::stopMonoOrPolyVoiceWithSameNoteParameters(
         ctoot::mpc::MpcNoteParameters* noteParameters, int note)
 {
-    for (auto& v : controls->getMms().lock()->getVoices())
+    for (auto& voice : controls->getVoices())
     {
-        auto voice = v.lock();
-
         if (voice->getNoteParameters() == noteParameters) {
             if (voice->getNote() == note) {
                 if (voice->getVoiceOverlap() == VoiceOverlapMode::POLY ||

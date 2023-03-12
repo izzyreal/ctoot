@@ -1,9 +1,6 @@
 #include "AudioControlsChain.hpp"
 
 #include "AudioControls.hpp"
-#include "AudioServices.hpp"
-
-#include <service/ServiceDescriptor.hpp>
 
 using namespace ctoot::audio::core;
 using namespace ctoot::control;

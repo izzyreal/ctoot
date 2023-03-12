@@ -39,6 +39,7 @@ namespace ctoot::mpc
 		std::map<int, int> simultA;
 		std::map<int, int> simultB;
 		std::shared_ptr<MpcSoundPlayerControls> controls;
+        std::vector<std::shared_ptr<MpcVoice>> voices;
 		std::shared_ptr<MpcSampler> sampler;
 		std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer;
 		std::vector<MpcMixerInterconnection*> mixerConnections;

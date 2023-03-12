@@ -35,13 +35,9 @@ namespace ctoot::synth {
         virtual void setSampleRate(int rate);
 
         virtual std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat();
-        /*void noteOn(int pitch, int velocity); (already declared) */
-        /*void noteOff(int pitch); (already declared) */
 
     public:
         void noteOff(int pitch, int velocity) override;
-        /*void allNotesOff(); (already declared) */
-        /*void allSoundOff(); (already declared) */
         void controlChange(int arg0, int arg1) override;
 
         int getController(int arg0) override;

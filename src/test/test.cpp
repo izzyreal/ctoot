@@ -15,15 +15,3 @@ TEST_CASE("AudioFormat is instantiated", "[audioformat]") {
 	delete af;
 	REQUIRE(sr1 == sr2);
 }
-
-TEST_CASE("AudioServices are scanned", "[audioservices-scan]") {
-	moduru::Logger::l.setPath("ctoot.log");
-	std::string testControlName = "ctoot::audio::analysis::SpectrumAnalyserControls";
-	AudioServices::scan();
-	auto ac = AudioServices::getAvailableControls();
-	REQUIRE(ac.find(testControlName) != std::string::npos);
-	auto testControl = AudioServices::createControls(testControlName);
-	REQUIRE(testControl);
-	auto name = testControl->getName();
-	REQUIRE(name.compare("SpectrumAnalyser") == 0);
-}
