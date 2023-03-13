@@ -45,7 +45,6 @@ namespace ctoot::audio::server {
 		virtual void closeAudioInput(IOAudioProcess* input) = 0;
 		virtual float getSampleRate();
 		virtual void setSampleRate(int rate);
-		virtual float getLoad() = 0;
 		virtual int getInputLatencyFrames() = 0;
 		virtual int getOutputLatencyFrames() = 0;
 		virtual int getTotalLatencyFrames() = 0;

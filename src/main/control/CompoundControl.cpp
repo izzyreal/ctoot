@@ -114,16 +114,3 @@ void CompoundControl::disambiguate(weak_ptr<CompoundControl> c)
 	} while (find(str).lock());
 	c.lock()->setName(str);
 }
-
-void CompoundControl::close()
-{
-}
-
-void CompoundControl::setEnabled(bool enable)
-{
-	Control::setEnabled(enable);
-	for (int i = 0; i < controls.size(); i++) {
-		Control* currentControl = controls[i].get();
-		currentControl->setEnabled(enable);
-	}
-}

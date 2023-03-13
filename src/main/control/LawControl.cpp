@@ -26,7 +26,6 @@ string LawControl::getValueString()
 
 void LawControl::setValue(float value)
 {
-	if (!isEnabled()) return;
 	this->value = value;
 	notifyParent(this);
 }

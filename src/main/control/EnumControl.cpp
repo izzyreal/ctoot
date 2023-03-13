@@ -16,8 +16,6 @@ EnumControl::EnumControl(int id, string name, nonstd::any value) : Control(id, n
 
 void EnumControl::setValue(nonstd::any value)
 {
-    if (!isEnabled()) return;
-
     this->value = value;
     notifyParent(this);
 }

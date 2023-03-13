@@ -84,16 +84,6 @@ bool Control::isIndicator()
     return indicator;
 }
 
-void Control::setEnabled(bool enable)
-{
-    enabled = enable;
-}
-
-bool Control::isEnabled()
-{
-    return enabled;
-}
-
 std::string Control::getControlPath(Control* from, std::string sep)
 {
 	if (parent != from) {

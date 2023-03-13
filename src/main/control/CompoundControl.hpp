@@ -5,8 +5,7 @@
 #include <control/Control.hpp>
 
 namespace ctoot::control {
-    class CompoundControl
-            : public Control
+    class CompoundControl : public Control
     {
     protected:
         std::vector<std::shared_ptr<Control>> controls;
@@ -30,10 +29,6 @@ namespace ctoot::control {
 
     public:
         virtual void disambiguate(std::weak_ptr<CompoundControl> c);
-
-        virtual void close();
-
-        void setEnabled(bool enable) override;
 
     public:
         CompoundControl(int id, std::string name);

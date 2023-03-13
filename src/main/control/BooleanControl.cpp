@@ -9,9 +9,6 @@ BooleanControl::BooleanControl(int id, string name, bool initialValue) : Control
 
 void BooleanControl::setValue(bool value)
 {
-	if (!isEnabled())
-		return;
-
 	if (value != this->value) {
 		this->value = value;
 		notifyParent(this);

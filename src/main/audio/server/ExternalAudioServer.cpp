@@ -257,11 +257,6 @@ void ExternalAudioServer::closeAudioInput(ctoot::audio::server::IOAudioProcess* 
 	}
 }
 
-float ExternalAudioServer::getLoad()
-{
-	return 0;
-}
-
 int ExternalAudioServer::getInputLatencyFrames()
 {
 	return bufferSize;

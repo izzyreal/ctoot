@@ -15,7 +15,6 @@ namespace ctoot::control {
         std::string name;
         std::string annotation;
         bool hidden{false};
-        bool enabled{true};
 
     protected:
         bool indicator{false};
@@ -50,10 +49,6 @@ namespace ctoot::control {
         virtual bool isHidden();
 
         virtual bool isIndicator();
-
-        virtual void setEnabled(bool enable);
-
-        virtual bool isEnabled();
 
         virtual std::string getControlPath(Control *from, std::string sep);
 
