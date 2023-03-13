@@ -11,7 +11,7 @@
 namespace ctoot::audio::server {
 
     class NonRealTimeAudioServer
-            : public virtual AudioServer, public AudioClient
+            : public AudioServer, public AudioClient
     {
 
     private:

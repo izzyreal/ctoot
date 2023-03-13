@@ -9,7 +9,7 @@
 namespace ctoot::audio::mixer {
 
     class BusControls
-            : public virtual ctoot::audio::core::AudioControls
+            : public ctoot::audio::core::AudioControls
     {
 
     private:

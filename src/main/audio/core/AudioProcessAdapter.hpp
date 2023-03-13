@@ -3,7 +3,7 @@
 
 namespace ctoot::audio::core {
 class AudioProcessAdapter
-: public virtual AudioProcess
+: public AudioProcess
 {
     
 protected:

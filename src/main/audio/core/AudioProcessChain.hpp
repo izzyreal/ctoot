@@ -9,7 +9,7 @@
 namespace ctoot::audio::core {
 
     class AudioProcessChain
-            : public virtual AudioProcess
+            : public AudioProcess
     {
 
     public:
