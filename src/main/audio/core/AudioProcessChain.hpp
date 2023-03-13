@@ -13,7 +13,7 @@ namespace ctoot::audio::core {
     {
 
     public:
-        std::weak_ptr<AudioControlsChain> controlChain;
+        std::shared_ptr<AudioControlsChain> controlChain;
         std::vector<std::shared_ptr<AudioProcess>> processes;
 
     public:
@@ -27,12 +27,12 @@ namespace ctoot::audio::core {
         virtual std::string getName();
 
     public:
-        virtual std::shared_ptr<AudioProcess> createProcess(std::weak_ptr<AudioControls> controls) {
+        virtual std::shared_ptr<AudioProcess> createProcess(std::shared_ptr<AudioControls> controls) {
             return {};
         }
 
     public:
-        AudioProcessChain(std::weak_ptr<AudioControlsChain> controlChain);
+        AudioProcessChain(std::shared_ptr<AudioControlsChain> controlChain);
 
     };
 

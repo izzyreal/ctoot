@@ -22,14 +22,14 @@ namespace ctoot::audio::fader {
 
     public:
 
-        static std::weak_ptr<FaderLaw> BROADCAST();
+        static std::shared_ptr<FaderLaw> BROADCAST();
 
         static float ATTENUATION_CUTOFF();
 
-        static std::weak_ptr<FaderLaw> defaultLaw();
+        static std::shared_ptr<FaderLaw> defaultLaw();
 
     public:
-        FaderControl(int id, std::weak_ptr<ctoot::control::ControlLaw> law, float initialValue);
+        FaderControl(int id, std::shared_ptr<ctoot::control::ControlLaw> law, float initialValue);
 
         virtual ~FaderControl();
 

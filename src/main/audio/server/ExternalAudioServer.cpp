@@ -193,9 +193,9 @@ void ExternalAudioServer::work(const float* const* inputBuffer, float* const* ou
 	}
 }
 
-void ExternalAudioServer::setClient(weak_ptr<AudioClient> client)
+void ExternalAudioServer::setClient(shared_ptr<AudioClient> client)
 {
-	auto lClient = client.lock();
+	auto lClient = client;
 	this->client = lClient.get();
 }
 

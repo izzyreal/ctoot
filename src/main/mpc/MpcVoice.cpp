@@ -27,14 +27,14 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
     staticEnvControls = new ctoot::mpc::MpcEnvelopeControls(0, "StaticAmpEnv", AMPENV_OFFSET);
     staticEnv = new ctoot::mpc::MpcEnvelopeGenerator(staticEnvControls);
     shold = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-            staticEnvControls->getControls()[HOLD_INDEX].lock()).get();
+            staticEnvControls->getControls()[HOLD_INDEX]).get();
 
     auto sattack = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-            staticEnvControls->getControls()[ATTACK_INDEX].lock()).get();
+            staticEnvControls->getControls()[ATTACK_INDEX]).get();
 
 
     auto sdecay = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-            staticEnvControls->getControls()[DECAY_INDEX].lock()).get();
+            staticEnvControls->getControls()[DECAY_INDEX]).get();
 
     sattack->setValue(STATIC_ATTACK_LENGTH);
     sdecay->setValue(STATIC_DECAY_LENGTH);
@@ -49,18 +49,18 @@ MpcVoice::MpcVoice(int _stripNumber, bool _basic)
         svfLeft = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
         svfRight = new ctoot::synth::modules::filter::StateVariableFilter(svfControls);
         fattack = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                filterEnvControls->getControls()[ATTACK_INDEX].lock()).get();
+                filterEnvControls->getControls()[ATTACK_INDEX]).get();
         fhold = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                filterEnvControls->getControls()[HOLD_INDEX].lock()).get();
+                filterEnvControls->getControls()[HOLD_INDEX]).get();
         fdecay = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                filterEnvControls->getControls()[DECAY_INDEX].lock()).get();
+                filterEnvControls->getControls()[DECAY_INDEX]).get();
         attack = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                ampEnvControls->getControls()[ATTACK_INDEX].lock()).get();
+                ampEnvControls->getControls()[ATTACK_INDEX]).get();
         hold = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                ampEnvControls->getControls()[HOLD_INDEX].lock()).get();
+                ampEnvControls->getControls()[HOLD_INDEX]).get();
         decay = std::dynamic_pointer_cast<ctoot::control::LawControl>(
-                ampEnvControls->getControls()[DECAY_INDEX].lock()).get();
-        reso = std::dynamic_pointer_cast<ctoot::control::LawControl>(svfControls->getControls()[RESO_INDEX].lock()).get();
+                ampEnvControls->getControls()[DECAY_INDEX]).get();
+        reso = std::dynamic_pointer_cast<ctoot::control::LawControl>(svfControls->getControls()[RESO_INDEX]).get();
     }
 }
 

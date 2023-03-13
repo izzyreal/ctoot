@@ -12,20 +12,20 @@ using namespace std;
 using namespace ctoot::audio::server;
 using namespace ctoot::audio::mixer;
 
-AudioMixer::AudioMixer(weak_ptr<MixerControls> controls, weak_ptr<AudioServer> server)
+AudioMixer::AudioMixer(shared_ptr<MixerControls> controls, shared_ptr<AudioServer> server)
 {
 	this->controls = controls;
 	this->server = server;
-	sharedAudioBuffer = server.lock()->createAudioBuffer("Mixer (shared)");
+	sharedAudioBuffer = server->createAudioBuffer("Mixer (shared)");
 	createBusses(controls);
 	createStrips(controls);
 }
 
-std::weak_ptr<ctoot::audio::server::AudioServer> AudioMixer::getAudioServer() {
+std::shared_ptr<ctoot::audio::server::AudioServer> AudioMixer::getAudioServer() {
 	return server;
 }
 
-weak_ptr<MixerControls> AudioMixer::getMixerControls()
+shared_ptr<MixerControls> AudioMixer::getMixerControls()
 {
     return controls;
 }
@@ -37,20 +37,20 @@ ctoot::audio::core::AudioBuffer* AudioMixer::getSharedBuffer()
 
 ctoot::audio::core::AudioBuffer* AudioMixer::createBuffer(string name)
 {
-    return server.lock()->createAudioBuffer(name);
+    return server->createAudioBuffer(name);
 }
 
 void AudioMixer::removeBuffer(ctoot::audio::core::AudioBuffer* buffer)
 {
-    server.lock()->removeAudioBuffer(buffer);
+    server->removeAudioBuffer(buffer);
 }
 
-weak_ptr<AudioMixerStrip> AudioMixer::getStrip(string name)
+shared_ptr<AudioMixerStrip> AudioMixer::getStrip(string name)
 {
     return getStripImpl(name);
 }
 
-weak_ptr<AudioMixerStrip> AudioMixer::getStripImpl(string name)
+shared_ptr<AudioMixerStrip> AudioMixer::getStripImpl(string name)
 {
 	for (auto& strip : strips) {
 		if (strip->getName().compare(name) == 0) {
@@ -64,25 +64,25 @@ void AudioMixer::work(int nFrames)
 {
 	silenceStrips(&groupStrips);
 	silenceStrips(&auxStrips);
-	mainStrip.lock()->silence();
+	mainStrip->silence();
 	evaluateStrips(&channelStrips, nFrames);
 	evaluateStrips(&groupStrips, nFrames);
 	evaluateStrips(&auxStrips, nFrames);
-	mainStrip.lock()->processBuffer(nFrames);
+	mainStrip->processBuffer(nFrames);
 	writeBusBuffers(nFrames);
 }
 
-void AudioMixer::evaluateStrips(vector<weak_ptr<AudioMixerStrip>>* strips, int nFrames)
+void AudioMixer::evaluateStrips(vector<shared_ptr<AudioMixerStrip>>* strips, int nFrames)
 {
 	for (auto& strip : (*strips)) {
-		strip.lock()->processBuffer(nFrames);
+		strip->processBuffer(nFrames);
 	}
 }
 
-void AudioMixer::silenceStrips(vector<weak_ptr<AudioMixerStrip>>* strips)
+void AudioMixer::silenceStrips(vector<shared_ptr<AudioMixerStrip>>* strips)
 {
 	for (auto& strip : (*strips))
-		strip.lock()->silence();
+		strip->silence();
 }
 
 void AudioMixer::writeBusBuffers(int nFrames)
@@ -91,24 +91,24 @@ void AudioMixer::writeBusBuffers(int nFrames)
 		bus->write(nFrames);
 }
 
-void AudioMixer::createBusses(weak_ptr<MixerControls> mixerControls)
+void AudioMixer::createBusses(shared_ptr<MixerControls> mixerControls)
 {
 	busses.clear();
 	auxBusses.clear();
 
 	shared_ptr<AudioMixerBus> bus;
 
-	for (auto& bc : mixerControls.lock()->getAuxBusControls()) {
+	for (auto& bc : mixerControls->getAuxBusControls()) {
 		bus = createBus(bc);
 		busses.push_back(bus);
 		auxBusses.push_back(bus);
 	}
 
-	mainBus = createBus(mixerControls.lock()->getMainBusControls());
+	mainBus = createBus(mixerControls->getMainBusControls());
 	busses.push_back(mainBus);
 }
 
-shared_ptr<AudioMixerBus> AudioMixer::createBus(weak_ptr<BusControls> busControls)
+shared_ptr<AudioMixerBus> AudioMixer::createBus(shared_ptr<BusControls> busControls)
 {
 	return make_shared<AudioMixerBus>(this, busControls);
 }
@@ -128,30 +128,30 @@ shared_ptr<AudioMixerBus> AudioMixer::getMainBus()
     return mainBus;
 }
 
-weak_ptr<AudioMixerStrip> AudioMixer::getMainStrip()
+shared_ptr<AudioMixerStrip> AudioMixer::getMainStrip()
 {
-	if (!mainStrip.lock()) {
+	if (!mainStrip) {
 		return {};
 	}
 	return mainStrip;
 }
 
-void AudioMixer::createStrips(weak_ptr<MixerControls> mixerControls)
+void AudioMixer::createStrips(shared_ptr<MixerControls> mixerControls)
 {
-	for (auto& control : mixerControls.lock()->getControls()) {
-		auto candidate = dynamic_pointer_cast<core::AudioControlsChain>(control.lock());
+	for (auto& control : mixerControls->getControls()) {
+		auto candidate = dynamic_pointer_cast<core::AudioControlsChain>(control);
 		if (candidate) {
 			createStrip(candidate);
 		}
 	}
 }
 
-weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::AudioControlsChain> controls)
+shared_ptr<AudioMixerStrip> AudioMixer::createStrip(shared_ptr<ctoot::audio::core::AudioControlsChain> controls)
 {
 
 	auto strip = make_shared<AudioMixerStrip>(this, controls);
 
-	switch (controls.lock()->getId()) {
+	switch (controls->getId()) {
 	case MixerControlsIds::CHANNEL_STRIP:
 		channelStrips.push_back(strip);
 		break;
@@ -162,7 +162,7 @@ weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::A
 		auxStrips.push_back(strip);
 		break;
 	case MixerControlsIds::MAIN_STRIP:
-		if (!mainStrip.lock()) {
+		if (!mainStrip) {
 			mainStrip = strip;
 		}
 		break;
@@ -193,7 +193,7 @@ void AudioMixer::close()
 	}
     busses.clear();
 	auxBusses.clear();
-	server.lock()->removeAudioBuffer(sharedAudioBuffer);
+	server->removeAudioBuffer(sharedAudioBuffer);
 	server.reset();
 	controls.reset();
 }

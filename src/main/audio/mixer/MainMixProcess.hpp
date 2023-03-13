@@ -9,7 +9,7 @@ namespace ctoot::audio::mixer {
             : public MixProcess
     {
     public:
-        std::weak_ptr<AudioMixerStrip> nextRoutedStrip;
+        std::shared_ptr<AudioMixerStrip> nextRoutedStrip;
 
     public:
         ctoot::control::EnumControl *routeControl{nullptr};
@@ -18,7 +18,7 @@ namespace ctoot::audio::mixer {
         AudioMixerStrip *getRoutedStrip() override;
 
     public:
-        MainMixProcess(std::shared_ptr<AudioMixerStrip> strip, std::weak_ptr<MixVariables> vars, AudioMixer *mixer);
+        MainMixProcess(std::shared_ptr<AudioMixerStrip> strip, std::shared_ptr<MixVariables> vars, AudioMixer *mixer);
 
     };
 

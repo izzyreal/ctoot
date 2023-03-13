@@ -23,7 +23,7 @@ namespace ctoot::audio::server
 		void stop() override;
 		bool isRunning() override;
 		void close() override;
-		void setClient(std::weak_ptr<AudioClient> client) override;
+		void setClient(std::shared_ptr<AudioClient> client) override;
 		std::vector<std::string> getAvailableOutputNames() override;
 		std::vector<std::string> getAvailableInputNames() override;
 		IOAudioProcess* openAudioOutput(std::string name) override;

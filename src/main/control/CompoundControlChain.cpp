@@ -13,7 +13,7 @@ CompoundControlChain::CompoundControlChain(int id, string name)
 
 void CompoundControlChain::add(shared_ptr<Control> control)
 {
-	if (find(control->getName()).lock()) {
+	if (find(control->getName())) {
 		disambiguate(dynamic_pointer_cast<CompoundControl>(control));
 	}
 	CompoundControl::add(control);

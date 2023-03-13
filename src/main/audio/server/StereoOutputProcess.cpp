@@ -16,7 +16,7 @@ int StereoOutputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer, i
 		return AudioProcess::AUDIO_OK;
 	}
 
-	if (buffer->getChannelFormat().lock() != format.lock()) {
+	if (buffer->getChannelFormat() != format) {
 		buffer->setChannelFormat(format);
 	}
 	

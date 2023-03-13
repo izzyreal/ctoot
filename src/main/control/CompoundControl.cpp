@@ -46,9 +46,9 @@ void CompoundControl::add(shared_ptr<Control> control)
     weakControls.push_back(controls.back());
 }
 
-void CompoundControl::remove(weak_ptr<Control> c)
+void CompoundControl::remove(shared_ptr<Control> c)
 {
-	auto control = c.lock();
+	auto control = c;
 	
     if (!control)
         return;
@@ -66,12 +66,12 @@ void CompoundControl::remove(weak_ptr<Control> c)
 	}
 }
 
-vector<weak_ptr<Control>> CompoundControl::getControls()
+vector<shared_ptr<Control>> CompoundControl::getControls()
 {
     return weakControls;
 }
 
-weak_ptr<Control> CompoundControl::find(string name)
+shared_ptr<Control> CompoundControl::find(string name)
 {
 	for (int i = 0; i < controls.size(); i++) {
 		if (controls[i]->getName().compare(name) == 0) {
@@ -81,14 +81,14 @@ weak_ptr<Control> CompoundControl::find(string name)
 	return {};
 }
 
-weak_ptr<Control> CompoundControl::deepFind(int controlId)
+shared_ptr<Control> CompoundControl::deepFind(int controlId)
 {
 	for (auto& c : controls) {
 
 		auto cc = dynamic_pointer_cast<CompoundControl>(c);
 
 		if (cc) {
-			auto c2 = cc->deepFind(controlId).lock();
+			auto c2 = cc->deepFind(controlId);
 			if (c2) return c2;
 
 		}
@@ -100,10 +100,10 @@ weak_ptr<Control> CompoundControl::deepFind(int controlId)
 	return {};
 }
 
-void CompoundControl::disambiguate(weak_ptr<CompoundControl> c)
+void CompoundControl::disambiguate(shared_ptr<CompoundControl> c)
 {
-	auto original = c.lock()->getName();
-	if (!find(original).lock()) {
+	auto original = c->getName();
+	if (!find(original)) {
 		return;
 	}
 	int index = 1;
@@ -111,6 +111,6 @@ void CompoundControl::disambiguate(weak_ptr<CompoundControl> c)
 	do {
 		index++;
 		str = original + " #" + (to_string(index));
-	} while (find(str).lock());
-	c.lock()->setName(str);
+	} while (find(str));
+	c->setName(str);
 }

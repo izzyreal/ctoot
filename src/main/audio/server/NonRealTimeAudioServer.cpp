@@ -11,7 +11,7 @@
 using namespace ctoot::audio::server;
 using namespace std;
 
-NonRealTimeAudioServer::NonRealTimeAudioServer(weak_ptr<AudioServer> server) 
+NonRealTimeAudioServer::NonRealTimeAudioServer(shared_ptr<AudioServer> server)
 {
 	this->server = server;
 	realTime = true;
@@ -21,7 +21,7 @@ NonRealTimeAudioServer::NonRealTimeAudioServer(weak_ptr<AudioServer> server)
 
 void NonRealTimeAudioServer::setSampleRate(int rate)
 {
-	server.lock()->setSampleRate(rate);
+	server->setSampleRate(rate);
 }
 
 void NonRealTimeAudioServer::setWeakPtr(shared_ptr<NonRealTimeAudioServer> sharedPtr) {
@@ -41,7 +41,7 @@ void NonRealTimeAudioServer::setRealTime(bool rt)
             printf("%s", e.what());
 		}
 		realTime = rt;
-		for (auto& buffer : server.lock()->getBuffers()) {
+		for (auto& buffer : server->getBuffers()) {
 			buffer->setRealTime(realTime);
 		}
 		try {
@@ -64,7 +64,7 @@ void NonRealTimeAudioServer::start()
 		return;
 
 	if (realTime) {
-		auto lServer = server.lock();
+		auto lServer = server;
 		lServer->start();
 	}
 	else {
@@ -74,7 +74,7 @@ void NonRealTimeAudioServer::start()
 
 void NonRealTimeAudioServer::startNRT()
 {
-	if (!client.lock()) {
+	if (!client) {
 		startASAP = true;
 		return;
 	}
@@ -96,7 +96,7 @@ void NonRealTimeAudioServer::stop()
         return;
 
     if(realTime) {
-		auto lServer = server.lock();
+		auto lServer = server;
         lServer->stop();
     } else if(isRunning_) {
         stopNRT();
@@ -113,12 +113,12 @@ void NonRealTimeAudioServer::stopNRT()
 
 void NonRealTimeAudioServer::close()
 {
-	server.lock()->close();
+	server->close();
 }
 
-void NonRealTimeAudioServer::setClient(weak_ptr<AudioClient> client)
+void NonRealTimeAudioServer::setClient(shared_ptr<AudioClient> client)
 {
-	auto lServer = server.lock();
+	auto lServer = server;
 	lServer->setClient(me);
     this->client = client;
     if(startASAP) {
@@ -129,26 +129,26 @@ void NonRealTimeAudioServer::setClient(weak_ptr<AudioClient> client)
 
 bool NonRealTimeAudioServer::isRunning()
 {
-	auto lServer = server.lock();
+	auto lServer = server;
     return realTime ? lServer->isRunning() : isRunning_;
 }
 
 void NonRealTimeAudioServer::work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
-	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server.lock());
+	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server);
 	if (externalAudioServer) {
 		externalAudioServer->work(inputBuffer, outputBuffer, nFrames, inputChannelCount, outputChannelCount);
 	}
 }
 
 void NonRealTimeAudioServer::work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
-	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server.lock());
+	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server);
 	if (externalAudioServer) {
 		externalAudioServer->work(inputBuffer, outputBuffer, nFrames, inputChannelCount, outputChannelCount);
 	}
 }
 
 void NonRealTimeAudioServer::work(float* inputBuffer, float* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
-	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server.lock());
+	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server);
 	if (externalAudioServer) {
 		externalAudioServer->work(inputBuffer, outputBuffer, nFrames, inputChannelCount, outputChannelCount);
 	}
@@ -156,7 +156,7 @@ void NonRealTimeAudioServer::work(float* inputBuffer, float* outputBuffer, int n
 
 void NonRealTimeAudioServer::work(int nFrames)
 {
-	auto lClient = client.lock();
+	auto lClient = client;
     if (lClient) lClient->work(nFrames);
 }
 
@@ -164,77 +164,77 @@ void NonRealTimeAudioServer::run()
 {
 	isRunning_ = true;
     while (isRunning_) {
-		work(server.lock()->getBufferSize());
+		work(server->getBufferSize());
     }
 }
 
 void NonRealTimeAudioServer::removeAudioBuffer(ctoot::audio::core::AudioBuffer* buffer) {
-	auto lServer = server.lock();
+	auto lServer = server;
 	lServer->removeAudioBuffer(buffer);
 }
 
 ctoot::audio::core::AudioBuffer* NonRealTimeAudioServer::createAudioBuffer(string name)
 {
-	auto lServer = server.lock();
+	auto lServer = server;
 	auto buffer = lServer->createAudioBuffer(name);
 	return buffer;
 }
 
 vector<string> NonRealTimeAudioServer::getAvailableOutputNames()
 {
-	auto lServer = server.lock();
+	auto lServer = server;
     return lServer->getAvailableOutputNames();
 }
 
 vector<string> NonRealTimeAudioServer::getAvailableInputNames()
 {
-	auto lServer = server.lock();
+	auto lServer = server;
     return lServer->getAvailableInputNames();
 }
 
 IOAudioProcess* NonRealTimeAudioServer::openAudioOutput(string name)
 {
-	auto lServer = server.lock();
+	auto lServer = server;
     return lServer->openAudioOutput(name);
 }
 
 IOAudioProcess* NonRealTimeAudioServer::openAudioInput(string name)
 {
-    return server.lock()->openAudioInput(name);
+    return server->openAudioInput(name);
 }
 
 void NonRealTimeAudioServer::closeAudioOutput(IOAudioProcess* output)
 {
-    server.lock()->closeAudioOutput(output);
+    server->closeAudioOutput(output);
 }
 
 void NonRealTimeAudioServer::closeAudioInput(IOAudioProcess* input)
 {
-    server.lock()->closeAudioInput(input);
+    server->closeAudioInput(input);
 }
 
 float NonRealTimeAudioServer::getSampleRate()
 {
-    return server.lock()->getSampleRate();
+    return server->getSampleRate();
 }
 
 int NonRealTimeAudioServer::getInputLatencyFrames()
 {
-    return server.lock()->getInputLatencyFrames();
+    return server->getInputLatencyFrames();
 }
 
 int NonRealTimeAudioServer::getOutputLatencyFrames()
 {
-    return server.lock()->getOutputLatencyFrames();
+    return server->getOutputLatencyFrames();
 }
 
 int NonRealTimeAudioServer::getTotalLatencyFrames()
 {
-    return server.lock()->getTotalLatencyFrames();
+    return server->getTotalLatencyFrames();
 }
 
 void NonRealTimeAudioServer::resizeBuffers(int newSize) {
-	server.lock()->resizeBuffers(newSize);
+	server->resizeBuffers(newSize);
 }
 
 NonRealTimeAudioServer::~NonRealTimeAudioServer() {

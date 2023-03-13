@@ -16,10 +16,10 @@ using namespace ctoot::audio::core;
 using namespace ctoot::audio::fader;
 using namespace std;
 
-MixerControls::MixerControls(string name, string mainBusName, weak_ptr<ChannelFormat> channelFormat)
+MixerControls::MixerControls(string name, string mainBusName, shared_ptr<ChannelFormat> channelFormat)
 	: CompoundControl(1, name)
 {
-	mainBusControls = make_shared<BusControls>(MixerControlsIds::MAIN_BUS, mainBusName, channelFormat.lock());
+	mainBusControls = make_shared<BusControls>(MixerControlsIds::MAIN_BUS, mainBusName, channelFormat);
 }
 
 float MixerControls::getSmoothingFactor()
@@ -27,16 +27,16 @@ float MixerControls::getSmoothingFactor()
     return smoothingFactor;
 }
 
-void MixerControls::createAuxBusControls(string name, weak_ptr<ChannelFormat> format)
+void MixerControls::createAuxBusControls(string name, shared_ptr<ChannelFormat> format)
 {
 	if (!canAddBusses) {
 		return;
 	}
-	auto busControls = make_shared<BusControls>(MixerControlsIds::AUX_BUS, name, format.lock());
+	auto busControls = make_shared<BusControls>(MixerControlsIds::AUX_BUS, name, format);
 	auxBusControls.push_back(std::move(busControls));
 }
 
-weak_ptr<BusControls> MixerControls::getBusControls(string name)
+shared_ptr<BusControls> MixerControls::getBusControls(string name)
 {
 	auto mbc = mainBusControls;
 	
@@ -55,7 +55,7 @@ weak_ptr<BusControls> MixerControls::getBusControls(string name)
 	return {};
 }
 
-weak_ptr<BusControls> MixerControls::getMainBusControls()
+shared_ptr<BusControls> MixerControls::getMainBusControls()
 {
 	return mainBusControls;
 }
@@ -65,14 +65,14 @@ vector<shared_ptr<BusControls>> MixerControls::getAuxBusControls()
 	return auxBusControls;
 }
 
-weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, string name)
+shared_ptr<AudioControlsChain> MixerControls::createStripControls(int id, string name)
 {
     return createStripControls(id, name, true);
 }
 
-weak_ptr<AudioControlsChain> MixerControls::createStripControls(int id, string name, bool hasMixControls)
+shared_ptr<AudioControlsChain> MixerControls::createStripControls(int id, string name, bool hasMixControls)
 {
-	if (getStripControls(name).lock()) {
+	if (getStripControls(name)) {
 		return {};
 	}
 	auto chain = std::make_shared<AudioControlsChain>(id, name);
@@ -87,11 +87,11 @@ void MixerControls::addStripControls(shared_ptr<CompoundControl> cc)
 	add(cc);
 }
 
-weak_ptr<AudioControlsChain> MixerControls::getStripControls(string name)
+shared_ptr<AudioControlsChain> MixerControls::getStripControls(string name)
 {
 	string size = to_string(getControls().size());
 	for (int i = 0; i < (int)(getControls().size()); i++) {
-		auto c = getControls()[i].lock();
+		auto c = getControls()[i];
 		if (c->getName().compare(name) == 0) {
 			try {
 				return dynamic_pointer_cast<AudioControlsChain>(c);

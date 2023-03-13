@@ -57,7 +57,7 @@ namespace ctoot {
             FilterControls(int id, std::string name, int idOffset);
 
         private:
-            static std::weak_ptr<ctoot::control::ControlLaw> SEMITONE_LAW();
+            static std::shared_ptr<ctoot::control::ControlLaw> SEMITONE_LAW();
 
         };
 

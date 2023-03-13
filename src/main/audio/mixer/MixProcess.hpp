@@ -11,8 +11,8 @@ namespace ctoot::audio::mixer {
     {
 
     protected:
-        std::weak_ptr<MixVariables> vars;
-        std::weak_ptr<AudioMixerStrip> routedStrip;
+        std::shared_ptr<MixVariables> vars;
+        std::shared_ptr<AudioMixerStrip> routedStrip;
 
     private:
         float gain{1.0f};
@@ -27,7 +27,7 @@ namespace ctoot::audio::mixer {
         int processAudio(ctoot::audio::core::AudioBuffer *buffer) override;
 
     public:
-        MixProcess(std::weak_ptr<AudioMixerStrip> strip, std::weak_ptr<MixVariables> vars);
+        MixProcess(std::shared_ptr<AudioMixerStrip> strip, std::shared_ptr<MixVariables> vars);
     };
 
 }

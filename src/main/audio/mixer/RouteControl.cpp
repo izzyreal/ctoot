@@ -23,7 +23,7 @@ vector<nonstd::any> RouteControl::getValues()
 	vector<nonstd::any> values;
 	auto controls = mmc->getMixerControls()->getControls();
 	for (auto& c : controls) {
-		auto control = c.lock();
+		auto control = c;
 		if (dynamic_pointer_cast<core::AudioControlsChain>(control)) {
 			if (control->getId() == MixerControlsIds::MAIN_STRIP || (control->getId() == MixerControlsIds::GROUP_STRIP && canRouteToGroups)) {
 				values.push_back(control->getName());

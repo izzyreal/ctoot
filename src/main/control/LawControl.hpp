@@ -12,7 +12,7 @@ namespace ctoot::control {
     {
 
     private:
-        std::weak_ptr<ControlLaw> law;
+        std::shared_ptr<ControlLaw> law;
         float value{0};
         float precision{0};
 
@@ -27,7 +27,7 @@ namespace ctoot::control {
         std::string getValueString() override;
 
     public:
-        LawControl(int id, std::string name, std::weak_ptr<ControlLaw> law, float precision, float initialValue);
+        LawControl(int id, std::string name, std::shared_ptr<ControlLaw> law, float precision, float initialValue);
 
     };
 

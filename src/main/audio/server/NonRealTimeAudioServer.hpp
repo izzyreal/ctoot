@@ -16,12 +16,12 @@ namespace ctoot::audio::server {
 
     private:
 
-        std::weak_ptr<NonRealTimeAudioServer> me;
+        std::shared_ptr<NonRealTimeAudioServer> me;
 
         bool realTime{true};
         bool isRunning_{false};
-        std::weak_ptr<AudioServer> server;
-        std::weak_ptr<AudioClient> client;
+        std::shared_ptr<AudioServer> server;
+        std::shared_ptr<AudioClient> client;
         std::thread nrtThread;
         bool startASAP{false};
 
@@ -52,7 +52,7 @@ namespace ctoot::audio::server {
 
         void close() override;
 
-        void setClient(std::weak_ptr<AudioClient> client) override;
+        void setClient(std::shared_ptr<AudioClient> client) override;
 
         bool isRunning() override;
 
@@ -100,7 +100,7 @@ namespace ctoot::audio::server {
         void work(float *inputBuffer, float *outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
 
     public:
-        NonRealTimeAudioServer(std::weak_ptr<AudioServer> server);
+        NonRealTimeAudioServer(std::shared_ptr<AudioServer> server);
 
         ~NonRealTimeAudioServer();
     };

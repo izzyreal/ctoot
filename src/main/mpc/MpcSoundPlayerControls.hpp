@@ -18,21 +18,21 @@ namespace ctoot::mpc {
 
     private:
         static std::string NAME_;
-        std::weak_ptr<ctoot::mpc::MpcSampler> sampler{};
-        std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer{};
+        std::shared_ptr<ctoot::mpc::MpcSampler> sampler;
+        std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer;
         int drumNumber{0};
-        std::weak_ptr<ctoot::audio::server::AudioServer> server{};
+        std::shared_ptr<ctoot::audio::server::AudioServer> server;
         ctoot::mpc::MpcMixerSetupGui *mixerSetupGui;
         std::vector<std::shared_ptr<MpcVoice>> voices;
 
     public:
         std::vector<std::shared_ptr<MpcVoice>> getVoices();
 
-        std::weak_ptr<ctoot::mpc::MpcSampler> getSampler();
+        std::shared_ptr<ctoot::mpc::MpcSampler> getSampler();
 
         int getDrumIndex();
 
-        std::weak_ptr<ctoot::audio::mixer::AudioMixer> getMixer();
+        std::shared_ptr<ctoot::audio::mixer::AudioMixer> getMixer();
 
         ctoot::audio::server::AudioServer *getServer();
 
@@ -40,10 +40,10 @@ namespace ctoot::mpc {
 
     public:
         MpcSoundPlayerControls(
-                std::weak_ptr<MpcSampler> sampler,
+                std::shared_ptr<MpcSampler> sampler,
                 int drumNumber,
-                std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer,
-                std::weak_ptr<ctoot::audio::server::AudioServer> server,
+                std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer,
+                std::shared_ptr<ctoot::audio::server::AudioServer> server,
                 MpcMixerSetupGui *mixerSetupGui,
                 std::vector<std::shared_ptr<MpcVoice>> voices);
 

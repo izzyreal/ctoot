@@ -5,7 +5,7 @@
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcBasicSoundPlayerControls::MpcBasicSoundPlayerControls(weak_ptr<ctoot::mpc::MpcSampler> sampler, shared_ptr<ctoot::audio::mixer::AudioMixer> mixer, weak_ptr<ctoot::mpc::MpcVoice> voice)
+MpcBasicSoundPlayerControls::MpcBasicSoundPlayerControls(shared_ptr<ctoot::mpc::MpcSampler> sampler, shared_ptr<ctoot::audio::mixer::AudioMixer> mixer, shared_ptr<ctoot::mpc::MpcVoice> voice)
 	: ctoot::control::CompoundControl(9, "MpcBasicSoundPlayerChannel")
 {
 	this->sampler = sampler;
@@ -19,17 +19,17 @@ string& MpcBasicSoundPlayerControls::NAME()
 }
 string MpcBasicSoundPlayerControls::NAME_ = "MpcBasicSoundPlayer";
 
-weak_ptr<ctoot::mpc::MpcSampler> MpcBasicSoundPlayerControls::getSampler()
+shared_ptr<ctoot::mpc::MpcSampler> MpcBasicSoundPlayerControls::getSampler()
 {
     return sampler;
 }
 
-weak_ptr<ctoot::audio::mixer::AudioMixer> MpcBasicSoundPlayerControls::getMixer()
+shared_ptr<ctoot::audio::mixer::AudioMixer> MpcBasicSoundPlayerControls::getMixer()
 {
     return mixer;
 }
 
-weak_ptr<ctoot::mpc::MpcVoice> MpcBasicSoundPlayerControls::getVoice()
+shared_ptr<ctoot::mpc::MpcVoice> MpcBasicSoundPlayerControls::getVoice()
 {
     return voice;
 }

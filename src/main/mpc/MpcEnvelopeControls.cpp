@@ -80,17 +80,17 @@ float MpcEnvelopeControls::deriveDecay()
     return deriveTimeFactor(decayControl->getValue());
 }
 
-weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::ATTACK_LAW() {
+shared_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::ATTACK_LAW() {
 	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0000001f, 3000.0f * 4.7f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::DECAY_LAW() {
+shared_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::DECAY_LAW() {
 	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0000001f, 2600.0f * 4.7f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::HOLD_LAW() {
+shared_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::HOLD_LAW() {
 	static shared_ptr<ctoot::control::LinearLaw> res = make_shared<ctoot::control::LinearLaw>(0.0f, FLT_MAX, "samples");
 	return res;
 }

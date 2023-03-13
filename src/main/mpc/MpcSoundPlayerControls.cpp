@@ -8,10 +8,10 @@ using namespace ctoot::mpc;
 using namespace std;
 
 MpcSoundPlayerControls::MpcSoundPlayerControls(
-	weak_ptr<MpcSampler> sampler,
+	shared_ptr<MpcSampler> sampler,
     int drumNumber,
-    weak_ptr<ctoot::audio::mixer::AudioMixer> mixer,
-    weak_ptr<ctoot::audio::server::AudioServer> server,
+    shared_ptr<ctoot::audio::mixer::AudioMixer> mixer,
+    shared_ptr<ctoot::audio::server::AudioServer> server,
     ctoot::mpc::MpcMixerSetupGui* mixerSetupGui,
     std::vector<std::shared_ptr<MpcVoice>> voicesToUse) :
     ctoot::control::CompoundControl(8, NAME_),
@@ -31,7 +31,7 @@ std::vector<std::shared_ptr<MpcVoice>> MpcSoundPlayerControls::getVoices()
 	return voices;
 }
 
-weak_ptr<ctoot::mpc::MpcSampler> MpcSoundPlayerControls::getSampler()
+shared_ptr<ctoot::mpc::MpcSampler> MpcSoundPlayerControls::getSampler()
 {
     return sampler;
 }
@@ -41,14 +41,14 @@ int MpcSoundPlayerControls::getDrumIndex()
     return drumNumber;
 }
 
-weak_ptr<ctoot::audio::mixer::AudioMixer> MpcSoundPlayerControls::getMixer()
+shared_ptr<ctoot::audio::mixer::AudioMixer> MpcSoundPlayerControls::getMixer()
 {
     return mixer;
 }
 
 ctoot::audio::server::AudioServer* MpcSoundPlayerControls::getServer()
 {
-    return server.lock().get();
+    return server.get();
 }
 
 ctoot::mpc::MpcMixerSetupGui* MpcSoundPlayerControls::getMixerSetupGui() {

@@ -8,7 +8,7 @@ LinearLaw::LinearLaw(float min, float max, string units)
 {
 }
 
-weak_ptr<LinearLaw> LinearLaw::UNITY()
+shared_ptr<LinearLaw> LinearLaw::UNITY()
 {
 	static shared_ptr<LinearLaw> res = make_shared<LinearLaw>(0, 1, "");
 	return res;

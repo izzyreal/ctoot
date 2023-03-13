@@ -24,16 +24,16 @@
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcSoundPlayerChannel::MpcSoundPlayerChannel(weak_ptr<MpcSoundPlayerControls> controlsToUse)
+MpcSoundPlayerChannel::MpcSoundPlayerChannel(shared_ptr<MpcSoundPlayerControls> controlsToUse)
 {
-	controls = controlsToUse.lock();
+	controls = controlsToUse;
     voices = controls->getVoices();
 	receivePgmChange = true;
 	receiveMidiVolume = true;
 
 	drumIndex = controls->getDrumIndex();
-	sampler = controls->getSampler().lock();
-	mixer = controls->getMixer().lock();
+	sampler = controls->getSampler();
+	mixer = controls->getMixer();
 	server = controls->getServer();
 
 	for (int i = 0; i < 64; i++)
@@ -122,8 +122,8 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 	auto sound = sampler->getMpcSound(soundNumber);
 
-	auto smc = program->getStereoMixerChannel(note - 35).lock();
-	auto ifmc = program->getIndivFxMixerChannel(note - 35).lock();
+	auto smc = program->getStereoMixerChannel(note - 35);
+	auto ifmc = program->getIndivFxMixerChannel(note - 35);
 
 	bool sSrcDrum = controls->getMixerSetupGui()->isStereoMixSourceDrum();
 	bool iSrcDrum = controls->getMixerSetupGui()->isIndivFxSourceDrum();
@@ -134,19 +134,19 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 	if (iSrcDrum)
 		ifmc = indivFxMixerChannels[note - 35];
 
-    auto mixerControls = mixer->getMixerControls().lock();
+    auto mixerControls = mixer->getMixerControls();
 
-	auto sc = mixerControls->getStripControls(to_string(voice->getStripNumber())).lock();
+	auto sc = mixerControls->getStripControls(to_string(voice->getStripNumber()));
 
-	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
-	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan").lock())->setValue(static_cast<float>(smc->getPanning() / 100.0));
-	dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock())->setValue(static_cast<float>(smc->getLevel()));
+	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main"));
+	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan"))->setValue(static_cast<float>(smc->getPanning() / 100.0));
+	dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level"))->setValue(static_cast<float>(smc->getLevel()));
 
-	sc = mixerControls->getStripControls(to_string(voice->getStripNumber() + 32)).lock();
-	mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
+	sc = mixerControls->getStripControls(to_string(voice->getStripNumber() + 32));
+	mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main"));
 
 	//We make sure the voice strip duplicages that are used for mixing to ASSIGNABLE MIX OUT are not mixed into Main.
-	auto faderControl = dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock());
+	auto faderControl = dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level"));
 	if (faderControl->getValue() != 0) faderControl->setValue(0);
 
 	if (ifmc->getOutput() > 0)
@@ -180,8 +180,8 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 	for (int i = 0; i < 4; i++)
 	{
-		auto auxControl = dynamic_pointer_cast<ctoot::control::CompoundControl>(sc->find("AUX#" + to_string(i + 1)).lock());
-		auto auxLevel = dynamic_pointer_cast<MpcFaderControl>(auxControl->find("Level").lock());
+		auto auxControl = dynamic_pointer_cast<ctoot::control::CompoundControl>(sc->find("AUX#" + to_string(i + 1)));
+		auto auxLevel = dynamic_pointer_cast<MpcFaderControl>(auxControl->find("Level"));
 
 		if (i == selectedAssignableMixOutPair)
 		{
@@ -278,23 +278,23 @@ void MpcSoundPlayerChannel::connectVoices()
 {
 	for (auto j = 0; j < 32; j++)
 	{
-		auto ams1 = mixer->getStrip(to_string(j + 1)).lock();
+		auto ams1 = mixer->getStrip(to_string(j + 1));
 		auto voice = controls->getVoices()[j];
 		ams1->setInputProcess(voice);
 		auto mi = new MpcMixerInterconnection("con" + to_string(j), server);
 		ams1->setDirectOutputProcess(mi->getInputProcess());
-		auto ams2 = mixer->getStrip(to_string(j + 1 + 32)).lock();
+		auto ams2 = mixer->getStrip(to_string(j + 1 + 32));
 		ams2->setInputProcess(mi->getOutputProcess());
 		mixerConnections.push_back(mi);
 	}
 }
 
-vector<weak_ptr<ctoot::mpc::MpcStereoMixerChannel>> MpcSoundPlayerChannel::getStereoMixerChannels()
+vector<shared_ptr<ctoot::mpc::MpcStereoMixerChannel>>& MpcSoundPlayerChannel::getStereoMixerChannels()
 {
     return weakStereoMixerChannels;
 }
 
-vector<weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> MpcSoundPlayerChannel::getIndivFxMixerChannels()
+vector<shared_ptr<ctoot::mpc::MpcIndivFxMixerChannel>>& MpcSoundPlayerChannel::getIndivFxMixerChannels()
 {
 	return weakIndivFxMixerChannels;
 }

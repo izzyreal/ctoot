@@ -9,7 +9,7 @@ namespace ctoot::control {
     {
     protected:
         std::vector<std::shared_ptr<Control>> controls;
-        std::vector<std::weak_ptr<Control>> weakControls;
+        std::vector<std::shared_ptr<Control>> weakControls;
 
     public:
         std::vector<std::string> getControlNamesRecursive(int generation = 0);
@@ -18,17 +18,17 @@ namespace ctoot::control {
 
         virtual void add(std::shared_ptr<Control> control);
 
-        virtual void remove(std::weak_ptr<Control> control);
+        virtual void remove(std::shared_ptr<Control> control);
 
     public:
-        virtual std::vector<std::weak_ptr<Control>> getControls();
+        virtual std::vector<std::shared_ptr<Control>> getControls();
 
-        virtual std::weak_ptr<Control> find(std::string name);
+        virtual std::shared_ptr<Control> find(std::string name);
 
-        virtual std::weak_ptr<Control> deepFind(int controlId);
+        virtual std::shared_ptr<Control> deepFind(int controlId);
 
     public:
-        virtual void disambiguate(std::weak_ptr<CompoundControl> c);
+        virtual void disambiguate(std::shared_ptr<CompoundControl> c);
 
     public:
         CompoundControl(int id, std::string name);

@@ -16,7 +16,7 @@ namespace ctoot::audio::mixer {
         virtual float getRight() = 0;
 
     public:
-        LCRControl(std::string name, std::weak_ptr<ctoot::control::ControlLaw> law, float precision,
+        LCRControl(std::string name, std::shared_ptr<ctoot::control::ControlLaw> law, float precision,
                    float initialValue);
 
     };

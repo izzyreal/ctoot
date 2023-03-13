@@ -15,6 +15,6 @@ string AudioServerProcess::getName() {
 	return name;
 }
 
-std::weak_ptr<ctoot::audio::core::ChannelFormat> AudioServerProcess::getChannelFormat() {
+std::shared_ptr<ctoot::audio::core::ChannelFormat> AudioServerProcess::getChannelFormat() {
 	return format;
 }

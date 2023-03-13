@@ -15,7 +15,7 @@ FilterControls::FilterControls(int id, string name, int idOffset)
 	deriveSampleRateIndependentVariables();
 }
 
-weak_ptr<ctoot::control::ControlLaw> FilterControls::SEMITONE_LAW() {
+shared_ptr<ctoot::control::ControlLaw> FilterControls::SEMITONE_LAW() {
 	static shared_ptr<ctoot::control::ControlLaw> res = make_shared<ctoot::control::LinearLaw>(-48, 96, "semitones");
 	return res;
 }

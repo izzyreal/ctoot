@@ -11,7 +11,7 @@ namespace ctoot::audio::mixer {
 
     private:
         MainMixControls *mmc;
-        bool canRouteToGroups{};
+        bool canRouteToGroups;
 
     public:
         std::vector<nonstd::any> getValues();

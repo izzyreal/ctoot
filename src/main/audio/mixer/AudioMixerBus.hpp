@@ -15,10 +15,10 @@ namespace ctoot::audio::mixer {
     private:
         AudioMixer *mixer{nullptr};
         ctoot::audio::core::AudioBuffer *buffer{nullptr};
-        std::weak_ptr<ctoot::audio::core::AudioProcess> output;
+        std::shared_ptr<ctoot::audio::core::AudioProcess> output;
         ctoot::audio::core::AudioProcess *meter{nullptr};
-        std::string name{""};
-        std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
+        std::string name;
+        std::shared_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
 
     public:
         virtual ctoot::audio::core::AudioBuffer *getBuffer();
@@ -32,7 +32,7 @@ namespace ctoot::audio::mixer {
         virtual void close();
 
     public:
-        AudioMixerBus(AudioMixer *mixer, std::weak_ptr<BusControls> busControls);
+        AudioMixerBus(AudioMixer *mixer, std::shared_ptr<BusControls> busControls);
 
         virtual ~AudioMixerBus();
     };

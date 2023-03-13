@@ -17,7 +17,7 @@ namespace ctoot::control {
         LinearLaw(float min, float max, std::string units);
 
     public:
-        static std::weak_ptr<LinearLaw> UNITY();
+        static std::shared_ptr<LinearLaw> UNITY();
 
     };
 }

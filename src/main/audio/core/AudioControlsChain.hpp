@@ -13,7 +13,7 @@ namespace ctoot::audio::core {
     private:
         std::string sourceLabel;
         std::string sourceLocation;
-        std::weak_ptr<ChannelFormat> constraintChannelFormat;
+        std::shared_ptr<ChannelFormat> constraintChannelFormat;
 
     public:
         AudioControlsChain(int id, std::string name);

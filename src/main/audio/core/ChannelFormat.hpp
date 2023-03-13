@@ -22,7 +22,7 @@ namespace ctoot::audio::core {
         int mix(ctoot::audio::core::AudioBuffer *destBuffer, ctoot::audio::core::AudioBuffer *sourceBuffer,
                 std::vector<float> &gain);
 
-        static std::weak_ptr<ChannelFormat> STEREO();
+        static std::shared_ptr<ChannelFormat> STEREO();
 
     };
 

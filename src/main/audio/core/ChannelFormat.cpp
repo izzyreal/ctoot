@@ -37,7 +37,7 @@ int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio
 	return ret;
 }
 
-weak_ptr<ChannelFormat> ChannelFormat::STEREO() {
+shared_ptr<ChannelFormat> ChannelFormat::STEREO() {
 	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
 	return stereoChannelFormat;
 }

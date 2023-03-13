@@ -14,9 +14,9 @@ namespace ctoot::audio::core
 	{
 
 	private:
-		std::weak_ptr<ChannelFormat> channelFormat;
+		std::shared_ptr<ChannelFormat> channelFormat;
 		bool realTime{ true };
-		std::string name{ "" };
+		std::string name;
 
 	public:
 		std::string getName();
@@ -29,11 +29,11 @@ namespace ctoot::audio::core
 		void setRealTime(bool realTime);
 
 	public:
-		std::weak_ptr<ChannelFormat> guessFormat();
+		std::shared_ptr<ChannelFormat> guessFormat();
 
 	public:
-		std::weak_ptr<ChannelFormat> getChannelFormat();
-		void setChannelFormat(std::weak_ptr<ChannelFormat> format);
+		std::shared_ptr<ChannelFormat> getChannelFormat();
+		void setChannelFormat(std::shared_ptr<ChannelFormat> format);
 
         void swap(int a, int b);
 		float square();

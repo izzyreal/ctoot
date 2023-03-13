@@ -32,7 +32,7 @@ namespace ctoot::mpc {
 
         void connectVoice();
 
-        explicit MpcBasicSoundPlayerChannel(std::weak_ptr<MpcBasicSoundPlayerControls> controls);
+        explicit MpcBasicSoundPlayerChannel(std::shared_ptr<MpcBasicSoundPlayerControls> controls);
 
     };
 }

@@ -17,15 +17,15 @@ namespace ctoot::audio {
         {
 
         private:
-            std::string name{""};
+            std::string name;
 
         protected:
-            std::weak_ptr<ctoot::audio::core::ChannelFormat> format;
+            std::shared_ptr<ctoot::audio::core::ChannelFormat> format;
 
         public:
             std::string getName() override;
 
-            std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
+            std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 
             AudioServerProcess(std::string name);
         };

@@ -20,7 +20,7 @@ namespace ctoot::audio::server {
 		bool running{ false };
 		std::vector<IOAudioProcess*> activeInputs;
 		std::vector<IOAudioProcess*> activeOutputs;
-		std::vector<ctoot::audio::core::AudioBuffer*> buffers{};
+		std::vector<ctoot::audio::core::AudioBuffer*> buffers;
 
 	public:
 		virtual void resizeBuffers(int newSize);
@@ -36,7 +36,7 @@ namespace ctoot::audio::server {
 		virtual void stop() = 0;
 		virtual bool isRunning() = 0;
 		virtual void close() = 0;
-		virtual void setClient(std::weak_ptr<AudioClient> client) = 0;
+		virtual void setClient(std::shared_ptr<AudioClient> client) = 0;
 		virtual std::vector<std::string> getAvailableOutputNames() = 0;
 		virtual std::vector<std::string> getAvailableInputNames() = 0;
 		virtual IOAudioProcess* openAudioOutput(std::string name) = 0;

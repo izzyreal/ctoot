@@ -24,29 +24,29 @@ namespace ctoot::audio::mixer {
     public:
         virtual float getSmoothingFactor();
 
-        virtual void createAuxBusControls(std::string name, std::weak_ptr<ctoot::audio::core::ChannelFormat> format);
+        virtual void createAuxBusControls(std::string name, std::shared_ptr<ctoot::audio::core::ChannelFormat> format);
 
-        virtual std::weak_ptr<BusControls> getBusControls(std::string name);
+        virtual std::shared_ptr<BusControls> getBusControls(std::string name);
 
-        virtual std::weak_ptr<BusControls> getMainBusControls();
+        virtual std::shared_ptr<BusControls> getMainBusControls();
 
         virtual std::vector<std::shared_ptr<BusControls>> getAuxBusControls();
 
-        virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain>
+        virtual std::shared_ptr<ctoot::audio::core::AudioControlsChain>
         createStripControls(int id, std::string name);
 
-        virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain>
+        virtual std::shared_ptr<ctoot::audio::core::AudioControlsChain>
         createStripControls(int id, std::string name, bool hasMixControls);
 
         virtual void addStripControls(std::shared_ptr<CompoundControl> cc);
 
-        virtual std::weak_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(std::string name);
+        virtual std::shared_ptr<ctoot::audio::core::AudioControlsChain> getStripControls(std::string name);
 
         virtual ctoot::audio::fader::FaderControl *createFaderControl(bool muted);
 
     public:
         MixerControls(std::string name, std::string mainBusName,
-                      std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat);
+                      std::shared_ptr<ctoot::audio::core::ChannelFormat> channelFormat);
 
         MixerControls(std::string name)
                 : MixerControls(name, "Main", ctoot::audio::core::ChannelFormat::STEREO())

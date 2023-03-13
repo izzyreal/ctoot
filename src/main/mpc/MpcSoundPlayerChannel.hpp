@@ -51,9 +51,9 @@ namespace ctoot::mpc
 		bool receiveMidiVolume = false;
 		int lastReceivedMidiVolume = 127;
 		std::vector<std::shared_ptr<MpcStereoMixerChannel>> stereoMixerChannels;
-        std::vector<std::weak_ptr<MpcStereoMixerChannel>> weakStereoMixerChannels;
+        std::vector<std::shared_ptr<MpcStereoMixerChannel>> weakStereoMixerChannels;
 		std::vector<std::shared_ptr<MpcIndivFxMixerChannel>> indivFxMixerChannels;
-        std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> weakIndivFxMixerChannels;
+        std::vector<std::shared_ptr<MpcIndivFxMixerChannel>> weakIndivFxMixerChannels;
 
 	public:
 		int getProgram();
@@ -70,8 +70,8 @@ namespace ctoot::mpc
 	public:
 		void allSoundOff(int frameOffset);
 		void connectVoices();
-		std::vector<std::weak_ptr<MpcStereoMixerChannel>> getStereoMixerChannels();
-		std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
+		std::vector<std::shared_ptr<MpcStereoMixerChannel>>& getStereoMixerChannels();
+		std::vector<std::shared_ptr<MpcIndivFxMixerChannel>>& getIndivFxMixerChannels();
 
 	public:
 		void mpcNoteOff(int note, int frameOffset, int noteOnStartTick);
@@ -84,7 +84,7 @@ namespace ctoot::mpc
         void stopMonoOrPolyVoiceWithSameNoteParameters(ctoot::mpc::MpcNoteParameters* noteParameters, int note);
 
 	public:
-		MpcSoundPlayerChannel(std::weak_ptr<MpcSoundPlayerControls> controls);
+		MpcSoundPlayerChannel(std::shared_ptr<MpcSoundPlayerControls> controls);
 		~MpcSoundPlayerChannel();
 
 	};

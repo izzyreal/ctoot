@@ -14,8 +14,8 @@ namespace ctoot {
 			{
 
 			private:
-				float left{};
-				float right{};
+				float left;
+				float right;
 
 			public:
 				float getLeft() override;

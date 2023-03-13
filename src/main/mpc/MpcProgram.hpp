@@ -12,8 +12,8 @@ class MpcProgram {
     
 public:
     virtual MpcNoteParameters* getNoteParameters(int i) = 0;
-    virtual std::weak_ptr<MpcStereoMixerChannel> getStereoMixerChannel(int pad) = 0;
-    virtual std::weak_ptr<MpcIndivFxMixerChannel> getIndivFxMixerChannel(int pad) = 0;
+    virtual std::shared_ptr<MpcStereoMixerChannel> getStereoMixerChannel(int pad) = 0;
+    virtual std::shared_ptr<MpcIndivFxMixerChannel> getIndivFxMixerChannel(int pad) = 0;
     
 };
 }

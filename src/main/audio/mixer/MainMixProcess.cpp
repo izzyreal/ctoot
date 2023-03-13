@@ -7,10 +7,10 @@
 using namespace std;
 using namespace ctoot::audio::mixer;
 
-MainMixProcess::MainMixProcess(shared_ptr<AudioMixerStrip> strip, weak_ptr<MixVariables> vars, AudioMixer* mixer) 
+MainMixProcess::MainMixProcess(shared_ptr<AudioMixerStrip> strip, shared_ptr<MixVariables> vars, AudioMixer* mixer)
 	: MixProcess(strip, vars)
 {
-	auto mmc = dynamic_pointer_cast<MainMixControls>(vars.lock());
+	auto mmc = dynamic_pointer_cast<MainMixControls>(vars);
 	routeControl = mmc->getRouteControl();
 	if (routeControl != nullptr) {
 		routedStrip = mixer->getStripImpl(routeControl->getValueString());
@@ -19,9 +19,9 @@ MainMixProcess::MainMixProcess(shared_ptr<AudioMixerStrip> strip, weak_ptr<MixVa
 
 AudioMixerStrip* MainMixProcess::getRoutedStrip()
 {
-	if (routeControl != nullptr && nextRoutedStrip.lock() != nullptr) {
+	if (routeControl != nullptr && nextRoutedStrip != nullptr) {
 		routedStrip = nextRoutedStrip;
-		nextRoutedStrip = weak_ptr<AudioMixerStrip>();
+		nextRoutedStrip = shared_ptr<AudioMixerStrip>();
 	}
 	return MixProcess::getRoutedStrip();
 }

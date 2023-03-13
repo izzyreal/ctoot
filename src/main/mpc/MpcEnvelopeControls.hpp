@@ -33,9 +33,9 @@ namespace ctoot::mpc {
 			static float LOG_0_01_;
 
 		private:
-			static std::weak_ptr<ctoot::control::ControlLaw> ATTACK_LAW();
-			static std::weak_ptr<ctoot::control::ControlLaw> HOLD_LAW();
-			static std::weak_ptr<ctoot::control::ControlLaw> DECAY_LAW();
+			static std::shared_ptr<ctoot::control::ControlLaw> ATTACK_LAW();
+			static std::shared_ptr<ctoot::control::ControlLaw> HOLD_LAW();
+			static std::shared_ptr<ctoot::control::ControlLaw> DECAY_LAW();
 
 		public:
 			float deriveTimeFactor(float milliseconds);

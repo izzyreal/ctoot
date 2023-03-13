@@ -11,10 +11,10 @@ using namespace ctoot::audio::core;
 using namespace ctoot::control;
 using namespace std;
 
-void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls, string mainStripName,
-                                           weak_ptr<ChannelFormat> mainFormat, int nreturns)
+void MixerControlsFactory::createBusStrips(shared_ptr<MixerControls> mixerControls, string mainStripName,
+                                           shared_ptr<ChannelFormat> mainFormat, int nreturns)
 {
-    auto lMixerControls = mixerControls.lock();
+    auto lMixerControls = mixerControls;
     lMixerControls->createStripControls(MixerControlsIds::MAIN_STRIP, mainStripName);
     auto auxControls = lMixerControls->getAuxBusControls();
     auto naux = static_cast<int>(auxControls.size());
@@ -25,26 +25,26 @@ void MixerControlsFactory::createBusStrips(weak_ptr<MixerControls> mixerControls
     }
 }
 
-void MixerControlsFactory::createChannelStrips(weak_ptr<MixerControls> mixerControls, int nchannels)
+void MixerControlsFactory::createChannelStrips(shared_ptr<MixerControls> mixerControls, int nchannels)
 {
 
-    auto mbc = mixerControls.lock()->getMainBusControls().lock();
+    auto mbc = mixerControls->getMainBusControls();
     auto mainFormat = mbc->getChannelFormat();
     for (int i = 0; i < nchannels; i++)
     {
-        mixerControls.lock()->createStripControls(MixerControlsIds::CHANNEL_STRIP, to_string(1 + i));
+        mixerControls->createStripControls(MixerControlsIds::CHANNEL_STRIP, to_string(1 + i));
     }
 }
 
-void MixerControlsFactory::addMixControls(MixerControls *mixerControls, weak_ptr<AudioControlsChain> controls,
+void MixerControlsFactory::addMixControls(MixerControls *mixerControls, shared_ptr<AudioControlsChain> controls,
                                           bool hasMixControls)
 {
-    auto lControls = controls.lock();
+    auto lControls = controls;
     int stripId = lControls->getId();
 
     if (stripId == MixerControlsIds::AUX_STRIP)
     {
-        auto busControls = mixerControls->getBusControls(lControls->getName()).lock();
+        auto busControls = mixerControls->getBusControls(lControls->getName());
         if (busControls)
         {
             lControls->add(make_shared<MixControls>(mixerControls, stripId, busControls, true));
@@ -52,10 +52,10 @@ void MixerControlsFactory::addMixControls(MixerControls *mixerControls, weak_ptr
     }
 
     auto mainMixControls = make_shared<MainMixControls>(mixerControls, stripId,
-                                                        mixerControls->getMainBusControls().lock(),
+                                                        mixerControls->getMainBusControls(),
                                                         stripId == MixerControlsIds::MAIN_STRIP);
 
-    if (mixerControls->getMainBusControls().lock()->getId() == MixerControlsIds::MAIN_BUS)
+    if (mixerControls->getMainBusControls()->getId() == MixerControlsIds::MAIN_BUS)
     {
         auto routeControl = mainMixControls->createRouteControl(stripId);
 

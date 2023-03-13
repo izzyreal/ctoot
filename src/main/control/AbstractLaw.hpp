@@ -10,9 +10,9 @@ namespace ctoot {
 
 		protected:
 			static const int resolution{ 16384 };
-			float min{};
-			float max{};
-			std::string units{ "" };
+			float min;
+			float max;
+			std::string units;
 
 		public:
             std::string getUnits() override;

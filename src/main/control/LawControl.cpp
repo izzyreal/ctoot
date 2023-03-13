@@ -4,7 +4,7 @@
 using namespace ctoot::control;
 using namespace std;
 
-LawControl::LawControl(int id, string name, weak_ptr<ControlLaw> law, float precision, float initialValue) 
+LawControl::LawControl(int id, string name, shared_ptr<ControlLaw> law, float precision, float initialValue)
 	: Control(id, name)
 {
 	this->law = law;
@@ -19,7 +19,7 @@ float LawControl::getValue()
 
 string LawControl::getValueString()
 {
-	string res1 = law.lock()->getUnits();
+	string res1 = law->getUnits();
 	string res2 = to_string(getValue());
 	return string(res1 + res2);
 }
@@ -32,5 +32,5 @@ void LawControl::setValue(float value)
 
 int LawControl::getIntValue()
 {
-    return law.lock()->intValue(getValue());
+    return law->intValue(getValue());
 }

@@ -53,20 +53,20 @@ void AudioBuffer::setRealTime(bool realTime)
 }
 
 
-weak_ptr<ChannelFormat> AudioBuffer::guessFormat()
+shared_ptr<ChannelFormat> AudioBuffer::guessFormat()
 {
     return ChannelFormat::STEREO();
 }
 
-weak_ptr<ChannelFormat> AudioBuffer::getChannelFormat()
+shared_ptr<ChannelFormat> AudioBuffer::getChannelFormat()
 {
     return channelFormat;
 }
 
-void AudioBuffer::setChannelFormat(weak_ptr<ChannelFormat> newFormat)
+void AudioBuffer::setChannelFormat(shared_ptr<ChannelFormat> newFormat)
 {
-    auto l_newFormat = newFormat.lock();
-    auto l_channelFormat = channelFormat.lock();
+    auto l_newFormat = newFormat;
+    auto l_channelFormat = channelFormat;
 
     if (l_newFormat == l_channelFormat) {
         return;

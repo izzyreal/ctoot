@@ -8,16 +8,16 @@ using namespace std;
 using namespace ctoot::control;
 using namespace ctoot::audio::core;
 
-AudioProcessChain::AudioProcessChain(weak_ptr<AudioControlsChain> controlChain)
+AudioProcessChain::AudioProcessChain(shared_ptr<AudioControlsChain> controlChain)
 {
 	this->controlChain = controlChain;
 }
 
 void AudioProcessChain::open()
 {
-	for (auto& control : controlChain.lock()->getControls()) {
+	for (auto& control : controlChain->getControls()) {
 
-		auto candidate = dynamic_pointer_cast<AudioControls>(control.lock());
+		auto candidate = dynamic_pointer_cast<AudioControls>(control);
 
 		if (candidate) {
 			auto p = createProcess(candidate);
@@ -62,5 +62,5 @@ void AudioProcessChain::close()
 
 string AudioProcessChain::getName()
 {
-    return controlChain.lock()->getName();
+    return controlChain->getName();
 }

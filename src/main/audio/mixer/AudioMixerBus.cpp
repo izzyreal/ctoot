@@ -5,9 +5,9 @@ using namespace ctoot::audio::core;
 using namespace ctoot::audio::mixer;
 using namespace std;
 
-AudioMixerBus::AudioMixerBus(AudioMixer* mixer, weak_ptr<BusControls> busControls) 
+AudioMixerBus::AudioMixerBus(AudioMixer* mixer, shared_ptr<BusControls> busControls)
 {
-	auto lBusControls = busControls.lock();
+	auto lBusControls = busControls;
 	this->mixer = mixer;
 	name = lBusControls->getName();
 	channelFormat = lBusControls->getChannelFormat();
@@ -32,10 +32,10 @@ void AudioMixerBus::silence()
 
 void AudioMixerBus::write(int nFrames)
 {
-	if (!output.lock()) return;
+	if (!output) return;
 
-	if (output.lock()) {
-		output.lock()->processAudio(buffer, nFrames);
+	if (output) {
+		output->processAudio(buffer, nFrames);
 	}
 	if (meter != nullptr) {
 		meter->processAudio(buffer, nFrames);

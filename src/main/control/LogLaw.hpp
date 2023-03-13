@@ -9,8 +9,8 @@ namespace ctoot::control {
     {
 
     private:
-        double logMin{}, logMax{};
-        double logSpan{};
+        double logMin, logMax;
+        double logSpan;
 
     public:
         int intValue(float userVal) override;

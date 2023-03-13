@@ -16,7 +16,7 @@ namespace ctoot::synth::modules::filter {
     private:
         StateVariableFilterElement *element{nullptr};
         float res{0.f};
-        FilterControls *vars{};
+        FilterControls *vars;
         float fs{44100.0};
 
         void setSampleRate(int rate);

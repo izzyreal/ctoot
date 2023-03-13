@@ -19,7 +19,7 @@ namespace ctoot::audio::mixer {
         ctoot::control::EnumControl *getRouteControl() override;
 
     public:
-        MainMixControls(MixerControls *mixerControls, int stripId, std::weak_ptr<BusControls> busControls,
+        MainMixControls(MixerControls *mixerControls, int stripId, std::shared_ptr<BusControls> busControls,
                         bool isMaster);
 
         ~MainMixControls();
