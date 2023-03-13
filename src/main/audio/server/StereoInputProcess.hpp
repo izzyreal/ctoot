@@ -2,26 +2,17 @@
 
 #include <audio/core/AudioBuffer.hpp>
 
-namespace ctoot {
-	namespace audio {
+namespace ctoot::audio::server {
 
-		namespace server {
+    class StereoInputProcess
+            : public AudioServerProcess
+    {
 
-			class StereoInputProcess
-				: public AudioServerProcess			
-			{
+    public:
+        int processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames) override;
 
-			public:
-				
-				void open() override {};
-				void close() override {};
+        StereoInputProcess(std::string name);
 
-				int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
+    };
 
-				StereoInputProcess(std::string name, bool mono, std::string location);
-
-			};
-
-		}
-	}
 }

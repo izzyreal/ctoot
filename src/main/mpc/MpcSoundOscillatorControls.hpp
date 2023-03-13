@@ -12,7 +12,6 @@ namespace ctoot::mpc
 	{
 
 	private:
-        static unsigned short idxCounter;
 		bool mono = false, loopEnabled = false;
 		int sampleRate = 0;
 		int sndLevel = 0, tune = 0;

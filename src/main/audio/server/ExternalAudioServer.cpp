@@ -6,16 +6,11 @@
 using namespace ctoot::audio::server;
 using namespace std;
 
-ExternalAudioServer::ExternalAudioServer()
-{
-}
-
 void ExternalAudioServer::start()
 {
 	if (running)
 		return;
 	
-	client->setEnabled(true);
 	running = true;
 }
 
@@ -198,9 +193,9 @@ void ExternalAudioServer::work(const float* const* inputBuffer, float* const* ou
 	}
 }
 
-void ExternalAudioServer::setClient(weak_ptr<AudioClient> client)
+void ExternalAudioServer::setClient(shared_ptr<AudioClient> client)
 {
-	auto lClient = client.lock();
+	auto lClient = client;
 	this->client = lClient.get();
 }
 
@@ -216,15 +211,15 @@ vector<string> ExternalAudioServer::getAvailableInputNames()
 	return res;
 }
 
-IOAudioProcess* ExternalAudioServer::openAudioOutput(string name, string label)
+IOAudioProcess* ExternalAudioServer::openAudioOutput(string name)
 {
-	activeOutputs.push_back(new StereoOutputProcess(name, false, "ExternalAudioServer"));
+	activeOutputs.push_back(new StereoOutputProcess(name));
 	return activeOutputs.back();
 }
 
-IOAudioProcess* ExternalAudioServer::openAudioInput(string name, string label)
+IOAudioProcess* ExternalAudioServer::openAudioInput(string name)
 {
-	activeInputs.push_back(new StereoInputProcess(name, false, "ExternalAudioServer"));
+	activeInputs.push_back(new StereoInputProcess(name));
 	return activeInputs.back();
 }
 
@@ -260,11 +255,6 @@ void ExternalAudioServer::closeAudioInput(ctoot::audio::server::IOAudioProcess* 
 			break;
 		}
 	}
-}
-
-float ExternalAudioServer::getLoad()
-{
-	return 0;
 }
 
 int ExternalAudioServer::getInputLatencyFrames()

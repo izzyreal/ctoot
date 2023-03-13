@@ -1,32 +1,18 @@
 #include <audio/mixer/AudioMixerBus.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
-#include <audio/meter/MeterProcess.hpp>
-
 using namespace ctoot::audio::core;
 using namespace ctoot::audio::mixer;
 using namespace std;
 
-AudioMixerBus::AudioMixerBus(AudioMixer* mixer, weak_ptr<BusControls> busControls) 
+AudioMixerBus::AudioMixerBus(AudioMixer* mixer, shared_ptr<BusControls> busControls)
 {
-	auto lBusControls = busControls.lock();
+	auto lBusControls = busControls;
 	this->mixer = mixer;
 	name = lBusControls->getName();
-	isFx = lBusControls->getId() == MixerControlsIds::FX_BUS;
 	channelFormat = lBusControls->getChannelFormat();
 	buffer = mixer->createBuffer(name);
 	buffer->setChannelFormat(channelFormat);
-	setMeterProcess(new ctoot::audio::meter::MeterProcess(busControls.lock()->getMeterControls()));
-}
-
-void AudioMixerBus::setOutputProcess(std::weak_ptr<AudioProcess> output)
-{
-    this->output = output;
-}
-
-void AudioMixerBus::setMeterProcess(AudioProcess* meter)
-{
-    this->meter = meter;
 }
 
 AudioBuffer* AudioMixerBus::getBuffer()
@@ -46,10 +32,10 @@ void AudioMixerBus::silence()
 
 void AudioMixerBus::write(int nFrames)
 {
-	if (!output.lock() && !isFx) return;
+	if (!output) return;
 
-	if (output.lock()) {
-		output.lock()->processAudio(buffer, nFrames);
+	if (output) {
+		output->processAudio(buffer, nFrames);
 	}
 	if (meter != nullptr) {
 		meter->processAudio(buffer, nFrames);

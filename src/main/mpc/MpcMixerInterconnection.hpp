@@ -1,14 +1,11 @@
 #pragma once
-#include <audio/mixer/MixerInterconnection.hpp>
 #include <audio/server/AudioServer.hpp>
 
 #include <memory>
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
 
 		class MpcMixerInterconnection
-			: public virtual ctoot::audio::mixer::MixerInterconnection
 		{
 
 		private:
@@ -20,8 +17,8 @@ namespace ctoot {
 			bool rightEnabled{ true };
 
 		public:
-			std::weak_ptr<ctoot::audio::core::AudioProcess> getInputProcess() override;
-			std::weak_ptr<ctoot::audio::core::AudioProcess> getOutputProcess() override;
+			std::shared_ptr<ctoot::audio::core::AudioProcess> getInputProcess();
+			std::shared_ptr<ctoot::audio::core::AudioProcess> getOutputProcess();
 			
 		public:
 			void setLeftEnabled(bool b);
@@ -35,4 +32,3 @@ namespace ctoot {
 
 		};
 	}
-}

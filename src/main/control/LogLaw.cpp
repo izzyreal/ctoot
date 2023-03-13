@@ -2,8 +2,6 @@
 
 #include <control/ControlLaw.hpp>
 
-//#include <Logger.hpp>
-
 #include <cassert>
 #include <cmath>
 
@@ -25,8 +23,3 @@ int LogLaw::intValue(float userVal)
 	return static_cast<int>(0.5f + ((resolution - 1) * (log10(userVal) - logMin) / logSpan));
 }
 
-float LogLaw::userValue(int intVal)
-{
-    auto p = logMin + (logSpan * intVal) / (resolution - 1);
-    return static_cast< float >(pow(10, p));
-}

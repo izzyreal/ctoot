@@ -1,6 +1,5 @@
 #pragma once
 #include <audio/core/FloatSampleBuffer.hpp>
-#include <audio/core/MetaInfo.hpp>
 
 #include <string>
 
@@ -15,10 +14,9 @@ namespace ctoot::audio::core
 	{
 
 	private:
-		std::weak_ptr<MetaInfo> metaInfo;
-		std::weak_ptr<ChannelFormat> channelFormat;
+		std::shared_ptr<ChannelFormat> channelFormat;
 		bool realTime{ true };
-		std::string name{ "" };
+		std::string name;
 
 	public:
 		std::string getName();
@@ -27,29 +25,24 @@ namespace ctoot::audio::core
 		void setChannelCount(int count);
 
 	public:
-		void setMetaInfo(std::weak_ptr<MetaInfo> info);
-		std::weak_ptr<MetaInfo> getMetaInfo();
 		bool isRealTime();
 		void setRealTime(bool realTime);
 
 	public:
-		std::weak_ptr<ChannelFormat> guessFormat();
+		std::shared_ptr<ChannelFormat> guessFormat();
 
 	public:
-		std::weak_ptr<ChannelFormat> getChannelFormat();
-		void setChannelFormat(std::weak_ptr<ChannelFormat> format);
-		void monoToStereo();
-		void convertTo(std::weak_ptr<ChannelFormat> format);
-		void swap(int a, int b);
+		std::shared_ptr<ChannelFormat> getChannelFormat();
+		void setChannelFormat(std::shared_ptr<ChannelFormat> format);
+
+        void swap(int a, int b);
 		float square();
-		bool encodeMidSide();
-		bool decodeMidSide();
-		void copyFrom(AudioBuffer* src);
+
+        void copyFrom(AudioBuffer* src);
 		const bool isSilent();
 
 	public:
 		AudioBuffer(std::string name, int channelCount, int sampleCount, float sampleRate);
-		~AudioBuffer();
 
 	};
 }

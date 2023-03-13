@@ -1,27 +1,23 @@
 #pragma once
 
-#include <audio/core/SimpleAudioProcess.hpp>
+#include <audio/core/AudioProcess.hpp>
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
 
-		class MpcMixerInterconnection;
+    class MpcMixerInterconnection;
 
-		class InterconnectionInputProcess
-			: public ctoot::audio::core::SimpleAudioProcess
-		{
+    class InterconnectionInputProcess
+            : public ctoot::audio::core::AudioProcess
+    {
 
-		public:
-			int processAudio(ctoot::audio::core::AudioBuffer* buffer) override;
+    public:
+        int processAudio(ctoot::audio::core::AudioBuffer *buffer) override;
 
-		private:
-			MpcMixerInterconnection* mmi{ nullptr };
-			ctoot::audio::core::AudioBuffer* sharedBuffer{ nullptr };
+    private:
+        MpcMixerInterconnection *mmi{nullptr};
+        ctoot::audio::core::AudioBuffer *sharedBuffer{nullptr};
 
-		public:
-			InterconnectionInputProcess(MpcMixerInterconnection* mmi, ctoot::audio::core::AudioBuffer* sharedBuffer);
-			~InterconnectionInputProcess();
-
-		};
-	}
+    public:
+        InterconnectionInputProcess(MpcMixerInterconnection *mmi, ctoot::audio::core::AudioBuffer *sharedBuffer);
+    };
 }

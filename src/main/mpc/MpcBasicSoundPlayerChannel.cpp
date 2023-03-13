@@ -12,24 +12,15 @@ using namespace ctoot::audio::mixer;
 using namespace ctoot::audio::fader;
 using namespace std;
 
-MpcBasicSoundPlayerChannel::MpcBasicSoundPlayerChannel(weak_ptr<MpcBasicSoundPlayerControls> controls)
+MpcBasicSoundPlayerChannel::MpcBasicSoundPlayerChannel(shared_ptr<MpcBasicSoundPlayerControls> controls)
 {
-	auto lControls = controls.lock();
-	sampler = lControls->getSampler().lock();
-	mixer = lControls->getMixer().lock();
-	voice = lControls->getVoice().lock();
-	auto sc = mixer->getMixerControls().lock()->getStripControls("65").lock();
-	auto mmc = dynamic_pointer_cast<MainMixControls>(sc->find("Main").lock());
-	fader = dynamic_pointer_cast<FaderControl>(mmc->find("Level").lock());
-}
-
-void MpcBasicSoundPlayerChannel::setLocation(string location)
-{
-}
-
-void MpcBasicSoundPlayerChannel::noteOn(int soundNumber, int velocity)
-{
-	mpcNoteOn(soundNumber, velocity, 0);
+	auto lControls = controls;
+	sampler = lControls->getSampler();
+	mixer = lControls->getMixer();
+	voice = lControls->getVoice();
+	auto sc = mixer->getMixerControls()->getStripControls("65");
+	auto mmc = dynamic_pointer_cast<MainMixControls>(sc->find("Main"));
+	fader = dynamic_pointer_cast<FaderControl>(mmc->find("Level"));
 }
 
 void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int frameOffset)
@@ -64,29 +55,11 @@ void MpcBasicSoundPlayerChannel::mpcNoteOn(int soundNumber, int velocity, int fr
 	voice->init(velocity, tempVars, -1, nullptr, 0, 64, -1, -1, frameOffset, soundNumber != -2, -1, -1);
 }
 
-void MpcBasicSoundPlayerChannel::noteOff(int note)
-{
-}
-
-void MpcBasicSoundPlayerChannel::allNotesOff()
-{
-}
-
-void MpcBasicSoundPlayerChannel::allSoundOff()
-{
-	voice->startDecay();
-}
-
 void MpcBasicSoundPlayerChannel::finishVoice() {
 	voice->finish(); // stops voice immediately, without a short fade-out/decay time
 }
 
 void MpcBasicSoundPlayerChannel::connectVoice()
 {
-    mixer->getStrip("65").lock()->setInputProcess(voice);
-}
-
-void MpcBasicSoundPlayerChannel::noteOff(int pitch, int velocity)
-{
-	SynthChannel::noteOff(pitch, velocity);
+    mixer->getStrip("65")->setInputProcess(voice);
 }

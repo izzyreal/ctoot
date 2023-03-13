@@ -19,14 +19,11 @@ namespace ctoot {
 				int binarySearch(std::vector<float>& buf, float key, int min, int max);
 
 			public:
-				int getResolution();
-				float getMaximum();
-				float getMinimum();
-				std::string getUnits();
-				int intValue(float v);
-				float userValue(int v);
 
-			private:
+                std::string getUnits();
+				int intValue(float v);
+
+            private:
 				std::vector<float> createFloatValues();
 
 			public:

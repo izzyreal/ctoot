@@ -1,25 +1,18 @@
 #pragma once
+
 #include <audio/fader/FaderControl.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
+namespace ctoot::audio::mixer {
 
-			class GainControl
-				: public audio::fader::FaderControl
-			{
+    class GainControl
+            : public audio::fader::FaderControl
+    {
 
-			public:
-				void setValue(float value) override;
-				std::vector<std::string> getPresetNames() override;
-				void applyPreset(std::string name) override;
+    public:
+        void setValue(float value) override;
 
-			public:
-				GainControl(bool muted);
-				virtual ~GainControl();
+    public:
+        GainControl(bool muted);
+    };
 
-			};
-
-		}
-	}
 }

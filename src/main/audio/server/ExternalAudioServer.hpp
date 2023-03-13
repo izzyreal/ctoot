@@ -16,22 +16,20 @@
 
 namespace ctoot::audio::server
 {
-	class ExternalAudioServer
-		: public AudioServer {
+	class ExternalAudioServer : public AudioServer {
 
 	public:
 		void start() override;
 		void stop() override;
 		bool isRunning() override;
 		void close() override;
-		void setClient(std::weak_ptr<AudioClient> client) override;
+		void setClient(std::shared_ptr<AudioClient> client) override;
 		std::vector<std::string> getAvailableOutputNames() override;
 		std::vector<std::string> getAvailableInputNames() override;
-		IOAudioProcess* openAudioOutput(std::string name, std::string label) override;
-		IOAudioProcess* openAudioInput(std::string name, std::string glabel) override;
+		IOAudioProcess* openAudioOutput(std::string name) override;
+		IOAudioProcess* openAudioInput(std::string name) override;
 		void closeAudioOutput(ctoot::audio::server::IOAudioProcess* output) override;
 		void closeAudioInput(ctoot::audio::server::IOAudioProcess* input) override;
-		float getLoad() override;
 		int getInputLatencyFrames() override;
 		int getOutputLatencyFrames() override;
 		int getTotalLatencyFrames() override;
@@ -48,9 +46,5 @@ namespace ctoot::audio::server
 
 		// For compatibility with JUCE 7.0.5
         void work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
-
-	public:
-		ExternalAudioServer();
-
 	};
 }

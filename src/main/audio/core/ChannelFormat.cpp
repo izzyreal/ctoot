@@ -1,18 +1,11 @@
 #include <audio/core/ChannelFormat.hpp>
-#include <audio/core/ChannelFormat1.hpp>
 #include <audio/core/ChannelFormat2.hpp>
-//#include <audio/core/ChannelFormat3.hpp>
-//#include <audio/core/ChannelFormat4.hpp>
 #include <audio/core/AudioBuffer.hpp>
 
 #include <cstdint>
 
 using namespace std;
 using namespace ctoot::audio::core;
-
-ChannelFormat::ChannelFormat()
-{
-}
 
 int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio::core::AudioBuffer* sourceBuffer, vector<float>& gain)
 {
@@ -44,22 +37,7 @@ int ChannelFormat::mix(ctoot::audio::core::AudioBuffer* destBuffer, ctoot::audio
 	return ret;
 }
 
-weak_ptr<ChannelFormat> ChannelFormat::MONO() {
-	static auto monoChannelFormat = make_shared<ChannelFormat1>();
-	return monoChannelFormat;
-}
-
-weak_ptr<ChannelFormat> ChannelFormat::STEREO() {
-	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
-	return stereoChannelFormat;
-}
-
-weak_ptr<ChannelFormat> ChannelFormat::QUAD() {
-	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
-	return stereoChannelFormat;
-}
-
-weak_ptr<ChannelFormat> ChannelFormat::FIVE_1() {
+shared_ptr<ChannelFormat> ChannelFormat::STEREO() {
 	static auto stereoChannelFormat = make_shared<ChannelFormat2>();
 	return stereoChannelFormat;
 }

@@ -1,38 +1,37 @@
 #pragma once
+
 #include <control/LawControl.hpp>
 #include <control/ControlLaw.hpp>
 
 #include <cstdint>
 #include <memory>
 
-namespace ctoot {
-	namespace audio {
-		namespace fader {
-			
-			class FaderLaw;
+namespace ctoot::audio::fader {
 
-			class FaderControl
-				: public ctoot::control::LawControl
-			{
+    class FaderLaw;
 
-			protected:
-				float gain{ 0 };
+    class FaderControl
+            : public ctoot::control::LawControl
+    {
 
-			public:
-				float getGain();
+    protected:
+        float gain{0};
 
-			public:
-				static std::weak_ptr<FaderLaw> SEMI_LOG();
-				static std::weak_ptr<FaderLaw> LOG();
-				static std::weak_ptr<FaderLaw> BROADCAST();
-				static float ATTENUATION_CUTOFF();
-				static std::weak_ptr<FaderLaw> defaultLaw();
+    public:
+        float getGain();
 
-			public:
-				FaderControl(int id, std::weak_ptr<ctoot::control::ControlLaw> law, float initialValue);
-				virtual ~FaderControl();
+    public:
 
-			};
-		}
-	}
+        static std::shared_ptr<FaderLaw> BROADCAST();
+
+        static float ATTENUATION_CUTOFF();
+
+        static std::shared_ptr<FaderLaw> defaultLaw();
+
+    public:
+        FaderControl(int id, std::shared_ptr<ctoot::control::ControlLaw> law, float initialValue);
+
+        virtual ~FaderControl();
+
+    };
 }

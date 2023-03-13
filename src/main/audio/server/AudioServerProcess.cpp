@@ -5,15 +5,16 @@
 using namespace ctoot::audio::server;
 using namespace std;
 
-AudioServerProcess::AudioServerProcess(string name, bool mono) {
+AudioServerProcess::AudioServerProcess(string name)
+{
 	this->name = name;
-	format = mono ? ctoot::audio::core::ChannelFormat::MONO() : ctoot::audio::core::ChannelFormat::STEREO();
+	format = ctoot::audio::core::ChannelFormat::STEREO();
 }
 
 string AudioServerProcess::getName() {
 	return name;
 }
 
-std::weak_ptr<ctoot::audio::core::ChannelFormat> AudioServerProcess::getChannelFormat() {
+std::shared_ptr<ctoot::audio::core::ChannelFormat> AudioServerProcess::getChannelFormat() {
 	return format;
 }

@@ -1,13 +1,13 @@
 #include <audio/server/StereoOutputProcess.hpp>
 
 #include <audio/core/AudioBuffer.hpp>
-#include <audio/core/MetaInfo.hpp>
 
 using namespace ctoot::audio::server;
 using namespace std;
 
-StereoOutputProcess::StereoOutputProcess(string name, bool mono, string location) 
-	: AudioServerProcess(name, mono) {
+StereoOutputProcess::StereoOutputProcess(string name)
+	: AudioServerProcess(name)
+{
 }
 
 int StereoOutputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) {
@@ -16,7 +16,7 @@ int StereoOutputProcess::processAudio(ctoot::audio::core::AudioBuffer* buffer, i
 		return AudioProcess::AUDIO_OK;
 	}
 
-	if (buffer->getChannelFormat().lock() != format.lock()) {
+	if (buffer->getChannelFormat() != format) {
 		buffer->setChannelFormat(format);
 	}
 	

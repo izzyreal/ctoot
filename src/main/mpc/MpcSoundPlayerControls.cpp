@@ -7,20 +7,16 @@
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcSoundPlayerControls::MpcSoundPlayerControls()
-	: ctoot::synth::SynthChannelControls(MPC_SOUND_PLAYER_CHANNEL_ID, NAME_)
+MpcSoundPlayerControls::MpcSoundPlayerControls(
+	shared_ptr<MpcSampler> sampler,
+    int drumNumber,
+    shared_ptr<ctoot::audio::mixer::AudioMixer> mixer,
+    shared_ptr<ctoot::audio::server::AudioServer> server,
+    ctoot::mpc::MpcMixerSetupGui* mixerSetupGui,
+    std::vector<std::shared_ptr<MpcVoice>> voicesToUse) :
+    ctoot::control::CompoundControl(8, NAME_),
+    voices(voicesToUse)
 {
-}
-
-MpcSoundPlayerControls::MpcSoundPlayerControls(weak_ptr<MpcMultiMidiSynth> mms,
-	weak_ptr<MpcSampler> sampler
-	, int drumNumber
-	, weak_ptr<ctoot::audio::mixer::AudioMixer> mixer
-	, weak_ptr<ctoot::audio::server::AudioServer> server
-	, ctoot::mpc::MpcMixerSetupGui* mixerSetupGui)
-	: ctoot::synth::SynthChannelControls(MPC_SOUND_PLAYER_CHANNEL_ID, NAME_)
-{
-	this->mms = mms;
 	this->sampler = sampler;
 	this->drumNumber = drumNumber;
 	this->mixer = mixer;
@@ -28,19 +24,14 @@ MpcSoundPlayerControls::MpcSoundPlayerControls(weak_ptr<MpcMultiMidiSynth> mms,
 	this->mixerSetupGui = mixerSetupGui;
 }
 
-const int MpcSoundPlayerControls::MPC_SOUND_PLAYER_CHANNEL_ID;
-
-string MpcSoundPlayerControls::NAME()
-{
-    return NAME_;
-}
 string MpcSoundPlayerControls::NAME_ = "MpcSoundPlayer";
 
-weak_ptr<MpcMultiMidiSynth> MpcSoundPlayerControls::getMms() {
-	return mms;
+std::vector<std::shared_ptr<MpcVoice>> MpcSoundPlayerControls::getVoices()
+{
+	return voices;
 }
 
-weak_ptr<ctoot::mpc::MpcSampler> MpcSoundPlayerControls::getSampler()
+shared_ptr<ctoot::mpc::MpcSampler> MpcSoundPlayerControls::getSampler()
 {
     return sampler;
 }
@@ -50,19 +41,16 @@ int MpcSoundPlayerControls::getDrumIndex()
     return drumNumber;
 }
 
-weak_ptr<ctoot::audio::mixer::AudioMixer> MpcSoundPlayerControls::getMixer()
+shared_ptr<ctoot::audio::mixer::AudioMixer> MpcSoundPlayerControls::getMixer()
 {
     return mixer;
 }
 
 ctoot::audio::server::AudioServer* MpcSoundPlayerControls::getServer()
 {
-    return server.lock().get();
+    return server.get();
 }
 
 ctoot::mpc::MpcMixerSetupGui* MpcSoundPlayerControls::getMixerSetupGui() {
 	return mixerSetupGui;
-}
-
-MpcSoundPlayerControls::~MpcSoundPlayerControls() {
 }

@@ -1,40 +1,25 @@
 #pragma once
+
 #include <audio/mixer/MixProcess.hpp>
 #include <audio/mixer/MixVariables.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
+namespace ctoot::audio::mixer {
 
-			class MainMixProcess
-				: public MixProcess
-			{
+    class MainMixProcess
+            : public MixProcess
+    {
+    public:
+        std::shared_ptr<AudioMixerStrip> nextRoutedStrip;
 
-			public:
-				typedef MixProcess super;
+    public:
+        ctoot::control::EnumControl *routeControl{nullptr};
 
-			public:
-				std::weak_ptr<AudioMixerStrip> nextRoutedStrip{};
+    public:
+        AudioMixerStrip *getRoutedStrip() override;
 
-			private:
-				moduru::observer::Observer* routeObserver{ nullptr };
+    public:
+        MainMixProcess(std::shared_ptr<AudioMixerStrip> strip, std::shared_ptr<MixVariables> vars, AudioMixer *mixer);
 
-			public:
-				ctoot::control::EnumControl* routeControl{ nullptr };
+    };
 
-			public:
-				AudioMixerStrip* getRoutedStrip() override;
-
-			public:
-				void open() override;
-				void close() override;
-
-			public:
-				MainMixProcess(std::shared_ptr<AudioMixerStrip> strip, std::weak_ptr<MixVariables> vars, AudioMixer* mixer);
-				~MainMixProcess();
-
-			};
-
-		}
-	}
 }

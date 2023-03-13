@@ -1,7 +1,7 @@
 #pragma once
-#include <synth/SynthChannel.hpp>
 
 #include <map>
+#include <vector>
 
 namespace ctoot::control {
 	class CompoundControl;
@@ -9,10 +9,6 @@ namespace ctoot::control {
 
 namespace ctoot::audio::server {
 	class AudioServer;
-}
-
-namespace ctoot::audio::core {
-	class MetaInfo;
 }
 
 namespace ctoot::audio::mixer {
@@ -36,13 +32,13 @@ namespace ctoot::mpc {
 namespace ctoot::mpc
 {
 	class MpcSoundPlayerChannel final
-		: public ctoot::synth::SynthChannel
 	{
 
 	private:
 		std::map<int, int> simultA;
 		std::map<int, int> simultB;
 		std::shared_ptr<MpcSoundPlayerControls> controls;
+        std::vector<std::shared_ptr<MpcVoice>> voices;
 		std::shared_ptr<MpcSampler> sampler;
 		std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer;
 		std::vector<MpcMixerInterconnection*> mixerConnections;
@@ -55,19 +51,13 @@ namespace ctoot::mpc
 		bool receiveMidiVolume = false;
 		int lastReceivedMidiVolume = 127;
 		std::vector<std::shared_ptr<MpcStereoMixerChannel>> stereoMixerChannels;
-        std::vector<std::weak_ptr<MpcStereoMixerChannel>> weakStereoMixerChannels;
+        std::vector<std::shared_ptr<MpcStereoMixerChannel>> weakStereoMixerChannels;
 		std::vector<std::shared_ptr<MpcIndivFxMixerChannel>> indivFxMixerChannels;
-        std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> weakIndivFxMixerChannels;
+        std::vector<std::shared_ptr<MpcIndivFxMixerChannel>> weakIndivFxMixerChannels;
 
 	public:
-		int getProgram() override;
-		void setLocation(std::string location) override;
-		void noteOn(int note, int velo) override;
-		void noteOff(int note) override;
-		void allNotesOff() override;
-		void allSoundOff() override;
-
-	public:
+		int getProgram();
+		void allNotesOff();
 		void setProgram(int i);
 		bool receivesPgmChange();
 		void setReceivePgmChange(bool b);
@@ -80,9 +70,8 @@ namespace ctoot::mpc
 	public:
 		void allSoundOff(int frameOffset);
 		void connectVoices();
-		std::weak_ptr<ctoot::audio::core::MetaInfo> getInfo();
-		std::vector<std::weak_ptr<MpcStereoMixerChannel>> getStereoMixerChannels();
-		std::vector<std::weak_ptr<MpcIndivFxMixerChannel>> getIndivFxMixerChannels();
+		std::vector<std::shared_ptr<MpcStereoMixerChannel>>& getStereoMixerChannels();
+		std::vector<std::shared_ptr<MpcIndivFxMixerChannel>>& getIndivFxMixerChannels();
 
 	public:
 		void mpcNoteOff(int note, int frameOffset, int noteOnStartTick);
@@ -95,7 +84,7 @@ namespace ctoot::mpc
         void stopMonoOrPolyVoiceWithSameNoteParameters(ctoot::mpc::MpcNoteParameters* noteParameters, int note);
 
 	public:
-		MpcSoundPlayerChannel(std::weak_ptr<MpcSoundPlayerControls> controls);
+		MpcSoundPlayerChannel(std::shared_ptr<MpcSoundPlayerControls> controls);
 		~MpcSoundPlayerChannel();
 
 	};

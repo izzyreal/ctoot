@@ -1,11 +1,8 @@
 #pragma once
 
-#include <observer/Observable.hpp>
-
 namespace ctoot::mpc {
 
 		class MpcStereoMixerChannel
-			: public moduru::observer::Observable
 		{
 
 		private:

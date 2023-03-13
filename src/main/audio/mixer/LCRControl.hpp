@@ -1,30 +1,24 @@
 #pragma once
-#include <control/FloatControl.hpp>
+
+#include <control/LawControl.hpp>
 #include <vector>
 #include <control/ControlLaw.hpp>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
+namespace ctoot::audio::mixer {
 
-			class LCRControl
-				: public ctoot::control::FloatControl
-			{
+    class LCRControl
+            : public ctoot::control::LawControl
+    {
 
-			public:
-				virtual float getLeft() = 0;
-				virtual float getRight() = 0;
+    public:
+        virtual float getLeft() = 0;
 
-			public:
-				std::vector<std::string> getPresetNames() override;
-				void applyPreset(std::string presetName) override;
+        virtual float getRight() = 0;
 
-			public:
-				LCRControl(std::string name, std::weak_ptr<ctoot::control::ControlLaw> law, float precision, float initialValue);
-				virtual ~LCRControl();
+    public:
+        LCRControl(std::string name, std::shared_ptr<ctoot::control::ControlLaw> law, float precision,
+                   float initialValue);
 
-			};
+    };
 
-		}
-	}
 }

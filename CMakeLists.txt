@@ -2,12 +2,6 @@ cmake_minimum_required(VERSION 3.13)
 
 include(FetchContent)
 
-FetchContent_Declare(moduru
-  GIT_REPOSITORY https://github.com/izzyreal/moduru.git
-  GIT_TAG        master
-  SOURCE_DIR     ${CMAKE_SOURCE_DIR}/editables/moduru
-)
-
 set(CATCH_CONFIG_NO_CPP17_UNCAUGHT_EXCEPTIONS ON)
 
 FetchContent_Declare(Catch2
@@ -16,7 +10,7 @@ FetchContent_Declare(Catch2
   SOURCE_DIR     ${CMAKE_SOURCE_DIR}/deps/Catch2
 )
 
-FetchContent_MakeAvailable(moduru Catch2)
+FetchContent_MakeAvailable(Catch2)
 
 project(ctoot)
 
@@ -36,7 +30,7 @@ endif()
 
 set(_src_root_path_main "${CMAKE_CURRENT_SOURCE_DIR}/src/main")
 
-include_directories(${_src_root_path_main} ${moduru_SOURCE_DIR}/src/main)
+include_directories(${_src_root_path_main})
 
 file(
     GLOB_RECURSE _source_list_main
@@ -60,7 +54,6 @@ if(MSVC)
 endif(MSVC)
 
 add_library(ctoot ${_source_list_main})
-target_link_libraries(ctoot PUBLIC moduru)
 
 if(MSVC)
 	target_compile_options(ctoot PRIVATE "/MP")

@@ -1,60 +1,57 @@
 #pragma once
+
 #include <audio/core/AudioProcessChain.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
-#include <audio/core/MetaInfo.hpp>
-
 #include <memory>
 
-namespace ctoot {
-	namespace audio {
-		namespace mixer {
+namespace ctoot::audio::mixer {
 
-			class AudioMixerStrip
-				: public core::AudioProcessChain
-			{
+    class AudioMixerStrip
+            : public core::AudioProcessChain
+    {
 
-			public:
-				AudioMixer* mixer{ nullptr };
+    public:
+        AudioMixer *mixer{nullptr};
 
-			private:
-                ctoot::audio::core::AudioBuffer* buffer{ nullptr };
-				std::shared_ptr<ctoot::audio::core::MetaInfo> metaInfo;
-				std::weak_ptr<AudioProcess> input;
-				std::weak_ptr<AudioProcess> directOutput;
-				bool isChannel{ false };
-                std::weak_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
-				int nmixed{ 1 };
+    private:
+        ctoot::audio::core::AudioBuffer *buffer{nullptr};
+        std::shared_ptr<AudioProcess> input;
+        std::shared_ptr<AudioProcess> directOutput;
+        bool isChannel{false};
+        std::shared_ptr<ctoot::audio::core::ChannelFormat> channelFormat;
+        int nmixed{1};
 
-			public:
-				virtual std::weak_ptr<AudioProcess> getInputProcess();
-				virtual void setInputProcess(std::weak_ptr<AudioProcess> input);
-				virtual std::weak_ptr<AudioProcess> getDirectOutputProcess();
-				virtual void setDirectOutputProcess(std::weak_ptr<AudioProcess> output);
-				virtual void silence();
+    public:
 
-			public:
-				virtual ctoot::audio::core::AudioBuffer* createBuffer();
+        void setInputProcess(std::shared_ptr<AudioProcess> input);
 
-			private:
-				static const int silenceCount{ 1000 };
-				int silenceCountdown{};
+        void setDirectOutputProcess(std::shared_ptr<AudioProcess> output);
 
-			public:
-				virtual bool processBuffer(int nFrames);
-				virtual void checkMetaInfo(std::weak_ptr<ctoot::audio::core::MetaInfo> info);
-				virtual int mix(ctoot::audio::core::AudioBuffer* bufferToMix, std::vector<float>& gain);
+        void silence();
 
-			public:
-				std::shared_ptr<AudioProcess> createProcess(std::weak_ptr<ctoot::audio::core::AudioControls> controls) override;
-				void close() override;
+    public:
+        ctoot::audio::core::AudioBuffer *createBuffer();
 
-			public:
-				AudioMixerStrip(AudioMixer* mixer, std::weak_ptr<ctoot::audio::core::AudioControlsChain> controlsChain);
-				~AudioMixerStrip();
+    private:
+        static const int silenceCount{1000};
+        int silenceCountdown{};
 
-			};
+    public:
+        bool processBuffer(int nFrames);
 
-		}
-	}
+        virtual int mix(ctoot::audio::core::AudioBuffer *bufferToMix, std::vector<float> &gain);
+
+    public:
+        std::shared_ptr<AudioProcess> createProcess(std::shared_ptr<ctoot::audio::core::AudioControls> controls) override;
+
+        void close() override;
+
+    public:
+        AudioMixerStrip(AudioMixer *mixer, std::shared_ptr<ctoot::audio::core::AudioControlsChain> controlsChain);
+
+        ~AudioMixerStrip();
+
+    };
+
 }

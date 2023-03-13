@@ -1,66 +1,39 @@
 #pragma once
+
 #include <audio/core/AudioProcess.hpp>
 #include <audio/core/AudioControlsChain.hpp>
 #include <audio/core/AudioControls.hpp>
 
-#include <observer/Observer.hpp>
-#include <thirdp/concurrentqueue.h>
-
 #include <cstdint>
 
-namespace ctoot {
+namespace ctoot::audio::core {
 
-	namespace control {
-		class ChainMutation;
-	}
+    class AudioProcessChain
+            : public AudioProcess
+    {
 
-	namespace audio {
-		namespace core {
+    public:
+        std::shared_ptr<AudioControlsChain> controlChain;
+        std::vector<std::shared_ptr<AudioProcess>> processes;
 
-			class AudioProcessChain
-				: public virtual AudioProcess
-			{
+    public:
+        void open() override;
 
-			public:
-				std::weak_ptr<AudioControlsChain> controlChain;
-				std::vector<std::shared_ptr<AudioProcess>> processes;
+    public:
+        int processAudio(ctoot::audio::core::AudioBuffer *buffer, int nFrames) override;
 
-			private:
-				moodycamel::ConcurrentQueue<ctoot::control::ChainMutation*> mutationQueue {};
-				moduru::observer::Observer* controlChainObserver{ nullptr };
-				bool debugTimes{ false };
-                
-            private:
-				std::vector<int64_t> t; // for debugging
+        void close() override;
 
-			public:
-				void open() override;
+        virtual std::string getName();
 
-			private:
-				int debugIndex{};
-				int64_t prevNanos{};
-				int64_t tstart{};
-				int64_t elapsed{};
+    public:
+        virtual std::shared_ptr<AudioProcess> createProcess(std::shared_ptr<AudioControls> controls) {
+            return {};
+        }
 
-			public:
-				int processAudio(ctoot::audio::core::AudioBuffer* buffer, int nFrames) override;
-				virtual int debugProcessAudio(ctoot::audio::core::AudioBuffer* buffer);
-				void close() override;
-				virtual std::string getName();
+    public:
+        AudioProcessChain(std::shared_ptr<AudioControlsChain> controlChain);
 
-			public:
-				virtual std::shared_ptr<AudioProcess> createProcess(std::weak_ptr<AudioControls> controls);
-				virtual void processMutations();
+    };
 
-			public:
-				AudioProcessChain(std::weak_ptr<AudioControlsChain> controlChain);
-				~AudioProcessChain();
-
-			private:
-				friend class ControlChainObserver;
-
-			};
-
-		}
-	}
 }

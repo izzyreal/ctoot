@@ -2,7 +2,6 @@
 
 // ctootextensions
 #include "MpcSoundPlayerControls.hpp"
-#include "MpcMultiMidiSynth.hpp"
 #include "MpcFaderControl.hpp"
 #include "MpcMixerInterconnection.hpp"
 #include "MpcVoice.hpp"
@@ -17,25 +16,24 @@
 #include <mpc/MpcSound.hpp>
 
 // ctoot
-#include <audio/core/MetaInfo.hpp>
 #include <audio/mixer/AudioMixerStrip.hpp>
 #include <audio/mixer/MainMixControls.hpp>
 #include <audio/mixer/PanControl.hpp>
 #include <control/CompoundControl.hpp>
-#include <control/Control.hpp>
 
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcSoundPlayerChannel::MpcSoundPlayerChannel(weak_ptr<MpcSoundPlayerControls> controlsToUse)
+MpcSoundPlayerChannel::MpcSoundPlayerChannel(shared_ptr<MpcSoundPlayerControls> controlsToUse)
 {
-	controls = controlsToUse.lock();
+	controls = controlsToUse;
+    voices = controls->getVoices();
 	receivePgmChange = true;
 	receiveMidiVolume = true;
 
 	drumIndex = controls->getDrumIndex();
-	sampler = controls->getSampler().lock();
-	mixer = controls->getMixer().lock();
+	sampler = controls->getSampler();
+	mixer = controls->getMixer();
 	server = controls->getServer();
 
 	for (int i = 0; i < 64; i++)
@@ -57,7 +55,6 @@ void MpcSoundPlayerChannel::setProgram(int i)
         return;
 
     programNumber = i;
-	notifyObservers(string("pgm"));
 }
 
 int MpcSoundPlayerChannel::getProgram()
@@ -73,8 +70,6 @@ bool MpcSoundPlayerChannel::receivesPgmChange()
 void MpcSoundPlayerChannel::setReceivePgmChange(bool b)
 {
 	receivePgmChange = b;
-
-	notifyObservers(string("receivepgmchange"));
 }
 
 bool MpcSoundPlayerChannel::receivesMidiVolume()
@@ -85,8 +80,6 @@ bool MpcSoundPlayerChannel::receivesMidiVolume()
 void MpcSoundPlayerChannel::setReceiveMidiVolume(bool b)
 {
 	receiveMidiVolume = b;
-
-	notifyObservers(string("receivemidivolume"));
 }
 
 int MpcSoundPlayerChannel::getLastReceivedMidiVolume()
@@ -102,15 +95,6 @@ void MpcSoundPlayerChannel::setLastReceivedMidiVolume(int volume)
 	lastReceivedMidiVolume = volume;
 }
 
-void MpcSoundPlayerChannel::setLocation(string location)
-{
-}
-
-void MpcSoundPlayerChannel::noteOn(int note, int velo)
-{
-	mpcNoteOn(note, velo, 0, 64, 0, true, -1, -1);
-}
-
 void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varValue, int frameOffset, bool firstGeneration, int startTick, int durationFrames)
 {
 	if (note < 35 || note > 98 || velo == 0)
@@ -124,11 +108,11 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 	shared_ptr<MpcVoice> voice;
 
-	for (auto& v : controls->getMms().lock()->getVoices())
+	for (auto& v : voices)
 	{
-		if (v.lock()->isFinished())
+		if (v->isFinished())
 		{
-			voice = v.lock();
+			voice = v;
 			break;
 		}
 	}
@@ -138,8 +122,8 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 	auto sound = sampler->getMpcSound(soundNumber);
 
-	auto smc = program->getStereoMixerChannel(note - 35).lock();
-	auto ifmc = program->getIndivFxMixerChannel(note - 35).lock();
+	auto smc = program->getStereoMixerChannel(note - 35);
+	auto ifmc = program->getIndivFxMixerChannel(note - 35);
 
 	bool sSrcDrum = controls->getMixerSetupGui()->isStereoMixSourceDrum();
 	bool iSrcDrum = controls->getMixerSetupGui()->isIndivFxSourceDrum();
@@ -150,23 +134,19 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 	if (iSrcDrum)
 		ifmc = indivFxMixerChannels[note - 35];
 
-    auto mixerControls = mixer->getMixerControls().lock();
+    auto mixerControls = mixer->getMixerControls();
 
-	auto sc = mixerControls->getStripControls(to_string(voice->getStripNumber())).lock();
+	auto sc = mixerControls->getStripControls(to_string(voice->getStripNumber()));
 
-	// We set the FX send level.
-	dynamic_pointer_cast<MpcFaderControl>(dynamic_pointer_cast<CompoundControl>(sc->find("FX#1").lock())
-		->find("Level").lock())->setValue(static_cast<float>(ifmc->getFxSendLevel()));
+	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main"));
+	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan"))->setValue(static_cast<float>(smc->getPanning() / 100.0));
+	dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level"))->setValue(static_cast<float>(smc->getLevel()));
 
-	auto mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
-	dynamic_pointer_cast<ctoot::audio::mixer::PanControl>(mmc->find("Pan").lock())->setValue(static_cast<float>(smc->getPanning() / 100.0));
-	dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock())->setValue(static_cast<float>(smc->getLevel()));
-
-	sc = mixerControls->getStripControls(to_string(voice->getStripNumber() + 32)).lock();
-	mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main").lock());
+	sc = mixerControls->getStripControls(to_string(voice->getStripNumber() + 32));
+	mmc = dynamic_pointer_cast<ctoot::audio::mixer::MainMixControls>(sc->find("Main"));
 
 	//We make sure the voice strip duplicages that are used for mixing to ASSIGNABLE MIX OUT are not mixed into Main.
-	auto faderControl = dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level").lock());
+	auto faderControl = dynamic_pointer_cast<ctoot::audio::fader::FaderControl>(mmc->find("Level"));
 	if (faderControl->getValue() != 0) faderControl->setValue(0);
 
 	if (ifmc->getOutput() > 0)
@@ -200,8 +180,8 @@ void MpcSoundPlayerChannel::mpcNoteOn(int note, int velo, int varType, int varVa
 
 	for (int i = 0; i < 4; i++)
 	{
-		auto auxControl = dynamic_pointer_cast<ctoot::control::CompoundControl>(sc->find("AUX#" + to_string(i + 1)).lock());
-		auto auxLevel = dynamic_pointer_cast<MpcFaderControl>(auxControl->find("Level").lock());
+		auto auxControl = dynamic_pointer_cast<ctoot::control::CompoundControl>(sc->find("AUX#" + to_string(i + 1)));
+		auto auxLevel = dynamic_pointer_cast<MpcFaderControl>(auxControl->find("Level"));
 
 		if (i == selectedAssignableMixOutPair)
 		{
@@ -250,33 +230,26 @@ void MpcSoundPlayerChannel::checkForMutes(ctoot::mpc::MpcNoteParameters* np)
 {
 	if (np->getMuteAssignA() != 34 || np->getMuteAssignB() != 34)
 	{
-		for (auto& v : controls->getMms().lock()->getVoices())
+		for (auto& v : controls->getVoices())
 		{
-			if (v.lock()->isFinished())
+			if (v->isFinished())
 				continue;
 
-			if (v.lock()->getMuteInfo().shouldMute(np->getMuteAssignA(), drumIndex)
-				|| v.lock()->getMuteInfo().shouldMute(np->getMuteAssignB(), drumIndex))
+			if (v->getMuteInfo().shouldMute(np->getMuteAssignA(), drumIndex)
+				|| v->getMuteInfo().shouldMute(np->getMuteAssignB(), drumIndex))
 			{
-				v.lock()->startDecay();
+				v->startDecay();
 			}
 		}
 	}
-}
-
-void MpcSoundPlayerChannel::noteOff(int note)
-{
-	mpcNoteOff(note, 0, -1);
 }
 
 void MpcSoundPlayerChannel::allNotesOff()
 {
     for (int note = 35; note <= 98; note++)
     {
-        for (auto& v : controls->getMms().lock()->getVoices())
+        for (auto& voice : controls->getVoices())
         {
-            auto voice = v.lock();
-
             if (!voice->isFinished()
                 && voice->getNote() == note
                 && voice->getVoiceOverlap() == VoiceOverlapMode::NOTE_OFF
@@ -290,25 +263,14 @@ void MpcSoundPlayerChannel::allNotesOff()
     }
 }
 
-void MpcSoundPlayerChannel::allSoundOff()
-{
-	for (auto& voice : controls->getMms().lock()->getVoices())
-	{
-		if (voice.lock()->isFinished())
-			continue;
-
-		voice.lock()->startDecay();
-	}
-}
-
 void MpcSoundPlayerChannel::allSoundOff(int frameOffset)
 {
-	for (auto& voice : controls->getMms().lock()->getVoices())
+	for (auto& voice : controls->getVoices())
 	{
-		if (voice.lock()->isFinished())
+		if (voice->isFinished())
 			continue;
 
-		voice.lock()->startDecay(frameOffset);
+		voice->startDecay(frameOffset);
 	}
 }
 
@@ -316,28 +278,23 @@ void MpcSoundPlayerChannel::connectVoices()
 {
 	for (auto j = 0; j < 32; j++)
 	{
-		auto ams1 = mixer->getStrip(to_string(j + 1)).lock();
-		auto voice = controls->getMms().lock()->getVoices()[j];
+		auto ams1 = mixer->getStrip(to_string(j + 1));
+		auto voice = controls->getVoices()[j];
 		ams1->setInputProcess(voice);
 		auto mi = new MpcMixerInterconnection("con" + to_string(j), server);
 		ams1->setDirectOutputProcess(mi->getInputProcess());
-		auto ams2 = mixer->getStrip(to_string(j + 1 + 32)).lock();
+		auto ams2 = mixer->getStrip(to_string(j + 1 + 32));
 		ams2->setInputProcess(mi->getOutputProcess());
 		mixerConnections.push_back(mi);
 	}
 }
 
-weak_ptr<ctoot::audio::core::MetaInfo> MpcSoundPlayerChannel::getInfo()
-{
-	return weak_ptr<ctoot::audio::core::MetaInfo>();
-}
-
-vector<weak_ptr<ctoot::mpc::MpcStereoMixerChannel>> MpcSoundPlayerChannel::getStereoMixerChannels()
+vector<shared_ptr<ctoot::mpc::MpcStereoMixerChannel>>& MpcSoundPlayerChannel::getStereoMixerChannels()
 {
     return weakStereoMixerChannels;
 }
 
-vector<weak_ptr<ctoot::mpc::MpcIndivFxMixerChannel>> MpcSoundPlayerChannel::getIndivFxMixerChannels()
+vector<shared_ptr<ctoot::mpc::MpcIndivFxMixerChannel>>& MpcSoundPlayerChannel::getIndivFxMixerChannels()
 {
 	return weakIndivFxMixerChannels;
 }
@@ -368,10 +325,8 @@ void MpcSoundPlayerChannel::mpcNoteOff(int note, int frameOffset, int noteOnStar
 
 void MpcSoundPlayerChannel::startDecayForNote(const int note, const int frameOffset, const int noteOnStartTick)
 {
-    for (auto& v : controls->getMms().lock()->getVoices())
+    for (auto& voice : controls->getVoices())
 	{
-        auto voice = v.lock();
-
 		if (!voice->isFinished()
             && voice->getStartTick() == noteOnStartTick
             && voice->getNote() == note
@@ -388,10 +343,8 @@ void MpcSoundPlayerChannel::startDecayForNote(const int note, const int frameOff
 void MpcSoundPlayerChannel::stopMonoOrPolyVoiceWithSameNoteParameters(
         ctoot::mpc::MpcNoteParameters* noteParameters, int note)
 {
-    for (auto& v : controls->getMms().lock()->getVoices())
+    for (auto& voice : controls->getVoices())
     {
-        auto voice = v.lock();
-
         if (voice->getNoteParameters() == noteParameters) {
             if (voice->getNote() == note) {
                 if (voice->getVoiceOverlap() == VoiceOverlapMode::POLY ||

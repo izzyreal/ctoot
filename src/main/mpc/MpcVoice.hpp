@@ -6,7 +6,7 @@
 #include "MpcMuteInfo.hpp"
 
 namespace ctoot::control {
-class FloatControl;
+class LawControl;
 class BooleanControl;
 }
 
@@ -27,6 +27,10 @@ class MpcVoice
 {
     
 private:
+    static float midiFreq(float pitch);
+
+    static float midiFreqImpl(int pitch);
+
     float sampleRate = 44100.0;
 
     constexpr static const float STATIC_ATTACK_LENGTH = 10.92f;
@@ -39,8 +43,6 @@ private:
     static const int HOLD_INDEX = 1;
     static const int DECAY_INDEX = 2;
     static const int RESO_INDEX = 1;
-    static const int MIX_INDEX = 2;
-    static const int BANDPASS_INDEX = 3;
 
     // Voice overlap mode when the voice was triggered
     int voiceOverlapMode;
@@ -65,14 +67,14 @@ private:
     ctoot::synth::modules::filter::StateVariableFilter* svfLeft = nullptr;
     ctoot::synth::modules::filter::StateVariableFilter* svfRight = nullptr;
     int end = 0;
-    ctoot::control::FloatControl* attack = nullptr;
-    ctoot::control::FloatControl* hold = nullptr;
-    ctoot::control::FloatControl* decay = nullptr;
-    ctoot::control::FloatControl* fattack = nullptr;
-    ctoot::control::FloatControl* fhold = nullptr;
-    ctoot::control::FloatControl* fdecay = nullptr;
-    ctoot::control::FloatControl* shold = nullptr;
-    ctoot::control::FloatControl* reso = nullptr;
+    ctoot::control::LawControl* attack = nullptr;
+    ctoot::control::LawControl* hold = nullptr;
+    ctoot::control::LawControl* decay = nullptr;
+    ctoot::control::LawControl* fattack = nullptr;
+    ctoot::control::LawControl* fhold = nullptr;
+    ctoot::control::LawControl* fdecay = nullptr;
+    ctoot::control::LawControl* shold = nullptr;
+    ctoot::control::LawControl* reso = nullptr;
     ctoot::mpc::MpcEnvelopeControls* ampEnvControls = nullptr;
     ctoot::mpc::MpcEnvelopeControls* staticEnvControls = nullptr;
     ctoot::mpc::MpcEnvelopeControls* filterEnvControls = nullptr;
@@ -151,7 +153,8 @@ public:
     void finish();
 
     void setMasterLevel(int8_t masterLevel);
-    int8_t getMasterLevel();
+
+    static std::vector<float> &freqTable();
 
 public:
     MpcVoice(int stripNumber, bool basic);

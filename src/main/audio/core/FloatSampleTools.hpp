@@ -48,9 +48,8 @@ namespace ctoot::audio::core {
 
 	public:
 		static void byte2float(std::vector<char>& input, int inByteOffset, std::vector<std::vector<float> >* output, int outOffset, int frameCount, AudioFormat* format);
-		static void byte2floatInterleaved(std::vector<char>& input, int inByteOffset, std::vector<float>* output, int outOffset, int frameCount, AudioFormat* format);
 
-	public:
+    public:
 		static void byte2floatGeneric(std::vector<char>& input, int inByteOffset, int inByteStep, std::vector<float>* output, int outOffset, int sampleCount, AudioFormat* format);
 		static void byte2floatGeneric(std::vector<char>& input, int inByteOffset, int inByteStep, std::vector<float>* output, int outOffset, int sampleCount, int formatType);
 
@@ -62,10 +61,8 @@ namespace ctoot::audio::core {
 
 	public:
 		static void float2byte(std::vector<std::vector<float>>& input, int inOffset, std::vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
-		static void float2byteNonInterleaved(std::vector<std::vector<float>>& input, int inOffset, std::vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
-		static void float2byteInterleaved(std::vector<float>& input, int inOffset, std::vector<char>* output, int outByteOffset, int frameCount, AudioFormat* format, float ditherBits);
 
-	public:
+    public:
 		static void float2byteGeneric(std::vector<float>& input, int inOffset, std::vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, AudioFormat* format, float ditherBits);
 		static void float2byteGeneric(std::vector<float>& input, int inOffset, std::vector<char>* output, int outByteOffset, int outByteStep, int sampleCount, int formatType, float ditherBits);
 

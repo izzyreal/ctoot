@@ -1,22 +1,22 @@
 #pragma once
 #include <control/CompoundControl.hpp>
-#include <control/FloatControl.hpp>
+#include <control/LawControl.hpp>
 
-namespace ctoot {
-	namespace mpc {
+namespace ctoot::mpc {
 
 		class MpcEnvelopeControls
 			: public ctoot::control::CompoundControl
 		{
 
-		public:
-			typedef ctoot::control::CompoundControl super;
-
 		private:
-			static const int MPC_ENVELOPE_ID{ 2 };
-			ctoot::control::FloatControl* attackControl{ nullptr };
-			ctoot::control::FloatControl* holdControl{ nullptr };
-			ctoot::control::FloatControl* decayControl{ nullptr };
+            static const int ATTACK{1};
+            static const int HOLD{2};
+            static const int DECAY{3};
+            static const int RELEASE{5};
+
+            ctoot::control::LawControl* attackControl{ nullptr };
+			ctoot::control::LawControl* holdControl{ nullptr };
+			ctoot::control::LawControl* decayControl{ nullptr };
 			float sampleRate{ 44100 };
 			float attack{}, decay{}, hold{ 0 };
 			int idOffset{ 0 };
@@ -33,17 +33,17 @@ namespace ctoot {
 			static float LOG_0_01_;
 
 		private:
-			static std::weak_ptr<ctoot::control::ControlLaw> ATTACK_LAW();
-			static std::weak_ptr<ctoot::control::ControlLaw> HOLD_LAW();
-			static std::weak_ptr<ctoot::control::ControlLaw> DECAY_LAW();
+			static std::shared_ptr<ctoot::control::ControlLaw> ATTACK_LAW();
+			static std::shared_ptr<ctoot::control::ControlLaw> HOLD_LAW();
+			static std::shared_ptr<ctoot::control::ControlLaw> DECAY_LAW();
 
 		public:
 			float deriveTimeFactor(float milliseconds);
 			float deriveAttack();
 			float deriveDecay();
-			ctoot::control::FloatControl* createAttackControl(float init);
-			ctoot::control::FloatControl* createHoldControl(float init);
-			ctoot::control::FloatControl* createDecayControl(float init);
+			ctoot::control::LawControl* createAttackControl(float init);
+			ctoot::control::LawControl* createHoldControl(float init);
+			ctoot::control::LawControl* createDecayControl(float init);
 
 		public:
 			float getAttackCoeff();
@@ -51,18 +51,6 @@ namespace ctoot {
 			float getDecayCoeff();
 
 		public:
-			MpcEnvelopeControls(int id, int instanceIndex, std::string name, int idOffset, float timeMultiplier);
-			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset, float timeMultiplier) 
-				: MpcEnvelopeControls(MPC_ENVELOPE_ID, instanceIndex, name, idOffset, timeMultiplier) {};
-			MpcEnvelopeControls(int instanceIndex, std::string name, int idOffset) 
-				: MpcEnvelopeControls(instanceIndex, name, idOffset, 1.0f) {};
-			
-			~MpcEnvelopeControls();
-
-		private:
-			static float& LOG_0_01();
-
-		};
-
+			MpcEnvelopeControls(int id, std::string name, int idOffset);
+        };
 	}
-}

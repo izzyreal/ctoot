@@ -1,11 +1,8 @@
 #include "MpcEnvelopeControls.hpp"
 
 #include <control/Control.hpp>
-#include <control/FloatControl.hpp>
 #include <control/LinearLaw.hpp>
 #include <control/LogLaw.hpp>
-//#include <misc/Localisation.hpp>
-#include <synth/modules/envelope/EnvelopeControlIds.hpp>
 
 #include <cfloat>
 #include <cmath>
@@ -13,8 +10,8 @@
 using namespace ctoot::mpc;
 using namespace std;
 
-MpcEnvelopeControls::MpcEnvelopeControls(int id, int instanceIndex, string name, int idOffset, float timeMultiplier)
-	: CompoundControl(id, instanceIndex, name)
+MpcEnvelopeControls::MpcEnvelopeControls(int id, string name, int idOffset)
+	: CompoundControl(id, name)
 {
 	this->idOffset = idOffset;
 	createControls();
@@ -22,18 +19,16 @@ MpcEnvelopeControls::MpcEnvelopeControls(int id, int instanceIndex, string name,
 	deriveSampleRateDependentVariables();
 }
 
-const int MpcEnvelopeControls::MPC_ENVELOPE_ID;
-
 void MpcEnvelopeControls::derive(ctoot::control::Control* c)
 {
 	switch (c->getId() - idOffset) {
-	case ctoot::synth::modules::envelope::EnvelopeControlIds::ATTACK:
+	case ATTACK:
 		attack = deriveAttack();
 		break;
-	case ctoot::synth::modules::envelope::EnvelopeControlIds::HOLD:
+	case HOLD:
 		hold = deriveHold();
 		break;
-	case ctoot::synth::modules::envelope::EnvelopeControlIds::DECAY:
+	case DECAY:
 		decay = deriveDecay();
 		break;
 	}
@@ -66,10 +61,6 @@ float MpcEnvelopeControls::deriveHold()
     return holdControl->getValue();
 }
 
-float& MpcEnvelopeControls::LOG_0_01()
-{
-    return LOG_0_01_;
-}
 float MpcEnvelopeControls::LOG_0_01_ = static_cast< float >(log(0.01));
 
 float MpcEnvelopeControls::deriveTimeFactor(float milliseconds)
@@ -89,34 +80,34 @@ float MpcEnvelopeControls::deriveDecay()
     return deriveTimeFactor(decayControl->getValue());
 }
 
-weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::ATTACK_LAW() {
+shared_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::ATTACK_LAW() {
 	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0000001f, 3000.0f * 4.7f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::DECAY_LAW() {
+shared_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::DECAY_LAW() {
 	static shared_ptr<ctoot::control::LogLaw> res = make_shared<ctoot::control::LogLaw>(0.0000001f, 2600.0f * 4.7f, "ms");
 	return res;
 }
 
-weak_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::HOLD_LAW() {
+shared_ptr<ctoot::control::ControlLaw> MpcEnvelopeControls::HOLD_LAW() {
 	static shared_ptr<ctoot::control::LinearLaw> res = make_shared<ctoot::control::LinearLaw>(0.0f, FLT_MAX, "samples");
 	return res;
 }
 
-ctoot::control::FloatControl* MpcEnvelopeControls::createAttackControl(float init)
+ctoot::control::LawControl* MpcEnvelopeControls::createAttackControl(float init)
 {
-	return new ctoot::control::FloatControl(ctoot::synth::modules::envelope::EnvelopeControlIds::ATTACK + idOffset, "Attack", ATTACK_LAW(), 0.1f, init);
+	return new ctoot::control::LawControl(ATTACK + idOffset, "Attack", ATTACK_LAW(), 0.1f, init);
 }
 
-ctoot::control::FloatControl* MpcEnvelopeControls::createHoldControl(float init)
+ctoot::control::LawControl* MpcEnvelopeControls::createHoldControl(float init)
 {
-	return new ctoot::control::FloatControl(ctoot::synth::modules::envelope::EnvelopeControlIds::HOLD + idOffset, "Hold", HOLD_LAW(), 0.1f, init);
+	return new ctoot::control::LawControl(HOLD + idOffset, "Hold", HOLD_LAW(), 0.1f, init);
 }
 
-ctoot::control::FloatControl* MpcEnvelopeControls::createDecayControl(float init)
+ctoot::control::LawControl* MpcEnvelopeControls::createDecayControl(float init)
 {
-	return new ctoot::control::FloatControl(ctoot::synth::modules::envelope::EnvelopeControlIds::DECAY + idOffset, "Decay", DECAY_LAW(), 0.1f, init);
+	return new ctoot::control::LawControl(DECAY + idOffset, "Decay", DECAY_LAW(), 0.1f, init);
 }
 
 float MpcEnvelopeControls::getAttackCoeff()
@@ -139,7 +130,4 @@ void MpcEnvelopeControls::setSampleRate(int rate) {
 		sampleRate = rate;
 		deriveSampleRateDependentVariables();
 	}
-}
-
-MpcEnvelopeControls::~MpcEnvelopeControls() {
 }

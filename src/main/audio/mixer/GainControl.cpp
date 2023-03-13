@@ -1,5 +1,4 @@
 #include <audio/mixer/GainControl.hpp>
-#include <control/ControlLaw.hpp>
 #include <audio/fader/FaderControl.hpp>
 #include <audio/fader/FaderLaw.hpp>
 #include <audio/mixer/MixControlIds.hpp>
@@ -24,21 +23,4 @@ void GainControl::setValue(float value)
 		gain = (float)(pow(10.0, value * 0.05));
 	}
 	FaderControl::setValue(value);
-}
-
-vector<string> GainControl::getPresetNames()
-{
-	static vector<string> res{ "Unity" };
-    return res;
-}
-
-void GainControl::applyPreset(string name)
-{
-    if (name.compare("Unity") == 0) {
-        setValue(0.0f);
-    }
-}
-
-GainControl::~GainControl() {
-	
 }

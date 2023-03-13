@@ -1,38 +1,34 @@
 #pragma once
+
 #include <audio/server/IOAudioProcess.hpp>
 
 #include <string>
 
-namespace ctoot {
-	namespace audio {
+namespace ctoot::audio {
 
-		namespace core {
-			class ChannelFormat;
-		}
+    namespace core {
+        class ChannelFormat;
+    }
 
-		namespace server {
+    namespace server {
 
-			class AudioServerProcess
-				: public IOAudioProcess
-			
-			{
+        class AudioServerProcess
+                : public IOAudioProcess
+        {
 
-			private:
-				std::string name{ "" };
-			
-			protected:
-				std::weak_ptr<ctoot::audio::core::ChannelFormat> format;
+        private:
+            std::string name;
 
-			public:
-				std::string getName() override;
-				std::weak_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
+        protected:
+            std::shared_ptr<ctoot::audio::core::ChannelFormat> format;
 
-				virtual void open() override = 0;
-				virtual void close() override = 0;
+        public:
+            std::string getName() override;
 
-				AudioServerProcess(std::string name, bool mono);
-			};
+            std::shared_ptr<ctoot::audio::core::ChannelFormat> getChannelFormat() override;
 
-		}
-	}
+            AudioServerProcess(std::string name);
+        };
+
+    }
 }

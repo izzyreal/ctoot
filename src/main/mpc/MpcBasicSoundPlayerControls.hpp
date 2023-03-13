@@ -1,53 +1,36 @@
 #pragma once
-#include <synth/SynthChannelControls.hpp>
 #include <audio/mixer/AudioMixer.hpp>
 
 #include <memory>
 
-namespace ctoot {
+namespace ctoot::mpc {
 
-	namespace mpc {
 		class MpcSampler;
 		class MpcVoice;
 		class MpcSoundOscillatorControls;
 		class MpcEnvelopeControls;
 
 		class MpcBasicSoundPlayerControls
-			: public ctoot::synth::SynthChannelControls
+			: public ctoot::control::CompoundControl
 		{
-
-		public:
-			typedef ctoot::synth::SynthChannelControls super;
-
-		public:
-			static const int MPC_BASIC_SOUND_PLAYER_CHANNEL_ID{ 9 };
 
 		private:
 			static std::string NAME_;
 
-		public:
-			static const int OSC_OFFSET{ 0 };
-			static const int AMP_OFFSET{ 56 };
-			static const int AMPENV_OFFSET{ 64 };
-
-		private:
-			std::weak_ptr<ctoot::mpc::MpcSampler> sampler{ };
-			std::weak_ptr<ctoot::mpc::MpcVoice> voice{};
-			std::weak_ptr<ctoot::audio::mixer::AudioMixer> mixer{};
+        private:
+			std::shared_ptr<ctoot::mpc::MpcSampler> sampler;
+			std::shared_ptr<ctoot::mpc::MpcVoice> voice;
+			std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer;
 
 		public:
-			std::weak_ptr<ctoot::mpc::MpcSampler> getSampler();
-			std::weak_ptr<ctoot::audio::mixer::AudioMixer> getMixer();
-			std::weak_ptr<ctoot::mpc::MpcVoice> getVoice();
+			std::shared_ptr<ctoot::mpc::MpcSampler> getSampler();
+			std::shared_ptr<ctoot::audio::mixer::AudioMixer> getMixer();
+			std::shared_ptr<ctoot::mpc::MpcVoice> getVoice();
 
-			MpcBasicSoundPlayerControls(std::weak_ptr<ctoot::mpc::MpcSampler> sampler, std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer, std::weak_ptr<ctoot::mpc::MpcVoice> voice);
-			MpcBasicSoundPlayerControls();
-			~MpcBasicSoundPlayerControls();
+			MpcBasicSoundPlayerControls(std::shared_ptr<ctoot::mpc::MpcSampler> sampler, std::shared_ptr<ctoot::audio::mixer::AudioMixer> mixer, std::shared_ptr<ctoot::mpc::MpcVoice> voice);
 
 		public:
 			static std::string& NAME();
 
 		};
-		REGISTER_TYPE(ctoot::mpc::, MpcBasicSoundPlayerControls)
 	}
-}

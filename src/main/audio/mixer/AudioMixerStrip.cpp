@@ -1,6 +1,5 @@
 #include <audio/mixer/AudioMixerStrip.hpp>
 
-#include <audio/core/MetaInfo.hpp>
 #include <audio/core/AudioBuffer.hpp>
 #include <audio/core/AudioControls.hpp>
 #include <audio/core/AudioControlsChain.hpp>
@@ -12,14 +11,11 @@
 #include <audio/mixer/MixVariables.hpp>
 #include <audio/mixer/MixerControlsIds.hpp>
 
-#include <audio/meter/MeterProcess.hpp>
-#include <audio/meter/MeterControls.hpp>
-
 using namespace ctoot::audio::mixer;
 using namespace ctoot::audio::core;
 using namespace std;
 
-AudioMixerStrip::AudioMixerStrip(AudioMixer* mixer, weak_ptr<AudioControlsChain> controlsChain)
+AudioMixerStrip::AudioMixerStrip(AudioMixer* mixer, shared_ptr<AudioControlsChain> controlsChain)
 	: AudioProcessChain(controlsChain)
 {
 	silenceCountdown = silenceCount;
@@ -28,42 +24,27 @@ AudioMixerStrip::AudioMixerStrip(AudioMixer* mixer, weak_ptr<AudioControlsChain>
 	channelFormat = buffer->getChannelFormat();
 }
 
-weak_ptr<AudioProcess> AudioMixerStrip::getInputProcess()
-{
-    return input;
-}
-
-void AudioMixerStrip::setInputProcess(weak_ptr<AudioProcess> input)
+void AudioMixerStrip::setInputProcess(shared_ptr<AudioProcess> input)
 {
 
-	if (controlChain.lock()->getId() != MixerControlsIds::CHANNEL_STRIP) {
-		MLOG("No external input to this strip type");
+	if (controlChain->getId() != MixerControlsIds::CHANNEL_STRIP) {
 		return;
 	}
 	auto oldInput = this->input;
-	if (input.lock()) input.lock()->open();
+	if (input) input->open();
 
 	this->input = input;
-	if (!input.lock()) {
-		this->metaInfo.reset();
-		controlChain.lock()->setMetaInfo(weak_ptr<MetaInfo>());
-	}
-	if (oldInput.lock())
-		oldInput.lock()->close();
+	if (oldInput)
+		oldInput->close();
 }
 
-weak_ptr<AudioProcess> AudioMixerStrip::getDirectOutputProcess()
-{
-    return directOutput;
-}
-
-void AudioMixerStrip::setDirectOutputProcess(weak_ptr<AudioProcess> output)
+void AudioMixerStrip::setDirectOutputProcess(shared_ptr<AudioProcess> output)
 {
 	auto oldOutput = directOutput;
-	if (output.lock()) output.lock()->open();
+	if (output) output->open();
 
 	this->directOutput = output;
-	if (oldOutput.lock()) oldOutput.lock()->close();
+	if (oldOutput) oldOutput->close();
 }
 
 void AudioMixerStrip::silence()
@@ -76,7 +57,7 @@ void AudioMixerStrip::silence()
 
 AudioBuffer* AudioMixerStrip::createBuffer()
 {
-	auto id = controlChain.lock()->getId();
+	auto id = controlChain->getId();
 	if (id == MixerControlsIds::CHANNEL_STRIP) {
 		isChannel = true;
 		return mixer->getSharedBuffer();
@@ -98,12 +79,10 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 {
 	auto ret = AUDIO_OK;
 	if (isChannel) {
-		if (input.lock()) {
-			ret = input.lock()->processAudio(buffer, nFrames);
-			buffer->getMetaInfo();
-			checkMetaInfo(buffer->getMetaInfo());
+		if (input) {
+			ret = input->processAudio(buffer, nFrames);
+
 			if (ret == AUDIO_DISCONNECT) {
-				processMutations();
 				return false;
 			}
 			else if (ret == AUDIO_SILENCE && silenceCountdown == 0) {
@@ -111,7 +90,6 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 			}
 		}
 		else {
-			processMutations();
 			return false;
 		}
 	}
@@ -129,29 +107,21 @@ bool AudioMixerStrip::processBuffer(int nFrames)
 			silenceCountdown = silenceCount;
 		}
 	}
-	if (directOutput.lock()) {
-		directOutput.lock()->processAudio(buffer, nFrames);
+	if (directOutput) {
+		directOutput->processAudio(buffer, nFrames);
 	}
 	return true;
 }
 
-void AudioMixerStrip::checkMetaInfo(weak_ptr<MetaInfo> wInfo)
+shared_ptr<AudioProcess> AudioMixerStrip::createProcess(shared_ptr<AudioControls> controls)
 {
-	auto info = wInfo.lock();
-	//metaInfo.reset();
-	//metaInfo = make_shared<MetaInfo>(info->getSourceLabel(), info->getSourceLocation());
-	//controlChain->setMetaInfo(metaInfo);
-}
-
-shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> controls)
-{
-	auto mixVars = dynamic_pointer_cast<MixVariables>(controls.lock());
+	auto mixVars = dynamic_pointer_cast<MixVariables>(controls);
 	if (mixVars) {
-		weak_ptr<AudioMixerStrip> routedStrip;
+		shared_ptr<AudioMixerStrip> routedStrip;
 		if (mixVars->getName().compare(mixer->getMainBus()->getName()) == 0) {
 			routedStrip = mixer->getMainStrip();
 			try {
-				return make_shared<MainMixProcess>(routedStrip.lock(), mixVars, mixer);
+				return make_shared<MainMixProcess>(routedStrip, mixVars, mixer);
 			}
 			catch (bad_cast e) {
 				printf("\n%s", e.what());
@@ -159,12 +129,8 @@ shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> 
 		}
 		else {
 			routedStrip = mixer->getStripImpl(mixVars->getName());
-			return make_shared<MixProcess>(routedStrip.lock(), mixVars);
+			return make_shared<MixProcess>(routedStrip, mixVars);
 		}
-	}
-	auto meterControls = dynamic_pointer_cast<ctoot::audio::meter::MeterControls>(controls.lock());
-	if (meterControls) {
-		return make_shared<ctoot::audio::meter::MeterProcess>(meterControls);
 	}
 
 	return AudioProcessChain::createProcess(controls);
@@ -173,7 +139,7 @@ shared_ptr<AudioProcess> AudioMixerStrip::createProcess(weak_ptr<AudioControls> 
 int AudioMixerStrip::mix(ctoot::audio::core::AudioBuffer* bufferToMix, vector<float>& gain)
 {
 	if (bufferToMix == nullptr) return 0;
-	auto ret = channelFormat.lock()->mix(buffer, bufferToMix, gain);
+	auto ret = channelFormat->mix(buffer, bufferToMix, gain);
 	if (ret != 0) nmixed += 1;
 	return ret;
 }
