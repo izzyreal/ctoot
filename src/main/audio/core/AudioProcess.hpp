@@ -12,7 +12,7 @@ namespace ctoot::audio::core {
         static const int AUDIO_DISCONNECT{1};
         static const int AUDIO_SILENCE{2};
 
-        virtual void open() {};
+        virtual void open() {}
 
         virtual int processAudio(ctoot::audio::core::AudioBuffer *buffer)
         { return processAudio(buffer, buffer->getSampleCount()); }

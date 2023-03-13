@@ -27,8 +27,7 @@ namespace ctoot {
 
             virtual float getSmoothingFactor() = 0;
 
-            virtual ctoot::control::EnumControl *getRouteControl()
-            { return nullptr; };
+            virtual ctoot::control::EnumControl *getRouteControl() { return nullptr; }
         };
     }
 }

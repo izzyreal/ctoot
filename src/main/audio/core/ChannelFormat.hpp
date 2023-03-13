@@ -19,11 +19,6 @@ namespace ctoot::audio::core {
 
         virtual std::vector<int8_t> getRight() = 0;
 
-        virtual std::string getName() = 0;
-
-        virtual std::string getName(int chan) = 0;
-
-    public:
         int mix(ctoot::audio::core::AudioBuffer *destBuffer, ctoot::audio::core::AudioBuffer *sourceBuffer,
                 std::vector<float> &gain);
 
