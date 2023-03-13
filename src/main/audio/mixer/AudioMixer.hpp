@@ -20,20 +20,18 @@ namespace ctoot::audio::mixer {
         std::weak_ptr<MixerControls> controls;
 
     protected:
-        std::shared_ptr<AudioMixerBus> mainBus{nullptr};
-        std::vector<std::shared_ptr<AudioMixerBus>> busses{};
-        std::vector<std::shared_ptr<AudioMixerBus>> auxBusses{};
+        std::shared_ptr<AudioMixerBus> mainBus;
+        std::vector<std::shared_ptr<AudioMixerBus>> busses;
+        std::vector<std::shared_ptr<AudioMixerBus>> auxBusses;
 
     private:
-        std::vector<std::shared_ptr<AudioMixerStrip>> strips{};
-        std::vector<std::weak_ptr<AudioMixerStrip>> channelStrips{};
-        std::vector<std::weak_ptr<AudioMixerStrip>> groupStrips{};
-        std::vector<std::weak_ptr<AudioMixerStrip>> auxStrips{};
+        std::vector<std::shared_ptr<AudioMixerStrip>> strips;
+        std::vector<std::weak_ptr<AudioMixerStrip>> channelStrips;
+        std::vector<std::weak_ptr<AudioMixerStrip>> groupStrips;
+        std::vector<std::weak_ptr<AudioMixerStrip>> auxStrips;
         std::weak_ptr<AudioMixerStrip> mainStrip;
-        std::weak_ptr<ctoot::audio::server::AudioServer> server{};
-        ctoot::audio::core::AudioBuffer *sharedAudioBuffer{nullptr};
-
-        bool enabled{true};
+        std::weak_ptr<ctoot::audio::server::AudioServer> server;
+        ctoot::audio::core::AudioBuffer *sharedAudioBuffer = nullptr;
 
     public:
         std::weak_ptr<MixerControls> getMixerControls();
@@ -80,15 +78,8 @@ namespace ctoot::audio::mixer {
     public:
         void close();
 
-        bool isEnabled();
-
-    public:
-        void setEnabled(bool enabled) override;
-
     public:
         AudioMixer(std::weak_ptr<MixerControls> controls, std::weak_ptr<ctoot::audio::server::AudioServer> server);
-
-        ~AudioMixer();
 
     };
 }

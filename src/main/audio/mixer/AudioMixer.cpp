@@ -62,8 +62,6 @@ weak_ptr<AudioMixerStrip> AudioMixer::getStripImpl(string name)
 
 void AudioMixer::work(int nFrames)
 {
-	if (!enabled) return;
-
 	silenceStrips(&groupStrips);
 	silenceStrips(&auxStrips);
 	mainStrip.lock()->silence();
@@ -181,7 +179,6 @@ weak_ptr<AudioMixerStrip> AudioMixer::createStrip(weak_ptr<ctoot::audio::core::A
 
 void AudioMixer::close()
 {
-	enabled = false;
 	for (auto& s : strips) {
 		s->close();
 	}
@@ -190,7 +187,7 @@ void AudioMixer::close()
 	channelStrips.clear();
 	groupStrips.clear();
 	auxStrips.clear();
-	
+
 	for (auto& b : busses) {
 		b->close();
 	}
@@ -199,17 +196,4 @@ void AudioMixer::close()
 	server.lock()->removeAudioBuffer(sharedAudioBuffer);
 	server.reset();
 	controls.reset();
-}
-
-bool AudioMixer::isEnabled()
-{
-    return enabled;
-}
-
-void AudioMixer::setEnabled(bool enabled)
-{
-    this->enabled = enabled;
-}
-
-AudioMixer::~AudioMixer() {
 }

@@ -56,8 +56,6 @@ namespace ctoot::audio::server {
 
         float getLoad() override;
 
-        void setEnabled(bool enable) override;
-
         void work() override
         {}; // nothing to do (?)
         ctoot::audio::core::AudioBuffer *createAudioBuffer(std::string name) override;

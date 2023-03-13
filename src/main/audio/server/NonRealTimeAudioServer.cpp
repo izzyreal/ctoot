@@ -139,10 +139,6 @@ float NonRealTimeAudioServer::getLoad()
     return realTime ? lServer->getLoad() : isRunning_ ? 1.0f : 0.0f;
 }
 
-void NonRealTimeAudioServer::setEnabled(bool enable)
-{
-}
-
 void NonRealTimeAudioServer::work(const float** inputBuffer, float** outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount) {
 	auto externalAudioServer = dynamic_pointer_cast<ExternalAudioServer>(server.lock());
 	if (externalAudioServer) {

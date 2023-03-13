@@ -16,8 +16,7 @@
 
 namespace ctoot::audio::server
 {
-	class ExternalAudioServer
-		: public AudioServer {
+	class ExternalAudioServer : public AudioServer {
 
 	public:
 		void start() override;
@@ -48,9 +47,5 @@ namespace ctoot::audio::server
 
 		// For compatibility with JUCE 7.0.5
         void work(const float* const* inputBuffer, float* const* outputBuffer, int nFrames, int inputChannelCount, int outputChannelCount);
-
-	public:
-		ExternalAudioServer();
-
 	};
 }

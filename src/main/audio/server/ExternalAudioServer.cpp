@@ -6,16 +6,11 @@
 using namespace ctoot::audio::server;
 using namespace std;
 
-ExternalAudioServer::ExternalAudioServer()
-{
-}
-
 void ExternalAudioServer::start()
 {
 	if (running)
 		return;
 	
-	client->setEnabled(true);
 	running = true;
 }
 
