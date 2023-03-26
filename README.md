@@ -1,2 +1,7 @@
+This project has been archived.
+
+ctoot was used by https://github.com/izzyreal/mpc. All relevant code has been moved into the `mpc` repository itself.
+
 # ctoot
-MPC® and Akai Professional® are a registered trademarks of inMusic Brands. Inc. This emulator is not affiliated with inMusic and use of the MPC® and Akai Professional® names has not been authorized, sponsored or otherwise approved by inMusic.
+
+Audio and music classes for C++.
